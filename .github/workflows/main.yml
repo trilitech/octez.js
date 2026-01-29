@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
-  lint-and-test:
+  lint-and-build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -27,40 +27,13 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run lint
-      - run: npm run build-docs
       - run: npm run test -- --runInBand
-      - name: Codecov
-        uses: codecov/codecov-action@v3.1.1
-        with:
-          file: .coverage/*.json
-        env:
-          CI: true
-          RUN_INTEGRATION: true
 
-  integration-tests-testnet:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      matrix:
-        include:
-          - testnet: tallinnnet
-            testnet_uppercase: TALLINNNET
-            rpc_url: http://ecad-tezos-tallinnnet-rolling-1.i.ecadinfra.com/
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/Iron
-      - run: npm ci
-      - run: npm run build
-      - if: ${{ !github.event.pull_request.head.repo.fork }}
-        name: Tailscale
-        uses: tailscale/github-action@v1
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          version: 1.32.2
-      - id: run-tests
-        run: npm -w integration-tests run test:${{ matrix.testnet }} -- --maxWorkers=4
-        env:
-          # Ternary operator workaround
-          TEZOS_RPC_${{ matrix.testnet_uppercase }}: ${{ github.event.pull_request.head.repo.fork && matrix.rpc_url || null }}
+  # TODO: Re-enable when infrastructure is set up
+  # See: https://github.com/trilitech/octez.js/issues/XXX
+  #
+  # integration-tests-testnet:
+  #   Requires:
+  #   - RPC nodes (use teztnets.com or own nodes)
+  #   - Keygen service for funded test accounts
+  #   - Optional: Tailscale if using private RPC nodes
