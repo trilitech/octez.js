@@ -57,12 +57,38 @@ jobs:
       - name: Publish to npm
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
+          publish_with_retry() {
+            local pkg="$1"
+            local max_retries=5
+            local retry=0
+            local wait=10
+
+            while [ $retry -lt $max_retries ]; do
+              output=$(npm publish --access public 2>&1) && echo "$output" && return 0
+
+              if echo "$output" | grep -q "E429\|429 Too Many Requests\|rate limit"; then
+                retry=$((retry + 1))
+                echo "Rate limited, waiting ${wait}s before retry $retry/$max_retries..."
+                sleep $wait
+                wait=$((wait * 2))  # Exponential backoff
+              elif echo "$output" | grep -q "E403\|previously published"; then
+                echo "Already published, skipping"
+                return 0
+              else
+                echo "$output"
+                return 0  # Other errors, continue to next package
+              fi
+            done
+            echo "Failed after $max_retries retries"
+            return 1
+          }
+
           for pkg in packages/*/; do
             if [ -f "$pkg/package.json" ]; then
+              echo "=== Publishing $pkg ==="
               cd "$pkg"
-              npm publish --access public || true
+              publish_with_retry "$pkg" || true
               cd -
-              sleep 5  # Avoid npm rate limiting
             fi
           done
         env:
