@@ -2,7 +2,7 @@
 
 > Official documentation for octez.js, a TypeScript library for building DApps on the Tezos blockchain.
 
-This file lists all documentation pages available at https://octez.js.io. Use this to understand the documentation structure and find relevant pages.
+This file lists all documentation pages available at https://taquito.io. Use this to understand the documentation structure and find relevant pages.
 
 ## URL Structure
 
@@ -19,7 +19,7 @@ The `next` version contains the latest unreleased documentation.
 - `tutorial` - Building Your First dApp
 - `operation_flow` - Operation Flow
 - `rpc_nodes` - RPC nodes
-- `web3js_octez.js` - web3js vs octez.js
+- `web3js_taquito` - web3js vs octez.js
 - `fallback_rpc` - Fallback RPC URLs
 
 ### octez.js Providers
@@ -76,7 +76,7 @@ The `next` version contains the latest unreleased documentation.
 - `michel_codec` - Michel Codec
 - `contracts-library` - Contracts Library
 - `timelock` - Timelock (BETA)
-- `octez.js_utils` - octez.js Utils
+- `taquito_utils` - octez.js Utils
 - **Sapling**
   - `sapling` - Sapling Toolkit
   - `sapling_in_memory_spending_key` - InMemorySpendingKey
