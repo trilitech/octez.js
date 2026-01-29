@@ -1,7 +1,10 @@
 # octez.js HTTP Utilities package
+
 *TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_octez.js_http_utils.html)*
 
-`@tezos-x/octez.js-http-utils` is an npm package that provides developers with http functionality for octez.js.
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
+`@tezos-x/octez.js-http-utils` is an npm package that provides developers with HTTP functionality for octez.js.
 
 ## General Information
 
@@ -40,7 +43,8 @@ const response = httpBackend.createRequest<string>({
 ```
 
 ## Additional Info
-See the top-level https://github.com/ecadlabs/octez.js file for details on reporting issues, contributing, and versioning.
+
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing, and versioning.
 
 
 ## Disclaimer

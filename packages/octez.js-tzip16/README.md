@@ -1,6 +1,9 @@
 # octez.js TZIP-016 package
-*Documentation can be found [here](https://octez.js.io/docs/metadata-tzip16/)*  
+
+*Documentation can be found [here](https://octez.js.io/docs/metadata-tzip16/)*
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_tzip16.html)*
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
 `@tezos-x/octez.js-tzip16` is an npm package that provides developers with TZIP-016 functionality for octez.js. TZIP-016 is a standard for encoding access to smart contract metadata either on-chain or off-chain. The `@tezos-x/octez.js-tzip16` package allows developers to retrieve the metadata associated with a smart contract and execute the off-chain views found in the metadata.
 
@@ -14,10 +17,11 @@ Another functionality of the `@tezos-x/octez.js-tzip16` package allows executing
 
 ## Install
 
-The package can be used to extend the well-known octez.js contract abstraction. The `@tezos-x/octez.js-tzip16` and the `@tezos-x/octez.js-octez.js` packages need to be installed as follows:
+The package can be used to extend the well-known octez.js contract abstraction. The `@tezos-x/octez.js-tzip16` and the `@tezos-x/octez.js` packages need to be installed as follows:
+
 ```
 npm i --save @tezos-x/octez.js-tzip16
-npm i --save @tezos-x/octez.js-octez.js
+npm i --save @tezos-x/octez.js
 ```
 
 ## Usage
@@ -30,9 +34,8 @@ The `MetadataProvider` can be customized by the user if needed.
 **Use the `tzip16` function to extend a contract abstraction**
 
 ```js
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
-import { Tzip16Module } from '@tezos-x/octez.js-tzip16';
-import { tzip16 } from '@tezos-x/octez.js-tzip16';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { Tzip16Module, tzip16 } from '@tezos-x/octez.js-tzip16';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 Tezos.addExtension(new Tzip16Module());
@@ -58,7 +61,7 @@ const viewResult = await metadataViews.nameOfTheView().executeView(paramOfTheVie
 
 ## Additional info
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing, and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing, and versioning.
 
 ## Disclaimer
 

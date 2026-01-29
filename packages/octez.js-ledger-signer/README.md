@@ -1,9 +1,13 @@
 # octez.js Ledger Signer package
-*Documentation can be found [here](https://octez.js.io/docs/ledger_signer)*  
+
+*Documentation can be found [here](https://octez.js.io/docs/ledger_signer)*
 *TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_octez.js_ledger_signer.html)*
 
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
 ## General Information
-`@tezos-x/octez.js-ledger-signer` is an npm package that provides developers with ledger signing functionality for octez.js. It implements the Signer interface of octez.js, allowing you to sign operations from a Ledger Nano device.
+
+`@tezos-x/octez.js-ledger-signer` is an npm package that provides developers with Ledger signing functionality for octez.js. It implements the Signer interface of octez.js, allowing you to sign operations from a Ledger Nano device.
 
 ## Install
 Install the package as follows
@@ -51,7 +55,7 @@ const ledgerSigner = new LedgerSigner(
 ```ts
 import { LedgerSigner } from '@tezos-x/octez.js-ledger-signer';
 import TransportWeb from '@ledgerhq/hw-transport-webhid';
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
@@ -66,7 +70,8 @@ const publicKeyHash = await Tezos.signer.publicKeyHash();
 ```
 
 ## Additional Info
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing and versioning.
+
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 
 ## Disclaimer

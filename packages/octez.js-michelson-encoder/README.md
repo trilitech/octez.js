@@ -1,9 +1,11 @@
-
 # octez.js Michelson Encoder package
-*Documentation can be found [here](https://octez.js.io/docs/michelson_encoder)*  
+
+*Documentation can be found [here](https://octez.js.io/docs/michelson_encoder)*
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_michelson_encoder.html)*
 
-`@tezos-x/octez.js-michelson-encoder` provides a JavaScript abstraction based on a Tezos Smart contracts code, parameters, storage, and views.
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
+`@tezos-x/octez.js-michelson-encoder` provides a JavaScript abstraction based on Tezos Smart contract code, parameters, storage, and views.
 
 ## General Information
 
@@ -131,7 +133,7 @@ console.log(data);
 ```
 ## Additional info
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 

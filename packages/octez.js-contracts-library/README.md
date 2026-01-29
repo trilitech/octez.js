@@ -1,6 +1,8 @@
 # octez.js Contracts Library package
 
-`@tezos-x/octez.js-contracts-library` allows developers to specify static data related to contracts (i.e., script and entrypoints) avoiding octez.js to fetch them from the network. The `contracts-library` module provide a `ContractsLibrary` class that can be injected as an extension to a TezosToolkit instance in order to increase dApps performance.
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
+`@tezos-x/octez.js-contracts-library` allows developers to specify static data related to contracts (i.e., script and entrypoints) avoiding octez.js from fetching them from the network. The `contracts-library` module provides a `ContractsLibrary` class that can be injected as an extension to a TezosToolkit instance in order to increase dApps performance.
 
 ```ts
 import { ContractsLibrary } from '@tezos-x/octez.js-contracts-library';
@@ -19,11 +21,11 @@ contractsLibrary.addContract({
 Tezos.addExtension(contractsLibrary);
 ```
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 ## API Documentation
 
-TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_http_utils.html)
+TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_contracts_library.html)
 
 ## Disclaimer
 

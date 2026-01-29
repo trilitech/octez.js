@@ -1,14 +1,17 @@
 # octez.js RPC package
-*Documentation can be found [here](https://octez.js.io/docs/rpc_package)*  
+
+*Documentation can be found [here](https://octez.js.io/docs/rpc_package)*
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_rpc.html)*
 
-`@tezos-x/octez.js-rpc` is an npm package that provides low-level methods and types to invoke RPC calls from a Nomadic Tezos RPC node.
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
+`@tezos-x/octez.js-rpc` is an npm package that provides low-level methods and types to invoke RPC calls from a Tezos RPC node.
 
 ## General Information
 
 The RPC package can be used to query the RPC API of your chosen node. Methods in the RPC package map one-to-one to the corresponding Tezos RPC API endpoints. All responses from the RPC are returns with TypeScript types.
 
-The higher-level `@tezos-x/octez.js-octez.js` package builds on this RPC package.
+The higher-level `@tezos-x/octez.js` package builds on this RPC package.
 
 ## Install
 
@@ -35,15 +38,16 @@ const balance = await client.getBalance('tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb');
 The `RpcClientCache` class aims to improve the performance of dApps built using octez.js by reducing the number of calls made to the RPC. Its constructor takes a RpcClient instance as a parameter and an optional ttl (time to live). The RpcClient responses will be cached for the period defined by the ttl (default is of 1000 milliseconds). The `RpcClientCache` can be injected to the TezosToolkit as follow:
 
 ```ts
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 import { RpcClient, RpcClientCache } from '@tezos-x/octez.js-rpc';
 
 const rpcClient = new RpcClient('https://YOUR_PREFERRED_RPC_URL');
 const tezos = new TezosToolkit(new RpcClientCache(rpcClient));
 ```
+
 ## Additional info
 
-See the top-level project [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) for details on reporting issues, contributing and versioning.
+See the top-level project [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 

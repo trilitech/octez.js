@@ -1,14 +1,15 @@
-# octez.js high-level functions
+# octez.js
 
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_octez.js.html)*
 
-The `@tezos-x/octez.js-octez.js` package contains higher-level functionality that builds upon the other packages in the Tezos Typescript Library Suite.
+`@tezos-x/octez.js` is the main entry point for interacting with the Tezos blockchain. It provides high-level functionality that builds upon the other packages in the octez.js library suite.
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
 ## CDN Bundle
 
 ```html
-<script src="https://unpkg.com/@tezos-x/octez.js-octez.js@24.0.2/dist/octez.js.min.js"
-crossorigin="anonymous" integrity="sha384-IxvP0ECHi5oqLyz94wF85pU9+ktcsL1HHtA42MITxZsGbsUMEu/g+0Vkjj5vqiMR"></script>
+<script src="https://unpkg.com/@tezos-x/octez.js@0.9.0/dist/octez.js.min.js"></script>
 ```
 
 ## General Information
@@ -18,7 +19,7 @@ The `TezosToolkit` is a facade class that surfaces all of the library's capabili
 ## Install
 
 ```
-npm i --save @tezos-x/octez.js-octez.js
+npm i --save @tezos-x/octez.js
 ```
 
 
@@ -28,7 +29,7 @@ npm i --save @tezos-x/octez.js-octez.js
 The `TezosToolkit` constructor takes at least an RPC URL as a parameter. When instantiating the toolkit with a URL, a default instance of `RpcClient` is created. The `RpcClient` class is used to interact with the Tezos network.
 
 ```ts
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 ```
@@ -41,26 +42,26 @@ In most cases, you want to use the Wallet API when you give the users of your da
 
 **Configure a signer to use the Contract API**
 
-Sending operations using the Contract API requires a signer to be configured. octez.js provides different signer implementations (e.g. see the `octez.js/remote-signer`, `octez.js/signer` and `octez.js/legder-signer`). Here is an example using the `InMemorySigner`:
+Sending operations using the Contract API requires a signer to be configured. octez.js provides different signer implementations (e.g. see the `@tezos-x/octez.js-remote-signer`, `@tezos-x/octez.js-signer` and `@tezos-x/octez.js-ledger-signer`). Here is an example using the `InMemorySigner`:
 
 ```js
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
 Tezos.setProvider({ signer: await InMemorySigner.fromSecretKey('edsk...') });
 
-// Using the contract API, the follwing operation is signed using the configured signer:
+// Using the contract API, the following operation is signed using the configured signer:
 await Tezos.contract.transfer({ to: publicKeyHash, amount: 2 });
 ```
 
 **Configure a wallet to use the Wallet API**
 
-Sending operations using the Wallet API requires a wallet to be configured. The wallet API supports different kinds of wallets. For example, the `BeaconWallet` from the `@tezos-x/octez.js-beacon-wallet` can be used. Use the `setWalletProvider` method of the `TezosToolkit` to set the wallet and refer to the `@tezos-x/octez.js-beacon-wallet` for specific configuration:
+Sending operations using the Wallet API requires a wallet to be configured. The wallet API supports different kinds of wallets. For example, the `BeaconWallet` from the `@tezos-x/octez.js-beacon-wallet` (powered by [octez.connect](https://www.npmjs.com/package/@tezos-x/octez.connect)) can be used. Use the `setWalletProvider` method of the `TezosToolkit` to set the wallet:
 
 ```ts
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
@@ -83,7 +84,7 @@ The `TezosToolkit` contains different default providers that are customizable to
 Replace the default `RpcForger` with an instance of `LocalForger`:
 
 ```ts
-import { localForger } from '@tezos-x/octez.js-local-forger'
+import { localForger } from '@tezos-x/octez.js-local-forging'
 Tezos.setForgerProvider(localForger);
 ```
 
@@ -92,7 +93,7 @@ Tezos.setForgerProvider(localForger);
 To fetch values of the big map using the local implementation to pack data, replace the default `RpcPacker` with an instance of `MichelCodecPacker`:
 
 ```ts
-import { MichelCodecPacker } from '@tezos-x/octez.js-octez.js';
+import { MichelCodecPacker } from '@tezos-x/octez.js';
 // Fetch values of the big map using local implementation to pack data
 Tezos.setPackerProvider(new MichelCodecPacker());
 ```
@@ -146,7 +147,7 @@ sub.on('data', console.log)
 
 ## Additional info
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 

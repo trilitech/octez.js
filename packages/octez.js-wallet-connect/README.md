@@ -1,5 +1,7 @@
 # octez.js WalletConnect package (BETA)
 
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
 :::info
 This feature is a work in progress, and might be refined in the near future. We encourage octez.js users to try this feature and reach out to us if you have any issues or concerns.
 :::
@@ -8,7 +10,7 @@ _Documentation can be found [here](https://octez.js.io/docs/walletconnect)_
 
 ## General Information
 
-`@tezos-x/octez.js-wallet-connect` is an npm package that provides developers a way to connect a dapp built with octez.js to a wallet giving the freedom to the users of the dapp to choose the wallet via the WalletConnect/Reown protocol. The `WalletConnect` class implements the `WalletProvider` interface, providing an alternative to `BeaconWallet`.
+`@tezos-x/octez.js-wallet-connect` is an npm package that provides developers a way to connect a dapp built with octez.js to a wallet giving the freedom to the users of the dapp to choose the wallet via the WalletConnect/Reown protocol. The `WalletConnect` class implements the `WalletProvider` interface, providing an alternative to `BeaconWallet` (which uses [octez.connect](https://www.npmjs.com/package/@tezos-x/octez.connect)).
 Note: Currently, a QR code is displayed to establish a connection with a wallet. As more Tezos wallets integrate with WalletConnect, we plan showing a list of available wallets alongside the QR code.
 
 ## Install
@@ -24,8 +26,8 @@ npm install @tezos-x/octez.js-wallet-connect
 Create a wallet instance with defined option parameters and set the wallet provider using `setWalletProvider` to the `TezosToolkit` instance
 
 ```ts
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
-import { WalletConnect } from '@tezos-x/octez.js-wallet-connect';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { WalletConnect, NetworkType, PermissionScopeMethods } from '@tezos-x/octez.js-wallet-connect';
 
 const wallet = await WalletConnect.init({
   projectId: "YOUR_PROJECT_ID", // can get YOUR_PROJECT_ID from [Reown Cloud](https://cloud.reown.com)
@@ -55,7 +57,7 @@ Tezos.setWalletProvider(wallet);
 
 ## Additional Info
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 

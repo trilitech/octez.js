@@ -1,6 +1,9 @@
 # octez.js Signer package
+
 *Documentation can be found [here](https://octez.js.io/docs/inmemory_signer)*
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_signer.html)*
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
 `@tezos-x/octez.js-signer` is an npm package that provides developers with signing functionality for octez.js.
 
@@ -14,17 +17,19 @@ This signer implementation is for development workflows.
 production use-cases! Use the InMemorySigner appropriately given your risk profile.**
 
 ## Install
+
 ```
-npm i --save @tezos-x/octez.js-octez.js
+npm i --save @tezos-x/octez.js
 npm i --save @tezos-x/octez.js-signer
 ```
 
 ## Usage
+
 ### Loading an unencrypted private key
 
 ```js
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
@@ -37,7 +42,7 @@ If your private key is encrypted, you can specify a passphrase to decrypt it. Do
 
 ```js
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 Tezos.setProvider({
@@ -49,7 +54,7 @@ The following link can be used to fund an address on the different testnets: htt
 
 ## Additional info
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 

@@ -3,6 +3,8 @@
 _Documentation can be found [here](https://octez.js.io/docs/next/sapling)_
 _TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_sapling.html)_
 
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
 ## General Information
 
 Sapling is a protocol allowing to perform private transactions in a decentralized environment. This package allows to read from a sapling state (retrieve the balance and transaction history) and prepare sapling transactions.
@@ -21,10 +23,10 @@ npm install @tezos-x/octez.js-sapling
 The returned balance is in mutez.
 
 ```ts
-import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
 import { SaplingToolkit, InMemorySpendingKey } from '@tezos-x/octez.js-sapling';
 
-const tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com/');
+const tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
 const saplingContract = await tezos.contract.at('KT1UYwMR6Q6LZnwQEi77DSBrAjKT1tEJb245');
 
@@ -47,10 +49,10 @@ const initialBalance = await txViewer.getBalance();
 A shielded transaction allows sending tokens from a Tezos account (tz1, tz2, tz3) to a Sapling address (zet).
 
 ```ts
-import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
 import { SaplingToolkit, InMemorySpendingKey } from '@tezos-x/octez.js-sapling';
 
-const tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com/');
+const tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 // set up your signer on the TezosToolkit as usual
 const saplingContract = await tezos.contract.at('KT1UYwMR6Q6LZnwQEi77DSBrAjKT1tEJb245');
 
@@ -86,7 +88,7 @@ Refer to the website documentation for further examples and information: https:/
 
 ## Additional info
 
-See the top-level project [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) for details on reporting issues, contributing and versioning.
+See the top-level project [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 
