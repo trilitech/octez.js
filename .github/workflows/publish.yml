@@ -60,7 +60,7 @@ jobs:
           for pkg in packages/*/; do
             if [ -f "$pkg/package.json" ]; then
               cd "$pkg"
-              npm publish --provenance --access public || true
+              npm publish --access public || true
               cd -
             fi
           done
