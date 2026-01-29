@@ -54,7 +54,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
-      - name: Publish to npm with provenance
+      - name: Publish to npm
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           for pkg in packages/*/; do
@@ -62,6 +62,7 @@ jobs:
               cd "$pkg"
               npm publish --access public || true
               cd -
+              sleep 5  # Avoid npm rate limiting
             fi
           done
         env:
