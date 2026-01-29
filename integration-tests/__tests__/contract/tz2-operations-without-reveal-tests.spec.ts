@@ -1,9 +1,9 @@
 import { CONFIGS } from "../../config";
-import { TezosToolkit } from "@taquito/taquito";
-import { PrefixV2 } from "@taquito/utils";
-import { UnitValue } from "@taquito/taquito";
+import { TezosToolkit } from "@tezos-x/octez.js";
+import { PrefixV2 } from "@tezos-x/octez.js-utils";
+import { UnitValue } from "@tezos-x/octez.js";
 import crypto from 'crypto';
-import { PvmKind } from "@taquito/rpc";
+import { PvmKind } from "@tezos-x/octez.js-rpc";
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress, knownBaker, knownTicketContract }) => {
   describe(`Test tz2 account operations through contract API using: ${rpc}`, () => {

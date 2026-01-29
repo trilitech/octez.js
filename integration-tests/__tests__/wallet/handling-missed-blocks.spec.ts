@@ -1,4 +1,4 @@
-import { PollingSubscribeProvider } from "@taquito/taquito";
+import { PollingSubscribeProvider } from "@tezos-x/octez.js";
 import { CONFIGS } from "../../config";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

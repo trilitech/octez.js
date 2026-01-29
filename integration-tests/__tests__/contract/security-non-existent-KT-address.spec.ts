@@ -1,6 +1,6 @@
 import { CONFIGS } from '../../config';
-import { RpcClient } from '@taquito/rpc';
-import { Protocols, TezosToolkit } from '@taquito/taquito';
+import { RpcClient } from '@tezos-x/octez.js-rpc';
+import { Protocols, TezosToolkit } from '@tezos-x/octez.js';
 
 // TC001 - non-existing KT addresses can not be prefunded
 
@@ -22,11 +22,11 @@ CONFIGS().forEach(({ rpc, setup, protocol }) => {
       try {
         await Tezos.contract.at(testContractAddress);
       } catch (error: any) {
-        // Contract Address cannot be prefunded because it cannot be loaded into Taquito
+        // Contract Address cannot be prefunded because it cannot be loaded into octez.js
         expect(error.message).toContain('Http error response: (404)');
       }
     });
   });
 });
 
-// This test was transcribed to Taquito from bash scripts at https://github.com/InferenceAG/TezosSecurityBaselineChecking
+// This test was transcribed to octez.js from bash scripts at https://github.com/InferenceAG/TezosSecurityBaselineChecking

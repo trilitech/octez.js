@@ -3,9 +3,9 @@
  *  will keep for future reference if an alternative sandbox is available
  */
 
-import { VotingPeriodBlockResult } from '@taquito/rpc';
-import { InMemorySigner } from '@taquito/signer';
-import { TezosToolkit } from '@taquito/taquito';
+import { VotingPeriodBlockResult } from '@tezos-x/octez.js-rpc';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
 import { CONFIGS, isSandbox, sleep } from '../../config';
 
 CONFIGS().forEach(async ({ lib, rpc, protocol, setup }) => {

@@ -1,4 +1,4 @@
-import { PollingSubscribeProvider } from "@taquito/taquito";
+import { PollingSubscribeProvider } from "@tezos-x/octez.js";
 import BigNumber from "bignumber.js";
 import { CONFIGS } from "../../config";
 

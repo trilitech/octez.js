@@ -1,8 +1,8 @@
 import { CONFIGS } from './config';
-import { MichelsonMap, OriginateParams, RpcForger, TezosToolkit } from '@taquito/taquito';
+import { MichelsonMap, OriginateParams, RpcForger, TezosToolkit } from '@tezos-x/octez.js';
 import { singleSaplingStateContractJProtocol } from './data/single_sapling_state_contract_jakarta_michelson';
 import { fa2ForTokenMetadataView } from './data/fa2-for-token-metadata-view';
-import { stringToBytes } from '@taquito/utils';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
 import BigNumber from 'bignumber.js';
 import { codeViewsTopLevel } from './data/contract_views_top_level';
 import { knownBigMapContract } from './data/knownBigMapContract';

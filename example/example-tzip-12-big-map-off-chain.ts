@@ -1,7 +1,7 @@
-import { MichelsonMap, TezosToolkit, importKey } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
+import { MichelsonMap, TezosToolkit, importKey } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
 import { fa2ForTokenMetadataView } from '../integration-tests/data/fa2-for-token-metadata-view';
-import { b58Encode, stringToBytes, PrefixV2 } from '@taquito/utils';
+import { b58Encode, stringToBytes, PrefixV2 } from '@tezos-x/octez.js-utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodeCrypto = require('crypto');
 

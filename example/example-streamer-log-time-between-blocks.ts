@@ -1,4 +1,4 @@
-import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
+import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 
 // To run this script, run the following command in the example folder: `npm run example:streamer-block-time`
 // This script polls on the head block at an interval of `pollingIntervalMilliseconds`.

@@ -1,11 +1,11 @@
-import { MANAGER_LAMBDA, TezosToolkit, getRevealFee } from '@taquito/taquito';
-import { Contract } from '@taquito/taquito';
+import { MANAGER_LAMBDA, TezosToolkit, getRevealFee } from '@tezos-x/octez.js';
+import { Contract } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 import { originate, originate2, transferImplicit2 } from '../../data/lambda';
 import { ligoSample } from '../../data/ligo-simple-contract';
 import { managerCode } from '../../data/manager_code';
-import { InvalidAmountError } from '@taquito/core';
-import { PrefixV2 } from '@taquito/utils';
+import { InvalidAmountError } from '@tezos-x/octez.js-core';
+import { PrefixV2 } from '@tezos-x/octez.js-utils';
 
 CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
   const Tezos = lib;

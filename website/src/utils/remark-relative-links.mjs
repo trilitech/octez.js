@@ -17,7 +17,10 @@ export function remarkRelativeLinks() {
     if (!match) return;
 
     const version = match[1]; // e.g., 'next' or '23.0.0'
-    const basePath = `/docs/${version}`;
+    // Normalize base URL to always have trailing slash for path joining
+    const envBase = process.env.BASE_PATH || '/';
+    const baseUrl = envBase.endsWith('/') ? envBase : `${envBase}/`;
+    const basePath = `${baseUrl}docs/${version}`;
 
     visit(tree, 'link', (node) => {
       const url = node.url;

@@ -3,11 +3,11 @@ title: RPC
 author: Claude Barde
 ---
 
-Taquito RPC Package Documentation
+octez.js RPC Package Documentation
 
 ## Description
 
-You can use the RPC client package to query the RPC API of your chosen node. The higher-level [`@taquito/taquito`](https://taquito.io/typedoc/modules/_taquito_rpc.html) package builds on this RPC package, in general, you won't need to use this package directly, but it is available for use should you want some specific data and bypass the higher-level abstractions in Taquito.
+You can use the RPC client package to query the RPC API of your chosen node. The higher-level [`@tezos-x/octez.js`](https://octez.js.dev/typedoc/modules/_octez_js_rpc.html) package builds on this RPC package, in general, you won't need to use this package directly, but it is available for use should you want some specific data and bypass the higher-level abstractions in octez.js.
 
 Methods in the RPC package map one-to-one to the corresponding Tezos RPC API endpoints. All responses from the RPC are returns with TypeScript types. It doesn't do any other parsing or compositions at this level.
 
@@ -16,7 +16,7 @@ Methods in the RPC package map one-to-one to the corresponding Tezos RPC API end
 ```js
 // Initializing the RPC client
 
-import { RpcClient } from '@taquito/rpc';
+import { RpcClient } from '@tezos-x/octez.js-rpc';
 
 const client = new RpcClient(' https://ghostnet.tezos.ecadinfra.com/', 'NetXLH1uAxK7CCh');
 ```
@@ -113,4 +113,4 @@ const view = await client.runView({
 
 ## Full documentation
 
-You can find the full documentation at the following address: [https://taquito.io/typedoc/classes/_taquito_rpc.RpcClient](https://taquito.io/typedoc/classes/_taquito_rpc.RpcClient)
+You can find the full documentation at the following address: [https://octez.js.dev/typedoc/classes/_octez_js_rpc.RpcClient](https://octez.js.dev/typedoc/classes/_octez_js_rpc.RpcClient)

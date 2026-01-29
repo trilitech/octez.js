@@ -1,5 +1,5 @@
 import { CONFIGS } from '../../../config';
-import { OpKind } from '@taquito/taquito';
+import { OpKind } from '@tezos-x/octez.js';
 const crypto = require('crypto');
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

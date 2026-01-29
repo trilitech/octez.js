@@ -1,4 +1,4 @@
-import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
+import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 
 async function example() {
   const provider = 'https://ghostnet.tezos.ecadinfra.com/';

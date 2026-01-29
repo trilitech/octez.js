@@ -1,5 +1,5 @@
 
-import { MichelsonMap } from '@taquito/taquito';
+import { MichelsonMap } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 import { contractWithNever } from '../../data/contract-with-never-in-param';
 

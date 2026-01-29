@@ -1,5 +1,5 @@
 import { CONFIGS } from "../../config";
-import { tzip16, Tzip16Module, BigMapContractMetadataNotFoundError } from '@taquito/tzip16';
+import { tzip16, Tzip16Module, BigMapContractMetadataNotFoundError } from '@tezos-x/octez.js-tzip16';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;

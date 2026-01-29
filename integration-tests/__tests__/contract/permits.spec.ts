@@ -1,11 +1,11 @@
 import { CONFIGS } from '../../config';
-import { MichelsonMap, MichelCodecPacker, TezosToolkit } from '@taquito/taquito';
+import { MichelsonMap, MichelCodecPacker, TezosToolkit } from '@tezos-x/octez.js';
 import { permit_admin_42_expiry } from '../../data/permit_admin_42_expiry';
 import { permit_admin_42_set } from '../../data/permit_admin_42_set';
 import { permit_fa12_smartpy } from '../../data/permit_fa12_smartpy';
-import { buf2hex, stringToBytes, hex2buf } from '@taquito/utils';
-import { tzip16, Tzip16Module } from '@taquito/tzip16';
-import { packDataBytes } from "@taquito/michel-codec"
+import { buf2hex, stringToBytes, hex2buf } from '@tezos-x/octez.js-utils';
+import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
+import { packDataBytes } from "@tezos-x/octez.js-michel-codec"
 
 const blake = require('blakejs');
 const bob_address = 'tz1Xk7HkSwHv6dTEgR7E2WC2yFj4cyyuj2Gh';

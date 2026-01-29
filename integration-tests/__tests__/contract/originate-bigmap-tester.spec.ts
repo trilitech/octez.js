@@ -1,4 +1,4 @@
-import { MichelsonMap } from '@taquito/michelson-encoder';
+import { MichelsonMap } from '@tezos-x/octez.js-michelson-encoder';
 import { CONFIGS } from '../../config';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

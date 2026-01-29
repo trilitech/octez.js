@@ -1,12 +1,12 @@
 import { CONFIGS } from "../../config";
-import { RpcClient } from '@taquito/rpc';
-import { HttpResponseError } from "@taquito/http-utils";
+import { RpcClient } from '@tezos-x/octez.js-rpc';
+import { HttpResponseError } from "@tezos-x/octez.js-http-utils";
 
 
 CONFIGS().forEach(({ rpc, knownContract }) => {
   const client = new RpcClient(rpc);
 
-  describe(`Test Taquito RPC: ${rpc}`, () => {
+  describe(`Test octez.js RPC: ${rpc}`, () => {
     describe('Test getBlock', () => {
       it('Verify that client.getBlock returns a block using default syntax', async () => {
         // defaults to /chains/main/blocks/head/

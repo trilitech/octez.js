@@ -1,6 +1,6 @@
 import { CONFIGS } from "../../config";
 import { storageContract } from "../../data/storage-contract";
-import { MichelsonMap } from "@taquito/taquito";
+import { MichelsonMap } from "@tezos-x/octez.js";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;

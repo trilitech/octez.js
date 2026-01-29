@@ -1,4 +1,4 @@
-import { InMemorySigner } from "@taquito/signer";
+import { InMemorySigner } from "@tezos-x/octez.js-signer";
 import { CONFIGS } from "../../config";
 const crypto = require('crypto');
 

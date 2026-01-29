@@ -1,4 +1,4 @@
-import { BigMapAbstraction, TezosToolkit, MichelCodecPacker } from '@taquito/taquito';
+import { BigMapAbstraction, TezosToolkit, MichelCodecPacker } from '@tezos-x/octez.js';
 import BigNumber from 'bignumber.js';
 
 const rpc = 'https://ghostnet.tezos.ecadinfra.com';

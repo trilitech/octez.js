@@ -1,4 +1,4 @@
-import { Protocols } from '@taquito/taquito';
+import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {

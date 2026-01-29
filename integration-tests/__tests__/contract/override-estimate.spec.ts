@@ -1,5 +1,5 @@
 import { CONFIGS } from "../../config";
-import { InvalidEstimateValueError } from '@taquito/taquito';
+import { InvalidEstimateValueError } from '@tezos-x/octez.js';
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
   const Tezos = lib;

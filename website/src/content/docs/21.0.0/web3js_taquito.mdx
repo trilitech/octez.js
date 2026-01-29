@@ -1,22 +1,22 @@
 ---
-title: web3js vs Taquito
+title: web3js vs octez.js
 id: web3js_taquito
 author: Claude Barde
 ---
 
-Web3js and Taquito have a common goal: connecting dapps to the Ethereum and Tezos blockchain (respectively) and thus implement similar approaches. However, these approaches are also different due to the nature of Ethereum and the Tezos blockchains.
+Web3js and octez.js have a common goal: connecting dapps to the Ethereum and Tezos blockchain (respectively) and thus implement similar approaches. However, these approaches are also different due to the nature of Ethereum and the Tezos blockchains.
 
-A comparison of the methods implemented by Web3js and Taquito can put in perspective their similarities and differences.
+A comparison of the methods implemented by Web3js and octez.js can put in perspective their similarities and differences.
 
 ## Installation
 
 **Web3js**:
 `npm install web3`
 
-**Taquito**:
-`npm install @taquito/taquito`
+**octez.js**:
+`npm install @tezos-x/octez.js`
 
-Web3js comes as a single package containing all the necessary tools to connect to the Ethereum blockchain, while Taquito is made of various packages that you can install and import whenever you need them.
+Web3js comes as a single package containing all the necessary tools to connect to the Ethereum blockchain, while octez.js is made of various packages that you can install and import whenever you need them.
 
 ## Connection
 
@@ -28,16 +28,16 @@ import Web3 from 'web3';
 const web3 = new Web3(Web3.providers.HttpProvider('http://localhost:9545'));
 ```
 
-**Taquito**:
+**octez.js**:
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('http://localhost:8732');
 ```
 
 The Web3js package exports a class that needs to be instantiated before being used. The difference between _Web3_ and _web3_ is a common source of Ethereum development errors.
-Taquito also exports a class named `TezosToolkit` that needs to be instantiated before being used, similar to the Web3js code.
+octez.js also exports a class named `TezosToolkit` that needs to be instantiated before being used, similar to the Web3js code.
 
 ## Get account balance
 
@@ -47,13 +47,13 @@ Taquito also exports a class named `TezosToolkit` that needs to be instantiated 
 const balance = await web3.eth.getBalance('account_address');
 ```
 
-**Taquito**
+**octez.js**
 
 ```js
 const balance = await Tezos.tz.getBalance('account_address');
 ```
 
-Both Web3js and Taquito use the `getBalance` method with the account address to fetch its spendable balance from the network.
+Both Web3js and octez.js use the `getBalance` method with the account address to fetch its spendable balance from the network.
 
 ## Transfer tokens
 
@@ -67,7 +67,7 @@ const op = await web3.eth.sendTransaction({
 });
 ```
 
-**Taquito**:
+**octez.js**:
 
 ```js
 const op = await Tezos.wallet.transfer({
@@ -77,7 +77,7 @@ const op = await Tezos.wallet.transfer({
 await op.confirmation();
 ```
 
-Web3js and Taquito allow the transfer of tokens from one address to another in a similar fashion. The transaction on Ethereum returns a promise with receipt/event emitter and resolves when the receipt is available. The transaction on Tezos returns a WalletOperation promise with a `confirmation` method that waits for the number of confirmations specified as a parameter (default 1) before resolving.
+Web3js and octez.js allow the transfer of tokens from one address to another in a similar fashion. The transaction on Ethereum returns a promise with receipt/event emitter and resolves when the receipt is available. The transaction on Tezos returns a WalletOperation promise with a `confirmation` method that waits for the number of confirmations specified as a parameter (default 1) before resolving.
 
 ## Create a contract instance
 
@@ -87,13 +87,13 @@ Web3js and Taquito allow the transfer of tokens from one address to another in a
 const contract = new web3.eth.Contract(JSON_ABI);
 ```
 
-**Taquito**:
+**octez.js**:
 
 ```js
 const contract = await Tezos.wallet.at('contract_address');
 ```
 
-The two approaches are radically different here: Web3js constructs the contract interface from the "ABI" that's shipped with the dapp while Taquito fetches the contract structure directly from the blockchain to construct the interface.
+The two approaches are radically different here: Web3js constructs the contract interface from the "ABI" that's shipped with the dapp while octez.js fetches the contract structure directly from the blockchain to construct the interface.
 
 ## Get the "counter" value from the contract storage
 
@@ -103,7 +103,7 @@ The two approaches are radically different here: Web3js constructs the contract 
 const counter = await contract.methodsObject.getCounter().call();
 ```
 
-**Taquito**:
+**octez.js**:
 
 ```js
 const counter = await contract.storage();
@@ -121,7 +121,7 @@ On Tezos, the whole storage is always available, and developers don't have to ad
 const receipt = await contract.methodsObject.increment(1).send();
 ```
 
-**Taquito**:
+**octez.js**:
 
 ```js
 const op = await contract.methodsObject.increment(1).send();
@@ -144,7 +144,7 @@ const newInstance = await myContract
 const contractAddress = newInstance.options.address;
 ```
 
-**Taquito**:
+**octez.js**:
 
 ```js
 const op = await Tezos.wallet
@@ -172,7 +172,7 @@ if(typeof window.web3 !== undefined){
 }
 ```
 
-**Taquito**:
+**octez.js**:
 
 ```js
 Nope;
@@ -201,10 +201,10 @@ const counter = await contract.methodsObject.counter().call();
 const receipt = await contract.methodsObject.increment(counter + 1).send();
 ```
 
-**Taquito**:
+**octez.js**:
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 const Tezos = new TezosToolkit('http://localhost:8732');
 const wallet = Tezos.setProvider({ wallet: walletOfYourChoice }); // use the wallet of your choice
 

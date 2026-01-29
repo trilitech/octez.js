@@ -1,6 +1,6 @@
 import { CONFIGS } from "../config";
-import { DefaultContractType, UnitValue } from "@taquito/taquito";
-import { LocalForger, ProtocolsHash } from '@taquito/local-forging'
+import { DefaultContractType, UnitValue } from "@tezos-x/octez.js";
+import { LocalForger, ProtocolsHash } from '@tezos-x/octez.js-local-forging'
 
 CONFIGS().forEach(({ rpc, protocol, setup, lib }) => {
   const Tezos = lib;

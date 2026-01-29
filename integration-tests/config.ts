@@ -1,9 +1,9 @@
-import { CompositeForger, RpcForger, TezosToolkit, Protocols, TaquitoLocalForger, PollingSubscribeProvider, importKey } from '@taquito/taquito';
-import { RemoteSigner } from '@taquito/remote-signer';
-import { HttpBackend } from '@taquito/http-utils';
-import { b58Encode, PrefixV2 } from '@taquito/utils';
-import { InMemorySigner } from '@taquito/signer';
-import { RpcClient, RpcClientCache } from '@taquito/rpc';
+import { CompositeForger, RpcForger, TezosToolkit, Protocols, TaquitoLocalForger, PollingSubscribeProvider, importKey } from '@tezos-x/octez.js';
+import { RemoteSigner } from '@tezos-x/octez.js-remote-signer';
+import { HttpBackend } from '@tezos-x/octez.js-http-utils';
+import { b58Encode, PrefixV2 } from '@tezos-x/octez.js-utils';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { RpcClient, RpcClientCache } from '@tezos-x/octez.js-rpc';
 import { KnownContracts } from './known-contracts';
 import { knownContractsGhostnet } from './known-contracts-ghostnet';
 import { knownContractsShadownet } from './known-contracts-shadownet';
@@ -91,7 +91,7 @@ export const defaultSecretKey: SecretKeyConfig = {
 const defaultEphemeralConfig = (keyUrl: string): EphemeralConfig => ({
   type: SignerType.EPHEMERAL_KEY as SignerType.EPHEMERAL_KEY,
   keyUrl: keyUrl,
-  requestHeaders: { Authorization: 'Bearer taquito-example' },
+  requestHeaders: { Authorization: 'Bearer octez-example' },
 });
 
 // Named parameters for defaultConfig below

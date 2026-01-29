@@ -1,4 +1,4 @@
-Thank you for your contribution to Taquito.
+Thank you for your contribution to octez.js.
 
 Before submitting this PR, please make sure:
 
@@ -17,4 +17,4 @@ In this PR, please also make sure:
 ## Release Note Draft Snippet
 
 __If relevant, please write a summary of your change that will be suitable for
-inclusion in the Release Notes for the next Taquito release.__
+inclusion in the Release Notes for the next octez.js release.__

@@ -1,0 +1,71 @@
+{
+  "name": "@tezos-x/octez.js-core",
+  "version": "0.9.0",
+  "description": "Classes, interfaces, and types shared across octez.js packages",
+  "keywords": [
+    "tezos",
+    "blockchain"
+  ],
+  "main": "dist/octez.js-core.umd.js",
+  "module": "dist/octez.js-core.es6.js",
+  "typings": "dist/types/octez.js-core.d.ts",
+  "files": [
+    "dist",
+    "signature.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "huianyang <hui-an.yang@ecadlabs.com>",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "precommit": "lint-staged",
+    "prebuild": "rimraf dist",
+    "version-stamp": "node ../octez.js/version-stamping.js",
+    "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
+    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w",
+    "test": "jest"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,ts}"
+    ]
+  },
+  "dependencies": {
+    "json-stringify-safe": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/json-stringify-safe": "^5.0.3",
+    "@types/node": "^20",
+    "rollup": "^4.22.4",
+    "rollup-plugin-typescript2": "^0.36.0"
+  }
+}

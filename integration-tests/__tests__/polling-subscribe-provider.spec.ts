@@ -1,5 +1,5 @@
 import { CONFIGS, sleep } from '../config';
-import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
+import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 
 /* mainContract.jsligo: This is the source code for the main contract.
 If you need to change the main contract, you can change this, use the ligo compiler to compile it, and update both the Michelson code below and the jsligo here.

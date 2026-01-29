@@ -1,4 +1,4 @@
-import { OpKind } from '@taquito/taquito';
+import { OpKind } from '@tezos-x/octez.js';
 import { CONFIGS, SignerType } from '../../../config';
 
 CONFIGS().forEach(({ lib, rpc, setup, knownBaker, signerConfig }) => {
