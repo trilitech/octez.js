@@ -1,4 +1,4 @@
-name: taquito.io pages deploy
+name: octez.js site pages deploy
 
 on:
   push:
@@ -13,7 +13,7 @@ env:
   CHATKIT_WORKFLOW_ID: ${{ secrets.CHATKIT_WORKFLOW_ID }}
 jobs:
   publish-website:
-    name: Publish taquito.io to Cloudflare Pages
+    name: Publish octez.js site to Cloudflare Pages
     permissions:
       contents: read
       deployments: write
@@ -46,7 +46,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID}}
-          projectName: taquito
+          projectName: octez.js
           directory: website/dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           wranglerVersion: '3'
@@ -56,5 +56,5 @@ jobs:
       - uses: marocchino/sticky-pull-request-comment@v2
         if: github.event_name == 'pull_request'
         with:
-          header: taquito.io Preview
-          message: 'A new deploy preview for taquito.io is available on Cloudflare Pages at ${{ steps.cloudflare_publish.outputs.URL }}'
+          header: octez.js site Preview
+          message: 'A new deploy preview for octez.js site is available on Cloudflare Pages at ${{ steps.cloudflare_publish.outputs.URL }}'
