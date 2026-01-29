@@ -1,8 +1,10 @@
+# octez.js Timelock package (BETA)
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
 :::info
 This feature is a work in progress, and might be refined in the near future. We encourage octez.js users to try this feature and reach out to us if you have any issues or concerns.
 :::
-
-# Timelock (BETA)
 
 Timelock is a cryptographic primitive that can be used as a part of a commit & reveal scheme, it provides a guarantee that the information associated to the commit phase is eventually revealed.
 
@@ -58,6 +60,9 @@ const data = chest.open(chestKey, time);
 - `time` param being passed should not be mistaken with the 'time' it takes for a chest to open in Timelocks. The `time` param here relates to a complexity relating to the number of power by modulo operations required to compute the key. Without getting too much into the weeds, we recommend using a value of `10000` and adjust accordingly.
 - `payload` relates to the message payload you would like to lock in a chest
 
+## Additional info
+
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 

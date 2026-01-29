@@ -1,6 +1,9 @@
 # octez.js Signer package
+
 *Documentation can be found [here](https://octez.js.io/docs/inmemory_signer)*
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_taquito_signer.html)*
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
 `@tezos-x/octez.js-signer` is an npm package that provides developers with signing functionality for octez.js.
 
@@ -14,12 +17,14 @@ This signer implementation is for development workflows.
 production use-cases! Use the InMemorySigner appropriately given your risk profile.**
 
 ## Install
+
 ```
 npm i --save @tezos-x/octez.js
 npm i --save @tezos-x/octez.js-signer
 ```
 
 ## Usage
+
 ### Loading an unencrypted private key
 
 ```js
