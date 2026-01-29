@@ -1,0 +1,46 @@
+name: Deploy Staging (GitHub Pages)
+
+on:
+  push:
+    branches:
+      - 'rename/octez-js'  # Deploy from this branch for now
+  workflow_dispatch:
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages-main"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/Jod'
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libusb-1.0-0-dev libudev-dev
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build packages
+        run: npm run build
+
+      - name: Build website
+        run: npm run build -w website
+        env:
+          SITE_URL: https://effective-chainsaw-r6861q1.pages.github.io
+          BASE_PATH: /
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./website/dist
+          force_orphan: true  # Clean deployment, removes old artifacts
