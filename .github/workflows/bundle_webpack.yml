@@ -27,18 +27,18 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - run: npm -w packages/taquito-local-forging run build-webpack
+      - run: npm -w packages/octez.js-local-forging run build-webpack
       - uses: actions/upload-artifact@v7
         with:
-          name: taquito-local-forging-vanilla
+          name: octez.js-local-forging-vanilla
           path: |
-            packages/taquito-local-forging/dist/taquito_local_forging.js
-            packages/taquito-local-forging/dist/taquito_local_forging.js.map
+            packages/octez.js-local-forging/dist/taquito_local_forging.js
+            packages/octez.js-local-forging/dist/taquito_local_forging.js.map
 
-      - run: npm -w packages/taquito-beacon-wallet run build-webpack
+      - run: npm -w packages/octez.js-beacon-wallet run build-webpack
       - uses: actions/upload-artifact@v7
         with:
-          name: taquito-beacon-wallet-vanilla
+          name: octez.js-beacon-wallet-vanilla
           path: |
-            packages/taquito-beacon-wallet/dist/taquito_beacon_wallet.js
-            packages/taquito-beacon-wallet/dist/taquito_beacon_wallet.js.map
+            packages/octez.js-beacon-wallet/dist/taquito_beacon_wallet.js
+            packages/octez.js-beacon-wallet/dist/taquito_beacon_wallet.js.map

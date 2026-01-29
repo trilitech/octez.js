@@ -1,7 +1,7 @@
-import { OperationContentsBallot, OperationContentsTransaction, OperationContentsProposals } from '@taquito/rpc';
-import { OpKind } from '@taquito/taquito';
+import { OperationContentsBallot, OperationContentsTransaction, OperationContentsProposals } from '@tezos-x/octez.js-rpc';
+import { OpKind } from '@tezos-x/octez.js';
 import { CONFIGS } from '../config';
-import { LocalForger } from '@taquito/local-forging';
+import { LocalForger } from '@tezos-x/octez.js-local-forging';
 
 CONFIGS().forEach(({ lib, setup, protocol, createAddress }) => {
   const Tezos = lib;

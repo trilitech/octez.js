@@ -1,15 +1,15 @@
 import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from "../../../config";
 import { ligoSample, ligoSampleMichelson } from "../../../data/ligo-simple-contract";
-import { OpKind } from "@taquito/taquito";
-import { TezosToolkit } from '@taquito/taquito';
-import { PrefixV2 } from '@taquito/utils';
-import { MANAGER_LAMBDA } from "@taquito/taquito";
+import { OpKind } from "@tezos-x/octez.js";
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { PrefixV2 } from '@tezos-x/octez.js-utils';
+import { MANAGER_LAMBDA } from "@tezos-x/octez.js";
 import { managerCode } from "../../../data/manager_code";
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress, knownBaker }) => {
   const Tezos = lib;
   let Bls: TezosToolkit
-  describe(`Test the Taquito batch api using: ${rpc}`, () => {
+  describe(`Test the octez.js batch api using: ${rpc}`, () => {
 
     beforeEach(async () => {
       await setup({
@@ -46,8 +46,8 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress, knownBaker }) => {
     it('Verify a batch of transfers and origination operations using a combination of the two notations (array of operation with kind mixed with withTransfer method)', async () => {
       /** Tests the usage of a mix of the 2 possible notations for batched operations
        *  See for details on the 2 notations:
-       *  https://taquito.io/docs/batch_API#--the-array-of-transactions-method
-       *  https://taquito.io/docs/batch_API#--the-withtransfer-method
+       *  https://octez.js.io/docs/batch_API#--the-array-of-transactions-method
+       *  https://octez.js.io/docs/batch_API#--the-withtransfer-method
        */
       const op = await Bls.contract.batch([
         {

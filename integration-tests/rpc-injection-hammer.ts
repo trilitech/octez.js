@@ -1,6 +1,6 @@
-import { HttpRequestFailed, HttpResponseError } from '@taquito/http-utils';
-import { InMemorySigner } from '@taquito/signer';
-import { TezosToolkit } from '@taquito/taquito';
+import { HttpRequestFailed, HttpResponseError } from '@tezos-x/octez.js-http-utils';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 interface CliFlags {
   [key: string]: string | boolean;

@@ -1,4 +1,4 @@
-import { PvmKind } from "@taquito/rpc";
+import { PvmKind } from "@tezos-x/octez.js-rpc";
 import { CONFIGS } from "../../../config";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

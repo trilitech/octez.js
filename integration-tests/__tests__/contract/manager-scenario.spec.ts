@@ -1,6 +1,6 @@
 import { CONFIGS, TAQUITO_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
 import { managerCode } from '../../data/manager_code';
-import { DefaultContractType, MANAGER_LAMBDA, OriginationOperation } from '@taquito/taquito';
+import { DefaultContractType, MANAGER_LAMBDA, OriginationOperation } from '@tezos-x/octez.js';
 
 CONFIGS().forEach(({ lib, rpc, setup, knownBaker, knownContract }) => {
   const Tezos = lib;

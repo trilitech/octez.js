@@ -1,5 +1,5 @@
 {
-  "name": "@taquito/example",
+  "name": "@tezos-x/octez.js-example",
   "private": true,
   "version": "24.3.0",
   "scripts": {
@@ -41,16 +41,16 @@
   },
   "dependencies": {
     "@ledgerhq/hw-transport-node-hid": "^6.29.16",
-    "@taquito/ledger-signer": "^24.3.0",
-    "@taquito/local-forging": "^24.3.0",
-    "@taquito/michel-codec": "^24.3.0",
-    "@taquito/michelson-encoder": "^24.3.0",
-    "@taquito/rpc": "^24.3.0",
-    "@taquito/sapling": "^24.3.0",
-    "@taquito/signer": "^24.3.0",
-    "@taquito/taquito": "^24.3.0",
-    "@taquito/tzip16": "^24.3.0",
-    "@taquito/utils": "^24.3.0",
+    "@tezos-x/octez.js-ledger-signer": "^24.3.0",
+    "@tezos-x/octez.js-local-forging": "^24.3.0",
+    "@tezos-x/octez.js-michel-codec": "^24.3.0",
+    "@tezos-x/octez.js-michelson-encoder": "^24.3.0",
+    "@tezos-x/octez.js-rpc": "^24.3.0",
+    "@tezos-x/octez.js-sapling": "^24.3.0",
+    "@tezos-x/octez.js-signer": "^24.3.0",
+    "@tezos-x/octez.js": "^24.3.0",
+    "@tezos-x/octez.js-tzip16": "^24.3.0",
+    "@tezos-x/octez.js-utils": "^24.3.0",
     "bignumber.js": "^9.1.2",
     "rxjs": "^7.8.2"
   },

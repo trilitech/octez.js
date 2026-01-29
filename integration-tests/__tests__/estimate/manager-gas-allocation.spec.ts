@@ -1,4 +1,4 @@
-import { OpKind, TezosToolkit } from '@taquito/taquito';
+import { OpKind, TezosToolkit } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 import { ligoSample } from '../../data/ligo-simple-contract';
 

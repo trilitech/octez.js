@@ -1,6 +1,6 @@
 import { CONFIGS } from '../../../config';
-import { b58Encode, PrefixV2 } from '@taquito/utils';
-import { InMemorySigner } from '@taquito/signer';
+import { b58Encode, PrefixV2 } from '@tezos-x/octez.js-utils';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
 const crypto = require('crypto');
 
 // This test is skipped on Flextesa due to the high number of operations taking too long to resolve in the sandbox

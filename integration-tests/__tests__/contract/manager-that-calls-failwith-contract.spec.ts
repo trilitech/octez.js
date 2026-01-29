@@ -1,7 +1,7 @@
 import { CONFIGS } from "../../config";
 import { failwithContractCode } from "../../data/failwith";
 import { managerCode } from "../../data/manager_code";
-import { DefaultContractType, MANAGER_LAMBDA, OriginationOperation } from "@taquito/taquito";
+import { DefaultContractType, MANAGER_LAMBDA, OriginationOperation } from "@tezos-x/octez.js";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;

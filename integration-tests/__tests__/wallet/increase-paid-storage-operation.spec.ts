@@ -1,5 +1,5 @@
 import { CONFIGS } from '../../config';
-import { InvalidAddressError } from '@taquito/core';
+import { InvalidAddressError } from '@tezos-x/octez.js-core';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;

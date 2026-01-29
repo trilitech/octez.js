@@ -1,5 +1,5 @@
-import { Contract, TezosToolkit } from '@taquito/taquito';
-import { HttpResponseError, STATUS_CODE } from '@taquito/http-utils';
+import { Contract, TezosToolkit } from '@tezos-x/octez.js';
+import { HttpResponseError, STATUS_CODE } from '@tezos-x/octez.js-http-utils';
 import { sleep } from '../../config';
 
 export const waitForContractAt = async (

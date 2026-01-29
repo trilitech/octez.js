@@ -1,4 +1,4 @@
-import { MichelsonMap, UnitValue } from '@taquito/taquito';
+import { MichelsonMap, UnitValue } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 import { tzip7Contract } from '../../data/tzip_7_contract';
 import { testContract } from '../../data/test_lambda_view';

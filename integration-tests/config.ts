@@ -6,12 +6,12 @@ import {
   TaquitoLocalForger,
   PollingSubscribeProvider,
   importKey,
-} from '@taquito/taquito';
-import { RemoteSigner } from '@taquito/remote-signer';
-import { HttpBackend } from '@taquito/http-utils';
-import { b58Encode, PrefixV2 } from '@taquito/utils';
-import { InMemorySigner } from '@taquito/signer';
-import { RpcClient, RpcClientCache } from '@taquito/rpc';
+} from '@tezos-x/octez.js';
+import { RemoteSigner } from '@tezos-x/octez.js-remote-signer';
+import { HttpBackend } from '@tezos-x/octez.js-http-utils';
+import { b58Encode, PrefixV2 } from '@tezos-x/octez.js-utils';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { RpcClient, RpcClientCache } from '@tezos-x/octez.js-rpc';
 import { AsyncPrefetchBuffer } from './async-prefetch-buffer';
 import { KnownContracts } from './known-contracts';
 import { knownContractsShadownet } from './known-contracts-shadownet';
@@ -290,7 +290,7 @@ const defaultEphemeralConfig = (networkPath: string): EphemeralConfig => ({
   type: SignerType.EPHEMERAL_KEY as SignerType.EPHEMERAL_KEY,
   keygenBaseUrl,
   networkPath,
-  requestHeaders: { Authorization: 'Bearer taquito-example' },
+  requestHeaders: { Authorization: 'Bearer octez.js-example' },
 });
 
 const sharedKeygenHttpClient = new HttpBackend();

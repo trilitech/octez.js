@@ -1,7 +1,7 @@
-import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
+import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 
 async function example() {
-  const provider = 'https://shadownet.tezos.ecadinfra.com/';
+  const provider = 'https://tezos-shadownet.octez.io/';
   const tezos = new TezosToolkit(provider)
   tezos.setStreamProvider(tezos.getFactory(PollingSubscribeProvider)({ shouldObservableSubscriptionRetry: true, pollingIntervalMilliseconds: 15000 }));
   try {

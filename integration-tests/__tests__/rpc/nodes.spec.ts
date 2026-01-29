@@ -1,8 +1,8 @@
 import { CONFIGS } from '../../config';
-import { DefaultContractType, Protocols } from "@taquito/taquito";
-import { RpcClientCache, RpcClient, RPCRunViewParam, RPCRunScriptViewParam, PendingOperationsV2 } from '@taquito/rpc';
-import { encodeExpr } from '@taquito/utils';
-import { Schema } from '@taquito/michelson-encoder';
+import { DefaultContractType, Protocols } from "@tezos-x/octez.js";
+import { RpcClientCache, RpcClient, RPCRunViewParam, RPCRunScriptViewParam, PendingOperationsV2 } from '@tezos-x/octez.js-rpc';
+import { encodeExpr } from '@tezos-x/octez.js-utils';
+import { Schema } from '@tezos-x/octez.js-michelson-encoder';
 import { tokenBigmapCode, tokenBigmapStorage } from '../../data/token_bigmap';
 import { ticketCode, ticketStorage } from '../../data/code_with_ticket';
 import { indexAddressCode, indexAddressStorage } from '../../data/code_with_index_address_index';

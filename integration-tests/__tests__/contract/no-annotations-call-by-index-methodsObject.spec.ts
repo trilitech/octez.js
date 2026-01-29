@@ -1,4 +1,4 @@
-import { FieldNumberingStrategy } from "@taquito/michelson-encoder";
+import { FieldNumberingStrategy } from "@tezos-x/octez.js-michelson-encoder";
 import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from "../../config";
 import { noAnnotCode, noAnnotInit } from "../../data/token_without_annotation";
 

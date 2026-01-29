@@ -1,5 +1,5 @@
 import { CONFIGS } from "../../config";
-import { tzip16, Tzip16Module } from '@taquito/tzip16';
+import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
 import { expectMetadataLookupToRejectWithoutMetadata } from './non-compliant-metadata';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

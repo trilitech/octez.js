@@ -1,5 +1,5 @@
-import { HttpResponseError, STATUS_CODE } from '@taquito/http-utils';
-import { BigMapContractMetadataNotFoundError } from '@taquito/tzip16';
+import { HttpResponseError, STATUS_CODE } from '@tezos-x/octez.js-http-utils';
+import { BigMapContractMetadataNotFoundError } from '@tezos-x/octez.js-tzip16';
 import { sleep } from '../../config';
 
 const transientRpcRetries = 5;

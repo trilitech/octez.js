@@ -1,8 +1,8 @@
 import { CONFIGS } from "../../config";
-import { PrefixV2 } from "@taquito/utils";
-import { UnitValue, OpKind, TezosToolkit } from "@taquito/taquito";
+import { PrefixV2 } from "@tezos-x/octez.js-utils";
+import { UnitValue, OpKind, TezosToolkit } from "@tezos-x/octez.js";
 import crypto from 'crypto';
-import { PvmKind, RpcClient } from "@taquito/rpc";
+import { PvmKind, RpcClient } from "@tezos-x/octez.js-rpc";
 import { sequentialTestSuite } from '../../sequential-test';
 
 CONFIGS().forEach(({ lib, rpc, setup, knownBaker, createAddress, knownTicketContract }) => {

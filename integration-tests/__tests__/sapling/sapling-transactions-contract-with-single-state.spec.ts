@@ -1,6 +1,6 @@
-import { ContractAbstraction, ContractProvider, RpcReadAdapter } from '@taquito/taquito';
+import { ContractAbstraction, ContractProvider, RpcReadAdapter } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
-import { InMemorySpendingKey, SaplingToolkit } from '@taquito/sapling';
+import { InMemorySpendingKey, SaplingToolkit } from '@tezos-x/octez.js-sapling';
 import BigNumber from 'bignumber.js';
 import { singleSaplingStateContractJProtocol } from '../../data/single_sapling_state_contract_jakarta_michelson';
 import * as bip39 from '@scure/bip39';

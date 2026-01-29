@@ -4,7 +4,7 @@ set -euo pipefail
 keygen_url="${TAQUITO_KEYGEN_URL:-https://keygen.ecadinfra.com}"
 keygen_url="${keygen_url%/}"
 probe_url="${keygen_url}/v2/shadownet"
-auth_header="${TAQUITO_KEYGEN_AUTH_HEADER:-Authorization: Bearer taquito-example}"
+auth_header="${TAQUITO_KEYGEN_AUTH_HEADER:-Authorization: Bearer octez.js-example}"
 
 connect_timeout_seconds="${TAQUITO_KEYGEN_PREFLIGHT_CONNECT_TIMEOUT_SECONDS:-5}"
 max_time_seconds="${TAQUITO_KEYGEN_PREFLIGHT_MAX_TIME_SECONDS:-20}"

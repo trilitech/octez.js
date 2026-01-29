@@ -1,7 +1,7 @@
 import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from '../../../config';
 import { ligoSample, ligoSampleMichelson } from '../../../data/ligo-simple-contract';
 import { managerCode } from '../../../data/manager_code';
-import { MANAGER_LAMBDA, OpKind } from '@taquito/taquito';
+import { MANAGER_LAMBDA, OpKind } from '@tezos-x/octez.js';
 
 CONFIGS().forEach(({ lib, rpc, setup, knownBaker, knownContract, createAddress }) => {
   const Tezos = lib;

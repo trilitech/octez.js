@@ -1,5 +1,5 @@
-import { Parser } from '@taquito/michel-codec'
-import { Schema } from '@taquito/michelson-encoder';
+import { Parser } from '@tezos-x/octez.js-michel-codec'
+import { Schema } from '@tezos-x/octez.js-michelson-encoder';
 
 const example = async () => {
     try {

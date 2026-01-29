@@ -1,6 +1,6 @@
 import { CONFIGS } from '../../config';
-import { DefaultContractType, TezosToolkit } from '@taquito/taquito';
-import { RpcClient, TicketTokenParams } from '@taquito/rpc';
+import { DefaultContractType, TezosToolkit } from '@tezos-x/octez.js';
+import { RpcClient, TicketTokenParams } from '@tezos-x/octez.js-rpc';
 import { ticketsSendTz } from '../../data/code_with_ticket_transfer';
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress, knownTicketContract }) => {

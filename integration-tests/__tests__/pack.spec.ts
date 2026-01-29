@@ -1,7 +1,7 @@
 import { CONFIGS } from "../config";
-import { TezosToolkit } from "@taquito/taquito";
-import { MichelsonType, MichelsonData, ProtocolID, packDataBytes } from "@taquito/michel-codec";
-import { MichelsonV1Expression } from "@taquito/rpc";
+import { TezosToolkit } from "@tezos-x/octez.js";
+import { MichelsonType, MichelsonData, ProtocolID, packDataBytes } from "@tezos-x/octez.js-michel-codec";
+import { MichelsonV1Expression } from "@tezos-x/octez.js-rpc";
 import fs from "fs";
 import path from "path";
 
@@ -21,7 +21,7 @@ CONFIGS().forEach(({ rpc, protocol }) => {
             'binary-data1.json',
             'binary-data3.json'
         ];
-        const paths = files.map((f) => path.resolve(__dirname, `../../packages/taquito-michel-codec/test/${f}`));
+        const paths = files.map((f) => path.resolve(__dirname, `../../packages/octez.js-michel-codec/test/${f}`));
         const src: TypedTestData[] = [].concat(
             ...paths.map((p) => JSON.parse(fs.readFileSync(p).toString()))
         );

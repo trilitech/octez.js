@@ -1,6 +1,6 @@
 import { CONFIGS } from "../../config";
 import { idMichelsonCode, idInitData } from "../../data/id-contract";
-import { MichelCodecParser, NoopParser, Context, InvalidCodeParameter } from '@taquito/taquito';
+import { MichelCodecParser, NoopParser, Context, InvalidCodeParameter } from '@tezos-x/octez.js';
 
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

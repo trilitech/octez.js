@@ -1,6 +1,6 @@
 import { CONFIGS } from "../../../config";
-import { PrefixV2 } from "@taquito/utils";
-import { TezosToolkit } from "@taquito/taquito";
+import { PrefixV2 } from "@tezos-x/octez.js-utils";
+import { TezosToolkit } from "@tezos-x/octez.js";
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
   const Tezos = lib;

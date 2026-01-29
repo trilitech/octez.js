@@ -1,42 +1,42 @@
 
-![Taquito Logo](/img/Taquito.png)
+![octez.js Logo](/img/octez.js.png)
 
-[![Node.js CI](https://github.com/ecadlabs/taquito/workflows/Node.js%20CI/badge.svg)](https://github.com/ecadlabs/taquito/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/ecadlabs/taquito/branch/main/graph/badge.svg)](https://codecov.io/gh/ecadlabs/taquito)
+[![Node.js CI](https://github.com/trilitech/octez.js/workflows/Node.js%20CI/badge.svg)](https://github.com/trilitech/octez.js/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/trilitech/octez.js/branch/main/graph/badge.svg)](https://codecov.io/gh/trilitech/octez.js)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3204/badge)](https://bestpractices.coreinfrastructure.org/projects/3204)
 [![npm version](https://badge.fury.io/js/%40taquito%2Ftaquito.svg)](https://badge.fury.io/js/%40taquito%2Ftaquito)
 
 Welcome, Web3 developer!
 
-## What is Taquito?
+## What is octez.js?
 
-Taquito is a fast and lightweight [TypeScript](https://www.typescriptlang.org/) library to accelerate DApp development on the [Tezos](https://tezos.com/developers) blockchain. With it, you can easily interact with Smart Contracts deployed to Tezos. It is distributed as a suite of individual npm packages, reducing bloat and improving application startup times.
+octez.js is a fast and lightweight [TypeScript](https://www.typescriptlang.org/) library to accelerate DApp development on the [Tezos](https://tezos.com/developers) blockchain. With it, you can easily interact with Smart Contracts deployed to Tezos. It is distributed as a suite of individual npm packages, reducing bloat and improving application startup times.
 
-## What is Included in Taquito?
+## What is Included in octez.js?
 
-Taquito is primarily targeted at Front-End Web3 developers, so it comes with batteries included, such as a [React Template Project](https://github.com/ecadlabs/taquito-react-template), an extensible framework, and many helpful utilities. It can be used in *many* environments, including Serverless, Node.js, Deno, and Electron, and has minimal dependencies.
+octez.js is primarily targeted at Front-End Web3 developers, so it comes with batteries included, such as a [React Template Project](https://github.com/trilitech/octez.js-react-template), an extensible framework, and many helpful utilities. It can be used in *many* environments, including Serverless, Node.js, Deno, and Electron, and has minimal dependencies.
 
-## Who uses Taquito?
+## Who uses octez.js?
 
-Taquito is used by **over 80% of DApps** in the Tezos ecosystem. It is easy to use, [proven secure](https://bestpractices.coreinfrastructure.org/en/projects/3204#security), and [tested continuously](https://github.com/ecadlabs/taquito/actions/workflows/main.yml) against current versions of Tezos (both Mainnet *and* Testnets).
+octez.js is used by **over 80% of DApps** in the Tezos ecosystem. It is easy to use, [proven secure](https://bestpractices.coreinfrastructure.org/en/projects/3204#security), and [tested continuously](https://github.com/trilitech/octez.js/actions/workflows/main.yml) against current versions of Tezos (both Mainnet *and* Testnets).
 
-## Why should I use Taquito?
+## Why should I use octez.js?
 
-Taquito provides convenient abstractions for a multitude of common operations, including wallet interactions (with [WalletConnect/Reown](https://reown.com/) in the works), batching operations, calling into contracts, querying the blockchain, and more. Taquito will shield your code from subtle - and not-so-subtle - changes to the underlying Tezos protocol.
+octez.js provides convenient abstractions for a multitude of common operations, including wallet interactions (with [WalletConnect/Reown](https://reown.com/) in the works), batching operations, calling into contracts, querying the blockchain, and more. octez.js will shield your code from subtle - and not-so-subtle - changes to the underlying Tezos protocol.
 
 ...Not to mention our thriving, helpful, and welcoming community!
 
 ## Ok, I'm Ready!
 
-To get started with Taquito quickly, visit the [Taquito QuickStart](https://taquito.io/docs/quick_start).
+To get started with octez.js quickly, visit the [octez.js QuickStart](https://octez.js.io/docs/quick_start).
 
-If you prefer a skeleton project, check out our [Taquito React Template](https://github.com/ecadlabs/taquito-react-template).
+If you prefer a skeleton project, check out our [octez.js React Template](https://github.com/trilitech/octez.js-react-template).
 
-Do you wish to contribute to Taquito? See [Contributors Getting Started](#contributors-getting-started) below.
+Do you wish to contribute to octez.js? See [Contributors Getting Started](#contributors-getting-started) below.
 
 ## Supported versions of Node
 
-Taquito currently supports the following versions of Node.js®:
+octez.js currently supports the following versions of Node.js®:
 
 | Version      | Supported? |
 | ------------ | ---------- |
@@ -61,58 +61,58 @@ We are active and enthusiastic participants of the following community channels:
 
 ## Project Organization
 
-Taquito is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of npm packages published under the `@taquito` scope. The package catalog below is generated from package metadata so the npm links and descriptions stay in sync with the codebase. To refresh it after package changes, run `npm run sync:package-catalog`.
+octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of npm packages published under the `@octez.js` scope. The package catalog below is generated from package metadata so the npm links and descriptions stay in sync with the codebase. To refresh it after package changes, run `npm run sync:package-catalog`.
 
 <!-- package-catalog:start -->
 ### Workspace Packages
 
 | Package | npm | Source | Description |
 | --- | --- | --- | --- |
-| `@taquito/beacon-wallet` | [npm](https://www.npmjs.com/package/@taquito/beacon-wallet) | [source](./packages/taquito-beacon-wallet) | TZIP-10 Beacon wallet integration for Taquito dapps built on the Beacon SDK DAppClient. |
-| `@taquito/contracts-library` | [npm](https://www.npmjs.com/package/@taquito/contracts-library) | [source](./packages/taquito-contracts-library) | Static Michelson scripts and entrypoints library for Taquito contract interactions. |
-| `@taquito/core` | [npm](https://www.npmjs.com/package/@taquito/core) | [source](./packages/taquito-core) | Shared types, interfaces, and primitives for Taquito packages. |
-| `@taquito/http-utils` | [npm](https://www.npmjs.com/package/@taquito/http-utils) | [source](./packages/taquito-http-utils) | HTTP transport utilities for Taquito RPC clients with retry, timeout, and error classification. |
-| `@taquito/ledger-signer` | [npm](https://www.npmjs.com/package/@taquito/ledger-signer) | [source](./packages/taquito-ledger-signer) | Ledger hardware wallet signer integration for Taquito. |
-| `@taquito/local-forging` | [npm](https://www.npmjs.com/package/@taquito/local-forging) | [source](./packages/taquito-local-forging) | Local Tezos operation forging for Taquito. |
-| `@taquito/michel-codec` | [npm](https://www.npmjs.com/package/@taquito/michel-codec) | [source](./packages/taquito-michel-codec) | Michelson parser, validator, and formatter for Taquito. |
-| `@taquito/michelson-encoder` | [npm](https://www.npmjs.com/package/@taquito/michelson-encoder) | [source](./packages/taquito-michelson-encoder) | Michelson encoding and decoding utilities for Taquito. |
-| `@taquito/remote-signer` | [npm](https://www.npmjs.com/package/@taquito/remote-signer) | [source](./packages/taquito-remote-signer) | Remote signer client for Taquito, designed to work with services such as Signatory. |
-| `@taquito/rpc` | [npm](https://www.npmjs.com/package/@taquito/rpc) | [source](./packages/taquito-rpc) | TypeScript client and types for the Tezos RPC used by Taquito. |
-| `@taquito/sapling` | [npm](https://www.npmjs.com/package/@taquito/sapling) | [source](./packages/taquito-sapling) | Sapling transaction building and viewing support for Taquito. |
-| `@taquito/signer` | [npm](https://www.npmjs.com/package/@taquito/signer) | [source](./packages/taquito-signer) | Software signer implementations and signing utilities for Taquito. |
-| `@taquito/taquito` | [npm](https://www.npmjs.com/package/@taquito/taquito) | [source](./packages/taquito) | TypeScript SDK for building wallets, dapps, and tooling on Tezos. |
-| `@taquito/timelock` | [npm](https://www.npmjs.com/package/@taquito/timelock) | [source](./packages/taquito-timelock) | Timelock cryptography support for Taquito and Tezos applications. |
-| `@taquito/tzip12` | [npm](https://www.npmjs.com/package/@taquito/tzip12) | [source](./packages/taquito-tzip12) | TZIP-12 token metadata support for Taquito. |
-| `@taquito/tzip16` | [npm](https://www.npmjs.com/package/@taquito/tzip16) | [source](./packages/taquito-tzip16) | TZIP-16 contract metadata support for Taquito. |
-| `@taquito/utils` | [npm](https://www.npmjs.com/package/@taquito/utils) | [source](./packages/taquito-utils) | Encoding, crypto, and utility helpers for Taquito. |
-| `@taquito/wallet-connect` | [npm](https://www.npmjs.com/package/@taquito/wallet-connect) | [source](./packages/taquito-wallet-connect) | WalletConnect integration for Taquito applications. |
+| `@tezos-x/octez.js-beacon-wallet` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-beacon-wallet) | [source](./packages/octez.js-beacon-wallet) | TZIP-10 Beacon wallet integration for octez.js dapps built on the Beacon SDK DAppClient. |
+| `@tezos-x/octez.js-contracts-library` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-contracts-library) | [source](./packages/octez.js-contracts-library) | Static Michelson scripts and entrypoints library for octez.js contract interactions. |
+| `@tezos-x/octez.js-core` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-core) | [source](./packages/octez.js-core) | Shared types, interfaces, and primitives for octez.js packages. |
+| `@tezos-x/octez.js-http-utils` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-http-utils) | [source](./packages/octez.js-http-utils) | HTTP transport utilities for octez.js RPC clients with retry, timeout, and error classification. |
+| `@tezos-x/octez.js-ledger-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-ledger-signer) | [source](./packages/octez.js-ledger-signer) | Ledger hardware wallet signer integration for octez.js. |
+| `@tezos-x/octez.js-local-forging` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-local-forging) | [source](./packages/octez.js-local-forging) | Local Tezos operation forging for octez.js. |
+| `@tezos-x/octez.js-michel-codec` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-michel-codec) | [source](./packages/octez.js-michel-codec) | Michelson parser, validator, and formatter for octez.js. |
+| `@tezos-x/octez.js-michelson-encoder` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-michelson-encoder) | [source](./packages/octez.js-michelson-encoder) | Michelson encoding and decoding utilities for octez.js. |
+| `@tezos-x/octez.js-remote-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-remote-signer) | [source](./packages/octez.js-remote-signer) | Remote signer client for octez.js, designed to work with services such as Signatory. |
+| `@tezos-x/octez.js-rpc` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-rpc) | [source](./packages/octez.js-rpc) | TypeScript client and types for the Tezos RPC used by octez.js. |
+| `@tezos-x/octez.js-sapling` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling) | [source](./packages/octez.js-sapling) | Sapling transaction building and viewing support for octez.js. |
+| `@tezos-x/octez.js-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-signer) | [source](./packages/octez.js-signer) | Software signer implementations and signing utilities for octez.js. |
+| `@tezos-x/octez.js` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js) | [source](./packages/octez.js) | TypeScript SDK for building wallets, dapps, and tooling on Tezos. |
+| `@tezos-x/octez.js-timelock` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-timelock) | [source](./packages/octez.js-timelock) | Timelock cryptography support for octez.js and Tezos applications. |
+| `@tezos-x/octez.js-tzip12` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip12) | [source](./packages/octez.js-tzip12) | TZIP-12 token metadata support for octez.js. |
+| `@tezos-x/octez.js-tzip16` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip16) | [source](./packages/octez.js-tzip16) | TZIP-16 contract metadata support for octez.js. |
+| `@tezos-x/octez.js-utils` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-utils) | [source](./packages/octez.js-utils) | Encoding, crypto, and utility helpers for octez.js. |
+| `@tezos-x/octez.js-wallet-connect` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-wallet-connect) | [source](./packages/octez.js-wallet-connect) | WalletConnect integration for octez.js applications. |
 
 ### Related Official Package
 
 | Package | npm | Source | Description | Notes |
 | --- | --- | --- | --- | --- |
-| `@taquito/sapling-wasm` | [npm](https://www.npmjs.com/package/@taquito/sapling-wasm) | [source](https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm) | Sapling Wasm bindings for Taquito and compatible consumers. | Official Taquito package, published from the separate `ecadlabs/sapling-wasm` repository. |
+| `@tezos-x/octez.js-sapling-wasm` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling-wasm) | [source](https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm) | Sapling Wasm bindings for octez.js and compatible consumers. | Official octez.js package, published from the separate `ecadlabs/sapling-wasm` repository. |
 <!-- package-catalog:end -->
 
 ## API Documentation
 
-TypeDoc API documentation for Taquito is [available here](https://taquito.io/typedoc).
+TypeDoc API documentation for octez.js is [available here](https://octez.js.io/typedoc).
 
 ## Versioning Strategy
 
-Taquito supports the *current* and *next* (beta) protocol versions of Tezos.
+octez.js supports the *current* and *next* (beta) protocol versions of Tezos.
 
 We use [Semantic Versioning](https://semver.org) with a twist: the *Major* version typically tracks the latest version of Tezos, while *Minor* and *Patch* follow standard SemVer rules.
 
-For example, a stable Taquito release line might be `v24.x`, while the next protocol release is prepared as `v25.0.0-beta.1`.
+For example, a stable octez.js release line might be `v24.x`, while the next protocol release is prepared as `v25.0.0-beta.1`.
 
 ### Release Timing
 
-When the next protocol proposal is likely to be promoted, and Taquito has been updated and tested against it, we release the next version (e.g., `v25.0.0-beta.1`) *before* the chain switches. This gives DApp developers time to update and test their projects.
+When the next protocol proposal is likely to be promoted, and octez.js has been updated and tested against it, we release the next version (e.g., `v25.0.0-beta.1`) *before* the chain switches. This gives DApp developers time to update and test their projects.
 
-During these “Major” version updates, the Taquito public API *may* undergo breaking changes. We do our best to document these in release notes.
+During these “Major” version updates, the octez.js public API *may* undergo breaking changes. We do our best to document these in release notes.
 
-All prior Taquito releases remain *backwards compatible* with historical chain data, though older node RPC endpoints may eventually lose official support. We encourage you to update older versions of Taquito, and welcome any technical questions that arise during upgrades.
+All prior octez.js releases remain *backwards compatible* with historical chain data, though older node RPC endpoints may eventually lose official support. We encourage you to update older versions of octez.js, and welcome any technical questions that arise during upgrades.
 
 ## Releases
 
@@ -122,9 +122,9 @@ Official npm packages are published from the repository's GitHub Actions release
 
 ## Contributors Getting Started
 
-Interested in contributing to Taquito? Wonderful! Read on to set up your environment.
+Interested in contributing to octez.js? Wonderful! Read on to set up your environment.
 
-### Setup and Build the Taquito Project
+### Setup and Build the octez.js Project
 
 *Perform these steps in order.*
 
@@ -138,7 +138,7 @@ Interested in contributing to Taquito? Wonderful! Read on to set up your environ
     nvm use
     ```
 
-### Building Taquito
+### Building octez.js
 
 Once prerequisites are installed, run:
 ```bash
@@ -164,13 +164,13 @@ Refer to the top-level `package.json` for available scripts. Common ones:
 - `npm run test`: Runs the unit tests
 - `npm run build`: Generates bundles, type definitions, and TypeDocs for all packages
 - `npm run lint`: Runs ESLint
-- `npm run example`: Runs an example Node.js app demonstrating Taquito functionality
+- `npm run example`: Runs an example Node.js app demonstrating octez.js functionality
 
 ### Running Integration Tests
 
 See the `integration-tests/` directory for details. The README in that folder explains how to configure and run integration tests.
 
-### Modifying Taquito Source
+### Modifying octez.js Source
 
 After making your changes:
 
@@ -184,10 +184,10 @@ Use a conventional commit message for your final commit.
 
 ### Running the Website Locally
 
-The [Taquito website][4] is built with [Astro][5]. To run it locally:
+The [octez.js website][4] is built with [Astro][5]. To run it locally:
 
 1. `npm ci`
-2. `npm -w @taquito/website dev`
+2. `npm -w @tezos-x/octez.js-website dev`
 
 ## Contributions / Reporting Issues
 
@@ -195,13 +195,13 @@ The [Taquito website][4] is built with [Astro][5]. To run it locally:
 
 Do not report security issues in public GitHub issues, discussions, or pull requests.
 
-Use GitHub private vulnerability reporting on the repository [Security page](https://github.com/ecadlabs/taquito/security), or email [security@ecadlabs.com](mailto:security@ecadlabs.com) if needed.
+Use GitHub private vulnerability reporting on the repository [Security page](https://github.com/trilitech/octez.js/security), or email [security@ecadlabs.com](mailto:security@ecadlabs.com) if needed.
 
 See [SECURITY.md](SECURITY.md) for the current policy.
 
 ### Bugs or Feature Requests
 
-Use our [GitHub Issue Tracker](https://github.com/ecadlabs/taquito/issues) to report bugs or request features.
+Use our [GitHub Issue Tracker](https://github.com/trilitech/octez.js/issues) to report bugs or request features.
 
 Before submitting a pull request, please ensure there’s an open issue describing your changes. Contributions require appropriate documentation and tests. Feel free to open a “work in progress” pull request for early feedback!
 
@@ -209,7 +209,7 @@ Before submitting a pull request, please ensure there’s an open issue describi
 
 ## Licensing
 
-The Taquito source code is licensed under the [Apache License, Version 2.0](LICENSE). You are free to use, modify, and distribute the source code in accordance with the terms of that license.
+The octez.js source code is licensed under the [Apache License, Version 2.0](LICENSE). You are free to use, modify, and distribute the source code in accordance with the terms of that license.
 
 ---
 
@@ -221,12 +221,12 @@ PERSONS USING THIS SOFTWARE DO SO **ENTIRELY AT THEIR OWN RISK**.
 
 ## Credits
 
-Special thanks to these libraries, which have been excellent references for Taquito’s development:
+Special thanks to these libraries, which have been excellent references for octez.js’s development:
 
 - [AndrewKishino/sotez](https://github.com/AndrewKishino/sotez)
 - [TezTech/eztz](https://github.com/TezTech/eztz)
 
 [discord]: https://discord.com/channels/934567382700146739/939205889901092874
-[stackexchange]: https://tezos.stackexchange.com/questions/tagged/taquito
-[4]: https://taquito.io
+[stackexchange]: https://tezos.stackexchange.com/questions/tagged/octez.js
+[4]: https://octez.js.io
 [5]: https://astro.build/

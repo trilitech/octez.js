@@ -441,7 +441,7 @@ export const timelockCode = [
   }
 ]
 
-// parse bytes will be lowercased ref https://github.com/ecadlabs/taquito/pull/1623
+// parse bytes will be lowercased ref https://github.com/trilitech/octez.js/pull/1623
 export const timelockExpected = [
   {
     "prim": "storage",

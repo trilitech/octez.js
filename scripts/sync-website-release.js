@@ -17,7 +17,7 @@ const websitePackage = JSON.parse(readFileSync(websitePackageJsonPath, 'utf8'));
 websitePackage.version = version;
 
 for (const [name] of Object.entries(websitePackage.dependencies || {})) {
-  if (name.startsWith('@taquito/')) {
+  if (name.startsWith('@tezos-x/octez.js-')) {
     websitePackage.dependencies[name] = `^${version}`;
   }
 }

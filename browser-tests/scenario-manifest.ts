@@ -7,7 +7,7 @@ export type PackageScenarioId =
   | 'michelson-encoder-behavior'
   | 'local-forging-behavior'
   | 'signer-import'
-  | 'taquito-behavior'
+  | 'octez.js-behavior'
   | 'tzip16-behavior'
   | 'tzip12-behavior'
   | 'contracts-library-behavior'
@@ -27,92 +27,92 @@ export type PackageScenario = {
 export const packageScenarios: readonly PackageScenario[] = [
   {
     id: 'core-import',
-    packageName: '@taquito/core',
+    packageName: '@tezos-x/octez.js-core',
     description: 'imports the core package in a browser',
   },
   {
     id: 'http-utils-behavior',
-    packageName: '@taquito/http-utils',
+    packageName: '@tezos-x/octez.js-http-utils',
     description: 'imports http-utils and instantiates HttpBackend',
   },
   {
     id: 'utils-behavior',
-    packageName: '@taquito/utils',
+    packageName: '@tezos-x/octez.js-utils',
     description: 'imports utils and round-trips UTF-8 bytes',
   },
   {
     id: 'rpc-behavior',
-    packageName: '@taquito/rpc',
+    packageName: '@tezos-x/octez.js-rpc',
     description: 'imports rpc and instantiates RpcClient',
   },
   {
     id: 'michel-codec-behavior',
-    packageName: '@taquito/michel-codec',
+    packageName: '@tezos-x/octez.js-michel-codec',
     description: 'imports michel-codec and parses Micheline',
   },
   {
     id: 'michelson-encoder-behavior',
-    packageName: '@taquito/michelson-encoder',
+    packageName: '@tezos-x/octez.js-michelson-encoder',
     description: 'imports michelson-encoder and encodes a bytes-like token value',
   },
   {
     id: 'local-forging-behavior',
-    packageName: '@taquito/local-forging',
+    packageName: '@tezos-x/octez.js-local-forging',
     description: 'imports local-forging and forges a manager operation',
   },
   {
     id: 'signer-import',
-    packageName: '@taquito/signer',
+    packageName: '@tezos-x/octez.js-signer',
     description: 'imports the signer package in a browser',
   },
   {
-    id: 'taquito-behavior',
-    packageName: '@taquito/taquito',
-    description: 'imports taquito and instantiates TezosToolkit',
+    id: 'octez.js-behavior',
+    packageName: '@tezos-x/octez.js',
+    description: 'imports octez.js and instantiates TezosToolkit',
   },
   {
     id: 'tzip16-behavior',
-    packageName: '@taquito/tzip16',
+    packageName: '@tezos-x/octez.js-tzip16',
     description: 'imports tzip16 and instantiates Tzip16Module',
   },
   {
     id: 'tzip12-behavior',
-    packageName: '@taquito/tzip12',
+    packageName: '@tezos-x/octez.js-tzip12',
     description: 'imports tzip12 and instantiates Tzip12Module',
   },
   {
     id: 'contracts-library-behavior',
-    packageName: '@taquito/contracts-library',
+    packageName: '@tezos-x/octez.js-contracts-library',
     description: 'imports contracts-library and stores contract metadata',
   },
   {
     id: 'timelock-behavior',
-    packageName: '@taquito/timelock',
+    packageName: '@tezos-x/octez.js-timelock',
     description: 'imports timelock and opens a generated chest',
   },
   {
     id: 'beacon-wallet-import',
-    packageName: '@taquito/beacon-wallet',
+    packageName: '@tezos-x/octez.js-beacon-wallet',
     description: 'imports beacon-wallet in a browser',
   },
   {
     id: 'wallet-connect-import',
-    packageName: '@taquito/wallet-connect',
+    packageName: '@tezos-x/octez.js-wallet-connect',
     description: 'imports wallet-connect in a browser',
   },
   {
     id: 'ledger-signer-behavior',
-    packageName: '@taquito/ledger-signer',
+    packageName: '@tezos-x/octez.js-ledger-signer',
     description: 'imports ledger-signer and exercises LedgerSigner byte helpers',
   },
   {
     id: 'sapling-import',
-    packageName: '@taquito/sapling',
+    packageName: '@tezos-x/octez.js-sapling',
     description: 'imports sapling in a browser',
   },
   {
     id: 'sapling-preload',
-    packageName: '@taquito/sapling',
+    packageName: '@tezos-x/octez.js-sapling',
     description: 'imports sapling and preloads hosted proving parameters in a browser',
   },
 ] as const;

@@ -1,4 +1,4 @@
-import { PollingSubscribeProvider } from "@taquito/taquito";
+import { PollingSubscribeProvider } from "@tezos-x/octez.js";
 import { CONFIGS, TAQUITO_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from "../../config";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

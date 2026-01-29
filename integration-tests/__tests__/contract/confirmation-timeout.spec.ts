@@ -1,5 +1,5 @@
-import { Context, Operation } from "@taquito/taquito";
-import { encodeOpHash } from "@taquito/utils";
+import { Context, Operation } from "@tezos-x/octez.js";
+import { encodeOpHash } from "@tezos-x/octez.js-utils";
 import { CONFIGS } from "../../config";
 import { NeverStreamProvider } from "../../test-helpers/never-stream-provider";
 

@@ -1,5 +1,5 @@
 import { CONFIGS, TAQUITO_MUTEZ, sleep } from '../config';
-import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
+import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 import { rethrowInfrastructureRpcError } from '../test-helpers/rpc-error-assertions';
 
 /* mainContract.jsligo: This is the source code for the main contract.

@@ -1,7 +1,7 @@
 {
-  "name": "taquito-monorepo",
-  "version": "24.3.0",
-  "description": "Canonical monorepo for the Taquito TypeScript SDK for Tezos, maintained by ECAD Labs Inc.",
+  "name": "octez.js-monorepo",
+  "version": "1.0.0",
+  "description": "Canonical monorepo for the octez.js TypeScript SDK for Tezos, maintained by Nomadic Labs.",
   "private": true,
   "author": "ECAD Labs Inc <info@ecadlabs.com>",
   "contributors": [
@@ -10,17 +10,17 @@
     "Davis Sawali <davis.sawali@ecadlabs.com>",
     "Jev Björsell (jevonearth)"
   ],
-  "homepage": "https://taquito.io/",
+  "homepage": "https://octez.js.io/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ecadlabs/taquito.git"
+    "url": "git+https://github.com/trilitech/octez.js.git"
   },
   "bugs": {
-    "url": "https://github.com/ecadlabs/taquito/issues"
+    "url": "https://github.com/trilitech/octez.js/issues"
   },
   "license": "Apache-2.0",
   "keywords": [
-    "taquito",
+    "octez.js",
     "tezos",
     "typescript",
     "sdk",
@@ -31,22 +31,22 @@
   ],
   "workspaces": [
     "packages/*",
-    "packages/taquito-michel-codec/pack-test-tool",
+    "packages/octez.js-michel-codec/pack-test-tool",
     "example",
     "integration-tests"
   ],
   "scripts": {
-    "build": "nx run-many --target=build --exclude=@taquito/website",
-    "build-verbose": "nx run-many --target=build --exclude=@taquito/website --output-style=stream",
-    "build-all": "nx run-many --target=build --exclude=@taquito/website",
+    "build": "nx run-many --target=build --exclude=@tezos-x/octez.js-website",
+    "build-verbose": "nx run-many --target=build --exclude=@tezos-x/octez.js-website --output-style=stream",
+    "build-all": "nx run-many --target=build --exclude=@tezos-x/octez.js-website",
     "build-website": "npm ci && npm run build && cd website && npm ci && npm run build",
     "rebuild": "npm run clean && npm install && npm run build",
     "check:package-catalog": "node ./scripts/package-catalog.js --check",
     "sync:package-catalog": "node ./scripts/package-catalog.js --write",
-    "test": "nx run-many --target=test --exclude=integration-tests,@taquito/website -- --coverage",
+    "test": "nx run-many --target=test --exclude=integration-tests,@tezos-x/octez.js-website -- --coverage",
     "test:dist:esm-imports": "node ./scripts/check-esm-imports.js",
     "lint": "npm run check:package-catalog && npm run --workspaces --if-present lint",
-    "clean": "rimraf node_modules packages/*/node_modules packages/taquito-michel-codec/pack-test-tool/node_modules example/node_modules integration-tests/node_modules website/node_modules",
+    "clean": "rimraf node_modules packages/*/node_modules packages/octez.js-michel-codec/pack-test-tool/node_modules example/node_modules integration-tests/node_modules website/node_modules",
     "precommit": "npm run --workspaces --if-present precommit",
     "example": "cd example && npm run example",
     "build-docs": "typedoc --tsconfig ./tsconfig.typedoc.json",
@@ -97,15 +97,7 @@
     "vitest": "^4.1.6"
   },
   "overrides": {
-    "@airgap/beacon-dapp": "npm:@ecadlabs/beacon-dapp@4.8.4-ecad-beta.1",
-    "@airgap/beacon-core": "npm:@ecadlabs/beacon-core@4.8.4-ecad-beta.1",
-    "@airgap/beacon-types": "npm:@ecadlabs/beacon-types@4.8.4-ecad-beta.1",
-    "@airgap/beacon-utils": "npm:@ecadlabs/beacon-utils@4.8.4-ecad-beta.1",
-    "@airgap/beacon-ui": "npm:@ecadlabs/beacon-ui@4.8.4-ecad-beta.1",
-    "@airgap/beacon-transport-matrix": "npm:@ecadlabs/beacon-transport-matrix@4.8.4-ecad-beta.1",
-    "@airgap/beacon-transport-postmessage": "npm:@ecadlabs/beacon-transport-postmessage@4.8.4-ecad-beta.1",
-    "@airgap/beacon-transport-walletconnect": "npm:@ecadlabs/beacon-transport-walletconnect@4.8.4-ecad-beta.1",
-    "@ecadlabs/beacon-transport-walletconnect": {
+    "@tezos-x/octez.connect-transport-walletconnect": {
       "@walletconnect/core": "2.18.0",
       "@walletconnect/sign-client": "2.18.0",
       "@walletconnect/types": "2.18.0",

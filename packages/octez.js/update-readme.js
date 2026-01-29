@@ -1,0 +1,19 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const fs = require('fs');
+
+const readmePath = './README.md';
+
+const manifest = require('./assets-manifest.json')
+const package = require('./package.json')
+
+const integrityRegex = /integrity="(.*)"/;
+const versionRegex = /@tezos-x\/octez\.js@(.+)\/dist/
+
+if (fs.existsSync(readmePath)) {
+  let readme = fs.readFileSync(readmePath).toString('utf8');
+
+  readme = readme.replace(integrityRegex, `integrity="${manifest['main.js'].integrity}"`)
+  readme = readme.replace(versionRegex, `@tezos-x/octez.js@${package.version}/dist`)
+
+  fs.writeFileSync(readmePath, readme);
+}

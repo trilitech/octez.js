@@ -1,4 +1,4 @@
-import { DefaultGlobalConstantsProvider } from '@taquito/taquito';
+import { DefaultGlobalConstantsProvider } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 import { voteSampleGlobalConstants } from '../../data/vote_contract_global_constant_storage';
 
@@ -54,7 +54,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
             // We need to set up a global constants provider on the TezosToolkit
             // We use an instance of DefaultGlobalConstantsProvider where the global constant hash and its corresponding expression need to be loaded manually
-            // Taquito use the globalConstantProvider to properly transform the storage object into the corresponding Michelson data on contract origination
+            // octez.js use the globalConstantProvider to properly transform the storage object into the corresponding Michelson data on contract origination
             const globalConstantProvider = new DefaultGlobalConstantsProvider();
             globalConstantProvider.loadGlobalConstant({
                 [constantHash1]: globalConstant1,

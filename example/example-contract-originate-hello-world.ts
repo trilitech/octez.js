@@ -1,7 +1,7 @@
-import { TezosToolkit } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
-const provider = 'https://shadownet.tezos.ecadinfra.com';
+const provider = 'https://tezos-shadownet.octez.io/';
 
 async function example() {
   const tezos = new TezosToolkit(provider);

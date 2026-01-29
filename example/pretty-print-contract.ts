@@ -1,5 +1,5 @@
-import { Parser, emitMicheline } from '@taquito/michel-codec'
-import { TezosToolkit } from '@taquito/taquito';
+import { Parser, emitMicheline } from '@tezos-x/octez.js-michel-codec'
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const provider = 'https://mainnet.tezos.ecadinfra.com/';
 

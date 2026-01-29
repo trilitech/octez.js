@@ -1,11 +1,11 @@
-import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
+import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 
 // To run this script, run the following command in the example folder: `npm run example:streamer-block-time`
 // This script polls on the head block at an interval of `pollingIntervalMilliseconds`.
 // When a new block is seen, the time between the new block and the precedent is logged with the block level
 // If a block is missed when polling, 'Missed block: `level`' is logged.
 
-const provider = 'https://shadownet.tezos.ecadinfra.com';
+const provider = 'https://tezos-shadownet.octez.io/';
 const pollingIntervalMilliseconds = 5000;
 let date: Date;
 let level: number;

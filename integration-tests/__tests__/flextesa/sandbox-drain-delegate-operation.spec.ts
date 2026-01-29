@@ -3,7 +3,7 @@
  *  will keep for future reference if an alternative sandbox is available
  */
 
-import { TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit } from "@tezos-x/octez.js";
 import { CONFIGS, sleep, isSandbox } from "../../config";
 
 CONFIGS().forEach(({ lib, rpc, protocol, setup, createAddress }) => {

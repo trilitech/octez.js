@@ -1,4 +1,4 @@
-import { OpKind } from '@taquito/taquito';
+import { OpKind } from '@tezos-x/octez.js';
 import { CONFIGS, SignerType, TEST_FUNDS_RECOVERY_ADDRESS } from '../../../config';
 
 CONFIGS().forEach(({ lib, rpc, setup, knownBaker, signerConfig }) => {

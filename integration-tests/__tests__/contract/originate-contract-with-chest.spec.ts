@@ -1,7 +1,7 @@
-import { DefaultContractType, OriginationOperation } from "@taquito/taquito";
+import { DefaultContractType, OriginationOperation } from "@tezos-x/octez.js";
 import { CONFIGS } from "../../config";
-import { buf2hex } from "@taquito/utils";
-import { Chest } from '@taquito/timelock';
+import { buf2hex } from "@tezos-x/octez.js-utils";
+import { Chest } from '@tezos-x/octez.js-timelock';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;

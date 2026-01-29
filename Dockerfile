@@ -1,10 +1,10 @@
-# Docker to run Taquito integration tests
+# Docker to run octez.js integration tests
 FROM node:20
 
-COPY tsconfig.base.json /taquito/
-COPY ./integration-tests /taquito/integration-tests/
+COPY tsconfig.base.json /octez.js/
+COPY ./integration-tests /octez.js/integration-tests/
 
-WORKDIR /taquito/integration-tests
+WORKDIR /octez.js/integration-tests
 
 RUN npm install
 
