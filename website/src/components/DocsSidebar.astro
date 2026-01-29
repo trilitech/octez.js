@@ -2,6 +2,9 @@
 import { getCollection } from 'astro:content';
 import { sidebarConfig } from '../config/docs-sidebar.mjs';
 
+// Normalize base URL to always have trailing slash for path joining
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
 interface Props {
   currentSlug?: string;
   version?: string;
@@ -86,7 +89,7 @@ const isParentActive = (items: DocItem[]) => {
 
 <aside
   id="docs-sidebar"
-  class="hidden lg:block w-64 pb-4 pt-12 pl-8 pr-4 shrink-0 sticky top-0 self-start max-h-screen overflow-y-auto border-r-2 border-secondary bg-background-primary relative"
+  class="hidden lg:block w-64 pb-4 pt-12 pl-8 pr-4 shrink-0 sticky top-0 self-start max-h-screen overflow-y-auto border-r border-border bg-background-primary relative"
 >
   <nav>
     <ul class="list-none p-0 m-0 space-y-4">
@@ -108,11 +111,11 @@ const isParentActive = (items: DocItem[]) => {
                       {item.items.map((subItem) => (
                         <li>
                           <a
-                            href={`/docs/${subItem.slug}`}
+                            href={`${base}docs/${subItem.slug}`}
                             class={`block py-1 px-2 text-sm no-underline transition-all border-l-2 ${
                               isActive(subItem.slug)
-                                ? 'text-primary border-primary font-medium'
-                                : 'text-gray-600 border-transparent hover:text-primary hover:border-primary'
+                                ? 'text-accent border-accent font-medium'
+                                : 'text-text-tertiary border-transparent hover:text-accent hover:border-accent'
                             }`}
                           >
                             {subItem.title}
@@ -126,11 +129,11 @@ const isParentActive = (items: DocItem[]) => {
                 return (
                   <li>
                     <a
-                      href={`/docs/${item.slug}`}
+                      href={`${base}docs/${item.slug}`}
                       class={`block py-1 px-2 text-sm no-underline transition-all border-l-2 ${
                         isActive(item.slug)
-                          ? 'text-primary border-primary font-medium'
-                          : 'text-gray-600 border-transparent hover:text-primary hover:border-primary'
+                          ? 'text-accent border-accent font-medium'
+                          : 'text-text-tertiary border-transparent hover:text-accent hover:border-accent'
                       }`}
                     >
                       {item.title}
@@ -156,13 +159,13 @@ const isParentActive = (items: DocItem[]) => {
   ></div>
   <aside
     id="docs-sidebar-panel"
-    class="absolute left-0 top-0 bottom-0 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto"
+    class="absolute left-0 top-0 bottom-0 w-64 bg-background-primary shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto"
   >
-    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+    <div class="p-4 border-b border-border flex items-center justify-between">
       <h2 class="text-lg font-bold text-text-secondary">Documentation</h2>
       <button
         id="docs-sidebar-close"
-        class="p-2 hover:bg-gray-100 rounded"
+        class="p-2 hover:bg-background-tertiary rounded"
         aria-label="Close sidebar"
       >
         <svg
@@ -199,11 +202,11 @@ const isParentActive = (items: DocItem[]) => {
                         {item.items.map((subItem) => (
                           <li>
                             <a
-                              href={`/docs/${subItem.slug}`}
+                              href={`${base}docs/${subItem.slug}`}
                               class={`block py-1 px-2 text-sm no-underline transition-all border-l-2 ${
                                 isActive(subItem.slug)
-                                  ? 'text-primary border-primary font-medium'
-                                  : 'text-gray-600 border-transparent hover:text-primary hover:border-primary'
+                                  ? 'text-accent border-accent font-medium'
+                                  : 'text-text-tertiary border-transparent hover:text-accent hover:border-accent'
                               }`}
                             >
                               {subItem.title}
@@ -217,11 +220,11 @@ const isParentActive = (items: DocItem[]) => {
                   return (
                     <li>
                       <a
-                        href={`/docs/${item.slug}`}
+                        href={`${base}docs/${item.slug}`}
                         class={`block py-1 px-2 text-sm no-underline transition-all border-l-2 ${
                           isActive(item.slug)
-                            ? 'text-primary border-primary font-medium'
-                            : 'text-gray-600 border-transparent hover:text-primary hover:border-primary'
+                            ? 'text-accent border-accent font-medium'
+                            : 'text-text-tertiary border-transparent hover:text-accent hover:border-accent'
                         }`}
                       >
                         {item.title}

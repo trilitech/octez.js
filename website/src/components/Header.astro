@@ -5,6 +5,9 @@ import githubIcon from "../images/icons/github.svg";
 import SearchModal from "./SearchModal.astro";
 import { VERSIONS, DEFAULT_VERSION } from "../pages/api/search/[version].json.ts"
 
+// Normalize base URL to always have trailing slash for path joining
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
 const pathname = Astro.url.pathname;
 const versionMatch = pathname.match(/\/docs\/([^/]+)/);
 const currentVersion = versionMatch?.[1] && VERSIONS.includes(versionMatch[1] as typeof VERSIONS[number])
@@ -17,11 +20,11 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
 ---
 
 <header
-  class="bg-background-primary border-b-2 border-secondary px-4 md:px-14 sticky top-0 z-100 shadow-sm transition-transform duration-300 ease-in-out"
+  class="bg-background-primary border-b border-border px-4 md:px-14 sticky top-0 z-100 shadow-sm transition-transform duration-300 ease-in-out"
   id="main-header"
 >
   <div class="mx-2 md:mx-8 flex justify-between items-center py-2">
-    <a href="/" class="logo no-underline flex items-center gap-2" aria-label="Taquito home">
+    <a href={base} class="logo no-underline flex items-center gap-2" aria-label="octez.js home">
       <div id="lottie-logo" class="w-32 md:w-40 flex items-center justify-center"></div>
     </a>
 
@@ -30,14 +33,14 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       <!-- Search Button -->
       <button
         id="desktop-search-btn"
-        class="flex items-center gap-2 bg-white px-4 py-1.5 rounded-full hover:bg-gray-50 transition-colors border border-gray-200 text-gray-600 text-sm"
+        class="flex items-center gap-2 bg-background-secondary px-4 py-1.5 rounded-full hover:bg-background-tertiary transition-colors border border-border text-text-tertiary text-sm"
         aria-label="Search documentation"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
         <span>Search</span>
-        <kbd class="hidden xl:inline-block ml-2 px-1.5 py-0.5 text-xs font-semibold text-gray-500 bg-gray-100 rounded">⌘K</kbd>
+        <kbd class="hidden xl:inline-block ml-2 px-1.5 py-0.5 text-xs font-semibold text-text-muted bg-background-tertiary rounded">⌘K</kbd>
       </button>
       <!-- Version Dropdown -->
       <div class="relative" id="version-dropdown-container">
@@ -54,14 +57,14 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
         </button>
         <div
           id="version-dropdown-menu"
-          class="absolute top-full left-0 mt-2 py-2 bg-white rounded-lg shadow-lg border border-gray-200 min-w-32 opacity-0 invisible transition-all duration-200 z-50"
+          class="absolute top-full left-0 mt-2 py-2 bg-background-secondary rounded-lg shadow-lg border border-border min-w-32 opacity-0 invisible transition-all duration-200 z-50"
         >
           {VERSIONS.map((version) => (
             <a
-              href={`/docs/${version}/${currentPageSlug}`}
+              href={`${base}docs/${version}/${currentPageSlug}`}
               class:list={[
-                "block px-4 py-2 text-sm hover:bg-primary/10 transition-colors",
-                version === currentVersion ? "text-primary font-medium bg-primary/5" : "text-gray-700"
+                "block px-4 py-2 text-sm hover:bg-accent-light transition-colors",
+                version === currentVersion ? "text-accent font-medium bg-accent-light" : "text-text-secondary"
               ]}
             >
               {version}
@@ -69,15 +72,15 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           ))}
         </div>
       </div>
-      <a href="/changelog" class="font-medium">Release Notes</a>
-      <a href={`/docs/${currentVersion}/quick_start`} class="bg-primary text-white hover:text-gray-300 transition-colors duration-150 px-3 py-1.5 rounded-full">Get Started</a>
+      <a href={`${base}changelog`} class="font-medium">Release Notes</a>
+      <a href={`${base}docs/${currentVersion}/quick_start`} class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3 py-1.5 rounded-full">Get Started</a>
       <!-- Socials -->
       <div class="flex items-center gap-6">
         <a
           href="https://discord.gg/JgvVdWV7BN"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-800 hover:text-gray-600 transition-colors"
+          class="text-text-secondary hover:text-accent transition-colors"
         >
           <img
             src={discordIcon.src}
@@ -86,10 +89,10 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           />
         </a>
         <a
-          href="https://x.com/tezostaquito"
+          href="https://x.com/tezosoctez.js"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-800 hover:text-gray-600 transition-colors"
+          class="text-text-secondary hover:text-accent transition-colors"
         >
           <img
             src={xIcon.src}
@@ -98,10 +101,10 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           />
         </a>
         <a
-          href="https://github.com/ecadlabs/taquito"
+          href="https://github.com/trilitech/octez.js"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-800 hover:text-gray-600 transition-colors"
+          class="text-text-secondary hover:text-accent transition-colors"
         >
           <img
             src={githubIcon.src}
@@ -109,6 +112,19 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
             class="inline-block size-7 align-middle mr-1"
           />
         </a>
+        <!-- Theme Toggle -->
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Toggle dark mode"
+        >
+          <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <svg id="moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+        </button>
       </div>
     </nav>
 
@@ -119,9 +135,9 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       aria-label="Toggle menu"
       aria-expanded="false"
     >
-      <span class="hamburger-line block w-6 h-0.5 bg-gray-800 transition-transform duration-300"></span>
-      <span class="hamburger-line block w-6 h-0.5 bg-gray-800 transition-opacity duration-300"></span>
-      <span class="hamburger-line block w-6 h-0.5 bg-gray-800 transition-transform duration-300"></span>
+      <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-transform duration-300"></span>
+      <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-opacity duration-300"></span>
+      <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-transform duration-300"></span>
     </button>
   </div>
 
@@ -134,7 +150,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       <!-- Search Button -->
       <button
         id="mobile-search-btn"
-        class="w-full bg-white px-4 py-2 rounded-full text-center hover:bg-gray-50 transition-colors border border-gray-200 text-gray-600 text-sm flex items-center justify-center gap-2"
+        class="w-full bg-background-secondary px-4 py-2 rounded-full text-center hover:bg-background-tertiary transition-colors border border-border text-text-tertiary text-sm flex items-center justify-center gap-2"
         aria-label="Search documentation"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +162,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       <div class="relative" id="mobile-version-dropdown-container">
         <button
           id="mobile-version-dropdown-btn"
-          class="w-full font-medium py-2 px-4 hover:bg-primary/20 rounded-lg transition-colors flex items-center justify-between"
+          class="w-full font-medium py-2 px-4 hover:bg-accent-light rounded-lg transition-colors flex items-center justify-between"
           aria-expanded="false"
           aria-haspopup="true"
         >
@@ -157,14 +173,14 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
         </button>
         <div
           id="mobile-version-dropdown-menu"
-          class="overflow-hidden transition-all duration-200 max-h-0 bg-gray-50 rounded-lg mt-1"
+          class="overflow-hidden transition-all duration-200 max-h-0 bg-background-tertiary rounded-lg mt-1"
         >
           {VERSIONS.map((version) => (
             <a
-              href={`/docs/${version}/${currentPageSlug}`}
+              href={`${base}docs/${version}/${currentPageSlug}`}
               class:list={[
-                "block px-6 py-2 text-sm hover:bg-primary/10 transition-colors",
-                version === currentVersion ? "text-primary font-medium bg-primary/5" : "text-gray-700"
+                "block px-6 py-2 text-sm hover:bg-accent-light transition-colors",
+                version === currentVersion ? "text-accent font-medium bg-accent-light" : "text-text-secondary"
               ]}
             >
               {version}
@@ -172,15 +188,15 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           ))}
         </div>
       </div>
-      <a href="/changelog" class="font-medium py-2 px-4 hover:bg-primary/20 rounded-lg transition-colors">Release Notes</a>
-      <a href={`/docs/${currentVersion}/quick_start`} class="bg-primary text-white hover:bg-primary/90 transition-colors duration-150 px-4 py-2 rounded-full text-center">Get Started</a>
+      <a href={`${base}changelog`} class="font-medium py-2 px-4 hover:bg-accent-light rounded-lg transition-colors">Release Notes</a>
+      <a href={`${base}docs/${currentVersion}/quick_start`} class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-4 py-2 rounded-full text-center">Get Started</a>
       <!-- Socials -->
       <div class="flex items-center justify-center gap-6 pt-2">
         <a
           href="https://discord.gg/JgvVdWV7BN"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-800 hover:text-gray-600 transition-colors"
+          class="text-text-secondary hover:text-accent transition-colors"
         >
           <img
             src={discordIcon.src}
@@ -189,10 +205,10 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           />
         </a>
         <a
-          href="https://x.com/tezostaquito"
+          href="https://x.com/tezosoctez.js"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-800 hover:text-gray-600 transition-colors"
+          class="text-text-secondary hover:text-accent transition-colors"
         >
           <img
             src={xIcon.src}
@@ -201,10 +217,10 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           />
         </a>
         <a
-          href="https://github.com/ecadlabs/taquito"
+          href="https://github.com/trilitech/octez.js"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-800 hover:text-gray-600 transition-colors"
+          class="text-text-secondary hover:text-accent transition-colors"
         >
           <img
             src={githubIcon.src}
@@ -212,6 +228,19 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
             class="inline-block size-7 align-middle"
           />
         </a>
+        <!-- Mobile Theme Toggle -->
+        <button
+          id="mobile-theme-toggle"
+          class="theme-toggle"
+          aria-label="Toggle dark mode"
+        >
+          <svg class="sun-icon w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <svg class="moon-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+        </button>
       </div>
     </div>
   </nav>
@@ -223,6 +252,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
   import lottie from "lottie-web";
 
   const logoContainer = document.getElementById("lottie-logo");
+  const baseUrl = document.querySelector('meta[name="base-url"]')?.getAttribute('content') || '/';
 
   if (logoContainer) {
     const animation = lottie.loadAnimation({
@@ -230,7 +260,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       renderer: "svg",
       loop: true,
       autoplay: false,
-      path: "/Taquito_loop_logo.json",
+      path: `${baseUrl}octez.js_loop_logo.json`,
     });
 
     const logoLink = logoContainer.closest(".logo");
@@ -381,6 +411,37 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       hamburgerBtn.classList.remove("open");
     }
   });
+
+  // Theme toggle functionality
+  function updateThemeIcons(theme: string) {
+    const sunIcons = document.querySelectorAll('#sun-icon, .sun-icon');
+    const moonIcons = document.querySelectorAll('#moon-icon, .moon-icon');
+
+    if (theme === 'dark') {
+      sunIcons.forEach(icon => icon.classList.remove('hidden'));
+      moonIcons.forEach(icon => icon.classList.add('hidden'));
+    } else {
+      sunIcons.forEach(icon => icon.classList.add('hidden'));
+      moonIcons.forEach(icon => icon.classList.remove('hidden'));
+    }
+  }
+
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcons(newTheme);
+  }
+
+  // Initialize theme icons on load
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  updateThemeIcons(currentTheme);
+
+  // Add click handlers for theme toggles
+  document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+  document.getElementById('mobile-theme-toggle')?.addEventListener('click', toggleTheme);
 </script>
 
 <style>

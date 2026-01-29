@@ -2,6 +2,9 @@
 import happyTaco from "../../images/happy_taco.svg";
 import { DEFAULT_VERSION } from "../../pages/api/search/[version].json.ts";
 
+// Normalize base URL to always have trailing slash for path joining
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
 const items = [
   "Tired of figuring out what is needed to make that RPC work?",
   "Takes too long to integrate with a wallet?",
@@ -38,8 +41,8 @@ const items = [
         <div class="flex flex-col items-start gap-2">
           <p>Ready to start?</p>
           <a
-            href={`/docs/${DEFAULT_VERSION}/quick_start`}
-            class="bg-primary text-white hover:text-gray-300 transition-colors duration-150 px-5 py-2.5 text-lg rounded-full"
+            href={`${base}docs/${DEFAULT_VERSION}/quick_start`}
+            class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-5 py-2.5 text-lg rounded-full"
             >Get Started</a
           >
         </div>
