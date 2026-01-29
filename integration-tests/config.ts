@@ -144,7 +144,7 @@ const ghostnetEphemeral: Config =
   });
 
 const ghostnetSecretKey: Config =
-  { ...ghostnetEphemeral, ...{ signerConfig: defaultSecretKey, rpc: 'https://ghostnet.tezos.ecadinfra.com' } };
+  { ...ghostnetEphemeral, ...{ signerConfig: defaultSecretKey, rpc: 'https://rpc.ghostnet.teztnets.com' } };
 
 const shadownetEphemeral: Config =
   defaultConfig({
@@ -156,7 +156,7 @@ const shadownetEphemeral: Config =
   });
 
 const shadownetSecretKey: Config =
-  { ...shadownetEphemeral, ...{ signerConfig: defaultSecretKey, rpc: 'https://shadownet.tezos.ecadinfra.com' } };
+  { ...shadownetEphemeral, ...{ signerConfig: defaultSecretKey, rpc: 'https://rpc.shadownet.teztnets.com' } };
 
 const tallinnnetEphemeral: Config =
   defaultConfig({

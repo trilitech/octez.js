@@ -15,7 +15,7 @@
   "author": "Eugene Zagidullin <eugene@ecadlabs.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/trilitech/octez.js.git"
   },
   "license": "Apache-2.0",
   "engines": {
@@ -52,7 +52,7 @@
     "moduleNameMapper": {
       "^@tezos-x/octez.js-utils$": "<rootDir>/../octez.js-utils/src/octez.js-utils.ts",
       "^@tezos-x/octez.js-signer$": "<rootDir>/../octez.js-signer/src/octez.js-signer.ts",
-      "^@tezos-x/octez.js$": "<rootDir>/../octez.js/src/taquito.ts"
+      "^@tezos-x/octez.js$": "<rootDir>/../octez.js/src/octez.ts"
     },
     "coveragePathIgnorePatterns": [
       "/node_modules/",

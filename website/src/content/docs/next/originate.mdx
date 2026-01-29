@@ -34,7 +34,7 @@ This requires a signer to be configured, ie:
 ```
 import { importKey } from '@tezos-x/octez.js-signer';
 import { TezosToolkit } from '@tezos-x/octez.js';
-const Tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com');
+const Tezos = new TezosToolkit('https://rpc.ghostnet.teztnets.com');
 importKey(Tezos, "p2sk2obfVMEuPUnadAConLWk7Tf4Dt3n4svSgJwrgpamRqJXvaYcg1")
 ```
 
@@ -44,7 +44,7 @@ importKey(Tezos, "p2sk2obfVMEuPUnadAConLWk7Tf4Dt3n4svSgJwrgpamRqJXvaYcg1")
 ```
 import {  BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
 import { TezosToolkit } from '@tezos-x/octez.js';
-const Tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com');
+const Tezos = new TezosToolkit('https://rpc.ghostnet.teztnets.com');
 const option = { name: "nameOfWallet", network: { type: 'ghostnet' }, enableMetrics: true};
 const wallet = new BeaconWallet(option);
 

@@ -8,8 +8,8 @@ const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW = 60; // seconds
 
 const ALLOWED_ORIGINS = [
-  "https://taquito.io",
-  "https://taquito-584.pages.dev",
+  "https://octez.js.dev",
+  "https://octez-js.pages.dev",
 ];
 
 function getCorsOrigin(request: Request): string | null {
