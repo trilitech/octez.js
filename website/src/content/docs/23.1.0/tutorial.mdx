@@ -5,15 +5,15 @@ author: [Alireza Haghshenas, Maxwell Ward]
 
 ## Introduction
 
-In this tutorial, we will walk through the process of creating a simple dApp (short for "Decentralized Application") using Taquito. We will:
+In this tutorial, we will walk through the process of creating a simple dApp (short for "Decentralized Application") using octez.js. We will:
 
 1. Create a simple command-line application that reads the balance of an address from the blockchain
-2. Establish a high-level understanding of the blockchain, Tezos, dApps, and Taquito
-3. Send a `Transfer` operation to the blockchain using Taquito
-4. Interact with a smart contract using Taquito
+2. Establish a high-level understanding of the blockchain, Tezos, dApps, and octez.js
+3. Send a `Transfer` operation to the blockchain using octez.js
+4. Interact with a smart contract using octez.js
 5. Implement a simple GUI dApp
 
-Throughout this tutorial, we will also dive into the different concepts that make up Tezos, dApps, Taquito, and the blockchain.
+Throughout this tutorial, we will also dive into the different concepts that make up Tezos, dApps, octez.js, and the blockchain.
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ This tutorial should work on Windows, Linux, and macOS. On other systems like a 
 
 ## Let's start with a simple command-line application
 
-In this section, we will create a simple command-line application that shows the balance of an address. This will help us understand the basics of Taquito and the flow of events in a dApp.
+In this section, we will create a simple command-line application that shows the balance of an address. This will help us understand the basics of octez.js and the flow of events in a dApp.
 
 Open a terminal and run the following commands:
 
@@ -85,18 +85,18 @@ npx ts-node index.ts
 ```
 
 If everything is done right, you should be able to see the output `Hello, Blockchain!` in the terminal.
-Now we can start using Taquito to interact with the Tezos blockchain.
+Now we can start using octez.js to interact with the Tezos blockchain.
 
-Run the following command in your project directory to install Taquito:
+Run the following command in your project directory to install octez.js:
 
 ```
-npm i @taquito/taquito
+npm i @tezos-x/octez.js
 ```
 
 Open the file `index.ts` and replace the code with the following:
 
 ```ts
-import { TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit } from "@tezos-x/octez.js";
 
 const Tezos = new TezosToolkit("https://ghostnet.tezos.ecadinfra.com");
 
@@ -107,7 +107,7 @@ Tezos.tz.getBalance("tz1YvE7Sfo92ueEPEdZceNWd5MWNeMNSt16L").then(balance => {
 
 Running `npx ts-node index.ts` should now show the spendable balance of the specified address. This balance is in units of Mutez (micro Tez). Tez is the currency of Tezos, its code is `XTZ`, and the symbol is `ꜩ`. 1 Tez is 1,000,000 Mutez.
 
-Congratulations! You have just interacted with the Tezos blockchain using Taquito. In the next section, we will establish a high-level understanding of the blockchain, Tezos, dApps, and Taquito. If you are already familiar with these concepts, you can skip to [Sending a Transfer operation to the blockchain using Taquito](#sending-a-transfer-operation-to-the-blockchain-using-taquito).
+Congratulations! You have just interacted with the Tezos blockchain using octez.js. In the next section, we will establish a high-level understanding of the blockchain, Tezos, dApps, and octez.js. If you are already familiar with these concepts, you can skip to [Sending a Transfer operation to the blockchain using octez.js](#sending-a-transfer-operation-to-the-blockchain-using-octez-js).
 
 ## What is a blockchain?
 The blockchain is a way to trust a network of computers run by strangers (so you don't have to trust the individual people). It might seem impossible, but it works. How?
@@ -168,11 +168,11 @@ A dApp is a web application that interacts with a blockchain. The blockchain is 
 
 But dApps are not limited to these ideas. For instance, one might create a dApp that works as part of an industrial process, and interacts with the blockchain to benefit from its features, like transparency, immutability, and provability.
 
-## What is Taquito?
+## What is octez.js?
 
-Taquito is a JavaScript/Typescript library that makes it easy to interact with the Tezos blockchain. It is designed to be used in dApps. It is also used in some wallets and other tools. It's also open-source, developed and maintained by ECAD Labs.
+octez.js is a JavaScript/Typescript library that makes it easy to interact with the Tezos blockchain. It is designed to be used in dApps. It is also used in some wallets and other tools. It's also open-source, developed and maintained by ECAD Labs.
 
-Without Taquito, sending operations to the Tezos blockchain requires you to have to write a lot of code. Some of that is to:
+Without octez.js, sending operations to the Tezos blockchain requires you to have to write a lot of code. Some of that is to:
 1. Estimate the costs for the operation
 2. Properly encode the operation
 3. Sign the operation
@@ -180,9 +180,9 @@ Without Taquito, sending operations to the Tezos blockchain requires you to have
 5. Get the operation receipt
 6. Monitor the chain for inclusion of the operation
 
-And to implement all these, you need detailed information about different data types, protocols, constants, and algorithms used in the Tezos blockchain. Taquito abstracts away all this complexity and provides a simple API for interacting with the blockchain.
+And to implement all these, you need detailed information about different data types, protocols, constants, and algorithms used in the Tezos blockchain. octez.js abstracts away all this complexity and provides a simple API for interacting with the blockchain.
 
-## Sending a `Transfer` operation to the blockchain using Taquito
+## Sending a `Transfer` operation to the blockchain using octez.js
 Returning to our dApp, we now want to send an operation to the blockchain. When reading data from the blockchain we can simply send a read request. When sending an operation, we need to prove that we own the address. To do this we need to sign the operation with the private key of the address.
 
 For the purpose of this section, we are using a pre-defined address that is being shared with everyone else going through this tutorial. **Don't use this address for anything important.** Additionally, there are two possible reasons why the transfer operation may fail:
@@ -210,17 +210,17 @@ For the purpose of this section, we are using a pre-defined address that is bein
 >
 > Even in a development environment, you should use environment variables that are never committed to your version control system.
 
-Due to the extensive nature of Taquito it is broken up into multiple packages that provide different functionality. In the example below, we use the `@taquito/signer` package which provides an "In Memory Signer" functionality. You can install it in your project like so:
+Due to the extensive nature of octez.js it is broken up into multiple packages that provide different functionality. In the example below, we use the `@tezos-x/octez.js-signer` package which provides an "In Memory Signer" functionality. You can install it in your project like so:
 
 ```bash
-npm i @taquito/signer
+npm i @tezos-x/octez.js-signer
 ```
 
 Open the file `index.ts` and replace the code with the following:
 
 ```ts
-import { InMemorySigner } from "@taquito/signer";
-import { TezosToolkit } from "@taquito/taquito";
+import { InMemorySigner } from "@tezos-x/octez.js-signer";
+import { TezosToolkit } from "@tezos-x/octez.js";
 
 const main = async () => {
     const Tezos = new TezosToolkit("https://ghostnet.tezos.ecadinfra.com");
@@ -254,7 +254,7 @@ What is happening here? Let's break it down:
 2. We create a new instance of `InMemorySigner` and pass the private key of the address we want to use to sign the operation.
 3. We get the public key hash of the address (not strictly necessary but good for informational purposes).
 4. We set the provider of the `TezosToolkit` instance to the signer we created in step 2.
-5. We send a `Transfer` operation to the blockchain. Taquito will automatically do the following behind the scenes:
+5. We send a `Transfer` operation to the blockchain. octez.js will automatically do the following behind the scenes:
     1. Estimate the cost of the operation.
     2. Encode the operation.
     3. Sign the operation with the private key.
@@ -262,11 +262,11 @@ What is happening here? Let's break it down:
 6. We wait for the operation to be included in a block.
 7. We print the hash of the operation.
 
-Congratulations! You have just sent an operation to the Tezos blockchain using Taquito.
+Congratulations! You have just sent an operation to the Tezos blockchain using octez.js.
 
-## Interacting with a smart contract using Taquito
+## Interacting with a smart contract using octez.js
 
-Next we will interact with a smart contract using Taquito. We will mint an NFT on the ghostnet version of [objkt.com](https://objkt.com), an NFT marketplace.
+Next we will interact with a smart contract using octez.js. We will mint an NFT on the ghostnet version of [objkt.com](https://objkt.com), an NFT marketplace.
 
 The concepts you learn here are not limited to objkt.com or NFTs. You can use the same concepts to interact with any smart contract on the Tezos blockchain.
 
@@ -301,13 +301,13 @@ const main = async () => {
 What happens here? Let's break it down:
 1. We set up the Tezos Toolkit and signer as before.
 2. We get the contract metadata from the blockchain. This metadata contains information about the contract, including its entrypoints.
-3. We call the `mint_artist` entrypoint of the contract. We need to provide the data it expects, which is provided as a JavaScript object. Taquito will automatically encode this data to be sent to the contract.
+3. We call the `mint_artist` entrypoint of the contract. We need to provide the data it expects, which is provided as a JavaScript object. octez.js will automatically encode this data to be sent to the contract.
 4. We wait for the confirmation and print the hash as before.
 
 Now, if you run your code, you should be able to see the hash of the operation in the terminal.
 After about a minute, you should be able to see the new NFT in [the collection](https://ghostnet.objkt.com/collection/KT1XmD31NdBrTcL7bPF3md6i5g4BbE6s2YLv). Because everyone following this tutorial is minting NFTs with the same metadata, all the NFTs in this collection will look the same. However, the number of tokens in the collection should increase by one.
 
-Congratulations! You have just interacted with a smart contract using Taquito. Additionally, you programmatically minted an NFT.
+Congratulations! You have just interacted with a smart contract using octez.js. Additionally, you programmatically minted an NFT.
 
 Up until now, we have created programs that run in a terminal. While some of the code written to interact with the blockchain might actually be such an application, most of the time we will create dApps that can be accessed in the browser.
 
@@ -321,7 +321,7 @@ A "wallet" is a program that stores the users secrets (like private keys) and si
 
 The wallet is also responsible for showing the operations to the user and asking them to approve the operation. The user only needs to fully trust the wallet, as the dApp cannot make any write operations to the blockchain unless it is signed by the wallet. This moves most of the responsibility off the developer of the dApp and on to the developer of the wallet, creating a simpler and more cohesive ecosystem for the user.
 
-The Beacon SDK is a library that provides a standard way for dApps to connect to wallets. The Beacon SDK supports several wallets, including Umami, Temple, and Kukai. You don't need to use the Beacon SDK directly as Taquito has a package that provides simple access to the Beacon SDK.
+The Beacon SDK is a library that provides a standard way for dApps to connect to wallets. The Beacon SDK supports several wallets, including Umami, Temple, and Kukai. You don't need to use the Beacon SDK directly as octez.js has a package that provides simple access to the Beacon SDK.
 
 ### The flow of events in the dApp
 
@@ -345,11 +345,11 @@ Here is a high-level example of the flow of events in the dApp:
 
 Alternatively, in a slightly different flow, the wallet sends the signed operation to the dApp, and dApp sends it to the blockchain. From the user's point of view, both flows look the same.
 
-This may sound complicated, but once you start working with Taquito, all the pieces fall into place and it will make more sense.
+This may sound complicated, but once you start working with octez.js, all the pieces fall into place and it will make more sense.
 
 ## Creating a simple dApp that transfers ꜩ from the users wallet to another address
 
-We will start by creating a simple dApp that transfers ꜩ from the user's wallet to another address. This will help you understand the flow of events in a dApp and the role of Taquito and Beacon SDK in the process.
+We will start by creating a simple dApp that transfers ꜩ from the user's wallet to another address. This will help you understand the flow of events in a dApp and the role of octez.js and Beacon SDK in the process.
 
 ### Creating the React app
 
@@ -370,24 +370,24 @@ npm run dev
 The terminal should show a message that says: `➜  Local:   http://localhost:5173/`.
 Open a browser and visit the URL printed in the terminal. You should see a page that says: "Hello, Vite + React".
 
-### Adding Taquito and the Beacon SDK
+### Adding octez.js and the Beacon SDK
 
-In the next step, we will add Taquito and the Beacon SDK to our app and create a minimal UI to connect to the wallet and transfer ꜩ.
+In the next step, we will add octez.js and the Beacon SDK to our app and create a minimal UI to connect to the wallet and transfer ꜩ.
 
-In a new terminal in your projects directory, install Taquito, Taquito's Beacon Wallet package, and Airgaps Beacon dApp package.
+In a new terminal in your projects directory, install octez.js, octez.js's Beacon Wallet package, and Airgaps Beacon dApp package.
 ```bash
-npm i @taquito/taquito @taquito/beacon-wallet @airgap/beacon-dapp
+npm i @tezos-x/octez.js @tezos-x/octez.js-beacon-wallet @airgap/beacon-dapp
 ```
 
 Open the file `src/App.tsx` and replace the content with the code below. There will be errors, but you can ignore those for now, we will create the missing files in the next step.
 
 ```
 import { useState } from "react";
-import { TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit } from "@tezos-x/octez.js";
 import "./App.css";
 import ConnectButton from "./components/ConnectWallet";
 import Transfer from "./components/Transfer";
-import { BeaconWallet } from "@taquito/beacon-wallet";
+import { BeaconWallet } from "@tezos-x/octez.js-beacon-wallet";
 
 const App = () => {
   const [Tezos] = useState<TezosToolkit>(
@@ -415,14 +415,14 @@ export default App;
 
 ### Connecting to the wallet
 
-The first step in interacting with the blockchain is connecting to the user's wallet. Taquito provides a BeaconWallet class that abstracts away the complexity of connecting to the wallet. The BeaconWallet class is a wrapper around the Beacon SDK.
+The first step in interacting with the blockchain is connecting to the user's wallet. octez.js provides a BeaconWallet class that abstracts away the complexity of connecting to the wallet. The BeaconWallet class is a wrapper around the Beacon SDK.
 
 Create a new file `src/components/ConnectWallet.tsx` and add the following code:
 
 ```
 import { type Dispatch, type JSX, type SetStateAction, useEffect } from "react";
-import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet } from "@taquito/beacon-wallet";
+import { TezosToolkit } from "@tezos-x/octez.js";
+import { BeaconWallet } from "@tezos-x/octez.js-beacon-wallet";
 import { NetworkType } from "@airgap/beacon-dapp";
 
 type ButtonProps = {
@@ -486,7 +486,7 @@ Create a new file `src/components/Transfer.tsx` and add the following code:
 
 ```
 import { useState, type JSX } from "react";
-import { TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit } from "@tezos-x/octez.js";
 
 const Transfer = ({
   Tezos,
@@ -552,7 +552,7 @@ export default Transfer;
 
 ### Fixing node-specific dependencies in the browser
 
-The libraries Taquito and Beacon SDK are designed to run in a Node.js environment. However, we are running them in a browser, which causes some issues. For example, the Beacon SDK uses the Node.js `buffer`, `stream`, and `util` modules. These modules are not available in the browser. Fortunately, there are browser-compatible versions of these modules that we can use instead of the Node.js versions. To do this, we need to install the following packages:
+The libraries octez.js and Beacon SDK are designed to run in a Node.js environment. However, we are running them in a browser, which causes some issues. For example, the Beacon SDK uses the Node.js `buffer`, `stream`, and `util` modules. These modules are not available in the browser. Fortunately, there are browser-compatible versions of these modules that we can use instead of the Node.js versions. To do this, we need to install the following packages:
 
 ```bash
 npm i -D vite-plugin-node-polyfills
@@ -586,14 +586,14 @@ If you intend to continue using this example dApp and eventually deploy it to a 
 
 We've come a long way:
  1. We started with a simple command-line application that reads the balance of an address from the blockchain.
- 2. Then, we established a high-level understanding of the blockchain, Tezos, dApps, and Taquito.
- 3. After that, we sent a `Transfer` operation to the blockchain using Taquito.
- 4. Then, we interacted with a smart contract using Taquito.
+ 2. Then, we established a high-level understanding of the blockchain, Tezos, dApps, and octez.js.
+ 3. After that, we sent a `Transfer` operation to the blockchain using octez.js.
+ 4. Then, we interacted with a smart contract using octez.js.
  5. Finally, we implemented all the previous learnings as a simple web dApp.
 
 Your journey does not end here. There are many more things to learn. Here are some ideas:
 
-- Check out the [Taquito documentation](quick_start) to learn more about Taquito.
+- Check out the [octez.js documentation](quick_start) to learn more about octez.js.
 - Learn a smart contract language like [Ligo](https://ligolang.org/).
 - Learn more about Tezos and its ecosystem, check out the [Tezos Developer Portal](https://tezos.com/developers/).
 - See what others are doing: Join Tezos community on [Discord](https://discord.gg/tezos), [Reddit](https://www.reddit.com/r/tezos/), [Twitter](https://twitter.com/tezos), and [Telegram](https://t.me/tezosplatform).

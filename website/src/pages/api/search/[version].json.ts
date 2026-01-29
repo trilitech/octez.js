@@ -1,9 +1,8 @@
 import { getCollection } from 'astro:content';
 import type { APIRoute, GetStaticPaths } from 'astro';
-import { VERSIONS, DEFAULT_VERSION } from '../../../config/versions.mjs';
 
-// Re-export for consumers that import from this file
-export { VERSIONS, DEFAULT_VERSION };
+export const VERSIONS = ["next", "24.0.0", "23.1.0", "23.0.0", "22.0.0", "21.0.0"];
+export const DEFAULT_VERSION = "24.0.0";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return VERSIONS.map((version) => ({
@@ -29,6 +28,8 @@ export const GET: APIRoute = async ({ params }) => {
     return docVersion === version;
   });
 
+  // Normalize base URL to always have trailing slash for path joining
+  const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
   const searchIndex = versionDocs.map((doc) => {
     const slug = doc.id.replace(/\.mdx?$/, '');
     const bodyContent = doc.body || '';
@@ -36,7 +37,7 @@ export const GET: APIRoute = async ({ params }) => {
     return {
       title: doc.data.title || slug.split('/').pop() || '',
       slug,
-      url: `/docs/${slug}`,
+      url: `${base}docs/${slug}`,
       content: bodyContent.substring(0, 500),
       excerpt: bodyContent.substring(0, 150).replace(/[#*`\[\]]/g, '').trim(),
     };

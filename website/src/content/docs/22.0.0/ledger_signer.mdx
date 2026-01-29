@@ -5,7 +5,7 @@ author: Roxane Letourneau
 
 
 
-The Ledger Signer implements the Signer interface of Taquito, allowing you to sign operation from a Ledger Nano device.
+The Ledger Signer implements the Signer interface of octez.js, allowing you to sign operation from a Ledger Nano device.
 
 :::note
 You need to have the [Tezos Wallet app](https://support.ledger.com/hc/en-us/articles/360016057774-Tezos-XTZ-) installed and opened on your Ledger device when using the Ledger Signer.
@@ -34,7 +34,7 @@ values={[
 
 ```js
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
-import { LedgerSigner } from '@taquito/ledger-signer';
+import { LedgerSigner } from '@tezos-x/octez.js-ledger-signer';
 
 const transport = await TransportWebHID.create();
 const ledgerSigner = new LedgerSigner(transport);
@@ -45,7 +45,7 @@ const ledgerSigner = new LedgerSigner(transport);
 
 ```js
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import { LedgerSigner } from '@taquito/ledger-signer';
+import { LedgerSigner } from '@tezos-x/octez.js-ledger-signer';
 
 const transport = await TransportNodeHid.create();
 const ledgerSigner = new LedgerSigner(transport);
@@ -65,7 +65,7 @@ The constructor of the `LedgerSigner` class can take three other parameters. If 
   It can be DerivationType.ED25519 | DerivationType.BIP32_ED25519 (tz1), DerivationType.SECP256K1 (tz2) or DerivationType.P256 (tz3).
 
 ```js
-import { LedgerSigner, DerivationType, HDPathTemplate } from '@taquito/ledger-signer';
+import { LedgerSigner, DerivationType, HDPathTemplate } from '@tezos-x/octez.js-ledger-signer';
 
 const ledgerSigner = new LedgerSigner(
   transport, //required
@@ -78,9 +78,9 @@ const ledgerSigner = new LedgerSigner(
 ## Usage
 
 ```js
-import { LedgerSigner } from '@taquito/ledger-signer';
+import { LedgerSigner } from '@tezos-x/octez.js-ledger-signer';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
@@ -161,8 +161,8 @@ Where `purpose` is a constant set to `44'` and `coin_type` is set to `1729'` for
 The path always begins with `44'/1729'` and we see some difference for the three other indexes across the Tezos ecosystem. We can notice that changing any number for the three last indexes of the path (`account' / change / address_index`) will lead to different accounts. **But, to ensure consistency, it is important trying to follow the same convention regarding the structure of the path and which index to increase to access the next address.**
 
 In Tezos, we generally see a slight difference in the path compared to the BIP44 specification. It is common to see path made of 4 indexes instead of 5 (default path being `44'/1729'/0'/0'` instead of `44'/1729'/0'/0'/0'`). For example, the default path used by tezos-client is `44'/1729'/0'/0'`.
-Based on what is done by the Tezos-client, the default path used by Taquito in the `LedgerSigner` is also `44'/1729'/0'/0'`. Taquito offers a template for the path called `HDPathTemplate`. This template uses four indexes and suggests doing the iteration on the `account` index.
-For example, you can use HDPathTemplate(0) (equivalent to `44'/1729'/0'/0'`) to access the first address, HDPathTemplate(1) equivalent to `44'/1729'/1'/0'`) to access the second address, HDPathTemplate(2) (equivalent to `44'/1729'/2'/0'`) to access the third address... _In order to meet the needs of each user, this template is not imposed by Taquito_.
+Based on what is done by the Tezos-client, the default path used by octez.js in the `LedgerSigner` is also `44'/1729'/0'/0'`. octez.js offers a template for the path called `HDPathTemplate`. This template uses four indexes and suggests doing the iteration on the `account` index.
+For example, you can use HDPathTemplate(0) (equivalent to `44'/1729'/0'/0'`) to access the first address, HDPathTemplate(1) equivalent to `44'/1729'/1'/0'`) to access the second address, HDPathTemplate(2) (equivalent to `44'/1729'/2'/0'`) to access the third address... _In order to meet the needs of each user, this template is not imposed by octez.js_.
 
 We can see other implementations that use `44'/1729'/0'/0'/0'`, where the next address is accessed by incrementing `account` or `address_index`.
 
@@ -195,8 +195,8 @@ Having your Ledger device connected to your computer and the `Tezos Wallet App` 
 _Note that this example is not intended to be a complete example of paths scanning but only a rough outline of what it is possible to do._
 
 ```js 
-//import { LedgerSigner, DerivationType, HDPathTemplate } from '@taquito/ledger-signer';
-//import { TezosToolkit } from '@taquito/taquito';
+//import { LedgerSigner, DerivationType, HDPathTemplate } from '@tezos-x/octez.js-ledger-signer';
+//import { TezosToolkit } from '@tezos-x/octez.js';
 // import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 //const Tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com');
 
@@ -239,4 +239,4 @@ function getAddressInfo(transport, index) {
 }
 ```
 
-A similar example using `@ledgerhq/hw-transport-node-hid` can be found [here](https://github.com/ecadlabs/taquito/tree/master/example/scan-path-ledger.ts). This example directly retrieves the public keys from the Ledger without asking for confirmation on the device.
+A similar example using `@ledgerhq/hw-transport-node-hid` can be found [here](https://github.com/trilitech/octez.js/tree/master/example/scan-path-ledger.ts). This example directly retrieves the public keys from the Ledger without asking for confirmation on the device.

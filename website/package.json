@@ -1,5 +1,5 @@
 {
-  "name": "@taquito/website",
+  "name": "@tezos-x/octez.js-website",
   "private": true,
   "type": "module",
   "version": "24.0.2",
@@ -13,21 +13,21 @@
     "generate:rpc": "node src/scripts/generate-rpc-table.js"
   },
   "dependencies": {
-    "@airgap/beacon-sdk": "^4.7.0",
+    "@tezos-x/octez.connect-sdk": "^0.9.0",
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/sitemap": "^3.6.0",
     "@cloudflare/workers-types": "^4.20251205.0",
     "@ledgerhq/hw-transport-webhid": "^6.30.10",
     "@lucide/astro": "^0.562.0",
-    "@taquito/beacon-wallet": "^23.1.0",
-    "@taquito/ledger-signer": "^23.1.0",
-    "@taquito/michel-codec": "^23.1.0",
-    "@taquito/signer": "^23.1.0",
-    "@taquito/taquito": "^23.1.0",
-    "@taquito/tzip12": "^23.1.0",
-    "@taquito/tzip16": "^23.1.0",
-    "@taquito/utils": "^23.1.0",
-    "@taquito/wallet-connect": "^23.1.0",
+    "@tezos-x/octez.js-beacon-wallet": "*",
+    "@tezos-x/octez.js-ledger-signer": "*",
+    "@tezos-x/octez.js-michel-codec": "*",
+    "@tezos-x/octez.js-signer": "*",
+    "@tezos-x/octez.js": "*",
+    "@tezos-x/octez.js-tzip12": "*",
+    "@tezos-x/octez.js-tzip16": "*",
+    "@tezos-x/octez.js-utils": "*",
+    "@tezos-x/octez.js-wallet-connect": "*",
     "astro": "^5.16.10",
     "astro-auto-import": "^0.4.5",
     "buffer": "^6.0.3",
@@ -38,12 +38,12 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.17",
+    "@tailwindcss/vite": "4.0.17",
     "@types/prismjs": "^1.26.5",
     "crypto-browserify": "^3.12.1",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
-    "tailwindcss": "^4.1.17",
-    "vite-plugin-node-polyfills": "^0.24.0"
+    "tailwindcss": "4.0.17",
+    "vite-plugin-node-polyfills": "0.22.0"
   }
 }

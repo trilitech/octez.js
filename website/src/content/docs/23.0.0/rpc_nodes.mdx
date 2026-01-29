@@ -8,7 +8,7 @@ import BlockReceivedAgo from '@components/docs/BlockReceivedAgo.astro';
 import BlockLevel from '@components/docs/BlockLevel.astro';
 import BlockProtocol from '@components/docs/BlockProtocol.astro';
 
-An RPC (Remote Procedure Call) node is a server that provides an interface for interacting with the Tezos blockchain. It allows applications like Taquito to query blockchain data (such as account balances, contract storage, and block information) and broadcast transactions to the network. Rather than running your own Tezos node, you can connect to public or commercial RPC nodes to access the blockchain.
+An RPC (Remote Procedure Call) node is a server that provides an interface for interacting with the Tezos blockchain. It allows applications like octez.js to query blockchain data (such as account balances, contract storage, and block information) and broadcast transactions to the network. Rather than running your own Tezos node, you can connect to public or commercial RPC nodes to access the blockchain.
 
 ## What to consider when choosing a node
 
@@ -16,7 +16,7 @@ An RPC (Remote Procedure Call) node is a server that provides an interface for i
   - It should not alter your requests. For example: changing the operation data before forging it.
   - It should not censor your operations; you want to know that your operations will reach the network.
 - **Reliability**: Consider your requirements for uptime, and choose your node option accordingly. If node availability is critical for your user-case, consider self-hosting a node or contracting someone to operate a node specifically for you.
-- **End-points support**: Public nodes have different policies on the end-points that they expose. Your use case may require specific end-points to be available to your app. We have made a suite of [integration tests](rpc_nodes_integration_test) for the Taquito RPC package. These tests show what RPC end-points are available on a given node. These tests are available here: [integration-tests/rpc-nodes.spec.ts](https://github.com/ecadlabs/taquito/blob/master/integration-tests/rpc-nodes.spec.ts).
+- **End-points support**: Public nodes have different policies on the end-points that they expose. Your use case may require specific end-points to be available to your app. We have made a suite of [integration tests](rpc_nodes_integration_test) for the octez.js RPC package. These tests show what RPC end-points are available on a given node. These tests are available here: [integration-tests/rpc-nodes.spec.ts](https://github.com/trilitech/octez.js/blob/master/integration-tests/rpc-nodes.spec.ts).
 
 ### Community Nodes
 
@@ -104,7 +104,7 @@ An RPC (Remote Procedure Call) node is a server that provides an interface for i
 
 You can find a machine readable list of RPC nodes in [rpc_nodes.json](/rpc_nodes.json).
 
-If you are aware of a public node missing from our list or our information is inaccurate, please let us know by submitting an issue or pull request on our [GitHub page](https://github.com/ecadlabs/taquito).
+If you are aware of a public node missing from our list or our information is inaccurate, please let us know by submitting an issue or pull request on our [GitHub page](https://github.com/trilitech/octez.js).
 
 ### Commerical Nodes
 
@@ -112,7 +112,7 @@ If you are aware of a public node missing from our list or our information is in
 | -------- | ----------------------- |
 | Exaion   | https://node.exaion.com |
 
-If you are aware of a commerical node missing from our list or our information is inaccurate, please let us know by submitting an issue or pull request on our [GitHub page](https://github.com/ecadlabs/taquito).
+If you are aware of a commerical node missing from our list or our information is inaccurate, please let us know by submitting an issue or pull request on our [GitHub page](https://github.com/trilitech/octez.js).
 
 ## How to run a node
 

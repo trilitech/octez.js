@@ -3,7 +3,7 @@ title: Liquidity Baking interactions
 author: Claude Barde
 ---
 
-# Liquidity Baking contract and Taquito
+# Liquidity Baking contract and octez.js
 
 The goal of this document is to acquaint yourself with the different values in the storage of the contract as well as its entrypoints and the JavaScript code necessary to interact with them.
 
@@ -54,12 +54,12 @@ _Parameters_: no parameter, only the subsidy in tez is sent with the transaction
     - __minTokensWithdrawn__: the minimum amount of tzBTC tokens expected to be credited
     - __deadline__: the expiry time of the transaction
 
-### Interacting with the entrypoints with Taquito
+### Interacting with the entrypoints with octez.js
 The main friction point of interacting with the LB contract in JavaScript is about simulating the calculations of the expected token outputs Michelson does.
 
 - __%tokenToXtz__:
 ```ts
-import { TezosToolkit } from "@taquito/taquito"
+import { TezosToolkit } from "@tezos-x/octez.js"
 
 // to take into account the subsidy added to the LB contract
 // when the transaction will be baked
@@ -143,7 +143,7 @@ This code sends a transaction to the `%tokenToXtz` entrypoint of the contract to
 
 - __%xtzToToken__:
 ```ts
-import { TezosToolkit, OpKind } from "@taquito/taquito"
+import { TezosToolkit, OpKind } from "@tezos-x/octez.js"
 
 // outputs the amount of tzBTC tokens for a given amount of XTZ
 const xtzToTokenTokenOutput = (p: {
@@ -205,7 +205,7 @@ This code sends a transaction to the `%xtzToToken` entrypoint of the contract to
 
 - __%addLiquidity__:
 ```ts
-import { TezosToolkit, OpKind } from "@taquito/taquito"
+import { TezosToolkit, OpKind } from "@tezos-x/octez.js"
 
 const Tezos = new TezosToolkit(RPC_URL);
 const lbContract = await Tezos.wallet.at(LB_CONTRACT_ADDRESS);
@@ -260,7 +260,7 @@ The maximum amount of tzBTC tokens to be sold is calculated using this formula: 
 
 - __%removeLiquidity__:
 ```ts
-import { TezosToolkit } from "@taquito/taquito"
+import { TezosToolkit } from "@tezos-x/octez.js"
 
 const calculateLqtOutput = ({
   lqTokens,
