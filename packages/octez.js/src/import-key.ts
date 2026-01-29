@@ -1,5 +1,5 @@
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
-import { TezosToolkit } from './taquito';
+import { TezosToolkit } from './octez';
 
 /**
  *

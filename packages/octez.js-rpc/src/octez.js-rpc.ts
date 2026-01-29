@@ -108,7 +108,7 @@ export class RpcClient implements RpcClientInterface {
    * @param httpBackend Http backend that issue http request.
    * You can override it by providing your own if you which to hook in the request/response
    *
-   * @example new RpcClient('https://mainnet.tezos.ecadinfra.com/', 'main') this will use https://mainnet.tezos.ecadinfra.com//chains/main
+   * @example new RpcClient('https://rpc.tzbeta.net/', 'main') this will use https://rpc.tzbeta.net//chains/main
    */
   constructor(
     protected url: string,

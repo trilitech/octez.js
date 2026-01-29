@@ -8,7 +8,7 @@ const pkg = require('./package.json');
 const libraryName = 'octezJs';
 
 export default {
-  input: 'src/taquito.ts',
+  input: 'src/octez.ts',
   output: [
     {
       file: pkg.main,

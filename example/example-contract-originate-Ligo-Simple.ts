@@ -3,7 +3,7 @@ import { ligoSample } from '../integration-tests/data/ligo-simple-contract';
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
 async function example() {
-  const provider = 'https://ghostnet.tezos.ecadinfra.com';
+  const provider = 'https://rpc.ghostnet.teztnets.com';
     const signer = new InMemorySigner('edskRtmEwZxRzwd1obV9pJzAoLoxXFWTSHbgqpDBRHx1Ktzo5yVuJ37e2R4nzjLnNbxFU4UiBU1iHzAy52pK5YBRpaFwLbByca');
     const tezos = new TezosToolkit(provider);
     tezos.setSignerProvider(signer);

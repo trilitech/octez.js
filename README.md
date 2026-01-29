@@ -185,7 +185,7 @@ The [octez.js website][4] is built with [Docusaurus][5]. To run it locally:
 
 ### Security Issues
 
-To report a security issue, please contact [security@ecadlabs.com](mailto:security@ecadlabs.com).
+To report a security issue, please contact [contact@nomadic-labs.com](mailto:contact@nomadic-labs.com).
 
 ### Bugs or Feature Requests
 

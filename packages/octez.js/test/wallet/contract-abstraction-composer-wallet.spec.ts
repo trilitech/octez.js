@@ -1,4 +1,4 @@
-import { TezosToolkit } from '../../src/taquito';
+import { TezosToolkit } from '../../src/octez';
 import { ContractAbstraction } from '../../src/contract/contract';
 import { Wallet } from '../../src/wallet/wallet';
 import { script } from '../contract/data-lambda-view-class';

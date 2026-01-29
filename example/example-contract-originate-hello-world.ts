@@ -1,7 +1,7 @@
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
-const provider = 'https://ghostnet.tezos.ecadinfra.com';
+const provider = 'https://rpc.ghostnet.teztnets.com';
 
 async function example() {
   const tezos = new TezosToolkit(provider);

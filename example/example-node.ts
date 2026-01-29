@@ -3,7 +3,7 @@ import { RpcClient } from '../packages/octez.js-rpc/src/octez.js-rpc';
 import { castToString } from '../packages/octez.js-rpc/src/utils/utils';
 import BigNumber from 'bignumber.js';
 
-const provider = 'https://ghostnet.tezos.ecadinfra.com';
+const provider = 'https://rpc.ghostnet.teztnets.com';
 
 const client = new RpcClient(provider);
 

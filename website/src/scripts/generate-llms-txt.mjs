@@ -47,7 +47,7 @@ function generateLlmsTxt() {
 
 > Official documentation for octez.js, a TypeScript library for building DApps on the Tezos blockchain.
 
-This file lists all documentation pages available at https://taquito.io. Use this to understand the documentation structure and find relevant pages.
+This file lists all documentation pages available at https://octez.js.dev. Use this to understand the documentation structure and find relevant pages.
 
 ## URL Structure
 

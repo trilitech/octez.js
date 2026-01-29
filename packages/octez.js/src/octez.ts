@@ -124,7 +124,7 @@ export class TezosToolkit {
    *
    * @param options rpc url or rpcClient to use to interact with the Tezos network
    *
-   * @example Tezos.setProvider({rpc: 'https://mainnet.tezos.ecadinfra.com/', signer: new InMemorySigner.fromSecretKey(“edsk...”)})
+   * @example Tezos.setProvider({rpc: 'https://rpc.tzbeta.net/', signer: new InMemorySigner.fromSecretKey(“edsk...”)})
    * @example Tezos.setProvider({ config: { confirmationPollingTimeoutSecond: 300 }})
    *
    */
@@ -183,7 +183,7 @@ export class TezosToolkit {
    *
    * @param options rpc url or rpcClient to use to interact with the Tezos network
    *
-   * @example Tezos.setRpcProvider('https://mainnet.tezos.ecadinfra.com/')
+   * @example Tezos.setRpcProvider('https://rpc.tzbeta.net/')
    *
    */
   setRpcProvider(rpc?: SetProviderOptions['rpc']) {

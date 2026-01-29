@@ -20,7 +20,7 @@
   "author": "Roxane Letourneau <roxane@ecadlabs.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/trilitech/octez.js.git"
   },
   "license": "Apache-2.0",
   "engines": {
@@ -55,7 +55,7 @@
       "js"
     ],
     "moduleNameMapper": {
-      "^@tezos-x/octez.js$": "<rootDir>/../octez.js/src/taquito.ts"
+      "^@tezos-x/octez.js$": "<rootDir>/../octez.js/src/octez.ts"
     },
     "coveragePathIgnorePatterns": [
       "/node_modules/",

@@ -9,7 +9,7 @@
   "main": "dist/octez.umd.js",
   "unpkg": "dist/octez.min.js",
   "module": "dist/octez.es6.js",
-  "typings": "dist/types/taquito.d.ts",
+  "typings": "dist/types/octez.d.ts",
   "files": [
     "signature.json",
     "dist",
