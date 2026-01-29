@@ -1,6 +1,8 @@
-
 # octez.js Local Forging package
+
 *TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_octez.js_local_forging.html)*
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
 ## General Information
 
@@ -41,8 +43,9 @@ Install the package as follows
 npm install @tezos-x/octez.js-local-forging
 ```
 ## Usage
+
 ```ts
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js'
+import { TezosToolkit } from '@tezos-x/octez.js'
 import { LocalForger } from '@tezos-x/octez.js-local-forging'
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
@@ -50,7 +53,8 @@ Tezos.setProvider({ forger: localForger })
 ```
 
 ## Additional Info
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing and versioning.
+
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 

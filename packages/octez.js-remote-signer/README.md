@@ -1,5 +1,8 @@
 # octez.js Remote Signer package
+
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_remote_signer.html)*
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
 `@tezos-x/octez.js-remote-signer` is an npm package that provides developers with remote signing functionality for octez.js. 
 
@@ -7,10 +10,10 @@
 
 If you require the server-side signing of operations on the mainnet, we recommend exploring the use of the Remote Signer package in conjunction with an HSM remote signer such as [Signatory](https://signatory.io/) or [TacoInfra's Remote Signer](https://github.com/tacoinfra/remote-signer).
 
-## Install 
+## Install
 
 ```
-npm i --save @tezos-x/octez.js-octez.js
+npm i --save @tezos-x/octez.js
 npm i --save @tezos-x/octez.js-remote-signer
 ```
 
@@ -19,7 +22,7 @@ npm i --save @tezos-x/octez.js-remote-signer
 When the `RemoteSigner` is configured on the `TezosToolkit`, octez.js features that require signing support can be used. The Contract API operations will be signed using the signer. Validation of the signature will be conducted before the operation is injected. The `RemoteSigner` can be injected into the `TezosToolkit` as follows:
 
 ```ts
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 import { RemoteSigner } from '@tezos-x/octez.js-remote-signer';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
@@ -34,7 +37,7 @@ The constructor of the `RemoteSigner` class requires the public key hash and the
 
 ## Additional info
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing, and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing, and versioning.
 
 ## Disclaimer
 

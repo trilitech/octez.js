@@ -1,14 +1,16 @@
 # octez.js michel-codec package
 
-`@tezos-x/octez.js-michel-codec` Converts and validates Michelson expressions between JSON based Michelson and Micheline.
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
+
+`@tezos-x/octez.js-michel-codec` converts and validates Michelson expressions between JSON-based Michelson and Micheline.
 
 This package can:
 
-- Retrieve Michelson in JSON form from the Tezos Node RPC and convert it to plain Michelson.
-- Parse plain Michelson (including Macros) and expand/convert it to JSON Michelson suitable for injection into the Tezo Blockchain.
+- Retrieve Michelson in JSON form from the Tezos Node RPC and convert it to plain Michelson
+- Parse plain Michelson (including Macros) and expand/convert it to JSON Michelson suitable for injection into the Tezos Blockchain
 - Validate Michelson to ensure correctness
 
-See the top-level project [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) for details on reporting issues, contributing and versioning.
+See the top-level project [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) for details on reporting issues, contributing and versioning.
 
 ## Examples
 

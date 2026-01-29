@@ -1,5 +1,8 @@
 # octez.js Utils package
+
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_utils.html)*
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
 `@tezos-x/octez.js-utils` is an npm package that provides developers with utility functionality for octez.js.
 
@@ -267,7 +270,7 @@ console.log(getPkhfromPk(publicKey));
 
 ## Additional info
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing, and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing, and versioning.
 
 ## Disclaimer
 

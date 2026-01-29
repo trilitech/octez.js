@@ -1,6 +1,9 @@
 # octez.js TZIP-012 package
-*Documentation can be found [here](https://octez.js.io/docs/tzip12)*  
+
+*Documentation can be found [here](https://octez.js.io/docs/tzip12)*
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_octez.js_tzip12.html)*
+
+**Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
 `@tezos-x/octez.js-tzip12` is an npm package that provides developers with TZIP-12 functionality for octez.js. The package allows retrieving metadata associated with tokens of FA2 contracts.
 
@@ -14,10 +17,11 @@ The `getTokenMetadata` method of the `Tzip12ContractAbstraction` class will find
 
 ## Install
 
-The package can be used to extend the well-known octez.js contract abstraction. The `@tezos-x/octez.js-tzip12` and the `@tezos-x/octez.js-octez.js` packages need to be installed as follows:
+The package can be used to extend the well-known octez.js contract abstraction. The `@tezos-x/octez.js-tzip12` and the `@tezos-x/octez.js` packages need to be installed as follows:
+
 ```
 npm i --save @tezos-x/octez.js-tzip12
-npm i --save @tezos-x/octez.js-octez.js
+npm i --save @tezos-x/octez.js
 ```
 
 ## Usage
@@ -29,9 +33,8 @@ The constructor of the `Tzip12Module` takes an optional `MetadataProvider` as a 
 **Use the `tzip12` function to extend a contract abstraction**
 
 ```ts
-import { TezosToolkit } from '@tezos-x/octez.js-octez.js';
-import { Tzip12Module } from '@tezos-x/octez.js-tzip12';
-import { tzip12 } from '@tezos-x/octez.js-tzip12';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { Tzip12Module, tzip12 } from '@tezos-x/octez.js-tzip12';
 import BigNumber from 'bignumber.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
@@ -55,7 +58,7 @@ interface TokenMetadata {
 
 ## Additional info
 
-See the top-level [https://github.com/ecadlabs/octez.js](https://github.com/ecadlabs/octez.js) file for details on reporting issues, contributing and versioning.
+See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
 
 ## Disclaimer
 
