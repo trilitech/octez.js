@@ -1,7 +1,7 @@
-import { OpKind } from '@taquito/taquito';
+import { OpKind } from '@tezos-x/octez.js';
 import { CONFIGS, SignerType } from '../../../config';
-import { TezosToolkit } from '@taquito/taquito';
-import { PrefixV2 } from '@taquito/utils';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { PrefixV2 } from '@tezos-x/octez.js-utils';
 
 CONFIGS().forEach(({ lib, rpc, setup, knownBaker, signerConfig, createAddress }) => {
   const Tezos = lib;

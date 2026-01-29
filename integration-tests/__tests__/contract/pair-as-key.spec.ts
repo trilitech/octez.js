@@ -1,8 +1,8 @@
 import { CONFIGS } from "../../config";
-import { BigMapAbstraction, MichelsonMap } from "@taquito/taquito";
+import { BigMapAbstraction, MichelsonMap } from "@tezos-x/octez.js";
 import { storageContractWithPairAsKey } from "../../data/storage-contract-with-pair-as-key";
 import { mapWithPairAsKeyCode, mapWithPairAsKeyStorage } from "../../data/bigmap_with_pair_as_key";
-import { MichelsonMapKey } from "@taquito/michelson-encoder";
+import { MichelsonMapKey } from "@tezos-x/octez.js-michelson-encoder";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;

@@ -1,5 +1,5 @@
-import { TezosToolkit } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
 const provider = 'https://ghostnet.tezos.ecadinfra.com';
 

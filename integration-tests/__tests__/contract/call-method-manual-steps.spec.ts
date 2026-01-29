@@ -1,5 +1,5 @@
-import { createTransferOperation } from '@taquito/taquito';
-import { encodeOpHash } from '@taquito/utils';
+import { createTransferOperation } from '@tezos-x/octez.js';
+import { encodeOpHash } from '@tezos-x/octez.js-utils';
 import { CONFIGS } from '../../config';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
@@ -25,7 +25,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       // This plan to be addressed in issue #432
 
       // The purpose of this test is to calculate the operation hash before sending the operation to the node.
-      // Using Taquito to call a contract entry point abstracts many underlying calls
+      // Using octez.js to call a contract entry point abstracts many underlying calls
       // Here are steps to manually reproduce the following operation: contract.methodsObject.default(5).send();
 
       // Calling an entry point is a type of transaction operation

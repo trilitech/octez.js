@@ -1,4 +1,4 @@
-import { Protocols } from '@taquito/taquito';
+import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 // TC-T-008: assume that the ticket is just a (pair address cty nat) and can "easily" be created via a callback.
@@ -83,4 +83,4 @@ CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
   });
 });
 
-// This test was transcribed to Taquito from bash scripts at https://github.com/Inference/TezosSecurityBaselineCheckingFramework
+// This test was transcribed to octez.js from bash scripts at https://github.com/Inference/TezosSecurityBaselineCheckingFramework

@@ -6,7 +6,7 @@ author: Claude Barde
 
 ## What is the Wallet API?
 
-You have learned how to use Taquito to interact with the Tezos blockchain. Up to this document, we used a signer to sign operations. Interactive dApps (short for "decentralized Apps") commonly use a wallet to sign operations. The Wallet API provides a new yet familiar way to interact with the blockchain and smart contracts by delegating several actions that Taquito previously handled to the wallets. This delegation offers more flexibility for both developers and users and gives the ecosystem more space to evolve. From a user's perspective, the workflow is as follows:
+You have learned how to use octez.js to interact with the Tezos blockchain. Up to this document, we used a signer to sign operations. Interactive dApps (short for "decentralized Apps") commonly use a wallet to sign operations. The Wallet API provides a new yet familiar way to interact with the blockchain and smart contracts by delegating several actions that octez.js previously handled to the wallets. This delegation offers more flexibility for both developers and users and gives the ecosystem more space to evolve. From a user's perspective, the workflow is as follows:
 
 1. The user has a wallet installed and configured on their device. (Or they might be using a web-based wallet)
 2. The user visits a dApp.
@@ -24,10 +24,10 @@ The main benefit of this workflow is that the user does not have to trust a dApp
 
 ## Installing the Wallet API
 
-The first thing to do is to use the wallet API is to install it. You just need to install the Taquito package to use the wallet API:
+The first thing to do is to use the wallet API is to install it. You just need to install the octez.js package to use the wallet API:
 
 ```
-npm install @taquito/taquito @taquito/beacon-wallet @temple-wallet/dapp
+npm install @tezos-x/octez.js @tezos-x/octez.js-beacon-wallet @temple-wallet/dapp
 ```
 
 A separate step from setting up the wallet in the dApp code as a developer is to set up the wallet as the user. This step is different for each wallet (e.g., Temple needs the user to install a browser extension). Some wallets are browser extensions, while others are mobile apps or web wallets.
@@ -35,17 +35,17 @@ We will explain the requirements for the different wallets in detail in the sect
 
 ## Connecting the wallet
 
-After installing the Taquito package in your dapp project and the package containing the Wallet API for the wallet of your choice, it's time to import the Wallet API into your project! Although the steps are very similar for each wallet, they all have their specificities that we will check in the paragraphs below.
+After installing the octez.js package in your dapp project and the package containing the Wallet API for the wallet of your choice, it's time to import the Wallet API into your project! Although the steps are very similar for each wallet, they all have their specificities that we will check in the paragraphs below.
 
-To start, let's import the Tezos Toolkit from Taquito and create a new instance of the Tezos singleton:
+To start, let's import the Tezos Toolkit from octez.js and create a new instance of the Tezos singleton:
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com/');
 ```
 
-This object exposes different methods we are going to use to set up our wallet. TZIP-10 has become the official standard of communication and interaction between wallets and dapps, so let's start with the `@taquito/beacon-wallet` package that implements this standard!
+This object exposes different methods we are going to use to set up our wallet. TZIP-10 has become the official standard of communication and interaction between wallets and dapps, so let's start with the `@tezos-x/octez.js-beacon-wallet` package that implements this standard!
 
 ### - TZIP-10 wallet
 
@@ -54,7 +54,7 @@ The `BeaconWallet` is a package implementing the TZIP-10 standard that describes
 First, the `BeaconWallet` class must be imported:
 
 ```js
-import { BeaconWallet } from '@taquito/beacon-wallet';
+import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
 ```
 
 Then, you can start initializing the wallet:
@@ -62,7 +62,7 @@ Then, you can start initializing the wallet:
 ```js
 const options = {
   name: 'MyAwesomeDapp',
-  iconUrl: 'https://taquito.io/img/favicon.svg',
+  iconUrl: 'https://octez.js.dev/img/favicon.svg',
   network: { type: 'ghostnet' },
   enableMetrics: true,
 };
@@ -111,7 +111,7 @@ Tezos.setProvider({ wallet });
 Make sure you have the Beacon browser extension installed (the extension offers minimal features, the BeaconWallet works with any wallet implementing the TZIP-10 standard), the AirGap wallet on your phone, or any TZIP-10 ready wallet like Temple or Kukai.
 
 ```js live wallet
-// import { BeaconWallet } from '@taquito/beacon-wallet';
+// import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
 // const options = { name: 'exampleWallet', enableMetrics: true };
 // const wallet = new BeaconWallet(options);
 
@@ -153,7 +153,7 @@ Just like the other wallets, you have to import the Temple wallet class first:
 import { TempleWallet } from '@temple-wallet/dapp';
 ```
 
-Then, Temple requires an extra step to verify that the extension is installed and connected in the browser. Temple used to be called Thanos and some Taquito code still uses the name Thanos. The `TempleWallet` class exposes a static property called `isAvailable` that just does that. You must use it before attempting to connect the wallet:
+Then, Temple requires an extra step to verify that the extension is installed and connected in the browser. Temple used to be called Thanos and some octez.js code still uses the name Thanos. The `TempleWallet` class exposes a static property called `isAvailable` that just does that. You must use it before attempting to connect the wallet:
 
 ```js
 try {
@@ -180,7 +180,7 @@ The class constructor takes one parameter, the name of your dapp (this will be u
 await wallet.connect('mainnet' | 'seoulnet' | 'tallinnnet' | 'ghostnet' | 'mondaynet' | 'sandbox');
 ```
 
-(Temple used to be called Thanos and some Taquito code still uses the name Thanos.)
+(Temple used to be called Thanos and some octez.js code still uses the name Thanos.)
 Once the wallet is connected, there are a couple of things you can get out of it:
 
 ```js
@@ -227,7 +227,7 @@ TempleWallet.isAvailable()
 
 ## Making transfers
 
-Although it is possible to transfer tokens directly from the wallets, Taquito can send tokens *programmatically*. This method could be a better solution if you want to do calculations before sending the tokens, or if the amount of tokens to send is based on a variable value. It is also preferable to avoid manual inputs, which are often a source of errors. Using Taquito to send tokens only requires to sign a transaction, sit back and relax :)
+Although it is possible to transfer tokens directly from the wallets, octez.js can send tokens *programmatically*. This method could be a better solution if you want to do calculations before sending the tokens, or if the amount of tokens to send is based on a variable value. It is also preferable to avoid manual inputs, which are often a source of errors. Using octez.js to send tokens only requires to sign a transaction, sit back and relax :)
 
 ### - Transfer between implicit accounts
 
@@ -251,7 +251,7 @@ try {
 }
 ```
 
-The `transfer` method takes an object with only two required properties: the `to` property that indicates the recipient of the transaction and the `amount` property for the number of tokens that should be sent. Unlike the Contract API, the transfer must be _sent_ by using the `.send` method, which returns a promise that will resolve with an instance of the [**TransactionWalletOperation class**](https://taquito.io/typedoc/classes/_taquito_taquito.transactionwalletoperation.html). This instance holds, among others, the transaction hash under the `opHash` property. You can then call the `.confirmation()` method and pass as a parameter the number of confirmations you want to wait (one by default). Once confirmed, the returned promise is resolved to an object with a `complete` property set to true if the operation has been confirmed.
+The `transfer` method takes an object with only two required properties: the `to` property that indicates the recipient of the transaction and the `amount` property for the number of tokens that should be sent. Unlike the Contract API, the transfer must be _sent_ by using the `.send` method, which returns a promise that will resolve with an instance of the [**TransactionWalletOperation class**](https://octez.js.dev/typedoc/classes/_octez.js_octez.js.transactionwalletoperation.html). This instance holds, among others, the transaction hash under the `opHash` property. You can then call the `.confirmation()` method and pass as a parameter the number of confirmations you want to wait (one by default). Once confirmed, the returned promise is resolved to an object with a `complete` property set to true if the operation has been confirmed.
 
 ### - Transfer to smart contracts
 
@@ -276,7 +276,7 @@ Transactions to smart contracts operate in the same fashion as transactions to a
 
 Sending a transaction to a smart contract to update its storage will be a different type of action as it implies targeting a specific entrypoint and formatting correctly the data to be sent.
 
-Fortunately, Taquito will make this operation go like a breeze! First, you need the contract abstraction created with the address of the smart contract you are targeting:
+Fortunately, octez.js will make this operation go like a breeze! First, you need the contract abstraction created with the address of the smart contract you are targeting:
 
 ```js
 const contract = await Tezos.wallet.at('KT1TBxaaeikEUcVN2qdQY7n9Q21ykcX1NLzY');
@@ -342,7 +342,7 @@ If the entrypoint doesn't expect any value (or more precisely, if it expects a `
 contract.methodsObject.noArgumentEntrypoint(UnitValue).send();
 ```
 
-This will tell Taquito that a value of type unit needs to be sent to the entrypoint.
+This will tell octez.js that a value of type unit needs to be sent to the entrypoint.
 
 ### - `.send()` function arguments
 
@@ -375,7 +375,7 @@ If you choose to use the parameters, only one property is mandatory: the `amount
 
 ### - Operation hash and confirmation
 
-The `.send()` method returns an instance of the [`TransactionWalletOperation`](https://taquito.io/typedoc/classes/_taquito_taquito.transactionwalletoperation.html) class with different properties and methods you can use to gather information about the transaction. Among them, there are two properties and one method that you will use most of the time when using Taquito:
+The `.send()` method returns an instance of the [`TransactionWalletOperation`](https://octez.js.dev/typedoc/classes/_octez.js_octez.js.transactionwalletoperation.html) class with different properties and methods you can use to gather information about the transaction. Among them, there are two properties and one method that you will use most of the time when using octez.js:
 
 1. `.opHash`: this property holds the hash of the current transaction. It can be useful for debugging purposes or checking the status of the transaction in a block explorer.
 
@@ -391,7 +391,7 @@ The `.send()` method returns an instance of the [`TransactionWalletOperation`](h
 
 ## Originating a contract
 
-In the Tezos lingo, "origination" means "deployment of a contract to the blockchain". Before Taquito, this was painstaking work as it required to interact directly with a Tezos node and type commands to originate the contract. But not anymore! With Taquito, you only need the Michelson code and the initial storage to make it happen.
+In the Tezos lingo, "origination" means "deployment of a contract to the blockchain". Before octez.js, this was painstaking work as it required to interact directly with a Tezos node and type commands to originate the contract. But not anymore! With octez.js, you only need the Michelson code and the initial storage to make it happen.
 
 First, you need to get the code of the contract. If you deploy a contract you wrote, then you already have the code. If you want to deploy a copy of a contract, you can easily get its code with the following method:
 
@@ -404,12 +404,12 @@ const code = contract.script.code;
 If you get the contract code through this method, it will already be properly formatted for origination. If you have a `.tz` file, you can use the `michel-codec` package to encode it properly:
 
 ```js
-import { Parser } from '@taquito/michel-codec';
+import { Parser } from '@tezos-x/octez.js-michel-codec';
 const parser = new Parser();
 const parsedMichelson = parser.parseScript(michelsonCode);
 ```
 
-> Note: Since Taquito version 6.3.2, you can also pass plain Michelson to the parser without formatting it.
+> Note: Since octez.js version 6.3.2, you can also pass plain Michelson to the parser without formatting it.
 
 For example, this straightforward Michelson contract:
 
@@ -490,7 +490,7 @@ Second, you need the initial storage. According to your smart contract's storage
 
 ```
 
-If you use the Ligo programming language and the storage is a record, you can simply use a JavaScript object that Taquito will encode according to the storage type:
+If you use the Ligo programming language and the storage is a record, you can simply use a JavaScript object that octez.js will encode according to the storage type:
 
 ```js
 
@@ -505,11 +505,11 @@ If you use the Ligo programming language and the storage is a record, you can si
 
 ```
 
-In case of a map or a big map, you must import `MichelsonMap` from `@taquito/taquito` and use it to initialize the map:
+In case of a map or a big map, you must import `MichelsonMap` from `@tezos-x/octez.js` and use it to initialize the map:
 
 ```js
 
-import { MichelsonMap } from "@taquito/taquito";
+import { MichelsonMap } from "@tezos-x/octez.js";
 
 {
   code: parsedMichelson,
@@ -525,7 +525,7 @@ You can even initialize your map/big map with key/value pairs if you wish:
 
 ```js
 
-import { MichelsonMap } from "@taquito/taquito";
+import { MichelsonMap } from "@tezos-x/octez.js";
 
 {
   code: parsedMichelson,
@@ -567,14 +567,14 @@ The origination function returns an instance of the `OriginationWalletOperation`
 
 ## Working with the contract abstraction instance
 
-Taquito makes interacting with smart contracts very easy! With only the smart contract address you want to interact with, you can create a `contract abstraction` and use it for subsequent interactions. You will not only be able to call entrypoints of the smart contract but also fetch its storage!
+octez.js makes interacting with smart contracts very easy! With only the smart contract address you want to interact with, you can create a `contract abstraction` and use it for subsequent interactions. You will not only be able to call entrypoints of the smart contract but also fetch its storage!
 
 ### - Instance creation
 
 First, you need to import the Tezos singleton object or instantiate the Tezos toolkit and configure the RPC host you want to connect to:
 
 ```js
-import { Tezos } from '@taquito/taquito';
+import { Tezos } from '@tezos-x/octez.js';
 
 Tezos.setProvider({ rpc: 'https://YOUR_PREFERRED_RPC_URL' });
 ```
@@ -582,7 +582,7 @@ Tezos.setProvider({ rpc: 'https://YOUR_PREFERRED_RPC_URL' });
 _or_
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit();
 
@@ -599,7 +599,7 @@ This returns the contract abstraction that you can now use to interact with the 
 
 ### - Contract properties and methods
 
-Now, let's observe the contract abstraction that we obtained. It's an instance of the [ContractAbstraction class](https://taquito.io/typedoc/classes/_taquito_taquito.contractabstraction.html) with different properties and methods:
+Now, let's observe the contract abstraction that we obtained. It's an instance of the [ContractAbstraction class](https://octez.js.dev/typedoc/classes/_octez.js_octez.js.contractabstraction.html) with different properties and methods:
 
 _Properties:_
 
@@ -607,9 +607,9 @@ _Properties:_
 
 2. `methodsObject`: an object whose methods are named after the contract entrypoints (if the entrypoints are not annotated, the methods will be numbers).
 
-3. `parameterSchema`: an instance of the [Parameter class](https://github.com/ecadlabs/taquito/blob/d424fa178a95675920b21c8e8c228fbe0e7df36e/packages/taquito-michelson-encoder/src/schema/parameter.ts) with two useful methods: `hasAnnotation` tells you if the entrypoints are annotated and `isMultipleEntryPoint` tells you if the contract has multiple entrypoints (if _false_, you can interact with the contract with `.methodsObject.default()`).
+3. `parameterSchema`: an instance of the [Parameter class](https://github.com/ecadlabs/octez.js/blob/d424fa178a95675920b21c8e8c228fbe0e7df36e/packages/octez.js-michelson-encoder/src/schema/parameter.ts) with two useful methods: `hasAnnotation` tells you if the entrypoints are annotated and `isMultipleEntryPoint` tells you if the contract has multiple entrypoints (if _false_, you can interact with the contract with `.methodsObject.default()`).
 
-4. `schema`: an instance of the [Schema class](https://github.com/ecadlabs/taquito/blob/d424fa178a95675920b21c8e8c228fbe0e7df36e/packages/taquito-michelson-encoder/src/schema/storage.ts#L15) with various methods to get more information about the storage or the structure of the contract.
+4. `schema`: an instance of the [Schema class](https://github.com/ecadlabs/octez.js/blob/d424fa178a95675920b21c8e8c228fbe0e7df36e/packages/octez.js-michelson-encoder/src/schema/storage.ts#L15) with various methods to get more information about the storage or the structure of the contract.
 
 5. `script`: an object with two properties: `code` is an array with three objects, each representing the JSON formatted Michelson code for the parameter, storage and code (respectively), `storage` is the JSON formatted Michelson code for the storage of the contract.
 
@@ -617,11 +617,11 @@ _Methods:_
 
 1. `bigMap`: a promise that takes a key from the big map in the storage as a parameter and returns the value associated with that key.
 
-2. `storage`: a promise that returns a representation of the storage value(s). The storage is represented as an object whose keys are the name of the values. `map` and `big map` values are returned as an instance of the [BigMapAbstraction](https://taquito.io/typedoc/classes/_taquito_taquito.bigmapabstraction.html) while numeric values are returned as BigNumber.
+2. `storage`: a promise that returns a representation of the storage value(s). The storage is represented as an object whose keys are the name of the values. `map` and `big map` values are returned as an instance of the [BigMapAbstraction](https://octez.js.dev/typedoc/classes/_octez.js_octez.js.bigmapabstraction.html) while numeric values are returned as BigNumber.
 
 ## The Wallet instance
 
-The Tezos singleton object exposes a _wallet_ property in the same fashion it exposes the _contract_ property to which you may be used. This property is an instance of the [Wallet class](https://taquito.io/typedoc/classes/_taquito_taquito.wallet.html) with a few useful methods you want to check out. It becomes available as soon as you set up a wallet by calling `Tezos.setProvider({wallet})` or `Tezos.setWalletProvider(wallet)`. Here is a list of the methods and a basic description of their function before seeing some examples:
+The Tezos singleton object exposes a _wallet_ property in the same fashion it exposes the _contract_ property to which you may be used. This property is an instance of the [Wallet class](https://octez.js.dev/typedoc/classes/_octez.js_octez.js.wallet.html) with a few useful methods you want to check out. It becomes available as soon as you set up a wallet by calling `Tezos.setProvider({wallet})` or `Tezos.setWalletProvider(wallet)`. Here is a list of the methods and a basic description of their function before seeing some examples:
 
 1. `at`: creates a smart contract abstraction for the address specified
 
@@ -645,7 +645,7 @@ const contract = await Tezos.wallet.at('KT1HNgQQEUb7mDmnmLKy4xcq1xdPw3ieoKzv');
 
 The method is a promise that expects the contract's address for which you want to create the abstraction.
 
-This feature may be a lesser-known feature of Taquito, but it is possible to send operations batches at once! This operation is what the `batch` method does. There are two different ways of using it: you can either pass the operations to send as an array of objects in the parameter of the method or you can use the `withTransfer`, `withContractCall`, `withTransfer`, `withOrigination` or `withDelegation` methods it provides:
+This feature may be a lesser-known feature of octez.js, but it is possible to send operations batches at once! This operation is what the `batch` method does. There are two different ways of using it: you can either pass the operations to send as an array of objects in the parameter of the method or you can use the `withTransfer`, `withContractCall`, `withTransfer`, `withOrigination` or `withDelegation` methods it provides:
 
 ```js
 const op = await Tezos.wallet
@@ -703,12 +703,12 @@ const contract = await op.contract();
 console.log('Contract address:', contract.address);
 ```
 
-Next, the `pkh` method allows you to retrieve the public key hash currently associated with the chosen wallet. Because the key is saved earlier in the process, you can pass an object as a parameter with a `forceRefetch` property set to **true** if you want Taquito to fetch the key and be sure you have the right one:
+Next, the `pkh` method allows you to retrieve the public key hash currently associated with the chosen wallet. Because the key is saved earlier in the process, you can pass an object as a parameter with a `forceRefetch` property set to **true** if you want octez.js to fetch the key and be sure you have the right one:
 
 ```js
 // to fetch the current public key hash
 const pkh = await Tezos.wallet.pkh();
-// to force Taquito to retrieve the current public key hash
+// to force octez.js to retrieve the current public key hash
 const refetchedPkh = await Tezos.wallet.pkh({ forceRefetch: true });
 ```
 

@@ -1,7 +1,7 @@
 import { CONFIGS } from '../../config';
-import { MichelsonMap } from '@taquito/taquito';
-import { tzip16, Tzip16Module } from '@taquito/tzip16';
-import { stringToBytes } from '@taquito/utils';
+import { MichelsonMap } from '@tezos-x/octez.js';
+import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
 import { contractCode, metadataViewsExample1, metadataViewsExample2 } from '../../data/metadataViews';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

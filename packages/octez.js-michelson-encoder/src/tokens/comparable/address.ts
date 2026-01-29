@@ -1,0 +1,159 @@
+import {
+  Token,
+  TokenFactory,
+  ComparableToken,
+  TokenValidationError,
+  SemanticEncoding,
+} from '../token';
+import {
+  b58DecodeAddress,
+  compareArrays,
+  encodeAddress,
+  splitAddress,
+  validateAddress,
+  ValidationResult,
+} from '@tezos-x/octez.js-utils';
+import { BaseTokenSchema } from '../../schema/types';
+
+/**
+ *  @category Error
+ *  @description Error that indicates a failure happening when parsing encoding/executing an Address
+ */
+export class AddressValidationError extends TokenValidationError {
+  name = 'AddressValidationError';
+  constructor(
+    public value: any,
+    public token: AddressToken,
+    message: string
+  ) {
+    super(value, token, message);
+  }
+}
+
+export class AddressToken extends ComparableToken {
+  static prim: 'address' = 'address' as const;
+
+  constructor(
+    protected val: { prim: string; args: any[]; annots: any[] },
+    protected idx: number,
+    protected fac: TokenFactory
+  ) {
+    super(val, idx, fac);
+  }
+
+  public ToBigMapKey(val: any) {
+    const decoded = b58DecodeAddress(val);
+    return {
+      key: { bytes: decoded },
+      type: { prim: 'bytes' },
+    };
+  }
+
+  /**
+   * @throws {@link AddressValidationError}
+   */
+  private validate(value: unknown) {
+    if (typeof value !== 'string') {
+      throw new AddressValidationError(value, this, 'Type error');
+    }
+    if (validateAddress(value) !== ValidationResult.VALID) {
+      throw new AddressValidationError(
+        value,
+        this,
+        `Address is not valid: ${JSON.stringify(value)}`
+      );
+    }
+  }
+
+  /**
+   * @throws {@link AddressValidationError}
+   */
+  public Encode(args: any[]): any {
+    const val = args.pop();
+
+    this.validate(val);
+
+    return { string: val };
+  }
+
+  /**
+   * @throws {@link AddressValidationError}
+   */
+  public EncodeObject(val: any, semantic?: SemanticEncoding): any {
+    this.validate(val);
+
+    if (semantic && semantic[AddressToken.prim]) {
+      return semantic[AddressToken.prim](val);
+    }
+
+    return { string: val };
+  }
+
+  /**
+   * @throws {@link AddressValidationError}
+   */
+  public Execute(val: { bytes: string; string: string }): string {
+    if (val.string) {
+      return val.string;
+    }
+    if (!val.bytes) {
+      throw new AddressValidationError(
+        val,
+        this,
+        `cannot be missing both string and bytes: ${JSON.stringify(val)}`
+      );
+    }
+
+    return encodeAddress(val.bytes);
+  }
+
+  generateSchema(): BaseTokenSchema {
+    return {
+      __michelsonType: AddressToken.prim,
+      schema: AddressToken.prim,
+    };
+  }
+
+  /**
+   * @throws {@link AddressValidationError}
+   */
+  public ToKey({ bytes, string }: any) {
+    if (string) {
+      return string;
+    }
+    if (!bytes) {
+      throw new AddressValidationError(
+        { bytes, string },
+        this,
+        `cannot be missing both string and bytes ${JSON.stringify({ string, bytes })}`
+      );
+    }
+
+    return encodeAddress(bytes);
+  }
+
+  compare(address1: string, address2: string) {
+    const [addr1, endpoint1] = splitAddress(address1);
+    const [addr2, endpoint2] = splitAddress(address2);
+    const ep1 = endpoint1 || '';
+    const ep2 = endpoint2 || '';
+
+    // binary type tag actually reflects the expected prefix order
+    const bytes1 = b58DecodeAddress(addr1, 'array');
+    const bytes2 = b58DecodeAddress(addr2, 'array');
+
+    const res = compareArrays(bytes1, bytes2);
+    if (res === 0) {
+      return ep1 < ep2 ? -1 : ep1 > ep2 ? 1 : 0;
+    } else {
+      return res;
+    }
+  }
+
+  findAndReturnTokens(tokenToFind: string, tokens: Token[]) {
+    if (AddressToken.prim === tokenToFind) {
+      tokens.push(this);
+    }
+    return tokens;
+  }
+}

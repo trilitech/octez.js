@@ -37,9 +37,14 @@ function polyfillShimsResolver() {
   };
 }
 
+// Ensure base path has trailing slash for proper asset resolution
+const basePath = process.env.BASE_PATH || '/';
+const normalizedBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
+
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://taquito.io',
+  site: process.env.SITE_URL || 'https://octez.js.dev',
+  base: normalizedBase,
   trailingSlash: 'never',
   integrations: [AutoImport({
     imports: [

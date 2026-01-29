@@ -1,5 +1,5 @@
 import { CONFIGS } from "../../config";
-import { getRevealFee } from "@taquito/taquito";
+import { getRevealFee } from "@tezos-x/octez.js";
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
   const Tezos = lib;

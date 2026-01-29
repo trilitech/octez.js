@@ -1,5 +1,5 @@
-import { InMemorySigner } from '@taquito/signer';
-import { MichelsonMap, TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { MichelsonMap, TezosToolkit } from '@tezos-x/octez.js';
 import { tzip7Contract } from '../integration-tests/data/tzip_7_contract';
 
 async function example() {

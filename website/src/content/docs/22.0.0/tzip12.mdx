@@ -4,19 +4,19 @@ author: Roxane Letourneau
 ---
 
 
-The `@taquito/tzip12` package allows retrieving metadata associated with tokens of FA2 contract. You can find more information about the TZIP-12 standard [here](https://gitlab.com/tzip/tzip/-/blob/master/proposals/tzip-12/tzip-12.md).
+The `@tezos-x/octez.js-tzip12` package allows retrieving metadata associated with tokens of FA2 contract. You can find more information about the TZIP-12 standard [here](https://gitlab.com/tzip/tzip/-/blob/master/proposals/tzip-12/tzip-12.md).
 
 ## How to use the tzip12 package
 
-The package can act as an extension to the well-known Taquito contract abstraction.
+The package can act as an extension to the well-known octez.js contract abstraction.
 
 1. **We first need to create an instance of `Tzip12Module` and add it as an extension to our `TezosToolkit`**
 
-The constructor of the `Tzip12Module` takes an optional `MetadataProvider` as a parameter. When none is passed, the default `MetadataProvider` of Taquito is instantiated, and the default handlers (`HttpHandler,` `IpfsHandler,` and `TezosStorageHandler`) are used.
+The constructor of the `Tzip12Module` takes an optional `MetadataProvider` as a parameter. When none is passed, the default `MetadataProvider` of octez.js is instantiated, and the default handlers (`HttpHandler,` `IpfsHandler,` and `TezosStorageHandler`) are used.
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
-import { Tzip12Module, tzip12 } from '@taquito/tzip12';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { Tzip12Module, tzip12 } from '@tezos-x/octez.js-tzip12';
 
 const Tezos = new TezosToolkit('rpcUrl');
 Tezos.addExtension(new Tzip12Module());
@@ -36,8 +36,8 @@ The contract abstraction can also be extended to a `Tzip12ContractAbstraction` a
 Thus, all methods of the `ContractAbstraction`, `Tzip12ContractAbstraction` and `Tzip16ContractAbstraction` classes will be available on the contract abstraction instance.
 
 ```js
-import { compose } from '@taquito/taquito';
-import { tzip16 } from "@taquito/tzip16";
+import { compose } from '@tezos-x/octez.js';
+import { tzip16 } from "@tezos-x/octez.js-tzip16";
 
 const contract = await Tezos.contract.at('contractAddress', compose(tzip16, tzip12));
 
@@ -85,9 +85,9 @@ values={[
 <TabItem value="contractAPI">
 
 ```js 
-// import { TezosToolkit, compose } from '@taquito/taquito';
-// import { Tzip12Module, tzip12 } from "@taquito/tzip12";
-// import { tzip16 } from "@taquito/tzip16";
+// import { TezosToolkit, compose } from '@tezos-x/octez.js';
+// import { Tzip12Module, tzip12 } from "@tezos-x/octez.js-tzip12";
+// import { tzip16 } from "@tezos-x/octez.js-tzip16";
 // const Tezos = new TezosToolkit('rpc_url');
 
 Tezos.addExtension(new Tzip12Module());
@@ -109,9 +109,9 @@ Tezos.contract.at(contractAddress, compose(tzip12, tzip16))
   <TabItem value="walletAPI">
 
 ```js 
-// import { TezosToolkit, compose } from '@taquito/taquito';
-// import { Tzip12Module, tzip12 } from "@taquito/tzip12";
-// import { tzip16 } from "@taquito/tzip16";
+// import { TezosToolkit, compose } from '@tezos-x/octez.js';
+// import { Tzip12Module, tzip12 } from "@tezos-x/octez.js-tzip12";
+// import { tzip16 } from "@tezos-x/octez.js-tzip16";
 // const Tezos = new TezosToolkit('rpc_url');
 
 Tezos.addExtension(new Tzip12Module());
@@ -143,8 +143,8 @@ values={[
 <TabItem value="contractAPI">
 
 ```js 
-// import { TezosToolkit } from '@taquito/taquito';
-// import { Tzip16Module, tzip16, bytesToString } from "@taquito/tzip16";
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16, bytesToString } from "@tezos-x/octez.js-tzip16";
 // const Tezos = new TezosToolkit('rpc_url');
 
 Tezos.addExtension(new Tzip16Module());
@@ -172,8 +172,8 @@ Tezos.contract.at(contractAddress, tzip16)
   <TabItem value="walletAPI">
 
 ```js 
-// import { TezosToolkit } from '@taquito/taquito';
-// import { Tzip16Module, tzip16, bytesToString } from "@taquito/tzip16";
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16, bytesToString } from "@tezos-x/octez.js-tzip16";
 // const Tezos = new TezosToolkit('rpc_url');
 
 Tezos.addExtension(new Tzip16Module());
@@ -251,8 +251,8 @@ values={[
 <TabItem value="contractAPI">
 
 ```js 
-// import { TezosToolkit } from '@taquito/taquito';
-// import { Tzip12Module, tzip12 } from "@taquito/tzip12";
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip12Module, tzip12 } from "@tezos-x/octez.js-tzip12";
 // const Tezos = new TezosToolkit('rpc_url');
 
 Tezos.addExtension(new Tzip12Module());
@@ -274,8 +274,8 @@ Tezos.contract.at(contractAddress, tzip12)
   <TabItem value="walletAPI">
 
 ```js 
-// import { TezosToolkit } from '@taquito/taquito';
-// import { Tzip12Module, tzip12 } from "@taquito/tzip12";
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip12Module, tzip12 } from "@tezos-x/octez.js-tzip12";
 // const Tezos = new TezosToolkit('rpc_url');
 
 Tezos.addExtension(new Tzip12Module());

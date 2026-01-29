@@ -1,6 +1,6 @@
 import { CONFIGS } from '../../../config';
 import { ligoSample } from '../../../data/ligo-simple-contract';
-import { PvmKind } from '@taquito/rpc';
+import { PvmKind } from '@tezos-x/octez.js-rpc';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;

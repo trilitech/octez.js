@@ -1,5 +1,5 @@
 import { CONFIGS } from "../../config";
-import { COST_PER_BYTE } from "@taquito/taquito";
+import { COST_PER_BYTE } from "@tezos-x/octez.js";
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 

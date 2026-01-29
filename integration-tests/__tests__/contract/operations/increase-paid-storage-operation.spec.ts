@@ -1,5 +1,5 @@
 import { CONFIGS } from '../../../config';
-import { OpKind } from '@taquito/taquito';
+import { OpKind } from '@tezos-x/octez.js';
 import { ligoSample } from '../../../data/ligo-simple-contract';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

@@ -1,0 +1,99 @@
+{
+  "name": "@tezos-x/octez.js-timelock",
+  "version": "0.9.0",
+  "description": "TypeScript implementation of the Timelock feature in Tezos",
+  "main": "./dist/octez.js-timelock.umd.js",
+  "module": "./dist/octez.js-timelock.es6.js",
+  "typings": "./dist/types/octez.js-timelock.d.ts",
+  "files": [
+    "dist",
+    "signature.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Eugene Zagidullin <eugene@ecadlabs.com>",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "jest --coverage --watch",
+    "test:prod": "npm run lint && npm run test -- --no-cache",
+    "lint": "eslint --ext .js,.ts .",
+    "precommit": "lint-staged",
+    "prebuild": "rimraf dist",
+    "version-stamp": "node ../octez.js/version-stamping.js",
+    "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
+    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "moduleNameMapper": {
+      "^@tezos-x/octez.js-utils$": "<rootDir>/../octez.js-utils/src/octez.js-utils.ts",
+      "^@tezos-x/octez.js-signer$": "<rootDir>/../octez.js-signer/src/octez.js-signer.ts",
+      "^@tezos-x/octez.js$": "<rootDir>/../octez.js/src/taquito.ts"
+    },
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,ts}"
+    ]
+  },
+  "dependencies": {
+    "@stablelib/blake2b": "^1.0.1",
+    "@stablelib/nacl": "^1.0.4",
+    "big-integer": "^1.6.52"
+  },
+  "devDependencies": {
+    "@tezos-x/octez.js-signer": "*",
+    "@tezos-x/octez.js": "*",
+    "@tezos-x/octez.js-utils": "*",
+    "@types/node": "^20",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.57.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "jest": "^29.7.0",
+    "jest-config": "^29.7.0",
+    "jest-extended": "^4.0.2",
+    "lint-staged": "^15.2.7",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.22.4",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "ts-jest": "^29.2.3",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "ts-toolbelt": "^9.6.0",
+    "typescript": "^5.5.4"
+  },
+  "gitHead": "551e35aeff7d6dcde1c72284238c0ed3c3aae77e"
+}

@@ -1,5 +1,5 @@
 import { CONFIGS } from '../../config';
-import { Protocols } from '@taquito/taquito';
+import { Protocols } from '@tezos-x/octez.js';
 
 // TC-007 - A 0tez transaction to an implicit account should fail.
 
@@ -51,4 +51,4 @@ CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
   });
 });
 
-// This test was transcribed to Taquito from bash scripts at https://github.com/InferenceAG/TezosSecurityBaselineChecking
+// This test was transcribed to octez.js from bash scripts at https://github.com/InferenceAG/TezosSecurityBaselineChecking

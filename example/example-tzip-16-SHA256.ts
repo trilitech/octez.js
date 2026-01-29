@@ -1,7 +1,7 @@
-import { MichelsonMap, TezosToolkit } from '@taquito/taquito';
+import { MichelsonMap, TezosToolkit } from '@tezos-x/octez.js';
 import { tacoContractTzip16 } from "../integration-tests/data/modified-taco-contract"
-import { stringToBytes } from '@taquito/utils';
-import { InMemorySigner } from '@taquito/signer';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
 async function example() {
   const provider = 'https://ghostnet.tezos.ecadinfra.com';

@@ -1,6 +1,6 @@
-import { BigMapAbstraction, TezosToolkit } from '../packages/taquito/src/taquito';
-import { RpcClient } from '../packages/taquito-rpc/src/taquito-rpc';
-import { castToString } from '../packages/taquito-rpc/src/utils/utils';
+import { BigMapAbstraction, TezosToolkit } from '../packages/octez.js/src/taquito';
+import { RpcClient } from '../packages/octez.js-rpc/src/octez.js-rpc';
+import { castToString } from '../packages/octez.js-rpc/src/utils/utils';
 import BigNumber from 'bignumber.js';
 
 const provider = 'https://ghostnet.tezos.ecadinfra.com';

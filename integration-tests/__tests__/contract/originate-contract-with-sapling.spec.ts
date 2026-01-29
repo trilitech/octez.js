@@ -1,5 +1,5 @@
 import { CONFIGS } from '../../config';
-import { SaplingStateAbstraction } from '@taquito/taquito';
+import { SaplingStateAbstraction } from '@tezos-x/octez.js';
 import {
   saplingContractStateAsArg,
   saplingContractPushSaplingState,

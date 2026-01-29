@@ -1,4 +1,4 @@
-import { OperationContentsOrigination } from "@taquito/rpc"
+import { OperationContentsOrigination } from "@tezos-x/octez.js-rpc"
 
 export const rpcToForge = {
   "branch": "BLQ6JyEEzUNkA7WEDSAbyFYLoEK7RVcNcjbjrN5LrmqoUW4qmu3",

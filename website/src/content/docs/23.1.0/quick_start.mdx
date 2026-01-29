@@ -5,9 +5,9 @@ author: [Simon Boissonneault-Robert, Maxwell Ward]
 
 
 
-## Installing Taquito Using npm
+## Installing octez.js Using npm
 
-> If you just want to get started quickly with a new project, you can use our boilerplate [Vue](https://github.com/ecadlabs/taquito-vue-template) or [React](https://github.com/ecadlabs/taquito-react-template) templates.
+> If you just want to get started quickly with a new project, you can use our boilerplate [Vue](https://github.com/trilitech/octez.js-vue-template) or [React](https://github.com/trilitech/octez.js-react-template) templates.
 
 This quick start guide and subsequent documentation assumes the following:
 - You have npm installed
@@ -16,20 +16,20 @@ This quick start guide and subsequent documentation assumes the following:
 - You have access to a Tezos wallet (Temple, Kukai, etc.)
 
 ```bash
-npm install @taquito/taquito
+npm install @tezos-x/octez.js
 ```
 
 ## Importing the Library
 
-A `TezosToolkit` is the core of your Taquito setup. The constructor of the `TezosToolkit` class takes an RPC URL as a parameter. It can be a string or a [RpcClient](rpc_package) object. A list of well-known public RPC nodes can be found [here](rpc_nodes).
+A `TezosToolkit` is the core of your octez.js setup. The constructor of the `TezosToolkit` class takes an RPC URL as a parameter. It can be a string or a [RpcClient](rpc_package) object. A list of well-known public RPC nodes can be found [here](rpc_nodes).
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 ```
 
-In a simple app, you will likely only want to create one instance of the Tezos Toolkit. That said, in some cases it can be useful to make more than one instance of Taquito, perhaps if you wanted to communicate with two different RPC nodes or offer other Signing options. 
+In a simple app, you will likely only want to create one instance of the Tezos Toolkit. That said, in some cases it can be useful to make more than one instance of octez.js, perhaps if you wanted to communicate with two different RPC nodes or offer other Signing options. 
 
 You can use multiple instances to use with different providers or configurations per instance.
 
@@ -37,13 +37,13 @@ We recommend creating your `TezosToolkit` instances in one place and then distri
 
 ## Configuring the Signer
 
-Taquito's Contract API supports multiple different signers. There is no default signer configured, and a signer is required if you intend to inject operations into the Tezos blockchain.
+octez.js's Contract API supports multiple different signers. There is no default signer configured, and a signer is required if you intend to inject operations into the Tezos blockchain.
 
 You can set which signer you wish to use with `Tezos.setProvider({})`. The example below sets the signer to a remote signer.
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
-import { RemoteSigner } from '@taquito/remote-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { RemoteSigner } from '@tezos-x/octez.js-remote-signer';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
@@ -64,8 +64,8 @@ The `InMemorySigner` will import your private key into memory and sign operation
 > The `InMemorySigner` is only suitable for testing and development, and saves private keys in memory. When working in production environments with real value tokens, we **strongly** recommend that you use a RemoteSigner that an HSM backs or use the Wallet API.
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
-import { InMemorySigner, importKey } from '@taquito/signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { InMemorySigner, importKey } from '@tezos-x/octez.js-signer';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 

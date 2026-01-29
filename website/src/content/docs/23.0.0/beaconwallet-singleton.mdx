@@ -4,14 +4,14 @@ author: Claude Barde
 ---
 
 :::caution Outdated documentation
-Since version 14, Taquito uses the beacon-dapp's `getDAppClientInstance` method instead of the `new DAppClient`. This new method ensures that only one instance is created. The same cached instance is returned if called multiple times.
+Since version 14, octez.js uses the beacon-dapp's `getDAppClientInstance` method instead of the `new DAppClient`. This new method ensures that only one instance is created. The same cached instance is returned if called multiple times.
 :::
 
 # How to use a single instance of the BeaconWallet?
 
 > TL;DR: in order to avoid unexpected problems with the Beacon wallet instance, there should be only one __new BeaconWallet(options)__ in your whole app.
 
-The `@taquito/beacon-wallet` package is a wrapper for the `Beacon SDK`. The Beacon SDK creates a peer-to-peer connection that must stay unique. If you try to create multiple instances of the Beacon wallet, you may encounter the following error: `[BEACON] It looks like you created multiple Beacon SDK Client instances. This can lead to problems. Only create one instance and re-use it everywhere`, encouraging you to keep a single instance of the Beacon wallet.  
+The `@tezos-x/octez.js-beacon-wallet` package is a wrapper for the `Beacon SDK`. The Beacon SDK creates a peer-to-peer connection that must stay unique. If you try to create multiple instances of the Beacon wallet, you may encounter the following error: `[BEACON] It looks like you created multiple Beacon SDK Client instances. This can lead to problems. Only create one instance and re-use it everywhere`, encouraging you to keep a single instance of the Beacon wallet.  
 
 In modern JavaScript frameworks, this can be achieved by passing the instance to the components through their props or by keeping the instance in the context (or state) of the dapp so that every component has access to the same instance.  
 

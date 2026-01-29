@@ -16,7 +16,7 @@ export const sidebarConfig = [
     ],
   },
   {
-    name: "Taquito Providers",
+    name: "octez.js Providers",
     items: ["prepare", "estimate"],
   },
   {
@@ -114,7 +114,7 @@ export const sidebarConfig = [
     items: ["package_bundle", "dapp_template", "dapp_prelaunch"],
   },
   {
-    name: "Taquito Public API",
+    name: "octez.js Public API",
     items: ["wallet_API", "batch-api"],
   },
   {

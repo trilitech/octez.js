@@ -1,9 +1,9 @@
-import { ContractAbstraction, ContractProvider, RpcReadAdapter, SaplingStateAbstraction } from '@taquito/taquito';
+import { ContractAbstraction, ContractProvider, RpcReadAdapter, SaplingStateAbstraction } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
-import { InMemorySpendingKey, SaplingToolkit } from '@taquito/sapling';
+import { InMemorySpendingKey, SaplingToolkit } from '@tezos-x/octez.js-sapling';
 import BigNumber from 'bignumber.js';
 import { saplingContractDoubleJProto } from '../../data/sapling_test_contracts';
-import { SaplingStateValue } from '@taquito/michelson-encoder';
+import { SaplingStateValue } from '@tezos-x/octez.js-michelson-encoder';
 
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

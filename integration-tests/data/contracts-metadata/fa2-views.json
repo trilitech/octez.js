@@ -1,5 +1,5 @@
 {
-  "name": "Test Taquito FA2 token_metadata view",
+  "name": "Test octez.js FA2 token_metadata view",
   "description": "This is a test to retrieve tokens metadata from a view %token_metadata",
   "interfaces": [
     "TZIP-012"

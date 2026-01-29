@@ -1,5 +1,5 @@
-import { InMemorySigner } from '@taquito/signer';
-import { TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
 import { CONFIGS } from '../config';
 import * as Bip39 from 'bip39';
 

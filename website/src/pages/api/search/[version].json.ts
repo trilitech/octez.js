@@ -28,6 +28,8 @@ export const GET: APIRoute = async ({ params }) => {
     return docVersion === version;
   });
 
+  // Normalize base URL to always have trailing slash for path joining
+  const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
   const searchIndex = versionDocs.map((doc) => {
     const slug = doc.id.replace(/\.mdx?$/, '');
     const bodyContent = doc.body || '';
@@ -35,7 +37,7 @@ export const GET: APIRoute = async ({ params }) => {
     return {
       title: doc.data.title || slug.split('/').pop() || '',
       slug,
-      url: `/docs/${slug}`,
+      url: `${base}docs/${slug}`,
       content: bodyContent.substring(0, 500),
       excerpt: bodyContent.substring(0, 150).replace(/[#*`\[\]]/g, '').trim(),
     };

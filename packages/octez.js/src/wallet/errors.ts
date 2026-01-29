@@ -1,0 +1,24 @@
+import { TezosToolkitConfigError, NetworkError } from '@tezos-x/octez.js-core';
+
+/**
+ *  @category Error
+ *  @description Error that indicates undefined confirmation has not been specified or configured
+ */
+export class ConfirmationUndefinedError extends TezosToolkitConfigError {
+  constructor() {
+    super();
+    this.name = 'ConfirmationUndefinedError';
+    this.message = 'Default confirmation count can not be undefined';
+  }
+}
+
+/**
+ *  @category Error
+ *  @description Error that indicates a generic failure when trying to fetch an observable
+ */
+export class ObservableError extends NetworkError {
+  constructor(public readonly message: string) {
+    super();
+    this.name = 'ObservableError';
+  }
+}
