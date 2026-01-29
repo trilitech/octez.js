@@ -29,16 +29,18 @@ const formatAuthors = (author: string | string[] | undefined): string | null => 
 };
 
 const formattedAuthors = formatAuthors(author);
-const isDocsPage = Astro.url.pathname.startsWith('/docs');
+// Normalize base URL to always have trailing slash for path joining
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const isDocsPage = Astro.url.pathname.includes('/docs');
 const isOldVersion = isDocsPage && version && version !== DEFAULT_VERSION && version !== 'next';
 const isNextVersion = isDocsPage && version === 'next';
 const pageSlug = currentSlug?.split('/').slice(1).join('/') || 'quick_start';
-const stableVersionUrl = `/docs/${DEFAULT_VERSION}/${pageSlug}`;
+const stableVersionUrl = `${base}docs/${DEFAULT_VERSION}/${pageSlug}`;
 
 const pageTitle = title ? `${title} | octez.js` : 'octez.js Documentation';
 const pageDescription = description || `${title || 'Documentation'} - Learn how to use octez.js, a TypeScript library for Tezos blockchain development.`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL('/og-image.png', Astro.site);
+const ogImageURL = new URL(`${base}og-image.png`, Astro.site);
 
 // For old versions, point canonical to the latest stable version
 const canonicalHref = isOldVersion ? new URL(stableVersionUrl, Astro.site) : canonicalURL;
@@ -53,8 +55,8 @@ const articleJsonLd = {
   "url": canonicalURL.toString(),
   "publisher": {
     "@type": "Organization",
-    "name": "ECAD Labs",
-    "url": "https://ecadlabs.com"
+    "name": "Nomadic Labs",
+    "url": "https://nomadic-labs.com"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
@@ -77,9 +79,10 @@ const articleJsonLd = {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="base-url" content={base} />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalHref} />
@@ -249,12 +252,12 @@ const articleJsonLd = {
     top: 0.5rem;
     right: 0.5rem;
     padding: 0.375rem 0.75rem;
-    background-color: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid #d1d9e0;
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
     border-radius: 0.375rem;
     font-size: 0.75rem;
     font-weight: 500;
-    color: #24292f;
+    color: var(--color-text-secondary);
     cursor: pointer;
     opacity: 0;
     transition:
@@ -268,8 +271,8 @@ const articleJsonLd = {
   }
 
   .markdown-body pre .copy-button:hover {
-    background-color: #ffffff !important;
-    border-color: #818b98;
+    background-color: var(--color-background-primary);
+    border-color: var(--color-text-muted);
   }
 
   /* Code Styles */
@@ -329,15 +332,15 @@ const articleJsonLd = {
       if (heading.tagName === 'H1') {
         li.className = 'mb-2';
         a.className =
-          'block py-1 px-2 text-gray-600 no-underline text-base border-l-2 border-transparent hover:text-blue-600 hover:border-blue-600 transition-all';
+          'block py-1 px-2 text-text-secondary no-underline text-base border-l-2 border-transparent hover:text-primary hover:border-primary transition-all';
       } else if (heading.tagName === 'H2') {
         li.className = 'mb-1 ml-4';
         a.className =
-          'block py-1 px-2 text-gray-500 no-underline text-sm border-l-2 border-transparent hover:text-blue-600 hover:border-blue-600 transition-all';
+          'block py-1 px-2 text-text-tertiary no-underline text-sm border-l-2 border-transparent hover:text-primary hover:border-primary transition-all';
       } else if (heading.tagName === 'H3') {
         li.className = 'mb-1 ml-6';
         a.className =
-          'block py-1 px-2 text-gray-500 no-underline text-sm border-l-2 border-transparent hover:text-blue-600 hover:border-blue-600 transition-all';
+          'block py-1 px-2 text-text-tertiary no-underline text-sm border-l-2 border-transparent hover:text-primary hover:border-primary transition-all';
       }
 
       a.href = `#${heading.id}`;

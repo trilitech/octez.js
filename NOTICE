@@ -1,8 +1,9 @@
-octez.js
-Copyright 2018-2026 ECAD Labs Inc.
+octez.js - A TypeScript library for Tezos
 
-This product includes software developed by ECAD Labs Inc.
-(https://ecadlabs.com).
+Copyright 2025 Nomadic Labs
+Copyright 2023 ECAD Labs Inc.
+
+This project is a fork of Taquito (https://github.com/ecadlabs/taquito)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,10 +25,10 @@ The contents of the "website/" directory and all of its subdirectories
 are NOT covered by the Apache License, Version 2.0. These materials,
 including all documentation, written content, tutorials, guides, images,
 graphics, logos, design assets, and website source code, are the
-exclusive property of ECAD Labs Inc. and are subject to a separate
+exclusive property of Nomadic Labs and are subject to a separate
 proprietary license. See website/LICENSE for details.
 
 All rights in the website and documentation content are reserved by
-ECAD Labs Inc. No permission is granted to reproduce, distribute, or
+Nomadic Labs. No permission is granted to reproduce, distribute, or
 create derivative works of the website and documentation content without
-the prior written consent of ECAD Labs Inc.
+the prior written consent of Nomadic Labs.
