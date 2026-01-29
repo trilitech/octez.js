@@ -1,7 +1,7 @@
 import { Parser, emitMicheline } from '@tezos-x/octez.js-michel-codec'
 import { TezosToolkit } from '@tezos-x/octez.js';
 
-const provider = 'https://mainnet.tezos.ecadinfra.com/';
+const provider = 'https://rpc.tzbeta.net';
 
 const example = async () => {
 

@@ -1,4 +1,4 @@
-import { TezosToolkit, importKey } from '../src/taquito';
+import { TezosToolkit, importKey } from '../src/octez';
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
 describe('ImportKey', () => {

@@ -22,7 +22,7 @@ import {
 } from '../../src/contract/errors';
 import { preapplyResultFrom } from './helper';
 import { OpKind, ParamsWithKind, TransferTicketParams } from '../../src/operations/types';
-import { NoopParser } from '../../src/taquito';
+import { NoopParser } from '../../src/octez';
 import { OperationBatch } from '../../src/batch/rpc-batch-provider';
 import { PvmKind } from '@tezos-x/octez.js-rpc';
 import { HttpResponseError, STATUS_CODE } from '@tezos-x/octez.js-http-utils';

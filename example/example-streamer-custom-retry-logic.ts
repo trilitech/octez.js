@@ -4,7 +4,7 @@ import { timer } from 'rxjs';
 
 async function example() {
   // This example will intentionally fail after two attempts as the RPC URL is invalid.
-  const provider = 'https://mainnet.tezos.ecadinfra.com/notValid';
+  const provider = 'https://rpc.tzbeta.net/notValid';
   const tezos = new TezosToolkit(provider);
   tezos.setStreamProvider(tezos.getFactory(PollingSubscribeProvider)({
     shouldObservableSubscriptionRetry: true, observableSubscriptionRetryFunction:

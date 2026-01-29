@@ -1,4 +1,4 @@
-import { CompositeForger, Forger } from '../../src/taquito';
+import { CompositeForger, Forger } from '../../src/octez';
 
 describe('Composite forger', () => {
   const mockForgerThatReturn = (val: string): Forger => ({ forge: () => Promise.resolve(val) });

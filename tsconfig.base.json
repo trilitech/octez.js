@@ -56,7 +56,7 @@
         "octez.js-signer/src/octez.js-signer.ts"
       ],
       "@tezos-x/octez.js": [
-        "octez.js/src/taquito.ts"
+        "octez.js/src/octez.ts"
       ],
       "@tezos-x/octez.js-timelock": [
         "octez.js-timelock/src/octez.js-timelock.ts"
