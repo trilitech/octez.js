@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**As Taquito user, I want to <...>, so that <I can see or avoid this outcome>**
+**As octez.js user, I want to <...>, so that <I can see or avoid this outcome>**
 
 **Use cases:**
 

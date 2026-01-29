@@ -1,6 +1,6 @@
-# Taquito Website & Documentation
+# octez.js Website & Documentation
 
-This directory contains the source code and content for the [Taquito website](https://taquito.io), built with [Astro](https://astro.build/).
+This directory contains the source code and content for the [octez.js website](https://octez.js.io), built with [Astro](https://astro.build/).
 
 ## License
 
@@ -16,7 +16,7 @@ To run the website locally for development purposes:
 
 ```
 npm ci
-npm -w @taquito/website dev
+npm -w @tezos-x/octez.js-website dev
 ```
 
 ## Contact

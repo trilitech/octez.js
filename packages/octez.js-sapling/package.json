@@ -1,0 +1,98 @@
+{
+  "name": "@tezos-x/octez.js-sapling",
+  "version": "24.3.0",
+  "description": "Sapling transaction building and viewing support for octez.js.",
+  "keywords": [
+    "octez.js",
+    "tezos",
+    "typescript",
+    "sapling",
+    "privacy",
+    "shielded"
+  ],
+  "main": "dist/octez.js-sapling.umd.js",
+  "module": "dist/octez.js-sapling.es6.js",
+  "typings": "dist/types/octez.js-sapling.d.ts",
+  "files": [
+    "dist",
+    "SAPLING_PARAMS_PROVENANCE.md",
+    "src/sapling-params-manifest.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "ECAD Labs Inc <info@ecadlabs.com>",
+  "contributors": [
+    "Davis Sawali <davis.sawali@ecadlabs.com>",
+    "hui-an.yang <hui-an.yang@ecadlabs.com>",
+    "Roxane Letourneau <roxane@ecadlabs.com>",
+    "Jev Björsell (jevonearth)"
+  ],
+  "homepage": "https://octez.js.io/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trilitech/octez.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/trilitech/octez.js/issues"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest run --config ./vitest.config.ts",
+    "test:watch": "vitest --config ./vitest.config.ts",
+    "test:prod": "npm run lint && npm run test",
+    "lint": "eslint --ext .js,.ts .",
+    "precommit": "lint-staged",
+    "prebuild": "rimraf dist",
+    "version-stamp": "node ../octez.js/version-stamping.js",
+    "prepare:release-artifacts": "node ./prepare-sapling-release-artifacts.js",
+    "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
+    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "@tezos-x/octez.js-sapling-wasm": "0.2.0",
+    "@scure/bip39": "^2.0.1",
+    "@noble/hashes": "^2.0.1",
+    "@stablelib/nacl": "^1.0.4",
+    "@tezos-x/octez.js-core": "^24.3.0",
+    "@tezos-x/octez.js-rpc": "^24.3.0",
+    "@tezos-x/octez.js": "^24.3.0",
+    "@tezos-x/octez.js-utils": "^24.3.0",
+    "buffer": "^6.0.3",
+    "bignumber.js": "^10.0.2",
+    "blakejs": "^1.2.1",
+    "typedarray-to-buffer": "^4.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@types/node": "^22.0.0",
+    "@types/typedarray-to-buffer": "^4.0.4",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "colors": "^1.4.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.0",
+    "lint-staged": "^15.2.7",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^3.3.3",
+    "prompt": "^1.3.0",
+    "replace-in-file": "^8.1.0",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.60.1",
+    "rollup-plugin-typescript2": "^0.37.0",
+    "shelljs": "^0.8.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

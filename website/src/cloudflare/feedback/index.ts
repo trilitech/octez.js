@@ -245,9 +245,9 @@ function formatSlackMessage(
 ): string {
 	if (vote !== undefined) {
 		const ratingLabel = getRatingLabel(vote);
-		return `New Taquito documentation rating for <${url}|${title}> page. Rating: ${ratingLabel}`;
+		return `New octez.js documentation rating for <${url}|${title}> page. Rating: ${ratingLabel}`;
 	} else {
-		return `New Taquito documentation feedback for <${url}|${title}> page. Category: ${category}. Feedback: ${feedback}`;
+		return `New octez.js documentation feedback for <${url}|${title}> page. Category: ${category}. Feedback: ${feedback}`;
 	}
 }
 

@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-We currently provide security fixes for the latest Taquito release line.
+We currently provide security fixes for the latest octez.js release line.
 
 | Release Line | Supported          |
 | ------------ | ------------------ |
@@ -23,7 +23,7 @@ Please do not report security vulnerabilities in public GitHub issues, discussio
 
 Private vulnerability reporting is enabled on GitHub for this repository and is the preferred reporting channel:
 
-1. Go to the repository [Security](https://github.com/ecadlabs/taquito/security) page.
+1. Go to the repository [Security](https://github.com/trilitech/octez.js/security) page.
 2. Open the advisories section.
 3. Use **Report a vulnerability** to send the report privately.
 
@@ -33,7 +33,7 @@ When possible, include:
 
 - A clear description of the issue and impacted package or feature.
 - Steps to reproduce the problem or a proof of concept.
-- The affected Taquito version and Node.js version.
+- The affected octez.js version and Node.js version.
 - Any suggested mitigations or fixes you are aware of.
 
 We will review the report, acknowledge receipt, and coordinate remediation privately.

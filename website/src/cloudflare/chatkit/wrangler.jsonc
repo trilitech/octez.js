@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "taquito-chatkit",
+	"name": "octez.js-chatkit",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-12-02",
 	"observability": {

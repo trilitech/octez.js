@@ -1,6 +1,6 @@
 {
     "name": "FA2 having metadata",
-    "description": "This is a test for Taquito integration tests of a Fa2 contract having metadata stored on an HTTPS URL",
+    "description": "This is a test for octez.js integration tests of a Fa2 contract having metadata stored on an HTTPS URL",
     "source": {
         "tools": [
             "stablecoin 1.4.0"

@@ -11,7 +11,7 @@ exclusive property of ECAD Labs Inc.
 
 NO LICENSE IS GRANTED. The Website Content is NOT licensed under the Apache
 License, Version 2.0, or any other open-source license. The Apache License,
-Version 2.0, which applies to the Taquito source code in this repository,
+Version 2.0, which applies to the octez.js source code in this repository,
 expressly does NOT apply to the Website Content.
 
 You may NOT, without the prior written permission of ECAD Labs Inc.:
@@ -24,7 +24,7 @@ You may NOT, without the prior written permission of ECAD Labs Inc.:
 
 The above restrictions apply to all forms of the Website Content, whether in
 source form (as contained in this repository) or in compiled/published form
-(as available at https://taquito.io or any successor URL).
+(as available at https://octez.js.io or any successor URL).
 
 For permissions, licensing inquiries, or questions, please contact:
 

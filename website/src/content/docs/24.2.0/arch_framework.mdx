@@ -1,11 +1,11 @@
 ---
-title: The Taquito Framework
+title: The octez.js Framework
 author: Peter McDonald
 ---
 
 ## Introduction
 
-This document presents a top-down, completeness framework for Taquito. Completeness requires us to see the whole; hence we adopt a suitably high level of abstraction. Top-down requires that we ground the discussion of Taquito in a well-understood and rationalized context. Accordingly, since Taquito is an interface to Tezos, which is in turn, a crypto-ledger, we start our discussion with: what is a crypto-ledger, and why do we care? We proceed with: what is the Tezos crypto-ledger and why do we care? This sets the stage for: what is Taquito, and how does it help us leverage Tezos? Finally, we reconcile our top-down discussion with a discussion of Taquito as a set of cohesive Software Packages. If we have successfully constructed a completeness framework, the role of each Package can be seen as a contributing element of the whole.
+This document presents a top-down, completeness framework for octez.js. Completeness requires us to see the whole; hence we adopt a suitably high level of abstraction. Top-down requires that we ground the discussion of octez.js in a well-understood and rationalized context. Accordingly, since octez.js is an interface to Tezos, which is in turn, a crypto-ledger, we start our discussion with: what is a crypto-ledger, and why do we care? We proceed with: what is the Tezos crypto-ledger and why do we care? This sets the stage for: what is octez.js, and how does it help us leverage Tezos? Finally, we reconcile our top-down discussion with a discussion of octez.js as a set of cohesive Software Packages. If we have successfully constructed a completeness framework, the role of each Package can be seen as a contributing element of the whole.
 
 ## References
 
@@ -88,9 +88,9 @@ From the above discussion, we know that Tezos supports three loosely coupled pro
 
 The first process represents our primary problem. It is why a Crypto-Ledger was invented in the first place. The exchange of native tokens, conditioned by smart contracts, has applicability in domains ranging from banking, insurance, energy, healthcare, education and more. The latter two processes can be considered part of the crypto-ledger machinery invented to address our primary problem.
 
-The purpose of Taquito is to provide a high-level, JavaScript (implemented in TypeScript) interface to Tezos suitable for the development of token-based applications which leverage this primary capability. We define a Decentralized Application (dApp) as an interactive application which leverages a Crypto-Ledger for its primary purpose to support a particular domain of interest. We extend the scope of Taquito to include the development of backend systems such as Oracles, which also play a critical role in token-based applications.
+The purpose of octez.js is to provide a high-level, JavaScript (implemented in TypeScript) interface to Tezos suitable for the development of token-based applications which leverage this primary capability. We define a Decentralized Application (dApp) as an interactive application which leverages a Crypto-Ledger for its primary purpose to support a particular domain of interest. We extend the scope of octez.js to include the development of backend systems such as Oracles, which also play a critical role in token-based applications.
 
-With this in mind, we next take a closer look at Tezos. What is Tezos from the Taquito point of view?
+With this in mind, we next take a closer look at Tezos. What is Tezos from the octez.js point of view?
 
 ## Tezos Up Close
 
@@ -191,7 +191,7 @@ From an Implicit Account Manager's point of view, the process for establishing a
 
 ### Domain-Specific Michelson Features
 
-As a smart contract implementation language, Michelson supports several domain-specific features, of interest to Taquito and described here.
+As a smart contract implementation language, Michelson supports several domain-specific features, of interest to octez.js and described here.
 
 #### Big Map
 
@@ -203,7 +203,7 @@ Although both hold key-value pairs, `map` and `big_map` have different gas costs
 
 Blockchain Ledgers offer anonymity in the sense that cryptographically generated addresses act as pseudonyms for participants. This stops short of privacy in the sense that balances and transactions associated with these addresses are transparent. Once an address is correlated with an actual participant, transactions involving that participant are effectively in the public domain. Domains involving sensitive information require stronger privacy, the ability to limit the visibility of transactions to authorized parties.
 
-[Sapling](https://octez.tezos.com/docs/active/sapling.html) (see R5) is a protocol that addresses the need of exchanging fungible tokens on a decentralized Ledger. For Taquito's Sapling support, see the [Sapling toolkit documentation](sapling). For a privacy-preserving transaction (aka shielded transaction) the sender and receiver are only visible to the parties involved.
+[Sapling](https://octez.tezos.com/docs/active/sapling.html) (see R5) is a protocol that addresses the need of exchanging fungible tokens on a decentralized Ledger. For octez.js's Sapling support, see the [Sapling toolkit documentation](sapling). For a privacy-preserving transaction (aka shielded transaction) the sender and receiver are only visible to the parties involved.
 
 Sapling protocol establishes a pool of fungible application tokens that can be exchanged between Sapling addresses. As per our earlier discussion on application tokens, crypto coins can be used to purchase so-called shielded application tokens (aka shielded tokens), which can then be exchanged in a privacy-preserving manner from one Sapling address to another. At any time, shielded tokens can be redeemed for their crypto coin value. This pool of shielded tokens and related transactions represents a ledger-within-a-ledger referred to as a shielded pool. Privacy is preserved through the use of cryptographically generated keys managed by a custodian. A Spending Key is needed to authorize payments from a Sapling address. A Viewing Key may be derived from a Spending Key and used to generate Sapling Addresses in the first place. It is a prerequisite for viewing incoming and outgoing transactions of Sapling addresses generated by the key.
 
@@ -237,7 +237,7 @@ Custodian Operations have a source attribute, which identifies an Implicit Accou
 
 Whereas the source of External Operation is directly constrained by an Injection signature, the source of an Internal Operation is not. Consider a Transaction Operation to a destination smart contract entry point. The Transaction Operation has a source attribute that helps to define the meaning of the operation. The source of a directly injected Transaction Operation must be consistent with the Injection's signature. However, a Transaction Operation executed indirectly as the result of a directly invoked smart contract entry point, is not subject to this constraint. Its source value represents the smart contract, which initiated it, rather than the source account for the Injection. This arrangement enables a source account to invoke smart contract entry points, which invoke other smart contract entry points, each with a localized runtime context.
 
-An Activation is a type of Operation, which activates an implicit Account, making it an active part of the Tezos Context. Tezos supports other non-Custodian Operations, but Activation is one that Taquito directly supports.
+An Activation is a type of Operation, which activates an implicit Account, making it an active part of the Tezos Context. Tezos supports other non-Custodian Operations, but Activation is one that octez.js directly supports.
 
 A Block is a Block in the Tezos blockchain. Each Block has a level, which refers to the position of a Block in the chain, i.e., a measure of the number of blocks since the genesis block (level 0). Each newly baked Block references its predecessor and has a level greater than its predecessor by one.
 
@@ -296,7 +296,7 @@ As described in [R7](https://octez.tezos.com/docs/introduction/tezos.html), the 
 
 A Tezos Protocol can be instantiated as a Network (aka a Ledger or Chain). At any moment in time, a Network is based on a single Protocol. As per the amendment process, a Network can transition from one Protocol to another. A Network manifests itself as a decentralized set of computer Nodes communicating peer-to-peer. This community of Nodes is open to third parties who wish to participate.
 
-Token-based Applications interface to a Network through a protocol-specific API supported by the Nodes making up the Network. This API is implemented as a language-agnostic [RPC/JSON interface](https://octez.tezos.com/docs/alpha/rpc.html), described in R8. It defines many RPC endpoints, some of which are protocol-independent. Many of the endpoints relevant to Taquito are protocol-dependent.
+Token-based Applications interface to a Network through a protocol-specific API supported by the Nodes making up the Network. This API is implemented as a language-agnostic [RPC/JSON interface](https://octez.tezos.com/docs/alpha/rpc.html), described in R8. It defines many RPC endpoints, some of which are protocol-independent. Many of the endpoints relevant to octez.js are protocol-dependent.
 
 *Figure 5: Tezos Protocols, Networks and Nodes*
 
@@ -314,7 +314,7 @@ A Network is created for each newly proposed Protocol. If this Protocol is accep
 
 ### RPC Endpoints
 
-As described in [R10](https://octez.tezos.com/docs/alpha/rpc.html), the RPC Interface includes endpoints to Query the Ledger as well as several processing endpoints covering such things as operation injections and data serializations. The endpoints of interest to Taquito are covered here.
+As described in [R10](https://octez.tezos.com/docs/alpha/rpc.html), the RPC Interface includes endpoints to Query the Ledger as well as several processing endpoints covering such things as operation injections and data serializations. The endpoints of interest to octez.js are covered here.
 
 [JSON Micheline](https://octez.tezos.com/docs/shell/micheline.html) is a JSON encoding of Micheline (see R3). It is used by RPC endpoints to represent Micheline.
 
@@ -346,7 +346,7 @@ Block Query endpoints include:
 
 **Context Query**
 
-The RPC Interface includes several endpoints for querying the Context of a Block. As with Block queries, the Block can be identified in several ways. Taquito is usually interested in obtaining Context with respect to the head of the blockchain, i.e., in obtaining the latest Context.
+The RPC Interface includes several endpoints for querying the Context of a Block. As with Block queries, the Block can be identified in several ways. octez.js is usually interested in obtaining Context with respect to the head of the blockchain, i.e., in obtaining the latest Context.
 
 We start with queries that apply to both Implicit Accounts and Originated Accounts:
 - **getBalance** - fetches the balance of a specified Account

@@ -1,4 +1,4 @@
-import { PollingSubscribeProvider, TezosToolkit } from '@taquito/taquito';
+import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 import { retry } from 'rxjs/operators';
 import { timer } from 'rxjs';
 

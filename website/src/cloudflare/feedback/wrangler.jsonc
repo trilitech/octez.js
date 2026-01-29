@@ -1,12 +1,12 @@
 {
-	"name": "taquito-feedback-worker",
+	"name": "octez.js-feedback-worker",
 	"main": "./index.ts",
 	"compatibility_date": "2025-09-15",
 
 	// Environment variables
 	"vars": {
 		// Secret keys are stored in the Cloudflare Secrets Manager (npx wrangler secret put)
-		"ALLOWED_ORIGINS": "https://taquito.io,https://www.taquito.io,taquito.io" // use http://localhost:4321 and `npx wrangler dev` for local development
+		"ALLOWED_ORIGINS": "https://octez.js.io,https://www.octez.js.io,octez.js.io" // use http://localhost:4321 and `npx wrangler dev` for local development
 		// "ALLOWED_ORIGINS": "http://localhost:4321"
 	},
 

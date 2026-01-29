@@ -72,7 +72,7 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
       if (win.__taquitoReady) {
         // Race against timeout
         const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error("Taquito initialization timed out")), timeoutMs)
+          setTimeout(() => reject(new Error("octez.js initialization timed out")), timeoutMs)
         );
         await Promise.race([win.__taquitoReady, timeoutPromise]);
         return;
@@ -84,7 +84,7 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
         const check = () => {
           if (win.Tezos) resolve();
           else if (win.__taquitoError) reject(win.__taquitoError);
-          else if (Date.now() - startTime > timeoutMs) reject(new Error("Taquito initialization timed out (polling)"));
+          else if (Date.now() - startTime > timeoutMs) reject(new Error("octez.js initialization timed out (polling)"));
           else setTimeout(check, 250); // Check every 250ms
         };
         check();
@@ -117,7 +117,7 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
 
       // Reset UI
       this.setRunState('initializing');
-      outputContent.textContent = "Initializing Taquito...";
+      outputContent.textContent = "Initializing octez.js...";
       outputDiv.hidden = false;
 
       // Disable ALL run buttons to prevent multiple runners at once
@@ -126,7 +126,7 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
       this.button.textContent = "Loading...";
 
       try {
-        // Wait for Taquito
+        // Wait for octez.js
         await this.waitForTaquito();
         this.setRunState('ready');
         this.button.textContent = "Running...";
@@ -134,7 +134,7 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
         
         const win = window as any;
         if (!win.Tezos) {
-          throw new Error("Taquito failed to load.");
+          throw new Error("octez.js failed to load.");
         }
 
         if (needsLedgerSupport && win.ensureLedgerSupport) {

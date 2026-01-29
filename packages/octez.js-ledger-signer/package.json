@@ -1,0 +1,87 @@
+{
+  "name": "@tezos-x/octez.js-ledger-signer",
+  "version": "24.3.0",
+  "description": "Ledger hardware wallet signer integration for octez.js.",
+  "keywords": [
+    "octez.js",
+    "tezos",
+    "typescript",
+    "blockchain",
+    "wallet",
+    "ledger",
+    "signer"
+  ],
+  "main": "dist/octez.js-ledger-signer.umd.js",
+  "module": "dist/octez.js-ledger-signer.es6.js",
+  "typings": "dist/types/octez.js-ledger-signer.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "ECAD Labs Inc <info@ecadlabs.com>",
+  "contributors": [
+    "Roxane Letourneau <roxane@ecadlabs.com>",
+    "Davis Sawali <davis.sawali@ecadlabs.com>",
+    "Jev Björsell (jevonearth)"
+  ],
+  "homepage": "https://octez.js.io/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trilitech/octez.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/trilitech/octez.js/issues"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "precommit": "lint-staged",
+    "prebuild": "rimraf dist",
+    "version-stamp": "node ../octez.js/version-stamping.js",
+    "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
+    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w",
+    "test": "vitest run --config ./vitest.config.ts"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "@ledgerhq/hw-transport": "^6.34.1",
+    "@tezos-x/octez.js-core": "^24.3.0",
+    "@tezos-x/octez.js": "^24.3.0",
+    "@tezos-x/octez.js-utils": "^24.3.0",
+    "@noble/hashes": "^2.0.1",
+    "buffer": "^6.0.3"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@types/bluebird": "^3.5.42",
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.5.12",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "colors": "^1.4.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.0",
+    "lint-staged": "^15.2.7",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^3.3.3",
+    "prompt": "^1.3.0",
+    "replace-in-file": "^8.1.0",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.60.1",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-typescript2": "^0.37.0",
+    "shelljs": "^0.8.5",
+    "ts-node": "^10.9.2",
+    "ts-toolbelt": "^9.6.0",
+    "typescript": "^5.9.3"
+  },
+  "gitHead": "551e35aeff7d6dcde1c72284238c0ed3c3aae77e"
+}

@@ -1,4 +1,4 @@
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../../config';
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {

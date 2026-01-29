@@ -1,7 +1,7 @@
 import { CONFIGS } from "../../config";
-import { OpKind, TezosToolkit } from "@taquito/taquito";
-import { InMemorySigner } from "@taquito/signer";
-import { verifySignature } from "@taquito/utils";
+import { OpKind, TezosToolkit } from "@tezos-x/octez.js";
+import { InMemorySigner } from "@tezos-x/octez.js-signer";
+import { verifySignature } from "@tezos-x/octez.js-utils";
 
 CONFIGS().forEach(({ rpc, lib }) => {
   let signerAlice = new InMemorySigner('edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq')

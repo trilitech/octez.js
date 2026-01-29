@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 // BigNumber instances created in different module contexts (e.g. inside
-// @taquito/sapling vs. the test file) have different constructors, so
+// @tezos-x/octez.js-sapling vs. the test file) have different constructors, so
 // Vitest's structural toEqual fails even when the values are identical.
 // This tester delegates to BigNumber.isEqualTo which compares by value.
 expect.addEqualityTesters([

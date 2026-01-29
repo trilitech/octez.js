@@ -1,13 +1,13 @@
-import { TezosToolkit, RpcReadAdapter } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
-import { InMemorySpendingKey, SaplingToolkit } from '@taquito/sapling';
+import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { InMemorySpendingKey, SaplingToolkit } from '@tezos-x/octez.js-sapling';
 import { singleSaplingStateContractJProtocol } from '../integration-tests/data/single_sapling_state_contract_jakarta_michelson';
 const numberOfSaplingTx = 1;
 let totalTime = 0;
 
 async function example() {
     try {
-        const provider = 'https://shadownet.tezos.ecadinfra.com';
+        const provider = 'https://tezos-shadownet.octez.io/';
         const signer = new InMemorySigner('edskRtmEwZxRzwd1obV9pJzAoLoxXFWTSHbgqpDBRHx1Ktzo5yVuJ37e2R4nzjLnNbxFU4UiBU1iHzAy52pK5YBRpaFwLbByca');
         const tezos = new TezosToolkit(provider);
         tezos.setSignerProvider(signer);

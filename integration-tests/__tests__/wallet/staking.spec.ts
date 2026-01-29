@@ -1,6 +1,6 @@
-import { TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit } from "@tezos-x/octez.js";
 import { CONFIGS } from '../../config';
-import { InvalidStakingAddressError, InvalidFinalizeUnstakeAmountError } from '@taquito/core';
+import { InvalidStakingAddressError, InvalidFinalizeUnstakeAmountError } from '@tezos-x/octez.js-core';
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 

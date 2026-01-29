@@ -1,0 +1,45 @@
+import camelCase from 'lodash.camelcase';
+import typescript from 'rollup-plugin-typescript2';
+import json from 'rollup-plugin-json';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
+import resolve from '@rollup/plugin-node-resolve';
+
+const pkg = require('./package.json');
+
+const libraryName = 'octez.js-timelock';
+
+export default {
+  input: `src/octez.js-timelock.ts`,
+  output: [
+    { 
+      file: pkg.main, 
+      name: camelCase(libraryName), 
+      format: 'umd', 
+      sourcemap: true, 
+      globals: {
+        "@stablelib/nacl": "nacl",
+        "big-integer": "bigInt"
+      } 
+    },
+    { file: pkg.module, format: 'es', sourcemap: true },
+  ],
+  // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
+  external: [
+    '@stablelib/nacl',
+    'big-integer',
+  ],
+  watch: {
+    include: 'src/**',
+  },
+  plugins: [
+    // Resolve node_modules
+    resolve(),
+    // Allow json resolution
+    json(),
+    // Compile TypeScript files
+    typescript({ tsconfig: './tsconfig.prod.json', useTsconfigDeclarationDir: true }),
+    nodePolyfills({
+      exclude: ['crypto'], // Use native crypto (globalThis.crypto) in Node.js 20+
+    }),
+  ],
+};

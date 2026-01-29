@@ -1,8 +1,8 @@
 import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
-import { MichelsonMap, OriginateParams, TezosToolkit } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
-import { stringToBytes } from '@taquito/utils';
+import { MichelsonMap, OriginateParams, TezosToolkit } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
 import { contractIncrementing } from '../../example/data/contractIncrementing';
 import { contractJson } from '../../example/data/contractJson';
 import { contractMap8pairs } from '../../example/data/contractMap8pairs';
@@ -21,7 +21,7 @@ type FixtureMap = Record<string, string>;
 
 const DEFAULT_RPC_URL = process.env.TAQUITO_DOCS_FIXTURE_RPC_URL ?? 'https://tezos-shadownet.octez.io/';
 const DEFAULT_KEYGEN_URL = process.env.TAQUITO_DOCS_FIXTURE_KEYGEN_URL ?? 'https://keygen.ecadinfra.com/v2/shadownet';
-const DEFAULT_KEYGEN_TOKEN = process.env.TAQUITO_DOCS_FIXTURE_KEYGEN_TOKEN ?? 'taquito-example';
+const DEFAULT_KEYGEN_TOKEN = process.env.TAQUITO_DOCS_FIXTURE_KEYGEN_TOKEN ?? 'octez.js-example';
 const DEFAULT_MIN_BALANCE_MUTEZ = Number.parseInt(
   process.env.TAQUITO_DOCS_FIXTURE_MIN_BALANCE_MUTEZ ?? '50000000',
   10
@@ -594,8 +594,8 @@ const main = async () => {
         description: 'A metadata test',
         version: '0.1',
         license: 'MIT',
-        authors: ['Taquito <https://taquito.io/>'],
-        homepage: 'https://taquito.io/',
+        authors: ['octez.js <https://octez.js.io/>'],
+        homepage: 'https://octez.js.io/',
       })
     )
   );

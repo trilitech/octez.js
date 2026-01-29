@@ -19,7 +19,7 @@ jobs:
     environment: release
     permissions:
       contents: write
-      # Required for npm trusted publishing. Official Taquito npm releases do not use
+      # Required for npm trusted publishing. Official octez.js npm releases do not use
       # a long-lived CI npm token secret.
       id-token: write
       pull-requests: write
@@ -66,9 +66,9 @@ jobs:
       - name: Verify Sapling release handoff
         run: |
           set -euo pipefail
-          sapling_wasm_version=$(node -p "require('./packages/taquito-sapling/package.json').dependencies['@taquito/sapling-wasm']")
+          sapling_wasm_version=$(node -p "require('./packages/octez.js-sapling/package.json').dependencies['@tezos-x/octez.js-sapling-wasm']")
           if [ "${sapling_wasm_version}" = "0.1.1" ]; then
-            echo "@taquito/sapling still depends on @taquito/sapling-wasm@0.1.1. Publish sapling-wasm 0.2.0+ and bump packages/taquito-sapling/package.json before release publication." >&2
+            echo "@tezos-x/octez.js-sapling still depends on @tezos-x/octez.js-sapling-wasm@0.1.1. Publish sapling-wasm 0.2.0+ and bump packages/octez.js-sapling/package.json before release publication." >&2
             exit 1
           fi
 
@@ -82,7 +82,7 @@ jobs:
         run: npm run build
 
       - name: Build release artifacts
-        run: npm run -w @taquito/taquito build:release
+        run: npm run -w @tezos-x/octez.js build:release
 
       - name: Validate release helper scripts
         run: npm run test:scripts
@@ -167,8 +167,8 @@ jobs:
             integration-tests/package.json \
             packages/*/package.json \
             packages/*/src/version.ts \
-            packages/taquito-michel-codec/pack-test-tool/package.json \
-            packages/taquito/README.md \
+            packages/octez.js-michel-codec/pack-test-tool/package.json \
+            packages/octez.js/README.md \
             website/package.json \
             website/package-lock.json \
             website/src/config/versions.mjs \
@@ -189,10 +189,10 @@ jobs:
           fi
 
           cat > "${pr_body_file}" <<EOF
-          Syncs repository metadata after publishing Taquito v${VERSION}.
+          Syncs repository metadata after publishing octez.js v${VERSION}.
 
           - updates workspace package versions and generated version stamps
-          - updates website Taquito dependencies and lockfile
+          - updates website octez.js dependencies and lockfile
           - snapshots docs/next into docs/${VERSION}
           - updates website default docs version
           EOF

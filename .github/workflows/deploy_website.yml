@@ -1,4 +1,4 @@
-name: taquito.io pages deploy
+name: octez.js.io pages deploy
 
 on:
   push:
@@ -13,7 +13,7 @@ env:
   CHATKIT_WORKFLOW_ID: ${{ secrets.CHATKIT_WORKFLOW_ID }}
 jobs:
   publish-website:
-    name: Publish taquito.io to Cloudflare Pages
+    name: Publish octez.js.io to Cloudflare Pages
     permissions:
       contents: read
       deployments: write
@@ -47,7 +47,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID}}
-          command: pages deploy website/dist --project-name=taquito
+          command: pages deploy website/dist --project-name=octez.js
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
 
@@ -61,5 +61,5 @@ jobs:
         run: |
           preview_url="${PREVIEW_URL:-$DEPLOYMENT_URL}"
           node scripts/upsert-pr-comment.js \
-            --header "taquito.io Preview" \
-            --message "A new deploy preview for taquito.io is available on Cloudflare Pages at ${preview_url}"
+            --header "octez.js.io Preview" \
+            --message "A new deploy preview for octez.js.io is available on Cloudflare Pages at ${preview_url}"

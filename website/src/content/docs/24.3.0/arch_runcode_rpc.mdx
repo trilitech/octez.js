@@ -5,7 +5,7 @@ author: Peter McDonald
 
 ## Context
 
-Here we infer RunCode RPC semantics from Taquito Code.
+Here we infer RunCode RPC semantics from octez.js Code.
 
 ## References
 
@@ -15,7 +15,7 @@ Here we infer RunCode RPC semantics from Taquito Code.
 
 Reference R1 documentation for runCode RPC is "Run a piece of code in the current context".
 
-In Taquito the request inputs are described by:
+In octez.js the request inputs are described by:
 
 ```
 RPCRunCodeParam
@@ -41,13 +41,13 @@ RunCodeResult
   Lazy_storage_diff?: LazyStorageDiff
 ```
 
-## Taquito's Use of RunCode
+## octez.js's Use of RunCode
 
-Taquito leverages the RunCode RPC to:
+octez.js leverages the RunCode RPC to:
 - Execute a [tzip-16 Michelson Storage View](metadata-tzip16)
 - Simulate execution of a Smart Contract's [OnChainView](on_chain_views)
 
-These Taquito use cases make use of RunCode in a very similar way, enabling us to infer semantics.
+These octez.js use cases make use of RunCode in a very similar way, enabling us to infer semantics.
 
 ## Inferred Semantics
 
@@ -68,10 +68,10 @@ Other Parameters specify the Transaction:
 
 The Chain_id seems redundant. We are talking to a particular RPC Node which is already bound to a particular chain_id. Moreover, we are tasking this node to execute as if our virtual smart contract is in the current context; the only current context an RPC node can service is for the chain-id that it is bound to.
 
-This leaves two optional RPCRunCodeParam parameters that remain uninterpreted, namely: Payer and Gas. Taquito does not make use of these parameters.
+This leaves two optional RPCRunCodeParam parameters that remain uninterpreted, namely: Payer and Gas. octez.js does not make use of these parameters.
 
 We can now make sense of RunCodeResult:
 - **Storage** - the value of the virtual smart contract's storage after the transaction is executed
-- **Operations** - the result of executing any Internal Operations left on the Michelson Stack after the transaction endpoint is executed. Taquito does not actually make use of this field since in both Taquito use cases, no Operations are left on the stack.
+- **Operations** - the result of executing any Internal Operations left on the Michelson Stack after the transaction endpoint is executed. octez.js does not actually make use of this field since in both octez.js use cases, no Operations are left on the stack.
 
-This leaves two optional RunCodeResult parameters that remain uninterpreted, namely: Big_map_diff and Lazy_storage_diff. Taquito does not make use of these parameters.
+This leaves two optional RunCodeResult parameters that remain uninterpreted, namely: Big_map_diff and Lazy_storage_diff. octez.js does not make use of these parameters.

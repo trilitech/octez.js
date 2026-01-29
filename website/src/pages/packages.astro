@@ -13,13 +13,13 @@ const installSnippet = `npm install ${workspacePackages.map((pkg) => pkg.name).s
 
 <MainLayout
   title="Packages"
-  description="Explore the official Taquito npm packages, with direct links to npm and source repositories."
+  description="Explore the official octez.js npm packages, with direct links to npm and source repositories."
 >
   <section class="bg-background-primary px-6 py-16 md:px-14">
     <div class="mx-auto max-w-6xl">
       <div class="max-w-3xl">
         <p class="mb-3 text-sm font-medium uppercase tracking-[0.25em] text-primary">Package Index</p>
-        <h1 class="mb-5 text-4xl font-bold text-gray-900 md:text-5xl">Official Taquito packages, one place.</h1>
+        <h1 class="mb-5 text-4xl font-bold text-gray-900 md:text-5xl">Official octez.js packages, one place.</h1>
         <p class="mb-8 text-lg text-gray-700">
           npm is the official distribution source. This page mirrors the package metadata in the repository so
           users can discover packages without hunting across npm, docs, and source trees.
@@ -30,7 +30,7 @@ const installSnippet = `npm install ${workspacePackages.map((pkg) => pkg.name).s
         <div class="rounded-3xl border border-secondary bg-white p-6 shadow-sm">
           <p class="text-sm uppercase tracking-[0.2em] text-gray-500">Workspace packages</p>
           <p class="mt-2 text-4xl font-bold text-gray-900">{workspacePackages.length}</p>
-          <p class="mt-2 text-sm text-gray-600">Published from the Taquito monorepo.</p>
+          <p class="mt-2 text-sm text-gray-600">Published from the octez.js monorepo.</p>
         </div>
         <div class="rounded-3xl border border-secondary bg-white p-6 shadow-sm">
           <p class="text-sm uppercase tracking-[0.2em] text-gray-500">Related packages</p>

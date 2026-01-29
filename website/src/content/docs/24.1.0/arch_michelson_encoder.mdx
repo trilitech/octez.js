@@ -11,7 +11,7 @@ author: Peter McDonald
 - [Michelson: the language of Smart Contracts in Tezos](https://octez.tezos.com/docs/active/michelson.html) (authoritative language reference)
 - [Micheline](https://octez.tezos.com/docs/shell/micheline.html)
 - [Tutorial | OpenTezos](https://opentezos.com/michelson/tutorial/)
-- [Michelson Encoder | Taquito](michelson_encoder)
+- [Michelson Encoder | octez.js](michelson_encoder)
 
 Micheline is the concrete syntax of the Michelson language. Micheline Node syntax is defined in R3. The main primitive data types are integer, character string, byte sequence.
 
@@ -40,17 +40,17 @@ Michelson supports annotation:
 - Variable Annotations
 - Field and Constructor Annotations
 
-## Taquito's Token and Schema Abstractions
+## octez.js's Token and Schema Abstractions
 
-A Taquito Token represents a Michelson primitive, e.g. nat, list, pair etc.
+A octez.js Token represents a Michelson primitive, e.g. nat, list, pair etc.
 
-A Taquito Schema represents a Michelson data type (e.g. smart contract storage data type). It references a root Token.
+A octez.js Schema represents a Michelson data type (e.g. smart contract storage data type). It references a root Token.
 
 Tezos RPCs use JSON Michelson to represent:
 - Michelson data types, e.g. storage data type
 - Michelson data, e.g. storage data
 
-A Taquito Schema encapsulates a Michelson data type represented in JSON Michelson. A Schema is typically used to hold a Smart Contract's data type. Rather than construct the JSON Michelson data type from scratch, the user can instantiate a Schema based on a JSON Michelson Script object obtained through an RPC call for a particular Smart Contract.
+A octez.js Schema encapsulates a Michelson data type represented in JSON Michelson. A Schema is typically used to hold a Smart Contract's data type. Rather than construct the JSON Michelson data type from scratch, the user can instantiate a Schema based on a JSON Michelson Script object obtained through an RPC call for a particular Smart Contract.
 
 At this point, the user can use JS Michelson to view the schema as well as to formulate data that conforms to this schema, or to interpret data that conforms to this schema.
 
@@ -71,7 +71,7 @@ In effect, we can hide JSON Michelson from users:
 
 ### Context
 
-The Michelson Encoder utilizes the Token abstraction to transform between data expressed as JSON encoded Micheline and an equivalent representation in JavaScript (JS). Here we document the mapping rules independent of its Taquito implementation.
+The Michelson Encoder utilizes the Token abstraction to transform between data expressed as JSON encoded Micheline and an equivalent representation in JavaScript (JS). Here we document the mapping rules independent of its octez.js implementation.
 
 The current focus is on the generic (aka core) Micheline data types since these naturally map to data types of generic languages such as JS. For completeness, this document will subsequently include a treatment of domain-specific data types.
 
@@ -106,9 +106,9 @@ Micheline type declarations may have annotations. A Micheline field annotation i
 
 ### Token
 
-A Token is a Taquito abstraction representing a Micheline type. A Token can interpret its Micheline Type as an expressively equivalent JS Type. As such, it can take a conformant Micheline value and transform it to its equivalent JS value. Similarly, it can take a conformant JS value and transform it to its equivalent Micheline value.
+A Token is a octez.js abstraction representing a Micheline type. A Token can interpret its Micheline Type as an expressively equivalent JS Type. As such, it can take a conformant Micheline value and transform it to its equivalent JS value. Similarly, it can take a conformant JS value and transform it to its equivalent Micheline value.
 
-*Fig 1: A Token is a Taquito abstraction representing a Micheline type.*
+*Fig 1: A Token is a octez.js abstraction representing a Micheline type.*
 
 We see from Fig 1 that a Token naturally forms a tree structure. A root Token is one that does not have parents. Complex Tokens recursively reference child Tokens. Atomic Tokens have no children.
 
@@ -120,7 +120,7 @@ An **Atomic Token** is a type of Token representing an atomic Micheline type. Th
 
 A **Complex Token** is a type of Token representing a complex Micheline type. There is a type of Complex Token for each complex Micheline Type.
 
-In this document we deviate in minor ways from the Taquito implementation-level version of the Token abstraction. The intent here is not to cover implementation detail but to provide domain context for presenting the actual JSON Micheline to JS mapping rules independent of the Taquito implementation.
+In this document we deviate in minor ways from the octez.js implementation-level version of the Token abstraction. The intent here is not to cover implementation detail but to provide domain context for presenting the actual JSON Micheline to JS mapping rules independent of the octez.js implementation.
 
 ## Execute
 

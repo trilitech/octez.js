@@ -13,7 +13,7 @@ import { DEFAULT_VERSION } from './src/config/versions.mjs';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://taquito.io',
+  site: 'https://octez.js.io',
   trailingSlash: 'never',
   integrations: [AutoImport({
     imports: [

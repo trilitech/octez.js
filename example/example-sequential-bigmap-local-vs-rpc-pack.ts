@@ -1,7 +1,7 @@
-import { BigMapAbstraction, TezosToolkit, MichelCodecPacker } from '@taquito/taquito';
+import { BigMapAbstraction, TezosToolkit, MichelCodecPacker } from '@tezos-x/octez.js';
 import BigNumber from 'bignumber.js';
 
-const rpc = 'https://shadownet.tezos.ecadinfra.com';
+const rpc = 'https://tezos-shadownet.octez.io/';
 const numberOfValueToFetch = 410; // max 410
 const repeat = 1; // How many times we want to fetch all the keys
 

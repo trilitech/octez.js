@@ -1,0 +1,10 @@
+{
+  "dist/octez.min.js.LICENSE.txt": {
+    "src": "dist/octez.min.js.LICENSE.txt",
+    "integrity": "sha256-2rkPtnTRXr/j9sxLSVHBYvR8bclGpZ3pfGBo1Q+8fq0= sha384-nFPH8TX79+EajzfGb4Ry1r1xM3lpc8q9qkCOLF2U+9Xvh4dfL3sfCwk9sa6e6rpv sha512-O7shi3NrjXCmJldHtqI2IoWVcvH9Ob9i2Mz25P5h7ERv3njAlHviAz1v2U+0PWb/wywa+k4atT+hfoRdgNcuJg=="
+  },
+  "main.js": {
+    "src": "dist/octez.min.js",
+    "integrity": "sha256-hyYyGLaxfUg9+/47jb3mzBq6p1SfGu9xBqjEc2BFZMY= sha384-IdgrCNa9K28ElIvEeMMltr6dLIele6BMfe4s6sY6a52EqKOBcQBnIqt2tymVMscv sha512-0gAqNRY+5nGDMR9mFjxWk65o4/s2pejCC3hU0U49+IoQTRHJVVhqttOKmkFTztLmH6fL9jbELmnn0XzFqV10BA=="
+  }
+}

@@ -4,8 +4,8 @@ id: operation_flow
 author: Michael Kernaghan
 ---
 
-# Taquito Operation Flow
-Taquito makes injecting operations into the Tezos blockchain very simple by way of three distinct APIs: the Contract API, the Wallet API, and the Batch API.
+# octez.js Operation Flow
+octez.js makes injecting operations into the Tezos blockchain very simple by way of three distinct APIs: the Contract API, the Wallet API, and the Batch API.
 
 ## Contract API
 
@@ -18,7 +18,7 @@ The Contract API is exposed through the `contract` property of the `TezosToolkit
 Below is a quick example of how to use the `transaction` operation via the Contract API.
 
 ```js
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('RPC address here');
 const op = await Tezos.contract.transfer({ to: 'tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb', amount: 100 });
@@ -26,17 +26,17 @@ await op.confirmation();
 ```
 
 ## Wallet API
-Aside from the Contract API, Taquito provides the ability for our users to interact with the Tezos blockchain via the Wallet API. The Wallet API is functionally similar to the Contract API, but it delegates several actions to the wallet (i.e. signing operations).
+Aside from the Contract API, octez.js provides the ability for our users to interact with the Tezos blockchain via the Wallet API. The Wallet API is functionally similar to the Contract API, but it delegates several actions to the wallet (i.e. signing operations).
 
 ### Installing the Wallet API
-The Wallet API is part of the `@taquito/taquito` package, so the installation method is the exact same as the Contract API in the section above.
+The Wallet API is part of the `@tezos-x/octez.js` package, so the installation method is the exact same as the Contract API in the section above.
 
-Once you have installed the `@taquito/taquito` package into your project, however, you will need to install additional packages to use the Wallet API.
+Once you have installed the `@tezos-x/octez.js` package into your project, however, you will need to install additional packages to use the Wallet API.
 
 We work closely with the Beacon team to provide a seamless integration with the Beacon wallet. To install the Beacon wallet, run the following command:
 
 ```
-npm install @taquito/beacon-wallet
+npm install @tezos-x/octez.js-beacon-wallet
 ```
 
 ### Using the Wallet API
@@ -62,7 +62,7 @@ await op2.confirmation();
 
 Making two operations run in this manner will result in an error message, as each Tezos account holds a counter that increments every time an operation is included in a block on the network. This feature prevents users from sending two or multiple transactions at the same time.
 
-Tracking the confirmation of transactions and the update of the transaction counter can be very frustrating and cumbersome, this is why Taquito provides the Batch API. The Batch API allows you to group all your transactions together and emit them at once under the same transaction counter value and the same transaction hash.
+Tracking the confirmation of transactions and the update of the transaction counter can be very frustrating and cumbersome, this is why octez.js provides the Batch API. The Batch API allows you to group all your transactions together and emit them at once under the same transaction counter value and the same transaction hash.
 
 ### Using the Batch API
 For a more in-depth explanation of the Batch API, please refer to [this document](batch-api) for examples and use cases that you can adopt into your own projects.
@@ -74,7 +74,7 @@ Without using the Contract/Wallet API the flow of operations would look somethin
 
 ### Preparing a transaction operation
 ```typescript
-import { TezosToolkit } from '@taquito/taquito'
+import { TezosToolkit } from '@tezos-x/octez.js'
 const Tezos = new TezosToolkit(RPC_URL);
 
 // The PrepareProvider returns a 'PreparedOperation' type object
@@ -92,7 +92,7 @@ const forgeable = await Tezos.prepare.toForge(prepared);
 ### Forging the transaction operation
 ```typescript
 // Import the LocalForger
-import { LocalForger } from '@taquito/local-forging';
+import { LocalForger } from '@tezos-x/octez.js-local-forging';
 
 const forger = new LocalForger();
 const forgedBytes = await forger.forge(forgeable);

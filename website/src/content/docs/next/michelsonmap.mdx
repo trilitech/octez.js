@@ -5,9 +5,9 @@ author: [Claude Barde, Maxwell Ward]
 
 Michelson maps are hash tables that store key/value pairs. When you need to find a value, you search by its key. Maps can store complex data types, including pairs.
 
-Unlike big maps, all values in a map are deserialized, allowing you to access them all at once. While maps become more expensive as the number of entries increases, they are well-suited for smaller datasets because of the extra features that Michelson and Taquito provide (like mapping and folding).
+Unlike big maps, all values in a map are deserialized, allowing you to access them all at once. While maps become more expensive as the number of entries increases, they are well-suited for smaller datasets because of the extra features that Michelson and octez.js provide (like mapping and folding).
 
-Taquito reads maps in contract storage and represents them as instances of the `MichelsonMap` class. The class provides methods in four categories:
+octez.js reads maps in contract storage and represents them as instances of the `MichelsonMap` class. The class provides methods in four categories:
 
 - **Instantiation**: three ways to create a new `MichelsonMap`
 - **General methods**: get information about the map (size, contents)
@@ -21,7 +21,7 @@ This tutorial uses a [smart contract deployed on shadownet](https://shadownet.tz
 As a reminder, you can load the storage of a smart contract as such:
 
 ```ts
-import { TezosToolkit, MichelsonMap } from '@taquito/taquito';
+import { TezosToolkit, MichelsonMap } from '@tezos-x/octez.js';
 import { BigNumber } from 'bignumber.js';
 
 const contractAddress: string = 'KT1WdjpRSsmC93iPkXqkm2XZcbv6CSwKeqpj';
@@ -34,14 +34,14 @@ const storage: MichelsonMap<string, BigNumber> = await contract.storage();
 
 This code:
 
-1. Imports `TezosToolkit` and `MichelsonMap` from Taquito, plus `BigNumber` from `bignumber.js` (included with Taquito)
+1. Imports `TezosToolkit` and `MichelsonMap` from octez.js, plus `BigNumber` from `bignumber.js` (included with octez.js)
 2. Creates a `TezosToolkit` instance with the RPC URL
 3. Fetches the contract using `Tezos.contract.at()`
 4. Retrieves the storage, typed as `MichelsonMap<string, BigNumber>` (address keys, tez values)
 
 ## Creating a `MichelsonMap` instance
 
-Taquito provides three different ways of creating a new Michelson map: we can use two of them to create an empty map, and the third one is used to create a map with default values.
+octez.js provides three different ways of creating a new Michelson map: we can use two of them to create an empty map, and the third one is used to create a map with default values.
 
 The simplest is to create the instance with no argument:
 
@@ -60,7 +60,7 @@ const newEmptyMapWithArg = new MichelsonMap({
 });
 ```
 
-Finally, you can also pass some values you want to create the instance with and let Taquito figure out the types using the `fromLiteral` static method:
+Finally, you can also pass some values you want to create the instance with and let octez.js figure out the types using the `fromLiteral` static method:
 
 ```ts
 const newMapfromLiteral = MichelsonMap.fromLiteral({
@@ -180,7 +180,7 @@ This command will output all the values of the map inside an array:
 
 Although reading and organizing the keys or the values fetched from a Michelson map is an everyday use case, you may also want to modify a map, for example, before originating a new contract.
 
-Taquito provides methods to add or remove key/value pairs from a map.
+octez.js provides methods to add or remove key/value pairs from a map.
 
 First, you can use the `set` method to add a new value to an instance of `MichelsonMap`:
 

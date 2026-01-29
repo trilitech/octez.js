@@ -5,8 +5,8 @@ author: Peter McDonald
 
 ## Introduction
 
-The Tezos OperationContentAndResults[] data structure plays an important role in Taquito with regard to an Injection, i.e. a set of Operations injected to a Tezos chain.
-- It is returned by the RPC run_operation and is interpreted by Taquito's [RPCEstimateProvider](estimate) to derive gas and storage consumption estimates for an Injection
+The Tezos OperationContentAndResults[] data structure plays an important role in octez.js with regard to an Injection, i.e. a set of Operations injected to a Tezos chain.
+- It is returned by the RPC run_operation and is interpreted by octez.js's [RPCEstimateProvider](estimate) to derive gas and storage consumption estimates for an Injection
 - It is returned by the RPC preapply/operations and is used by the [Contract API](operation_flow) to dry run an Injection before actually Injecting it.
 - It is embedded in Tezos Blocks as an after-baking representation of an Injection. The [Wallet API](wallet_API) looks for this representation in a new Block to uncover the baked outcome.
 
@@ -14,7 +14,7 @@ As a representation of an Injection embedded in a Tezos blockchain, we can view 
 
 In the spirit of highlighting semantics and vocabulary, we represent this schema in Entity/Relationship (E/R) form (using UML as a notation). In an E/R model, the entity types are chosen to highlight "important" semantic distinctions found in the domain of interest. To that end we have made some adjustments to the data types found in Tezos, to clarify the semantics of the data contained in the Tezos database. A mapping between vocabularies is presented. Although the vocabulary is different, the information content is equivalent.
 
-One of the challenges of this exercise results from the fact that Taquito entry points interpret only a subset of the attributes making up the encountered Tezos data structures. OperationContentAndResults[] is returned intact to dApp developers to understand and interpret, along with some Taquito interpretations. Taking this as a constraint, Taquito code was used to reconstruct the semantics of attributes "understood" by Taquito. The semantics of attributes that are not "understood" by Taquito is left undefined.
+One of the challenges of this exercise results from the fact that octez.js entry points interpret only a subset of the attributes making up the encountered Tezos data structures. OperationContentAndResults[] is returned intact to dApp developers to understand and interpret, along with some octez.js interpretations. Taking this as a constraint, octez.js code was used to reconstruct the semantics of attributes "understood" by octez.js. The semantics of attributes that are not "understood" by octez.js is left undefined.
 
 ## Information Model
 
@@ -28,7 +28,7 @@ An Operation represents an action submitted to the Tezos platform for updating t
 
 A Core Operation is an Operation, which directly acts on Implicit and/or Originated Accounts. Core Operations are associated with a cost incurred by the source account, which submits it. A Core Operation, when executed, may spawn other Core Operations. A Core Operation that is directly submitted to Tezos for execution is referred to as an External Operation. A Core Operation that is spawned by an External Operation is referred to as an Internal Operation. The spawned relationship of Figure 1 is not recursive. An External Operation references Internal Operations that it has directly or indirectly spawned.
 
-An Activation is an Operation, which activates an implicit Account, making it an active part of the Tezos Context. Tezos supports other non-core Operations, but Activation is one that Taquito directly supports.
+An Activation is an Operation, which activates an implicit Account, making it an active part of the Tezos Context. Tezos supports other non-core Operations, but Activation is one that octez.js directly supports.
 
 A Block is a Block in the Tezos blockchain. Each newly baked Block references its predecessor and has a level greater than its predecessor by one.
 
@@ -44,7 +44,7 @@ For clarity, we have altered our vocabulary and associated data types from those
 
 For Block and Injection attributes, we focus on only those attributes that are important in this context.
 
-For Injection Entries and associated entities, all attributes are relevant since Taquito returns the full set of Injection Entries, including associated Operations, for an Injection.
+For Injection Entries and associated entities, all attributes are relevant since octez.js returns the full set of Injection Entries, including associated Operations, for an Injection.
 
 ### Core Operations
 

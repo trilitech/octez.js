@@ -1,7 +1,7 @@
 import { CONFIGS } from '../config';
-import { DefaultContractType } from '@taquito/taquito';
-import { Chest, Timelock, ChestKey } from '@taquito/timelock';
-import { stringToBytes } from '@taquito/utils';
+import { DefaultContractType } from '@tezos-x/octez.js';
+import { Chest, Timelock, ChestKey } from '@tezos-x/octez.js-timelock';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
 import { timelockCode, timelockStorage } from '../data/timelock-flip-contract';
 import { sequentialTestSuite } from '../sequential-test';
 

@@ -1,4 +1,4 @@
-import { Protocols } from '@taquito/taquito';
+import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 /**
@@ -47,4 +47,4 @@ CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
     });
   });
 });
-// This test was transcribed to Taquito from bash scripts at https://github.com/InferenceAG/TezosSecurityBaselineChecking
+// This test was transcribed to octez.js from bash scripts at https://github.com/InferenceAG/TezosSecurityBaselineChecking

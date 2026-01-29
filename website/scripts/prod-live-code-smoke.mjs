@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
 
-const defaultBaseUrl = 'https://taquito.io';
+const defaultBaseUrl = 'https://octez.js.io';
 const defaultPerBlockTimeoutMs = 15_000;
 const demoKeyEndpoint = 'https://keygen.ecadinfra.com/v2/shadownet';
 const defaultDemoSignerMinBalanceMutez = 5_000_000;
@@ -54,7 +54,7 @@ const baseUrl = (getArgValue('--base-url') ?? defaultBaseUrl).replace(/\/$/, '')
 
 const resultFile =
   getArgValue('--out') ??
-  resolve(process.env.TMPDIR ?? '/tmp', 'taquito-live-code-smoke.json');
+  resolve(process.env.TMPDIR ?? '/tmp', 'octez.js-live-code-smoke.json');
 
 const pageSet =
   selectedSlugs.size > 0
@@ -111,7 +111,7 @@ const classifyBlockResult = ({ timedOut, combinedErrors, outputText, pageLoadErr
     return 'fail';
   }
 
-  if (/failed to initialize taquito/i.test(outputText)) {
+  if (/failed to initialize octez.js/i.test(outputText)) {
     return 'fail';
   }
 
@@ -233,7 +233,7 @@ const fetchDemoSecretKey = async (minBalanceMutez = defaultDemoSignerMinBalanceM
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer taquito-example',
+      Authorization: 'Bearer octez.js-example',
       Accept: 'application/json',
     },
     body: JSON.stringify({

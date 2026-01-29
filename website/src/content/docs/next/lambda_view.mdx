@@ -30,11 +30,11 @@ Fortunately with the `run_view` endpoint, users can run views without needing to
 
 ## Usage
 
-We have integrated the lambda view feature into the `ContractAbstraction` class. This integration allows retrieving data from a very similar view to call other entry points of a smart contract with Taquito.
+We have integrated the lambda view feature into the `ContractAbstraction` class. This integration allows retrieving data from a very similar view to call other entry points of a smart contract with octez.js.
 
 Here's an example of using the Lambda View on a FA1.2 contract.
 
-Taquito dynamically creates a `getAllowance`, `getBalance` and `getTotalSupply` view method that the developer can call as follows:
+octez.js dynamically creates a `getAllowance`, `getBalance` and `getTotalSupply` view method that the developer can call as follows:
 
 - `myContract.views.getAllowance(parameters)`
 - `myContract.views.getBalance(parameters)`

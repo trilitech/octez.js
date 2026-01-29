@@ -1,5 +1,5 @@
-import { HttpResponseError, STATUS_CODE } from '@taquito/http-utils';
-import { MANAGER_LAMBDA, TezosToolkit } from '@taquito/taquito';
+import { HttpResponseError, STATUS_CODE } from '@tezos-x/octez.js-http-utils';
+import { MANAGER_LAMBDA, TezosToolkit } from '@tezos-x/octez.js';
 import { CONFIGS, isSandbox } from '../../config';
 import { genericMultisig } from '../../data/multisig';
 

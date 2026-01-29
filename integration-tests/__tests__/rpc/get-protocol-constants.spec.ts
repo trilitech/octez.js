@@ -1,6 +1,6 @@
 import { CONFIGS, NetworkType } from '../../config';
 import BigNumber from 'bignumber.js';
-import { ConstantsResponseProto023, ConstantsResponseProto024 } from '@taquito/rpc';
+import { ConstantsResponseProto023, ConstantsResponseProto024 } from '@tezos-x/octez.js-rpc';
 
 CONFIGS().forEach(({ lib, rpc, networkType }) => {
   const Tezos = lib;

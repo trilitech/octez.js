@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { version, pageTitle } = Astro.props;
-const feedbackApiBase = import.meta.env.PUBLIC_FEEDBACK_API_URL || 'https://taquito-feedback-worker.ops-taquito-cloudflare.workers.dev';
+const feedbackApiBase = import.meta.env.PUBLIC_FEEDBACK_API_URL || 'https://octez.js-feedback-worker.ops-octez.js-cloudflare.workers.dev';
 ---
 
 <div class="feedback-widget py-8 border-t border-gray-200" data-version={version} data-page-title={pageTitle} data-api-base={feedbackApiBase}>

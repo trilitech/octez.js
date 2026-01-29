@@ -1,11 +1,11 @@
-import { BlockResponse, InternalOperationResult } from '@taquito/rpc';
+import { BlockResponse, InternalOperationResult } from '@tezos-x/octez.js-rpc';
 import {
   EventFilter,
   Filter,
   OperationContent,
   SubscribeProvider,
   Subscription,
-} from '@taquito/taquito';
+} from '@tezos-x/octez.js';
 
 class NeverSubscription<T> implements Subscription<T> {
   on(_type: 'error', _cb: (error: Error) => void): void;

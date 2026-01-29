@@ -1,5 +1,5 @@
 import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
-import { LedgerSigner, LedgerTransport, DerivationType } from '@taquito/ledger-signer';
+import { LedgerSigner, LedgerTransport, DerivationType } from '@tezos-x/octez.js-ledger-signer';
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import { ligoSample } from "../../data/ligo-simple-contract";
 

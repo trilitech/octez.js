@@ -1,10 +1,10 @@
-import { MichelsonMap, TezosToolkit } from '@taquito/taquito';
+import { MichelsonMap, TezosToolkit } from '@tezos-x/octez.js';
 import { tacoContractTzip16 } from "../integration-tests/data/modified-taco-contract"
-import { stringToBytes } from '@taquito/utils';
-import { InMemorySigner } from '@taquito/signer';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
 async function example() {
-  const provider = 'https://shadownet.tezos.ecadinfra.com';
+  const provider = 'https://tezos-shadownet.octez.io/';
   const signer = new InMemorySigner('edskRtmEwZxRzwd1obV9pJzAoLoxXFWTSHbgqpDBRHx1Ktzo5yVuJ37e2R4nzjLnNbxFU4UiBU1iHzAy52pK5YBRpaFwLbByca');
   const tezos = new TezosToolkit(provider);
   tezos.setSignerProvider(signer);
@@ -18,9 +18,9 @@ async function example() {
       "version": "0.1",
       "license": "MIT",
       "authors": [
-        "Taquito <https://taquito.io/>"
+        "octez.js <https://octez.js.io/>"
       ],
-      "homepage": "https://taquito.io/"
+      "homepage": "https://octez.js.io/"
     };
 
     const metadataBigMap = new MichelsonMap();

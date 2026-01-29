@@ -1,4 +1,4 @@
-import { Parser } from '@taquito/michel-codec'
+import { Parser } from '@tezos-x/octez.js-michel-codec'
 
 const example = async () => {
 

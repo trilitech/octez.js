@@ -10,10 +10,10 @@ test('checkBuiltEsmImports flags named imports from bignumber.js in built esm fi
   const root = mkdtempSync(join(os.tmpdir(), 'check-esm-imports-'));
 
   try {
-    const distDir = join(root, 'taquito-local-forging', 'dist');
+    const distDir = join(root, 'octez.js-local-forging', 'dist');
     mkdirSync(distDir, { recursive: true });
     writeFileSync(
-      join(distDir, 'taquito-local-forging.es6.js'),
+      join(distDir, 'octez.js-local-forging.es6.js'),
       "import BigNumber$1, { BigNumber } from 'bignumber.js';\n"
     );
 
@@ -31,9 +31,9 @@ test('checkBuiltEsmImports ignores default-only imports from bignumber.js in bui
   const root = mkdtempSync(join(os.tmpdir(), 'check-esm-imports-'));
 
   try {
-    const distDir = join(root, 'taquito-utils', 'dist');
+    const distDir = join(root, 'octez.js-utils', 'dist');
     mkdirSync(distDir, { recursive: true });
-    writeFileSync(join(distDir, 'taquito-utils.es6.js'), "import BigNumberJs from 'bignumber.js';\n");
+    writeFileSync(join(distDir, 'octez.js-utils.es6.js'), "import BigNumberJs from 'bignumber.js';\n");
 
     const findings = checkBuiltEsmImports(root);
 

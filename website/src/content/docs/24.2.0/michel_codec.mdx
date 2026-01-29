@@ -3,13 +3,13 @@ title: Michel Codec
 author: Hui-An Yang
 ---
 
-The `taquito/michel-codec` package converts and validates Michelson expressions between JSON-based Michelson and Micheline. It also comes with various functions like `packData`, `packDataBytes`, `unpackData` and `unpackDataBytes` to serialize any value of packable type to its optimized binary representation locally and vice versa, like Michelson instructions `PACK` and `UNPACK`.
+The `octez.js/michel-codec` package converts and validates Michelson expressions between JSON-based Michelson and Micheline. It also comes with various functions like `packData`, `packDataBytes`, `unpackData` and `unpackDataBytes` to serialize any value of packable type to its optimized binary representation locally and vice versa, like Michelson instructions `PACK` and `UNPACK`.
 
 ## Parser class
 To use the parser class, import and initialize it as follows.
 
 ```ts
-import { Parser } from '@taquito/michel-codec'
+import { Parser } from '@tezos-x/octez.js-michel-codec'
 const p = new Parser()
 ```
 ### Configuration
@@ -21,7 +21,7 @@ You can configure the parser class by passing `ParserOptions` through initializa
 for example
 
 ```ts
-import { Parser } from '@taquito/michel-codec'
+import { Parser } from '@tezos-x/octez.js-michel-codec'
 
 const parserOptions: ParserOptions = {
   expandMacros: true,
@@ -37,7 +37,7 @@ const p = new Parser(parserOptions);
 * `emitMicheline` takes a parsed JSON Michelson object and converts it to a Micheline expression with formatting options.
 
 ```js live
-// import { Parser, emitMicheline } from '@taquito/michel-codec'
+// import { Parser, emitMicheline } from '@tezos-x/octez.js-michel-codec'
 
 const p = new Parser();
 
@@ -59,7 +59,7 @@ try {
 Takes a Micheline expression in the form of script or data and converts it to JSON Michelson
 
 ```js live
-// import { Parser } from '@taquito/michel-codec'
+// import { Parser } from '@tezos-x/octez.js-michel-codec'
 
 const p = new Parser();
 
@@ -80,7 +80,7 @@ Without a type definition (not recommended), `packData` and `packDataBytes` will
 Type definition allows types like `timestamp`, `address` and other base58 representable types to be encoded to corresponding optimized binary forms borrowed from the Tezos protocol.
 
 ```ts
-// import { packData, packDataBytes } from '@taquito/michel-codec'
+// import { packData, packDataBytes } from '@tezos-x/octez.js-michel-codec'
 
   const data: MichelsonData = { string: 'KT1J4E79F1qL6kGBSQ3yXBdXmuq5j4FNThK2%main' };
   const typ: MichelsonType = { prim: 'address' };
@@ -98,7 +98,7 @@ Without a type definition (not recommended), the binary data will be treated as 
 Type definition allows some types, like `timestamp` and `address` and others, usually encoded in optimized binary forms, to be transformed back to their string representations like base58 and ISO timestamps.
 
 ```ts
-// import { unpackData, unpackDataBytes } from '@taquito/michel-codec'
+// import { unpackData, unpackDataBytes } from '@tezos-x/octez.js-michel-codec'
 const type: MichelsonType = { prim: 'timestamp' };
 
 const src1 = [0x05, 0x00, 0xa7, 0xe8, 0xe4, 0xd8, 0x0b];
@@ -112,7 +112,7 @@ const data2 = unpackDataBytes(src2, type);
 
 Alternatively, the same binary data without passing a type definition to `unpackData`, `unpackDataBytes` will not be deserialized correctly
 ```ts
-// import { unpackData, unpackDataBytes } from '@taquito/michel-codec'
+// import { unpackData, unpackDataBytes } from '@tezos-x/octez.js-michel-codec'
 
 const src1 = [0x05, 0x00, 0xa7, 0xe8, 0xe4, 0xd8, 0x0b];
 const data1 = unpackData(src1);

@@ -20,7 +20,7 @@ jobs:
       contents: read
     env:
       VERSION: ${{ inputs.version }}
-      npm_config_cache: /tmp/taquito-npm-cache
+      npm_config_cache: /tmp/octez.js-npm-cache
     steps:
       - uses: actions/checkout@v6
         with:
@@ -62,9 +62,9 @@ jobs:
       - name: Verify Sapling release handoff
         run: |
           set -euo pipefail
-          sapling_wasm_version=$(node -p "require('./packages/taquito-sapling/package.json').dependencies['@taquito/sapling-wasm']")
+          sapling_wasm_version=$(node -p "require('./packages/octez.js-sapling/package.json').dependencies['@tezos-x/octez.js-sapling-wasm']")
           if [ "${sapling_wasm_version}" = "0.1.1" ]; then
-            echo "@taquito/sapling still depends on @taquito/sapling-wasm@0.1.1. Publish sapling-wasm 0.2.0+ and bump packages/taquito-sapling/package.json before release rehearsal." >&2
+            echo "@tezos-x/octez.js-sapling still depends on @tezos-x/octez.js-sapling-wasm@0.1.1. Publish sapling-wasm 0.2.0+ and bump packages/octez.js-sapling/package.json before release rehearsal." >&2
             exit 1
           fi
 
@@ -78,7 +78,7 @@ jobs:
         run: npm run build
 
       - name: Build release artifacts
-        run: npm run -w @taquito/taquito build:release
+        run: npm run -w @tezos-x/octez.js build:release
 
       - name: Validate release helper scripts
         run: npm run test:scripts

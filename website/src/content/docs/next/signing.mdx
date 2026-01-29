@@ -11,10 +11,10 @@ A signature is a base58-encoded string whose prefix depends on the key type: `ed
 
 ## Generating a signature with the InMemorySigner
 
-The `@taquito/signer` package exposes a quick and simple way to generate a signature. All you need to do is to create a new instance of the `InMemorySigner` and call the `sign` method on it:
+The `@tezos-x/octez.js-signer` package exposes a quick and simple way to generate a signature. All you need to do is to create a new instance of the `InMemorySigner` and call the `sign` method on it:
 
 ```js
-import { InMemorySigner } from '@taquito/signer';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
 const signer = new InMemorySigner(YOUR_PRIVATE_KEY);
 const bytes = STRING_OF_BYTES;
@@ -45,10 +45,10 @@ const formattedInput: string = [
 ].join(' ');
 ```
 
-After formatting the string properly, you can convert it into bytes, for example, with the `stringToBytes` function of the `@taquito/utils` package:
+After formatting the string properly, you can convert it into bytes, for example, with the `stringToBytes` function of the `@tezos-x/octez.js-utils` package:
 
 ```js
-import { stringToBytes } from '@taquito/utils';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
 
 const bytes = stringToBytes(formattedInput);
 const bytesLength = (bytes.length / 2).toString(16);
@@ -67,7 +67,7 @@ The hexadecimal/Micheline representation of the string must contain 4 pieces of 
 Once you have your bytes, you can send them to the wallet to have them signed:
 
 ```typescript
-import { RequestSignPayloadInput, SigningType } from '@taquito/beacon-wallet/types';
+import { RequestSignPayloadInput, SigningType } from '@tezos-x/octez.js-beacon-wallet/types';
 
 const payload: RequestSignPayloadInput = {
   signingType: SigningType.MICHELINE,
@@ -87,8 +87,8 @@ The wallet will return an object with a `signature` property that holds our sign
 Here is the full code to sign data with a wallet:
 
 ```ts
-import { stringToBytes } from '@taquito/utils';
-import { RequestSignPayloadInput, SigningType } from '@taquito/beacon-wallet/types';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
+import { RequestSignPayloadInput, SigningType } from '@tezos-x/octez.js-beacon-wallet/types';
 
 // The data to format
 const dappUrl = 'tezos-test-d.app';
@@ -126,10 +126,10 @@ const { signature } = signedPayload;
 
 ## Verifying a signature
 
-To verify that the previously generated signature has actually been signed by a wallet, you can use the `veryfySignature` method from the Taquito utils. Here is an example where we check if the payload has been signed by the client wallet, using their public key:
+To verify that the previously generated signature has actually been signed by a wallet, you can use the `veryfySignature` method from the octez.js utils. Here is an example where we check if the payload has been signed by the client wallet, using their public key:
 
 ```js
-import { verifySignature } from '@taquito/utils';
+import { verifySignature } from '@tezos-x/octez.js-utils';
 
 const isVerified = verifySignature(
   payloadBytes,
@@ -168,9 +168,9 @@ values={[
 <TabItem value="contractAPI">
 
 ```js live
-// import { TezosToolkit } from '@taquito/taquito'
-// import { InMemorySigner } from '@taquito/signer'
-// import { stringToBytes, num2PaddedHex } from '@taquito/utils';
+// import { TezosToolkit } from '@tezos-x/octez.js'
+// import { InMemorySigner } from '@tezos-x/octez.js-signer'
+// import { stringToBytes, num2PaddedHex } from '@tezos-x/octez.js-utils';
 // const Tezos = new TezosToolkit('https://tezos-shadownet.octez.io');
 
 let magicByte = '0x80'
@@ -195,9 +195,9 @@ try {
   <TabItem value="walletAPI">
 
 ```js live wallet
-// import { TezosToolkit } from '@taquito/taquito'
-// import { InMemorySigner } from '@taquito/signer'
-// import { stringToBytes, num2PaddedHex } from '@taquito/utils';
+// import { TezosToolkit } from '@tezos-x/octez.js'
+// import { InMemorySigner } from '@tezos-x/octez.js-signer'
+// import { stringToBytes, num2PaddedHex } from '@tezos-x/octez.js-utils';
 // const Tezos = new TezosToolkit('https://tezos-shadownet.octez.io');
 
 let magicByte = '0x80'
@@ -220,11 +220,11 @@ wallet.client.requestSignPayload(payload).then(signed => console.log(JSON.string
 
 ## Signing Michelson data
 
-Taquito also offers the possibility to sign Michelson code. This feature can be useful, for example, if you need to send a lambda to a contract to be executed but want to restrict the number of users who can submit a lambda by verifying the signer's address. The signing of Michelson code requires the use of the `michel-codec` package:
+octez.js also offers the possibility to sign Michelson code. This feature can be useful, for example, if you need to send a lambda to a contract to be executed but want to restrict the number of users who can submit a lambda by verifying the signer's address. The signing of Michelson code requires the use of the `michel-codec` package:
 
 ```js live
-// import { TezosToolkit } from '@taquito/taquito';
-// import { Parser, packDataBytes, MichelsonData, MichelsonType } from '@taquito/michel-codec';
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Parser, packDataBytes, MichelsonData, MichelsonType } from '@tezos-x/octez.js-michel-codec';
 // const Tezos = new TezosToolkit(NODE_RPC_URL);
 
 const data = `(Pair (Pair { Elt 1
@@ -253,11 +253,11 @@ try {
 
 First, you provide the Michelson code to be signed as a string along with its type.
 Then, you create a new instance of the `michel-codec` parser and call the `parseMichelineExpression` on it to get the JSON representation of the Michelson code and type.
-Once done, you can pack the data using the `packDataBytes` function available in the `@taquito/michel-codec` package.
+Once done, you can pack the data using the `packDataBytes` function available in the `@tezos-x/octez.js-michel-codec` package.
 To finish, use one of the methods presented above to sign the packed data (with the `InMemorySigner` like in this example or with the Beacon SDK).
 
 >[!CAUTION]
-> In the previous example, the data is packed locally in Taquito using the `packDataBytes` function of the `@taquito/michel-codec` package instead of the RPC. You should always verify the packed bytes before signing or requesting that they be signed when using the RPC to pack. This precaution helps protect you and your applications users from RPC nodes that have been compromised. 
+> In the previous example, the data is packed locally in octez.js using the `packDataBytes` function of the `@tezos-x/octez.js-michel-codec` package instead of the RPC. You should always verify the packed bytes before signing or requesting that they be signed when using the RPC to pack. This precaution helps protect you and your applications users from RPC nodes that have been compromised. 
 >
 > A node that is operated by a bad actor or compromised by a bad actor could return a fully formed operation that does not correspond to the input provided to the RPC endpoint.
 
@@ -265,7 +265,7 @@ To finish, use one of the methods presented above to sign the packed data (with 
 
 After forging a signature, you may want to send it to a contract so it can use it within its own logic. 
 
-Let's imagine you have a contract with an entrypoint that accepts a public key, a signature, and bytes called `%check_signature`. Here is how to send it to the contract using Taquito:
+Let's imagine you have a contract with an entrypoint that accepts a public key, a signature, and bytes called `%check_signature`. Here is how to send it to the contract using octez.js:
 
 ```js
 const contract = await Tezos.wallet.at(CONTRACT_ADDRESS);

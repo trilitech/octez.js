@@ -3,7 +3,7 @@ title: A First Look at TezosToolkit
 author: Peter McDonald
 ---
 
-TezosToolkit is the top-level facade for interacting with Tezos via Taquito. It surfaces all of Taquito's capabilities to a DApp developer. Think of it as a top-level controller.
+TezosToolkit is the top-level facade for interacting with Tezos via octez.js. It surfaces all of octez.js's capabilities to a DApp developer. Think of it as a top-level controller.
 
 ## Instantiating a Tezos Toolkit
 
@@ -34,7 +34,7 @@ const tezos = new TezosToolkit(rpcClient);
 
 **Required step:** After instantiating a TezosToolkit the user needs to set a signer or a wallet on the TezosToolkit instance.
 
-**Signer:** The TezosToolkit ships with a NoopSigner which does nothing. A signer is required if the user intends to inject operations into the Tezos blockchain using the contract API. A user can set his own signer on the TezosToolkit, which needs to implement the Signer interface. Otherwise, Taquito provides the following signers:
+**Signer:** The TezosToolkit ships with a NoopSigner which does nothing. A signer is required if the user intends to inject operations into the Tezos blockchain using the contract API. A user can set his own signer on the TezosToolkit, which needs to implement the Signer interface. Otherwise, octez.js provides the following signers:
 - [InMemorySigner](inmemory_signer) (development purpose)
 - [RemoteSigner](signing) (can be used in conjunction with an HSM remote signer such as Signatory)
 - [LedgerSigner](ledger_signer)
@@ -47,14 +47,14 @@ Tezos.setProvider({signer:key});
 ```
 
 **WalletProvider:**
-By default, the TezosToolkit ships with an instance of LegacyWalletProvider. This wallet requires a signer configured on the TezosToolkit. In order to use the Wallet API with a wallet other than the LegacyWallet, the user needs to set a wallet on the TezosToolkit. Taquito provides the following wallets:
-- [BeaconWallet](wallets) (Built on the DAppClient from the Beacon SDK which handles all the logic related to connecting to beacon-compatible wallets and sending requests. The BeaconWallet provides developers a way to connect a dapp built with Taquito to a wallet giving the freedom to the users of the dapp to choose the wallet they want. Common Beacon types like `NetworkType` can be imported from `@taquito/beacon-wallet/types`, and `BeaconEvent` from `@taquito/beacon-wallet`.)
+By default, the TezosToolkit ships with an instance of LegacyWalletProvider. This wallet requires a signer configured on the TezosToolkit. In order to use the Wallet API with a wallet other than the LegacyWallet, the user needs to set a wallet on the TezosToolkit. octez.js provides the following wallets:
+- [BeaconWallet](wallets) (Built on the DAppClient from the Beacon SDK which handles all the logic related to connecting to beacon-compatible wallets and sending requests. The BeaconWallet provides developers a way to connect a dapp built with octez.js to a wallet giving the freedom to the users of the dapp to choose the wallet they want. Common Beacon types like `NetworkType` can be imported from `@tezos-x/octez.js-beacon-wallet/types`, and `BeaconEvent` from `@tezos-x/octez.js-beacon-wallet`.)
 
 A user can set any wallet on the TezosToolkit as long as it implements the WalletProvider interface.
 
 ```typescript
-import { TezosToolkit } from '@taquito/taquito';
-import { BeaconWallet } from '@taquito/beacon-wallet';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
 
 const options = {
   name: 'MyAwesomeDapp',
@@ -76,10 +76,10 @@ Tezos.setProvider({wallet});
 
 **Forger:** A forger is responsible to encode a JSON object representing an operation into its binary representation. An operation is forged, then the forged bytes are signed, and then the signed bytes are injected to the blockchain.
 
-By default, the TezosToolkit ships with an instance of RpcForger. Having access to the Context class and thus to the RpcClient instance, the RpcForger uses the RPC to forge the operations. No configuration is needed if the user wants the default forger. The @taquito/local-forging package provides developers with local forging functionality. A user can set an instance of the [LocalForger](forger) on the TezosToolkit (if he has any trust concerns about the node for example).
+By default, the TezosToolkit ships with an instance of RpcForger. Having access to the Context class and thus to the RpcClient instance, the RpcForger uses the RPC to forge the operations. No configuration is needed if the user wants the default forger. The @tezos-x/octez.js-local-forging package provides developers with local forging functionality. A user can set an instance of the [LocalForger](forger) on the TezosToolkit (if he has any trust concerns about the node for example).
 
 ```typescript
-import { LocalForger } from "@taquito/local-forging";
+import { LocalForger } from "@tezos-x/octez.js-local-forging";
 const tezos = new TezosToolkit('rpc');
 
 tezos.setProvider({forger: new LocalForger()});
@@ -89,14 +89,14 @@ tezos.setForgerProvider(new LocalForger());
 
 A user can set any other Forger on the TezosToolkit as long as it implements the Forger interface.
 
-**SubscribeProvider:** The TezosToolkit ships by default with an instance of PollingSubscribeProvider allowing subscribing to particular operations from the blockchain. This provider is not internally used by Taquito unlike the forger, parser and signer/wallet.
+**SubscribeProvider:** The TezosToolkit ships by default with an instance of PollingSubscribeProvider allowing subscribing to particular operations from the blockchain. This provider is not internally used by octez.js unlike the forger, parser and signer/wallet.
 
 **Packer:** A packer serializes data to its optimized binary representation, identical to the one used by the PACK Michelson instructions. When fetching big map values, the RPC expects to be called with a "packed" key. As for the forger, data can be packed using the RPC or locally.
 
-By default, the TezosToolkit ships with an instance of RpcPacker. Having access to the Context class and thus to the RpcClient instance, the RpcPacker uses the RPC to pack the data. No configuration is needed if the user wants the default packer. The [@taquito/michel-codec](michel_codec) package provides developers with local packing functionality. A user can set an instance of the MichelCodecPacker on the TezosToolkit (allowing for security-conscious off-line operations and faster dapps because of fewer RPC requests).
+By default, the TezosToolkit ships with an instance of RpcPacker. Having access to the Context class and thus to the RpcClient instance, the RpcPacker uses the RPC to pack the data. No configuration is needed if the user wants the default packer. The [@tezos-x/octez.js-michel-codec](michel_codec) package provides developers with local packing functionality. A user can set an instance of the MichelCodecPacker on the TezosToolkit (allowing for security-conscious off-line operations and faster dapps because of fewer RPC requests).
 
 ```typescript
-import { MichelCodecPacker } from '@taquito/taquito';
+import { MichelCodecPacker } from '@tezos-x/octez.js';
 Tezos.setPackerProvider(new MichelCodecPacker());
 ```
 
@@ -400,7 +400,7 @@ const op = await Tezos.contract.batch([
 
 ### Smart Contracts
 
-First step is to create an instance of ContractAbstraction using the "at" method. Taquito dynamically creates methods that correspond to the Smart Contracts entrypoints and offers the user to call the Smart Contract methods as if they were native TS/JS methods. The 'at' method takes a contract address as a parameter and optionally a "contractAbstractionComposer" (see tzip16 example).
+First step is to create an instance of ContractAbstraction using the "at" method. octez.js dynamically creates methods that correspond to the Smart Contracts entrypoints and offers the user to call the Smart Contract methods as if they were native TS/JS methods. The 'at' method takes a contract address as a parameter and optionally a "contractAbstractionComposer" (see tzip16 example).
 
 ```typescript
 const contractAbs = await Tezos.contract.at(contract.address);
@@ -436,7 +436,7 @@ const contractAbs = await Tezos.contract.at(contract.address);
 const storage = await contractAbs.storage();
 ```
 
-If the storage contains bigmap, Taquito provides a [BigMapAbstraction](maps_bigmaps) allowing to fetch values associated with one or multiple keys (without the abstraction the storage only shows the bigmap id. The BigMapAbstraction packs the key using the packer set on the TezosToolkit and fetches the value from the RPC):
+If the storage contains bigmap, octez.js provides a [BigMapAbstraction](maps_bigmaps) allowing to fetch values associated with one or multiple keys (without the abstraction the storage only shows the bigmap id. The BigMapAbstraction packs the key using the packer set on the TezosToolkit and fetches the value from the RPC):
 
 ```typescript
 const storage: BigMapAbstraction = await contractAbs.storage();
@@ -448,8 +448,8 @@ const value = await storage.get({ 'test': 'test2', 'test2': 'test3' });
 A user can add an instance of the [Tzip16Module](metadata-tzip16) as an extension to the TezosToolkit to extend the contractAbstraction class with the tzip16 functionalities.
 
 ```typescript
-import { TezosToolkit } from '@taquito/taquito';
-import { Tzip16Module } from '@taquito/tzip16';
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { Tzip16Module } from '@tezos-x/octez.js-tzip16';
 
 const Tezos = new TezosToolkit('rpcUrl');
 Tezos.addExtension(new Tzip16Module());
@@ -458,7 +458,7 @@ const metadata = await contract.tzip16().getMetadata();
 const views = await contract.tzip16().metadataViews();
 ```
 
-The constructor of the Tzip16Module takes an optional MetadataProvider as a parameter. When none is passed, the default MetadataProvider of Taquito is instantiated and the default handlers (HttpHandler, IpfsHandler, and TezosStorageHandler) are used. A user might want to customize one of the handlers. For example, he might want to use a custom Ipfs Handler in order to use a different ipfs gateway. The default one is 'gateway.ipfs.io'.
+The constructor of the Tzip16Module takes an optional MetadataProvider as a parameter. When none is passed, the default MetadataProvider of octez.js is instantiated and the default handlers (HttpHandler, IpfsHandler, and TezosStorageHandler) are used. A user might want to customize one of the handlers. For example, he might want to use a custom Ipfs Handler in order to use a different ipfs gateway. The default one is 'gateway.ipfs.io'.
 
 ### Interacting with Token Metadata ([Tzip-12](tzip12))
 

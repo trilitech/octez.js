@@ -2,15 +2,15 @@
 ///   Ensure the Testfunder account tz1bwsEWCwSEXdRvnJxvegQZKeX5dj6oKEys has at least 2k tokens
 ///   for the testnet in use. The script will first check if addresses used in the script are funded,
 ///   and top them up if needed. The script will then originate each contract needed for Live Code
-///   examples in Taquito Docs and produce a JSON file with each Contract Identifier and its PKH.
+///   examples in octez.js Docs and produce a JSON file with each Contract Identifier and its PKH.
 ///   Use the testpad script Docs Live Code Contract Origination (in https://ecadlabs.ontestpad.com/project/18/)
 ///   with the desired chain (e.g. kathmandu) to match the originated scripts with their locations in the Docs.
-///   The script will also print to console a json file of contracts to use in the code examples in taquito/examples
+///   The script will also print to console a json file of contracts to use in the code examples in octez.js/examples
 ///   Execute this script with
 ///     node -r ts-node/register deploy-docs-live-code-contracts.ts
 
-import { MichelsonMap, TezosToolkit } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
+import { MichelsonMap, TezosToolkit } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
 import { tzip7Contract } from '../integration-tests/data/tzip_7_contract';
 import { contractMapPairKey } from './data/contractMapPairKey';
 import { contractIncrementing } from './data/contractIncrementing';
@@ -27,12 +27,12 @@ import {
 } from '../integration-tests/data/metadataViews';
 import { saplingLiveCodeContract } from './data/sapling_live_code_contract';
 import { contractMap8pairs } from './data/contractMap8pairs';
-import { stringToBytes } from '@taquito/utils';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
 import { fa2Contract } from '../integration-tests/data/fa2_contract';
 import BigNumber from 'bignumber.js';
 
 
-const provider = 'https://shadownet.tezos.ecadinfra.com/';
+const provider = 'https://tezos-shadownet.octez.io/';
 export const signer = new InMemorySigner(
   'edskRtmEwZxRzwd1obV9pJzAoLoxXFWTSHbgqpDBRHx1Ktzo5yVuJ37e2R4nzjLnNbxFU4UiBU1iHzAy52pK5YBRpaFwLbByca'
 );
@@ -578,8 +578,8 @@ async function originateTzip16Storage() {
       description: 'A metadata test',
       version: '0.1',
       license: 'MIT',
-      authors: ['Taquito <https://taquito.io/>'],
-      homepage: 'https://taquito.io/',
+      authors: ['octez.js <https://octez.js.io/>'],
+      homepage: 'https://octez.js.io/',
     };
 
     const metadataBigMap = new MichelsonMap();

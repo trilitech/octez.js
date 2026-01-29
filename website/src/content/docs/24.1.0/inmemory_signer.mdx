@@ -6,7 +6,7 @@ author: Simon Boissonneault-Robert
 :::caution Warning
 **Storing private keys in memory is suitable for development workflows but risky for
 production use-cases! Use the InMemorySigner appropriately given your risk profile**
-**More information on why can be found [here](https://github.com/ecadlabs/taquito/issues/1764)**
+**More information on why can be found [here](https://github.com/trilitech/octez.js/issues/1764)**
 :::
 
 Inmemory signer is a local signer implementation that allows you to directly use a private key in your browser or your nodejs app.
@@ -21,11 +21,11 @@ If you require the server-side signing of operations on the mainnet, we recommen
 
 ### Loading an unencrypted private key
 
-If you configure Taquito this way, you will now be able to use every function that needs signing support.
+If you configure octez.js this way, you will now be able to use every function that needs signing support.
 
 ```js
-import { InMemorySigner } from '@taquito/signer';
-import { TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
@@ -60,10 +60,10 @@ try {
 }
 ```
 
-When required, Taquito offers the `b58Encode` function allowing to encode the secret in base58. The parameters of the function are the secret, that can be a `hex string` or an `Uint8Array`, and the desired prefix. Here is an example with a `hex string`:
+When required, octez.js offers the `b58Encode` function allowing to encode the secret in base58. The parameters of the function are the secret, that can be a `hex string` or an `Uint8Array`, and the desired prefix. Here is an example with a `hex string`:
 
 ```js live
-// import { b58Encode, PrefixV2 } from '@taquito/utils';
+// import { b58Encode, PrefixV2 } from '@tezos-x/octez.js-utils';
 
 try {
   const b58encodedSecret = b58Encode(
@@ -88,8 +88,8 @@ try {
 If your private key is encrypted, you can specify a passphrase to decrypt it. Doing so will automatically decrypt the key and allow you to use the signer to sign transactions.
 
 ```js
-import { InMemorySigner } from '@taquito/signer';
-import { TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 Tezos.setProvider({
@@ -200,8 +200,8 @@ If you require to sign operations with many different keys, then implementing a 
 The `signerFactory` function example creates a new Tezos instance. Use the Tezos instance for signing, and discard it when complete.
 
 ```js
-import { InMemorySigner } from '@taquito/signer';
-import { TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const signerFactory = async (rpcUrl: string, pk: string) => {
   const Tezos = new TezosToolkit(rpcUrl);

@@ -3,7 +3,7 @@ title: WalletConnect
 author: Roxane Letourneau
 ---
 
-The `@taquito/wallet-connect` package provides a `WalletConnect` class which implements the `WalletProvider` interface. The package is intended to be used by dapp developers. Similarly to `BeaconWallet`, an instance of `WalletConnect` can be injected into the `TezosToolkit` to work with the wallet API.
+The `@tezos-x/octez.js-wallet-connect` package provides a `WalletConnect` class which implements the `WalletProvider` interface. The package is intended to be used by dapp developers. Similarly to `BeaconWallet`, an instance of `WalletConnect` can be injected into the `TezosToolkit` to work with the wallet API.
 
 The current QR pairing flow still relies on the legacy WalletConnect modal package. We plan to replace that modal integration in a future release.
 
@@ -12,7 +12,7 @@ The current QR pairing flow still relies on the legacy WalletConnect modal packa
 The first step is to instantiate `WalletConnect` by passing your dapp details as a parameter of the `init` method as follows:
 
 ```ts
-import { WalletConnect } from "@taquito/wallet-connect";
+import { WalletConnect } from "@tezos-x/octez.js-wallet-connect";
 
 const walletConnect = await WalletConnect.init({
   projectId: "YOUR_PROJECT_ID", // can get YOUR_PROJECT_ID from [Reown Cloud](https://cloud.reown.com)
@@ -28,7 +28,7 @@ const walletConnect = await WalletConnect.init({
 The second step is to establish a connection to a wallet using the `requestPermissions` method:
 
 ```ts
-import { NetworkType, PermissionScopeMethods } from "@taquito/wallet-connect";
+import { NetworkType, PermissionScopeMethods } from "@tezos-x/octez.js-wallet-connect";
 
 await walletConnect.requestPermissions({
   permissionScope: {
@@ -68,8 +68,8 @@ try {
     logger: 'debug',
     projectId: 'ba97fd7d1e89eae02f7c330e14ce1f36',  // demo project ID for this example; get your own from https://cloud.reown.com
     metadata: {
-      name: 'Taquito website',
-      description: 'Taquito website with WalletConnect',
+      name: 'octez.js website',
+      description: 'octez.js website with WalletConnect',
       url: 'https://tezostaquito.io/',
       icons: [],
     },
@@ -101,19 +101,19 @@ The `sign` method of `WalletConnect` can be called to sign a payload. The respon
 
 ## Events handling
 
-WalletConnect allows listening to specific events. Taquito has listeners on the events `session_delete`, `session_expire`, and `session_update` and reconciles its internal session state if one of these events is emitted. The dapp should also handle those events as follows:
+WalletConnect allows listening to specific events. octez.js has listeners on the events `session_delete`, `session_expire`, and `session_update` and reconciles its internal session state if one of these events is emitted. The dapp should also handle those events as follows:
 
 ```ts
 walletConnect.signClient.on("session_delete", ({ topic }) => {
   // The session was deleted from the wallet
-  // Taquito clears its local session state
+  // octez.js clears its local session state
   // the dapp should listen for the event and reset the dapp state,
   // clean up from user session (for example, go back to the connect wallet page)
 });
 
 walletConnect.signClient.on("session_update", ({ topic }) => {
   // The session was updated in the wallet
-  // Taquito revalidates the session and reconciles the active account/network
+  // octez.js revalidates the session and reconciles the active account/network
   // the app should still update its own derived state (selected account, balances, UI, ...)
   // Update the app's state (selected account, available accounts, balance, ...)
 });

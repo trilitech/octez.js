@@ -1,8 +1,8 @@
-# Taquito Documentation
+# octez.js Documentation
 
-> Official documentation for Taquito, a TypeScript library for building DApps on the Tezos blockchain.
+> Official documentation for octez.js, a TypeScript library for building DApps on the Tezos blockchain.
 
-This file lists all documentation pages available at https://taquito.io. Use this to understand the documentation structure and find relevant pages.
+This file lists all documentation pages available at https://octez.js.io. Use this to understand the documentation structure and find relevant pages.
 
 ## URL Structure
 
@@ -19,10 +19,10 @@ The `next` version contains the latest unreleased documentation.
 - `tutorial` - Building Your First dApp
 - `operation_flow` - Operation Flow
 - `rpc_nodes` - RPC nodes
-- `web3js_taquito` - web3js vs Taquito
+- `web3js_taquito` - web3js vs octez.js
 - `fallback_rpc` - Fallback RPC URLs
 
-### Taquito Providers
+### octez.js Providers
 - `prepare` - Prepare Provider
 - `estimate` - Estimate Provider
 
@@ -76,16 +76,16 @@ The `next` version contains the latest unreleased documentation.
 - `michel_codec` - Michel Codec
 - `contracts-library` - Contracts Library
 - `timelock` - Timelock (BETA)
-- `taquito_utils` - Taquito Utils
+- `taquito_utils` - octez.js Utils
 - **Sapling**
   - `sapling` - Sapling Toolkit
   - `sapling_in_memory_spending_key` - InMemorySpendingKey
   - `sapling_in_memory_viewing_key` - InMemoryViewingKey
 
 ### Architecture
-- `arch_framework` - The Taquito Framework
+- `arch_framework` - The octez.js Framework
 - `arch_tezos_toolkit` - A First Look at TezosToolkit
-- `arch_entry_points` - Taquito Entry Points
+- `arch_entry_points` - octez.js Entry Points
 - `arch_operations` - Operations and Injection Model
 - `arch_michelson_encoder` - Michelson Encoder Internals
 - `arch_runcode_rpc` - Understanding the RunCode RPC
@@ -106,7 +106,7 @@ The `next` version contains the latest unreleased documentation.
 - `cancel_http_requests` - Cancel HTTP requests
 
 ### Testing
-- `testing_strategies` - Taquito Testing Strategies
+- `testing_strategies` - octez.js Testing Strategies
 - `ledger_integration_test` - Ledger Tests
 - `rpc_nodes_integration_test` - RPC Tests
 
@@ -115,7 +115,7 @@ The `next` version contains the latest unreleased documentation.
 - `dapp_template` - dApp Templates
 - `dapp_prelaunch` - dApp Pre-launch Checklist
 
-### Taquito Public API
+### octez.js Public API
 - `wallet_API` - Wallet API
 - `batch-api` - Batch API
 
@@ -130,5 +130,5 @@ TypeDoc-generated API documentation is available at `/typedoc`.
 
 ## Resources
 
-- GitHub: https://github.com/ecadlabs/taquito
-- npm: https://www.npmjs.com/package/@taquito/taquito
+- GitHub: https://github.com/trilitech/octez.js
+- npm: https://www.npmjs.com/package/@tezos-x/octez.js

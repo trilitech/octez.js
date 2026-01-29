@@ -17,13 +17,13 @@ A scenario where you would use a global constant could be something like:
 - Alice replaces the newly registered expression in the code of her contract with the primitive `constant` and the corresponding hash.
 - Alice can now originate her contract as its size has been compressed.
 
-## Registering a global constant with Taquito
+## Registering a global constant with octez.js
 
 ### Contract API
 
 A `registerGlobalConstant` method is available on the `ContractProvider` class. A `value` representing the Micheline expression to register in its JSON format is minimally required as a parameter. The `registerGlobalConstant` method returns an instance of `RegisterGlobalConstantOperation` containing a `globalConstantHash` member that corresponds to the index (hash) of the newly registered constant.
 
-Conversion between Micheline and its JSON format can be achieved using the `@taquito/michel-codec` if needed.
+Conversion between Micheline and its JSON format can be achieved using the `@tezos-x/octez.js-michel-codec` if needed.
 
 >[!NOTE]
 > An expression can only be registered once and will result in an error from the node if anyone tries to register the same constant multiple times.
@@ -119,7 +119,7 @@ It is also possible to register global constants using the batch API.
 Here is an example using the `withRegisterGlobalConstant` method: 
 
 ```ts
-import { OpKind } from '@taquito/taquito';
+import { OpKind } from '@tezos-x/octez.js';
 
 const batchOp = await Tezos.contract.batch()
 .withRegisterGlobalConstant({
@@ -141,7 +141,7 @@ await batchOp.confirmation();
 Here is an example without using the `withRegisterGlobalConstant` method: 
 
 ```ts
-import { OpKind } from '@taquito/taquito';
+import { OpKind } from '@tezos-x/octez.js';
 
 const batchOp = await Tezos.contract.batch([
     {
@@ -159,14 +159,14 @@ await batchOp.confirmation();
 
 ## Deploying a contract with a storage property containing a global constant
 
-When deploying a contract with global constants in its storage, Taquito needs to know the Michelson values of those constants. You provide these by setting a global constant provider on your `TezosToolkit` instance.
+When deploying a contract with global constants in its storage, octez.js needs to know the Michelson values of those constants. You provide these by setting a global constant provider on your `TezosToolkit` instance.
 
-Taquito provides a default global constant provider named `DefaultGlobalConstantsProvider` where the hash and corresponding JSON Michelson value must be manually provisioned using its `loadGlobalConstant` method.
+octez.js provides a default global constant provider named `DefaultGlobalConstantsProvider` where the hash and corresponding JSON Michelson value must be manually provisioned using its `loadGlobalConstant` method.
 
 Alternatively, you can create your own provider by implementing the `GlobalConstantsProvider` interface with a `getGlobalConstantByHash` method.
 
 ```ts
-import { TezosToolkit, DefaultGlobalConstantsProvider } from '@taquito/taquito';
+import { TezosToolkit, DefaultGlobalConstantsProvider } from '@tezos-x/octez.js';
 
 // create an instance of the `DefaultGlobalConstantsProvider`, load the global constants used in the contract, inject the instance on the TezosToolkit
 const expression = { "prim": "int" }

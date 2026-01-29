@@ -3,7 +3,7 @@
  * Source of truth: mainnet RPC /chains/main/blocks/head/context/constants
  *
  * NOTE: When updating constants here, also check:
- *   packages/taquito/src/constants.ts (runtime constants for estimation logic)
+ *   packages/octez.js/src/constants.ts (runtime constants for estimation logic)
  *
  * When a protocol changes a value, update 'next' and any new version entry.
  * Historical versions stay frozen as-published.

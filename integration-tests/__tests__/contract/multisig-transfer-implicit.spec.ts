@@ -1,5 +1,5 @@
 import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from "../../config";
-import { MANAGER_LAMBDA } from "@taquito/taquito";
+import { MANAGER_LAMBDA } from "@tezos-x/octez.js";
 import { genericMultisig } from "../../data/multisig";
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {

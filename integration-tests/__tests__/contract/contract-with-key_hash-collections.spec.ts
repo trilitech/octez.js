@@ -1,5 +1,5 @@
 import { CONFIGS } from "../../config";
-import { MichelsonMap } from "@taquito/taquito";
+import { MichelsonMap } from "@tezos-x/octez.js";
 import { contractWithKeyHashCollections } from "../../data/contract-with-key_hash-collections";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {

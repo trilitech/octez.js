@@ -1,9 +1,9 @@
-import { ProhibitedActionError } from "@taquito/core";
-import { HttpResponseError } from '@taquito/http-utils'
+import { ProhibitedActionError } from "@tezos-x/octez.js-core";
+import { HttpResponseError } from '@tezos-x/octez.js-http-utils'
 import { CONFIGS } from "../config";
 import { commonCases, tallinnCases } from '../data/allTestsCases';
-import { LocalForger, ProtocolsHash } from '@taquito/local-forging'
-import { TezosToolkit, Protocols } from "@taquito/taquito";
+import { LocalForger, ProtocolsHash } from '@tezos-x/octez.js-local-forging'
+import { TezosToolkit, Protocols } from "@tezos-x/octez.js";
 import { rethrowInfrastructureRpcError } from '../test-helpers/rpc-error-assertions';
 
 CONFIGS().forEach(({ rpc, protocol }) => {

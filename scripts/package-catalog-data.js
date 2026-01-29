@@ -8,10 +8,10 @@ const hiddenWorkspacePackages = new Set();
 const externalPackages = [
   {
     name: '@taquito/sapling-wasm',
-    description: 'Sapling Wasm bindings for Taquito and compatible consumers.',
+    description: 'Sapling Wasm bindings for octez.js and compatible consumers.',
     npmUrl: 'https://www.npmjs.com/package/@taquito/sapling-wasm',
     sourceUrl: 'https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm',
-    notes: 'Official Taquito package, published from the separate `ecadlabs/sapling-wasm` repository.',
+    notes: 'Official octez.js package, published from the separate `ecadlabs/sapling-wasm` repository.',
   },
 ];
 

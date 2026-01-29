@@ -35,8 +35,8 @@ const isNextVersion = isDocsPage && version === 'next';
 const pageSlug = currentSlug?.split('/').slice(1).join('/') || 'quick_start';
 const stableVersionUrl = `/docs/${DEFAULT_VERSION}/${pageSlug}`;
 
-const pageTitle = title ? `${title} | Taquito` : 'Taquito Documentation';
-const pageDescription = description || `${title || 'Documentation'} - Learn how to use Taquito, a TypeScript library for Tezos blockchain development.`;
+const pageTitle = title ? `${title} | octez.js` : 'octez.js Documentation';
+const pageDescription = description || `${title || 'Documentation'} - Learn how to use octez.js, a TypeScript library for Tezos blockchain development.`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL('/og-image.png', Astro.site);
 
@@ -48,7 +48,7 @@ const authors = author ? (Array.isArray(author) ? author : [author]) : [];
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": title || 'Taquito Documentation',
+  "headline": title || 'octez.js Documentation',
   "description": pageDescription,
   "url": canonicalURL.toString(),
   "publisher": {
@@ -68,7 +68,7 @@ const articleJsonLd = {
   }),
   "isPartOf": {
     "@type": "WebSite",
-    "name": "Taquito Documentation",
+    "name": "octez.js Documentation",
     "url": Astro.site?.toString()
   }
 };
@@ -92,7 +92,7 @@ const articleJsonLd = {
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:site_name" content="Taquito" />
+    <meta property="og:site_name" content="octez.js" />
     <meta property="og:image" content={ogImageURL} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -112,8 +112,8 @@ const articleJsonLd = {
       rel="stylesheet"
     />
 
-    <!-- Load Taquito -->
-    <script src="../scripts/taquito-init.ts"></script>
+    <!-- Load octez.js -->
+    <script src="../scripts/octezjs-init.ts"></script>
     <!-- Load Prism for syntax highlighting -->
     <script src="../scripts/prism-highlight.ts"></script>
   </head>
@@ -165,7 +165,7 @@ const articleJsonLd = {
                     />
                   </svg>
                   <p class="text-amber-800 text-sm">
-                    This documentation is for Taquito version <strong>{version}</strong> and is no
+                    This documentation is for octez.js version <strong>{version}</strong> and is no
                     longer being updated. Some information may be outdated. View the{' '}
                     <a
                       href={stableVersionUrl}
@@ -195,7 +195,7 @@ const articleJsonLd = {
                     />
                   </svg>
                   <p class="text-blue-800 text-sm">
-                    This documentation is for an <strong>unreleased version</strong> of Taquito.
+                    This documentation is for an <strong>unreleased version</strong> of octez.js.
                     Features and APIs may change before the final release. View the{' '}
                     <a href={stableVersionUrl} class="text-blue-700 underline hover:text-blue-900">
                       latest stable version

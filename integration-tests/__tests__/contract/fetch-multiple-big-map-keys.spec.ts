@@ -1,6 +1,6 @@
 import { CONFIGS } from '../../config';
 import { tokenCode } from '../../data/tokens';
-import { MichelsonMap, BigMapAbstraction } from '@taquito/taquito';
+import { MichelsonMap, BigMapAbstraction } from '@tezos-x/octez.js';
 import BigNumberJs from 'bignumber.js';
 type BigNumber = InstanceType<typeof BigNumberJs>;
 const BigNumber = BigNumberJs;

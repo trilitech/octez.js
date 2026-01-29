@@ -1,4 +1,4 @@
-import { getRevealFee } from '@taquito/taquito';
+import { getRevealFee } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {

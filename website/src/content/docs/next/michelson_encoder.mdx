@@ -5,7 +5,7 @@ author: Roxane Letourneau
 
 The purpose of the `Michelson-Encoder` package is to create an abstraction over the Michelson Language. It allows converting Michelson data into JavaScript-looking objects which are easier to use and reason about.
 
-Its integration into the main `Taquito` package makes it easier to write storage when deploying a contract and parameters when calling a contract entry-point.
+Its integration into the main `octez.js` package makes it easier to write storage when deploying a contract and parameters when calling a contract entry-point.
 
 ## How does it work?
 
@@ -357,7 +357,7 @@ Here is an example for the `big_map` type:
 
 If we have a contract with a big map in its storage, when we fetch the contract's storage with the RPC, the returned value looks like the following `{ int: big_map_id }`.
 
-In the Taquito main package, the `getStorage` method of the `ContractProvider` class uses the semantic parameter to override the representation of big map in the storage. When we fetch the storage of a contract using `Tezos.contract.getStorage('contractAddress')`, an instance of the `BigMapAbstraction` class is returned for the big map instead of its id.
+In the octez.js main package, the `getStorage` method of the `ContractProvider` class uses the semantic parameter to override the representation of big map in the storage. When we fetch the storage of a contract using `Tezos.contract.getStorage('contractAddress')`, an instance of the `BigMapAbstraction` class is returned for the big map instead of its id.
 
 ```js 
 const schema = new Schema({ prim: 'big_map', args: [{ prim: 'address' }, { prim: 'int' }] });
@@ -385,9 +385,9 @@ const dataCustom = schema.Execute(dataMichelson, { ticket: (val) => val.args[1].
 console.log(`Customized representation of the ticket value: ${JSON.stringify(dataCustom)}`);
 ```
 
-### How the Schema class is used inside Taquito
+### How the Schema class is used inside octez.js
 
-The `Schema` class is internally used in Taquito:
+The `Schema` class is internally used in octez.js:
 - When calling `Tezos.contract.getStorage()`:
     It allows returning a well-formatted JSON object of the contract storage using the `Execute` method to convert the Michelson data into familiar-looking JavaScript data.
 - When fetching a bigmap key with `BigMapAbstraction.get()` or `RpcContractProvider.getBigMapKey()`:
@@ -422,9 +422,9 @@ const michelsonData = parameterSchema.EncodeObject({
 console.log(JSON.stringify(michelsonData, null, 2));
 ```
 
-### How the ParameterSchema class is used inside Taquito
+### How the ParameterSchema class is used inside octez.js
 
-The `ParameterSchema` class is internally used in Taquito:
+The `ParameterSchema` class is internally used in octez.js:
 - When we call a method, or a view of a contract using the `ContractAbstraction` class, the `Encode` method is used to transform the parameters into Michelson data.
 - In the `tzip16` package, when we execute a Michelson view, the `Encode` method is used to transform the parameters into Michelson data.
 
@@ -469,7 +469,7 @@ const noAnnotationsSchema = storageSchema.ExtractSchema();
 console.log(JSON.stringify(noAnnotationsSchema, null, 2));
 ```
 
-In Taquito, we will flatten these nested `pair`s to make it easier to use them in TypeScript dApps. Please note how the result of `generateSchema` is different in the annotated vs non-annotated cases:
+In octez.js, we will flatten these nested `pair`s to make it easier to use them in TypeScript dApps. Please note how the result of `generateSchema` is different in the annotated vs non-annotated cases:
 
 ```js
 //annotatedSchema:
@@ -491,7 +491,7 @@ In Taquito, we will flatten these nested `pair`s to make it easier to use them i
 }
 ```
 
-Here, Taquito developers have made two decisions:
+Here, octez.js developers have made two decisions:
 1. The elements of the nested `pair`s are flattened into a single object.
 2. The keys of the object are:
    1. the annotations, if they exist

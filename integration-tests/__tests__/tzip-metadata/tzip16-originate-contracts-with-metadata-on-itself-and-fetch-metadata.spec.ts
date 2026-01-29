@@ -1,8 +1,8 @@
 import { CONFIGS } from "../../config";
-import { tzip16, Tzip16Module } from '@taquito/tzip16';
-import { stringToBytes } from '@taquito/utils';
+import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
 import { tacoContractTzip16 } from "../../data/modified-taco-contract"
-import { MichelsonMap } from "@taquito/taquito";
+import { MichelsonMap } from "@tezos-x/octez.js";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;
@@ -22,9 +22,9 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
         "version": "0.1",
         "license": "MIT",
         "authors": [
-          "Taquito <https://taquito.io/>"
+          "octez.js <https://octez.js.io/>"
         ],
-        "homepage": "https://taquito.io/"
+        "homepage": "https://octez.js.io/"
       };
 
       const metadataBigMap = new MichelsonMap();
@@ -78,17 +78,17 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
         "version": "0.1",
         "license": "MIT",
         "authors": [
-          "Taquito <https://taquito.io/>"
+          "octez.js <https://octez.js.io/>"
         ],
-        "homepage": "https://taquito.io/"
+        "homepage": "https://octez.js.io/"
       });
 
       expect(await (await contract.tzip16()).metadataName()).toEqual('test')
       expect(await (await contract.tzip16()).metadataDescription()).toEqual('A metadata test')
       expect(await (await contract.tzip16()).metadataVersion()).toEqual('0.1')
       expect(await (await contract.tzip16()).metadataLicense()).toEqual('MIT')
-      expect(await (await contract.tzip16()).metadataAuthors()).toEqual(["Taquito <https://taquito.io/>"])
-      expect(await (await contract.tzip16()).metadataHomepage()).toEqual('https://taquito.io/')
+      expect(await (await contract.tzip16()).metadataAuthors()).toEqual(["octez.js <https://octez.js.io/>"])
+      expect(await (await contract.tzip16()).metadataHomepage()).toEqual('https://octez.js.io/')
       expect(await (await contract.tzip16()).metadataSource()).toBeUndefined()
       expect(await (await contract.tzip16()).metadataInterfaces()).toBeUndefined()
       expect(await (await contract.tzip16()).metadataErrors()).toBeUndefined()
@@ -110,17 +110,17 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
         "version": "0.1",
         "license": "MIT",
         "authors": [
-          "Taquito <https://taquito.io/>"
+          "octez.js <https://octez.js.io/>"
         ],
-        "homepage": "https://taquito.io/"
+        "homepage": "https://octez.js.io/"
       });
 
       expect(await (await contract.tzip16()).metadataName()).toEqual('test')
       expect(await (await contract.tzip16()).metadataDescription()).toEqual('A metadata test')
       expect(await (await contract.tzip16()).metadataVersion()).toEqual('0.1')
       expect(await (await contract.tzip16()).metadataLicense()).toEqual('MIT')
-      expect(await (await contract.tzip16()).metadataAuthors()).toEqual(["Taquito <https://taquito.io/>"])
-      expect(await (await contract.tzip16()).metadataHomepage()).toEqual('https://taquito.io/')
+      expect(await (await contract.tzip16()).metadataAuthors()).toEqual(["octez.js <https://octez.js.io/>"])
+      expect(await (await contract.tzip16()).metadataHomepage()).toEqual('https://octez.js.io/')
       expect(await (await contract.tzip16()).metadataSource()).toBeUndefined()
       expect(await (await contract.tzip16()).metadataInterfaces()).toBeUndefined()
       expect(await (await contract.tzip16()).metadataErrors()).toBeUndefined()

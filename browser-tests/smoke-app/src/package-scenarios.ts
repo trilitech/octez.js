@@ -41,7 +41,7 @@ const localForgerOperation = {
 
 const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   'core-import': async () => {
-    const core = await importPackage<typeof import('@taquito/core')>('@taquito/core');
+    const core = await importPackage<typeof import('@tezos-x/octez.js-core')>('@tezos-x/octez.js-core');
 
     return {
       exports: ['ValidationResult', 'InvalidAddressError'],
@@ -54,8 +54,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
 
   'http-utils-behavior': async () => {
     const { HttpBackend, HttpRequestFailed, HttpResponseError } = await importPackage<
-      typeof import('@taquito/http-utils')
-    >('@taquito/http-utils');
+      typeof import('@tezos-x/octez.js-http-utils')
+    >('@tezos-x/octez.js-http-utils');
     const backend = new HttpBackend(1234);
 
     return {
@@ -70,9 +70,9 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
 
   'utils-behavior': async () => {
     const { bytesToString, stringToBytes, hex2Bytes } = await importPackage<
-      typeof import('@taquito/utils')
-    >('@taquito/utils');
-    const encoded = stringToBytes('taquito');
+      typeof import('@tezos-x/octez.js-utils')
+    >('@tezos-x/octez.js-utils');
+    const encoded = stringToBytes('octez.js');
 
     return {
       exports: ['bytesToString', 'stringToBytes', 'hex2Bytes'],
@@ -85,7 +85,7 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'rpc-behavior': async () => {
-    const { RpcClient, OpKind } = await importPackage<typeof import('@taquito/rpc')>('@taquito/rpc');
+    const { RpcClient, OpKind } = await importPackage<typeof import('@tezos-x/octez.js-rpc')>('@tezos-x/octez.js-rpc');
     const client = new RpcClient('https://example.invalid');
 
     return {
@@ -98,8 +98,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'michel-codec-behavior': async () => {
-    const { Parser, emitMicheline } = await importPackage<typeof import('@taquito/michel-codec')>(
-      '@taquito/michel-codec'
+    const { Parser, emitMicheline } = await importPackage<typeof import('@tezos-x/octez.js-michel-codec')>(
+      '@tezos-x/octez.js-michel-codec'
     );
     const parser = new Parser();
     const parsed = parser.parseMichelineExpression('{ Pair 1 2 }');
@@ -115,8 +115,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
 
   'michelson-encoder-behavior': async () => {
     const { MichelsonMap, ParameterSchema } = await importPackage<
-      typeof import('@taquito/michelson-encoder')
-    >('@taquito/michelson-encoder');
+      typeof import('@tezos-x/octez.js-michelson-encoder')
+    >('@tezos-x/octez.js-michelson-encoder');
     const bytesSchema = new ParameterSchema({ prim: 'bytes' });
     const encoded = bytesSchema.EncodeObject(new Uint8Array([1, 2, 3]));
     const map = MichelsonMap.fromLiteral({ taco: 'shop' });
@@ -132,8 +132,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'local-forging-behavior': async () => {
-    const { LocalForger } = await importPackage<typeof import('@taquito/local-forging')>(
-      '@taquito/local-forging'
+    const { LocalForger } = await importPackage<typeof import('@tezos-x/octez.js-local-forging')>(
+      '@tezos-x/octez.js-local-forging'
     );
     const localForger = new LocalForger();
     const forged = await localForger.forge(localForgerOperation as any);
@@ -149,7 +149,7 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'signer-import': async () => {
-    const signer = await importPackage<typeof import('@taquito/signer')>('@taquito/signer');
+    const signer = await importPackage<typeof import('@tezos-x/octez.js-signer')>('@tezos-x/octez.js-signer');
 
     return {
       exports: ['InMemorySigner', 'VERSION'],
@@ -160,10 +160,10 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
     };
   },
 
-  'taquito-behavior': async () => {
+  'octez.js-behavior': async () => {
     const { MichelsonMap, OpKind, TezosToolkit } = await importPackage<
-      typeof import('@taquito/taquito')
-    >('@taquito/taquito');
+      typeof import('@tezos-x/octez.js')
+    >('@tezos-x/octez.js');
     const tezos = new TezosToolkit('https://example.invalid');
     const map = new MichelsonMap();
 
@@ -178,8 +178,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'tzip16-behavior': async () => {
-    const { DEFAULT_HANDLERS, Tzip16Module } = await importPackage<typeof import('@taquito/tzip16')>(
-      '@taquito/tzip16'
+    const { DEFAULT_HANDLERS, Tzip16Module } = await importPackage<typeof import('@tezos-x/octez.js-tzip16')>(
+      '@tezos-x/octez.js-tzip16'
     );
     const module = new Tzip16Module();
 
@@ -193,7 +193,7 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'tzip12-behavior': async () => {
-    const { Tzip12Module } = await importPackage<typeof import('@taquito/tzip12')>('@taquito/tzip12');
+    const { Tzip12Module } = await importPackage<typeof import('@tezos-x/octez.js-tzip12')>('@tezos-x/octez.js-tzip12');
     const module = new Tzip12Module();
 
     return {
@@ -205,8 +205,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'contracts-library-behavior': async () => {
-    const { ContractsLibrary } = await importPackage<typeof import('@taquito/contracts-library')>(
-      '@taquito/contracts-library'
+    const { ContractsLibrary } = await importPackage<typeof import('@tezos-x/octez.js-contracts-library')>(
+      '@tezos-x/octez.js-contracts-library'
     );
     const library = new ContractsLibrary();
 
@@ -226,7 +226,7 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'timelock-behavior': async () => {
-    const { Chest } = await importPackage<typeof import('@taquito/timelock')>('@taquito/timelock');
+    const { Chest } = await importPackage<typeof import('@tezos-x/octez.js-timelock')>('@tezos-x/octez.js-timelock');
     const payload = new TextEncoder().encode('browser-smoke');
     const time = 16;
     const { chest, key } = Chest.newChestAndKey(payload, time);
@@ -242,8 +242,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'beacon-wallet-import': async () => {
-    const beaconWallet = await importPackage<typeof import('@taquito/beacon-wallet')>(
-      '@taquito/beacon-wallet'
+    const beaconWallet = await importPackage<typeof import('@tezos-x/octez.js-beacon-wallet')>(
+      '@tezos-x/octez.js-beacon-wallet'
     );
 
     return {
@@ -256,8 +256,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'wallet-connect-import': async () => {
-    const walletConnect = await importPackage<typeof import('@taquito/wallet-connect')>(
-      '@taquito/wallet-connect'
+    const walletConnect = await importPackage<typeof import('@tezos-x/octez.js-wallet-connect')>(
+      '@tezos-x/octez.js-wallet-connect'
     );
 
     return {
@@ -270,8 +270,8 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'ledger-signer-behavior': async () => {
-    const { DerivationType, LedgerSigner } = await importPackage<typeof import('@taquito/ledger-signer')>(
-      '@taquito/ledger-signer'
+    const { DerivationType, LedgerSigner } = await importPackage<typeof import('@tezos-x/octez.js-ledger-signer')>(
+      '@tezos-x/octez.js-ledger-signer'
     );
     const mockTransport = {
       send: async () =>
@@ -295,7 +295,7 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'sapling-import': async () => {
-    const sapling = await importPackage<typeof import('@taquito/sapling')>('@taquito/sapling');
+    const sapling = await importPackage<typeof import('@tezos-x/octez.js-sapling')>('@tezos-x/octez.js-sapling');
 
     return {
       exports: ['SaplingToolkit', 'SaplingTransactionViewer', 'initSapling', 'preloadSaplingParams'],
@@ -309,12 +309,12 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'sapling-preload': async () => {
-    const sapling = await importPackage<typeof import('@taquito/sapling')>('@taquito/sapling');
+    const sapling = await importPackage<typeof import('@tezos-x/octez.js-sapling')>('@tezos-x/octez.js-sapling');
     const startedAt = performance.now();
 
     await sapling.initSapling({
       params: {
-        source: 'taquito',
+        source: 'octez.js',
       },
     });
     await sapling.preloadSaplingParams();

@@ -6,14 +6,14 @@ const slides = [
   {
     filename: 'wallet-setup.ts',
     code: `// Connect a user's wallet to your dApp in under 10 lines
-import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet, BeaconEvent } from "@taquito/beacon-wallet";
-import { NetworkType } from "@taquito/beacon-wallet/types";
+import { TezosToolkit } from "@tezos-x/octez.js";
+import { BeaconWallet, BeaconEvent } from "@tezos-x/octez.js-beacon-wallet";
+import { NetworkType } from "@tezos-x/octez.js-beacon-wallet/types";
 
 const Tezos = new TezosToolkit("https://tezos-mainnet.octez.io");
 
 const wallet = new BeaconWallet({
-  name: "My Taquito Dapp",
+  name: "My octez.js Dapp",
   network: { type: NetworkType.MAINNET },
 });
 
@@ -31,7 +31,7 @@ Tezos.setWalletProvider(wallet);`
   {
     filename: 'nft-transfer.ts',
     code: `// Transfer NFTs with a single contract call
-import { TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit } from "@tezos-x/octez.js";
 
 const Tezos = new TezosToolkit("https://tezos-mainnet.octez.io");
 const contract = await Tezos.wallet.at(CONTRACT_ADDRESS);

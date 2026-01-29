@@ -26,7 +26,7 @@ const changedFiles = execFileSync('git', ['diff', '--name-only', `${baseSha}...$
 const safePathPatterns = [
   /^website\//,
   /^packages\/[^/]+\/src\/version\.ts$/,
-  /^packages\/taquito\/README\.md$/,
+  /^packages\/octez.js\/README\.md$/,
 ];
 
 const jsonMetadataPatterns = [
@@ -37,7 +37,7 @@ const jsonMetadataPatterns = [
   /^website\/package\.json$/,
   /^website\/package-lock\.json$/,
   /^packages\/[^/]+\/package\.json$/,
-  /^packages\/taquito-michel-codec\/pack-test-tool\/package\.json$/,
+  /^packages\/octez.js-michel-codec\/pack-test-tool\/package\.json$/,
 ];
 
 const shouldRun = changedFiles.some((file) => {
@@ -105,7 +105,7 @@ function sanitizePackageLock(file, json) {
 
   if (file === 'website/package-lock.json') {
     for (const [pkgPath, pkg] of Object.entries(clone.packages)) {
-      if (!pkgPath.startsWith('node_modules/@taquito/')) continue;
+      if (!pkgPath.startsWith('node_modules/@tezos-x/octez.js-')) continue;
       normalizePackageLockPackage(pkg, true);
     }
     return clone;
@@ -115,7 +115,7 @@ function sanitizePackageLock(file, json) {
     if (
       pkgPath === '' ||
       pkgPath.startsWith('packages/') ||
-      pkgPath.startsWith('node_modules/@taquito/') ||
+      pkgPath.startsWith('node_modules/@tezos-x/octez.js-') ||
       pkgPath === 'example' ||
       pkgPath === 'integration-tests'
     ) {
@@ -144,7 +144,7 @@ function normalizeTaquitoDependencyMap(map) {
   if (!map || typeof map !== 'object') return;
 
   for (const key of Object.keys(map)) {
-    if (key.startsWith('@taquito/')) {
+    if (key.startsWith('@tezos-x/octez.js-')) {
       map[key] = '__TAQUITO_VERSION__';
     }
   }

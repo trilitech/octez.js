@@ -3,7 +3,7 @@ title: Ledger Signer
 author: [Roxane Letourneau, Maxwell Ward]
 ---
 
-The Ledger Signer implements the Signer interface of Taquito, allowing you to sign operation from a Ledger hardware device.
+The Ledger Signer implements the Signer interface of octez.js, allowing you to sign operation from a Ledger hardware device.
 
 >[!NOTE]
 > You need to have the [Tezos Wallet app](https://support.ledger.com/article/360016057774-zd) installed and opened on your Ledger device when using the Ledger Signer.
@@ -25,7 +25,7 @@ values={[
 
 ```js
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
-import { LedgerSigner } from '@taquito/ledger-signer';
+import { LedgerSigner } from '@tezos-x/octez.js-ledger-signer';
 
 const transport = await TransportWebHID.create();
 const ledgerSigner = new LedgerSigner(transport);
@@ -36,7 +36,7 @@ const ledgerSigner = new LedgerSigner(transport);
 
 ```js
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import { LedgerSigner } from '@taquito/ledger-signer';
+import { LedgerSigner } from '@tezos-x/octez.js-ledger-signer';
 
 const transport = await TransportNodeHid.create();
 const ledgerSigner = new LedgerSigner(transport);
@@ -57,7 +57,7 @@ The constructor of the `LedgerSigner` class can take three other parameters. If 
   Options: `ED25519`, `BIP32_ED25519` (tz1), `SECP256K1` (tz2), or `P256` (tz3)
 
 ```js
-import { LedgerSigner, DerivationType, HDPathTemplate } from '@taquito/ledger-signer';
+import { LedgerSigner, DerivationType, HDPathTemplate } from '@tezos-x/octez.js-ledger-signer';
 
 const ledgerSigner = new LedgerSigner(
   transport, //required
@@ -70,9 +70,9 @@ const ledgerSigner = new LedgerSigner(
 ## Usage
 
 ```js
-import { LedgerSigner } from '@taquito/ledger-signer';
+import { LedgerSigner } from '@tezos-x/octez.js-ledger-signer';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
@@ -151,9 +151,9 @@ Where `purpose` is a constant set to `44'` and `coin_type` is set to `1729'` for
 
 All Tezos paths begin with `44'/1729'`. Changing any of the remaining indexes (`account' / change / address_index`) produces a different account. **To ensure wallet compatibility, follow established conventions for path structure and index iteration.**
 
-Unlike the BIP44 specification which uses 5 indexes, Tezos commonly uses 4. Both tezos-client and Taquito's `LedgerSigner` default to `44'/1729'/0'/0'`.
+Unlike the BIP44 specification which uses 5 indexes, Tezos commonly uses 4. Both tezos-client and octez.js's `LedgerSigner` default to `44'/1729'/0'/0'`.
 
-Taquito provides `HDPathTemplate` to simplify path generation by iterating on the `account` index:
+octez.js provides `HDPathTemplate` to simplify path generation by iterating on the `account` index:
 - `HDPathTemplate(0)` → `44'/1729'/0'/0'` (first address)
 - `HDPathTemplate(1)` → `44'/1729'/1'/0'` (second address)
 - `HDPathTemplate(2)` → `44'/1729'/2'/0'` (third address)
@@ -188,8 +188,8 @@ Having your Ledger device connected to your computer and the `Tezos Wallet App` 
 _Note that this example is not intended to be a complete example of paths scanning but only a rough outline of what is possible to do._
 
 ```js live
-//import { LedgerSigner, DerivationType, HDPathTemplate } from '@taquito/ledger-signer';
-//import { TezosToolkit } from '@taquito/taquito';
+//import { LedgerSigner, DerivationType, HDPathTemplate } from '@tezos-x/octez.js-ledger-signer';
+//import { TezosToolkit } from '@tezos-x/octez.js';
 //import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 //const Tezos = new TezosToolkit('https://tezos-shadownet.octez.io');
 
@@ -227,4 +227,4 @@ try {
 }
 ```
 
-A similar example using `@ledgerhq/hw-transport-node-hid` can be found [here](https://github.com/ecadlabs/taquito/tree/master/example/scan-path-ledger.ts). This example directly retrieves the public keys from the Ledger without asking for confirmation on the device.
+A similar example using `@ledgerhq/hw-transport-node-hid` can be found [here](https://github.com/trilitech/octez.js/tree/master/example/scan-path-ledger.ts). This example directly retrieves the public keys from the Ledger without asking for confirmation on the device.

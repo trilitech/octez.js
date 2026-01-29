@@ -1,4 +1,4 @@
-import { encodeOpHash } from "@taquito/utils";
+import { encodeOpHash } from "@tezos-x/octez.js-utils";
 import { firstValueFrom, throwError } from "rxjs";
 import { timeout } from "rxjs/operators";
 import { CONFIGS } from "../../config";

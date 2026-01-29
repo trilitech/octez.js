@@ -18,7 +18,7 @@ In Tezos, a delegation operation will set the delegate of an address.
 When the `Babylon/proto005` protocol amendment came into effect, it changed how delegation from KT1 addresses work. Calling the KT1's smart contract `do` method is required to set the delegate for a KT1 account.  The `do` method takes a lambda function, and it is the logic of this function that causes the desired delegation to happen.
 
 ## Delegate from an implicit address (`tz1` prefix)
-Taquito has two main methods that facilitate a delegate operation, `setDelegate()` and `registerDelegate()`
+octez.js has two main methods that facilitate a delegate operation, `setDelegate()` and `registerDelegate()`
 
 The difference between the 2 methods is that `registerDelegate()` will set the delegate to the current address while `setDelegate()` will set the delegate to another address (baker).
 
@@ -50,9 +50,9 @@ A call to the KT1's smart contract's `do` method must be made to delegate to a K
 
 > The examples following apply only to KT1 addresses that were migrated as part of the `Babylon/proto005` upgrade. Delegations involving _other_ types of smart-contracts will depend on those contracts specifically.
 
-> **Why doesn't Taquito abstract KT1 manager accounts so I can just call setDelegate()**
+> **Why doesn't octez.js abstract KT1 manager accounts so I can just call setDelegate()**
 >
-> For the time being, we regard KT1 manager accounts as regular smart contracts. It is possible to have a smart contract that is not following the manager.tz conventions, and that also delegates to a baker. The correct lambda to pass to a contract to delegate is application/wallet specific. Therefore Taquito does not make any assumption on the KT1.
+> For the time being, we regard KT1 manager accounts as regular smart contracts. It is possible to have a smart contract that is not following the manager.tz conventions, and that also delegates to a baker. The correct lambda to pass to a contract to delegate is application/wallet specific. Therefore octez.js does not make any assumption on the KT1.
 
 ### Example of delegation for a KT1
 

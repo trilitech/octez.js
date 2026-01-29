@@ -1,8 +1,8 @@
 import { CONFIGS } from "../../config";
 import { tacoContractTzip16 } from "../../data/modified-taco-contract"
-import { MichelsonMap } from "@taquito/taquito";
-import { tzip16, Tzip16Module } from '@taquito/tzip16';
-import { stringToBytes } from '@taquito/utils';
+import { MichelsonMap } from "@tezos-x/octez.js";
+import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
+import { stringToBytes } from '@tezos-x/octez.js-utils';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
     const Tezos = lib;
@@ -101,14 +101,14 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
                 expect(metadata.integrityCheckResult).toBeUndefined();
                 expect(metadata.sha256Hash).toBeUndefined();
                 expect(metadata.metadata).toEqual({
-                    "name": "Taquito test with valid metadata containing emoji 😀 🤩",
-                    "description": "👋 This is metadata test for Taquito integration tests 🧐 with the Ligo Taco shop contract modified to include metadata URI in the storage",
+                    "name": "octez.js test with valid metadata containing emoji 😀 🤩",
+                    "description": "👋 This is metadata test for octez.js integration tests 🧐 with the Ligo Taco shop contract modified to include metadata URI in the storage",
                     "version": "7.1.0-beta.0",
                     "license": {
                         "name": "MIT",
                         "details": "The MIT License"
                     },
-                    "homepage": "https://github.com/ecadlabs/taquito",
+                    "homepage": "https://github.com/trilitech/octez.js",
                     "source": {
                         "tools": [
                             "Ligo",
@@ -118,15 +118,15 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
                     }
                 });
 
-                expect(await (await contract.tzip16()).metadataName()).toBe('Taquito test with valid metadata containing emoji 😀 🤩')
-                expect(await (await contract.tzip16()).metadataDescription()).toBe('👋 This is metadata test for Taquito integration tests 🧐 with the Ligo Taco shop contract modified to include metadata URI in the storage')
+                expect(await (await contract.tzip16()).metadataName()).toBe('octez.js test with valid metadata containing emoji 😀 🤩')
+                expect(await (await contract.tzip16()).metadataDescription()).toBe('👋 This is metadata test for octez.js integration tests 🧐 with the Ligo Taco shop contract modified to include metadata URI in the storage')
                 expect(await (await contract.tzip16()).metadataVersion()).toBe('7.1.0-beta.0')
                 expect(await (await contract.tzip16()).metadataLicense()).toEqual({
                     "name": "MIT",
                     "details": "The MIT License"
                 })
                 expect(await (await contract.tzip16()).metadataAuthors()).toBeUndefined()
-                expect(await (await contract.tzip16()).metadataHomepage()).toBe('https://github.com/ecadlabs/taquito')
+                expect(await (await contract.tzip16()).metadataHomepage()).toBe('https://github.com/trilitech/octez.js')
                 expect(await (await contract.tzip16()).metadataSource()).toEqual({
                     "tools": [
                         "Ligo",

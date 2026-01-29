@@ -10,7 +10,7 @@ This page will help you understand the following actions and concepts:
 - Use Pairs as a key to access `Map` and `BigMap` values
 - Why Michelson `Map` and `BigMap` don't look like a Javascript `Map`
 
-Taquito provides `MichelsonMap` to make it easy for developers to work with the native Michelson map datatypes. `MichelsonMap` supports initialization, get and set methods to `Maps` using primitive datatypes and pairs as keys.
+octez.js provides `MichelsonMap` to make it easy for developers to work with the native Michelson map datatypes. `MichelsonMap` supports initialization, get and set methods to `Maps` using primitive datatypes and pairs as keys.
 
 Michelson offers two variants of `Maps` that are semantically the same but have different implementations and trade-offs in terms of `gas` and `storage` costs on a contract. A `Map` uses more storage but costs less gas, whereas a `BigMap` consumes less storage but has higher gas costs during the Smart Contract's execution.
 
@@ -33,8 +33,8 @@ values={[
 <TabItem value="contractAPI">
 
 ```js live
-// import { MichelsonMap } from '@taquito/taquito';
-// import { TezosToolkit } from '@taquito/taquito';
+// import { MichelsonMap } from '@tezos-x/octez.js';
+// import { TezosToolkit } from '@tezos-x/octez.js';
 // const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
 const storageMap = new MichelsonMap();
@@ -63,8 +63,8 @@ console.log(`Origination completed.`);
   <TabItem value="walletAPI">
 
 ```js live
-// import { MichelsonMap } from '@taquito/taquito';
-// import { TezosToolkit } from '@taquito/taquito';
+// import { MichelsonMap } from '@tezos-x/octez.js';
+// import { TezosToolkit } from '@tezos-x/octez.js';
 // const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
 const storageMap = new MichelsonMap();
@@ -102,7 +102,7 @@ values={[
 <TabItem value="contractAPI">
 
 ```js live
-// import { MichelsonMap } from '@taquito/taquito';
+// import { MichelsonMap } from '@tezos-x/octez.js';
 
 try {
   const contractOriginated = await Tezos.contract
@@ -126,7 +126,7 @@ try {
   <TabItem value="walletAPI">
 
 ```js live
-// import { MichelsonMap } from '@taquito/taquito';
+// import { MichelsonMap } from '@tezos-x/octez.js';
 
 try {
   const originationOp = await Tezos.wallet
@@ -152,7 +152,7 @@ try {
 
 ### Accessing the values of the map
 
-This example loads the same type of Taco Shop contract (we created this one earlier). Taquito provides a `get` method of the `MichelsonMap` on storage of type `Map`, and in this case, we access the value stored with a key of `1`.
+This example loads the same type of Taco Shop contract (we created this one earlier). octez.js provides a `get` method of the `MichelsonMap` on storage of type `Map`, and in this case, we access the value stored with a key of `1`.
 
 The example calls the contracts `main` function using the key `1` as its parameter. Remember, we can only change contract storage by calling the function provided by the contract. The `main` function on this Smart Contract is decreasing the value of the `current_stock` associated with the key `1`. We use the `get` method of the `MichelsonMap` class to see the difference in storage after the method call.
 
@@ -259,7 +259,7 @@ values={[
 <TabItem value="contractAPI">
 
 ```js live
-// import { MichelsonMap } from '@taquito/taquito';
+// import { MichelsonMap } from '@tezos-x/octez.js';
 
 const storageMap = new MichelsonMap();
 //First entry of the map
@@ -314,7 +314,7 @@ try {
   <TabItem value="walletAPI">
 
 ```js live
-// import { MichelsonMap } from '@taquito/taquito';
+// import { MichelsonMap } from '@tezos-x/octez.js';
 
 const storageMap = new MichelsonMap();
 //First entry of the map
@@ -556,7 +556,7 @@ try {
 The `get` method of the `MichelsonMap` class accesses values of the map for a specified key.
 
 >[!CAUTION]
-> Taquito will handle timestamps with the milliseconds as `2026-09-06T15:08:29.000Z` rather than `2026-09-06T15:08:29Z` which is crucial when accessing maps with complex keys.
+> octez.js will handle timestamps with the milliseconds as `2026-09-06T15:08:29.000Z` rather than `2026-09-06T15:08:29Z` which is crucial when accessing maps with complex keys.
 
 <Tabs
 defaultValue="contractAPI"
@@ -639,7 +639,7 @@ values={[
 <TabItem value="contractAPI">
 
 ```js live
-// import { MichelsonMap } from '@taquito/taquito';
+// import { MichelsonMap } from '@tezos-x/octez.js';
 
 const storageMap = new MichelsonMap();
 storageMap.set(
@@ -694,7 +694,7 @@ try {
   <TabItem value="walletAPI">
 
 ```js live
-// import { MichelsonMap } from '@taquito/taquito';
+// import { MichelsonMap } from '@tezos-x/octez.js';
 
 const storageMap = new MichelsonMap();
 storageMap.set(
@@ -817,28 +817,28 @@ try {
 
 ## Local packing for big maps
 
-By default, a call to an RPC node is used to pack data when fetching values from a big map. Big map keys need to be serialized or packed and Taquito relies on the PACK functionality of a Tezos RPC node to pack the big map keys. This may be considered inefficient as it adds a request to a remote node to fetch data.
+By default, a call to an RPC node is used to pack data when fetching values from a big map. Big map keys need to be serialized or packed and octez.js relies on the PACK functionality of a Tezos RPC node to pack the big map keys. This may be considered inefficient as it adds a request to a remote node to fetch data.
 
-Taquito allows you to pack the required data locally to fetch values from a big map. By relying on the local pack implementation, Taquito eliminates one RPC roundtrip when fetching big map values. This feature makes fetching big map values approximately **50% faster**.
+octez.js allows you to pack the required data locally to fetch values from a big map. By relying on the local pack implementation, octez.js eliminates one RPC roundtrip when fetching big map values. This feature makes fetching big map values approximately **50% faster**.
 
 Implementing this feature is a very easy 2 step process:
 
-1. Import the `MichelCodecPacker` class from `@taquito/taquito`
+1. Import the `MichelCodecPacker` class from `@tezos-x/octez.js`
 2. Create an instance of the `MichelCodecPacker` class and pass it to the `setPackerProvider` method of the `TezosToolkit` instance.
 
 Here is an example:
 
 ```js
-import { MichelCodecPacker } from '@taquito/taquito';
+import { MichelCodecPacker } from '@tezos-x/octez.js';
 const Tezos = new TezosToolkit(RPC_URL);
 Tezos.setPackerProvider(new MichelCodecPacker());
 ```
 
-After that, Taquito will automatically pack the keys locally when you want to fetch the values of a big map.
+After that, octez.js will automatically pack the keys locally when you want to fetch the values of a big map.
 
 ## Fetch multiple big map values at once
 
-It is possible to fetch multiple big map values using Taquito with one call using the `getMultipleValues` method of the `BigMapAbstraction` class. Taquito will ensure that all fetched big maps come from the same block to ensure a consistent state.
+It is possible to fetch multiple big map values using octez.js with one call using the `getMultipleValues` method of the `BigMapAbstraction` class. octez.js will ensure that all fetched big maps come from the same block to ensure a consistent state.
 
 The method takes an `array` of keys to query as a parameter and an optional block level and returns a `MichelsonMap` containing the keys and their value in a well-formatted JSON object format. The accepted types for the keys are `string`, `number` or `object` (the last one is used when the type of the keys in the big map is a Michelson `pair`).
 
@@ -853,7 +853,7 @@ values={[
 <TabItem value="contractAPI">
 
 ```js live
-// import { TezosToolkit } from '@taquito/taquito';
+// import { TezosToolkit } from '@tezos-x/octez.js';
 // const Tezos = new TezosToolkit('https://tezos-shadownet.octez.io');
 
 try {
@@ -879,7 +879,7 @@ try {
   <TabItem value="walletAPI">
 
 ```js live
-// import { TezosToolkit } from '@taquito/taquito';
+// import { TezosToolkit } from '@tezos-x/octez.js';
 // const Tezos = new TezosToolkit('https://tezos-shadownet.octez.io');
 
 try {

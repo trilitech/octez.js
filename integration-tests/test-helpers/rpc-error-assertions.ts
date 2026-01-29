@@ -1,4 +1,4 @@
-import { HttpResponseError } from '@taquito/http-utils';
+import { HttpResponseError } from '@tezos-x/octez.js-http-utils';
 
 const infrastructureRpcErrorPattern =
   /service unavailable|no server is available|index\.closed|bad gateway|gateway timeout|upstream connect/i;

@@ -3,15 +3,15 @@
 // Sometimes the transport will fail before all the paths have been scanned
 // rerun two or three times if needed
 
-import { LedgerSigner, DerivationType } from '@taquito/ledger-signer';
-import { TezosToolkit } from '@taquito/taquito';
+import { LedgerSigner, DerivationType } from '@tezos-x/octez.js-ledger-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 
 async function example() {
 
     const transport = await TransportNodeHid.create();
     let index = 0;
-    const tezos = new TezosToolkit('https://shadownet.tezos.ecadinfra.com')
+    const tezos = new TezosToolkit('https://tezos-shadownet.octez.io/')
     while (index < 8) {
         const ledgerSigner = new LedgerSigner(transport, `44'/1729'/${index}'/0'`, false, DerivationType.ED25519);
         tezos.setProvider({ signer: ledgerSigner });

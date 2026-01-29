@@ -1,6 +1,6 @@
 import { CONFIGS } from "../config";
-import { Chest, Timelock, ChestKey } from '@taquito/timelock';
-import { buf2hex } from '@taquito/utils';
+import { Chest, Timelock, ChestKey } from '@tezos-x/octez.js-timelock';
+import { buf2hex } from '@tezos-x/octez.js-utils';
 import * as crypto from 'crypto';
 import { sequentialTestSuite } from '../sequential-test';
 

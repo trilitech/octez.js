@@ -1,12 +1,12 @@
-import { MichelsonMap, TezosToolkit, importKey } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
-import { b58Encode, stringToBytes, PrefixV2 } from '@taquito/utils';
+import { MichelsonMap, TezosToolkit, importKey } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { b58Encode, stringToBytes, PrefixV2 } from '@tezos-x/octez.js-utils';
 import { fa2TokenFactory } from '../integration-tests/data/fa2-token-factory';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodeCrypto = require('crypto');
 
-const provider = 'https://shadownet.tezos.ecadinfra.com';
+const provider = 'https://tezos-shadownet.octez.io/';
 
 async function createAddress() {
   const tezos = new TezosToolkit(provider)

@@ -18,36 +18,36 @@ test('syncWorkspaceDeps only rewrites versions for workspace packages', () => {
   const root = mkdtempSync(join(os.tmpdir(), 'sync-workspace-deps-'));
 
   try {
-    mkdirSync(join(root, 'packages', 'taquito'), { recursive: true });
-    mkdirSync(join(root, 'packages', 'taquito-core'), { recursive: true });
-    mkdirSync(join(root, 'packages', 'taquito-sapling'), { recursive: true });
+    mkdirSync(join(root, 'packages', 'octez.js'), { recursive: true });
+    mkdirSync(join(root, 'packages', 'octez.js-core'), { recursive: true });
+    mkdirSync(join(root, 'packages', 'octez.js-sapling'), { recursive: true });
     mkdirSync(join(root, 'integration-tests'), { recursive: true });
 
     writeJson(join(root, 'package.json'), {
-      name: 'taquito-monorepo',
+      name: 'octez.js-monorepo',
       version: '24.2.0',
       workspaces: ['packages/*', 'integration-tests'],
     });
 
-    writeJson(join(root, 'packages', 'taquito', 'package.json'), {
-      name: '@taquito/taquito',
+    writeJson(join(root, 'packages', 'octez.js', 'package.json'), {
+      name: '@tezos-x/octez.js',
       version: '24.2.0',
       dependencies: {
-        '@taquito/core': '^24.2.0',
+        '@tezos-x/octez.js-core': '^24.2.0',
       },
     });
 
-    writeJson(join(root, 'packages', 'taquito-core', 'package.json'), {
-      name: '@taquito/core',
+    writeJson(join(root, 'packages', 'octez.js-core', 'package.json'), {
+      name: '@tezos-x/octez.js-core',
       version: '24.2.0',
     });
 
-    writeJson(join(root, 'packages', 'taquito-sapling', 'package.json'), {
-      name: '@taquito/sapling',
+    writeJson(join(root, 'packages', 'octez.js-sapling', 'package.json'), {
+      name: '@tezos-x/octez.js-sapling',
       version: '24.2.0',
       dependencies: {
-        '@taquito/core': '^24.2.0',
-        '@taquito/sapling-wasm': '0.2.0',
+        '@tezos-x/octez.js-core': '^24.2.0',
+        '@tezos-x/octez.js-sapling-wasm': '0.2.0',
       },
     });
 
@@ -55,7 +55,7 @@ test('syncWorkspaceDeps only rewrites versions for workspace packages', () => {
       name: 'integration-tests',
       version: '24.2.0',
       dependencies: {
-        '@taquito/taquito': '^24.2.0',
+        '@tezos-x/octez.js': '^24.2.0',
       },
     });
 
@@ -63,15 +63,15 @@ test('syncWorkspaceDeps only rewrites versions for workspace packages', () => {
 
     assert.equal(readJson(join(root, 'package.json')).version, '24.3.0-beta.3');
     assert.equal(
-      readJson(join(root, 'packages', 'taquito', 'package.json')).dependencies['@taquito/core'],
+      readJson(join(root, 'packages', 'octez.js', 'package.json')).dependencies['@tezos-x/octez.js-core'],
       '^24.3.0-beta.3'
     );
     assert.equal(
-      readJson(join(root, 'packages', 'taquito-sapling', 'package.json')).dependencies['@taquito/core'],
+      readJson(join(root, 'packages', 'octez.js-sapling', 'package.json')).dependencies['@tezos-x/octez.js-core'],
       '^24.3.0-beta.3'
     );
     assert.equal(
-      readJson(join(root, 'packages', 'taquito-sapling', 'package.json')).dependencies['@taquito/sapling-wasm'],
+      readJson(join(root, 'packages', 'octez.js-sapling', 'package.json')).dependencies['@tezos-x/octez.js-sapling-wasm'],
       '0.2.0'
     );
   } finally {
