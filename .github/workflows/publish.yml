@@ -42,7 +42,15 @@ jobs:
 
       - name: Publish (dry run)
         if: ${{ github.event.inputs.dry_run == 'true' }}
-        run: npx lerna publish from-package --yes --no-git-tag-version --no-push --dry-run
+        run: |
+          for pkg in packages/*/; do
+            if [ -f "$pkg/package.json" ]; then
+              echo "=== Dry run: $pkg ==="
+              cd "$pkg"
+              npm publish --dry-run --access public
+              cd -
+            fi
+          done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
