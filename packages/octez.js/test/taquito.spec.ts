@@ -1,4 +1,4 @@
-import { TezosToolkit, SetProviderOptions, Wallet, RpcPacker } from '../src/taquito';
+import { TezosToolkit, SetProviderOptions, Wallet, RpcPacker } from '../src/octez';
 import { RpcTzProvider } from '../src/tz/rpc-tz-provider';
 import { RpcContractProvider } from '../src/contract/rpc-contract-provider';
 import { PrepareProvider } from '../src/prepare/prepare-provider';
@@ -9,7 +9,7 @@ import { RPCEstimateProvider } from '../src/estimate/rpc-estimate-provider';
 import { OperationFactory } from '../src/wallet/operation-factory';
 import { NoopGlobalConstantsProvider } from '../src/global-constants/noop-global-constants-provider';
 import { TaquitoLocalForger } from '../src/forger/octez.js-local-forger';
-import { RpcInjector } from '../src/taquito';
+import { RpcInjector } from '../src/octez';
 
 describe('TezosToolkit test', () => {
   let mockRpcClient: any;

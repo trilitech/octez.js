@@ -60,7 +60,7 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement by email at
-[abuse@ecadlabs.com](mailto:abuse@ecadlabs.com) or by contacting administrators and moderators 
+[contact@nomadic-labs.com](mailto:contact@nomadic-labs.com) or by contacting administrators and moderators
 in official community channels.
 All complaints will be reviewed and investigated promptly and fairly.
 

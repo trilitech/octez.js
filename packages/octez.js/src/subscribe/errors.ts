@@ -1,5 +1,5 @@
 import { ParameterValidationError } from '@tezos-x/octez.js-core';
-import { FilterExpression } from '../taquito';
+import { FilterExpression } from '../octez';
 
 /**
  *  @category Error

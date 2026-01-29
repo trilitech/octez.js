@@ -105,7 +105,7 @@ async function init() {
     const { LedgerSigner, DerivationType, HDPathTemplate } = await import('@tezos-x/octez.js-ledger-signer');
     const { WalletConnect, NetworkType, PermissionScopeMethods } = await import("@tezos-x/octez.js-wallet-connect");
 
-    const Tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com');
+    const Tezos = new TezosToolkit('https://rpc.ghostnet.teztnets.com');
     window.Tezos = Tezos;
     window.TezosToolkit = TezosToolkit;
     window.InMemorySigner = InMemorySigner;
@@ -178,24 +178,11 @@ window.configureSigner = async function () {
   }
 
   try {
-    // Generate a key for demo purposes
-    const response = await fetch("https://keygen.ecadinfra.com/ghostnet", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer octez.js-example",
-        "Accept": "application/json"
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to generate key: ${response.status}`);
-    }
-
-    const privateKey = await response.text();
+    // Use the test secret key for demo purposes
+    const privateKey = window.secretKey;
 
     if (!privateKey) {
-      throw new Error("No private key in response");
+      throw new Error("No secret key configured");
     }
 
     // Set up the InMemorySigner
