@@ -10,17 +10,20 @@ interface Props {
 
 const { title, description } = Astro.props;
 
-const defaultDescription = 'Taquito is a TypeScript library suite for development on the Tezos blockchain. Build dApps, interact with smart contracts, and manage wallets with ease.';
-const pageTitle = title ? `${title} | Taquito` : 'Taquito - TypeScript Library for Tezos Blockchain Development';
+// Normalize base URL to always have trailing slash for path joining
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
+const defaultDescription = 'octez.js is a TypeScript library suite for development on the Tezos blockchain. Build dApps, interact with smart contracts, and manage wallets with ease.';
+const pageTitle = title ? `${title} | octez.js` : 'octez.js - TypeScript Library for Tezos Blockchain Development';
 const pageDescription = description || defaultDescription;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL('/og-image.png', Astro.site);
+const ogImageURL = new URL(`${base}og-image.png`, Astro.site);
 
 // JSON-LD structured data for the website
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Taquito",
+  "name": "octez.js",
   "description": defaultDescription,
   "url": Astro.site?.toString(),
 };
@@ -29,11 +32,21 @@ const websiteJsonLd = {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#0D61FF" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="base-url" content={base} />
     {description && <meta name="description" content={description} />}
     <title>{pageTitle}</title>
+    <!-- Theme initialization (prevents flash) -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalURL} />
 
@@ -42,7 +55,7 @@ const websiteJsonLd = {
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:site_name" content="Taquito" />
+    <meta property="og:site_name" content="octez.js" />
     <meta property="og:image" content={ogImageURL} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

@@ -2,17 +2,20 @@
 import { Briefcase, Bug, Boxes, FileText } from "@lucide/astro";
 import { DEFAULT_VERSION } from "../../pages/api/search/[version].json.ts";
 
+// Normalize base URL to always have trailing slash for path joining
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
 const items = [
   {
     title: "Easy To Use",
     description:
-      "Taquito's abstractions are simple to understand and use. Working with Tezos contracts feels like working with JavaScript objects.",
+      "octez.js's abstractions are simple to understand and use. Working with Tezos contracts feels like working with JavaScript objects.",
     icon: Briefcase,
   },
   {
     title: "Catch Errors Early",
     description:
-      "Taquito uses TypeScript to extend JavaScript so that you can catch errors earlier.",
+      "octez.js uses TypeScript to extend JavaScript so that you can catch errors earlier.",
     icon: Bug,
   },
   {
@@ -24,7 +27,7 @@ const items = [
   {
     title: "Well Supported",
     description:
-      "Taquito has a well-documented API, runs continuous integration tests against the Tezos Node and a set of Beacon wallets.",
+      "octez.js has a well-documented API, runs continuous integration tests against the Tezos Node and a set of Beacon wallets.",
     icon: FileText,
   },
 ];
@@ -46,11 +49,11 @@ const items = [
     >
       <div class="mb-8 md:mb-0 md:w-1/3">
         <h3 class="text-5xl w-72 font-extrabold leading-12 mb-5">
-          What makes Taquito so amazing?
+          What makes octez.js so amazing?
         </h3>
         <a
-          href={`/docs/${DEFAULT_VERSION}/quick_start`}
-          class="bg-primary text-white hover:text-gray-300 transition-colors duration-150 px-4 py-2 rounded-full text-lg"
+          href={`${base}docs/${DEFAULT_VERSION}/quick_start`}
+          class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-4 py-2 rounded-full text-lg"
           >Get Started</a
         >
       </div>
