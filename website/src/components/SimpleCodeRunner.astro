@@ -18,12 +18,12 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
 <live-code-runner data-code={code} data-wallet={wallet ? "true" : "false"} class="pre">
   <div class="mb-4">
       <pre class={`language-${language} m-0 p-4 overflow-x-auto code`} set:html={html} />
-      <button class="run-button bg-green-600 text-white border-none py-2 px-4 rounded text-sm font-medium cursor-pointer transition-colors duration-200 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+      <button class="run-button bg-green-600 text-white border-none py-2 px-4 rounded text-sm font-medium cursor-pointer transition-colors duration-200 hover:bg-green-700 disabled:bg-text-muted disabled:cursor-not-allowed">
         Run Code
       </button>
 
     <div class="output mt-2" hidden>
-      <pre class="output-content m-0 p-3 bg-gray-50 border border-gray-300 rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre>
+      <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre>
     </div>
   </div>
 </live-code-runner>
@@ -38,19 +38,19 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
       this.button?.addEventListener('click', () => this.runCode());
     }
 
-    async waitForTaquito(timeoutMs = 15000): Promise<void> {
+    async waitForOctez(timeoutMs = 15000): Promise<void> {
       const win = window as any;
       
       // Check if already ready
       if (win.Tezos) return;
       
       // If we have a promise, await it
-      if (win.__taquitoReady) {
+      if (win.__octezReady) {
         // Race against timeout
         const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error("Taquito initialization timed out")), timeoutMs)
+          setTimeout(() => reject(new Error("octez.js initialization timed out")), timeoutMs)
         );
-        await Promise.race([win.__taquitoReady, timeoutPromise]);
+        await Promise.race([win.__octezReady, timeoutPromise]);
         return;
       }
 
@@ -59,8 +59,8 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
         const startTime = Date.now();
         const check = () => {
           if (win.Tezos) resolve();
-          else if (win.__taquitoError) reject(win.__taquitoError);
-          else if (Date.now() - startTime > timeoutMs) reject(new Error("Taquito initialization timed out (polling)"));
+          else if (win.__octezError) reject(win.__octezError);
+          else if (Date.now() - startTime > timeoutMs) reject(new Error("octez.js initialization timed out (polling)"));
           else setTimeout(check, 250); // Check every 250ms
         };
         check();
@@ -84,7 +84,7 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
       }
 
       // Reset UI
-      outputContent.textContent = "Initializing Taquito...";
+      outputContent.textContent = "Initializing octez.js...";
       outputDiv.hidden = false;
 
       // Disable ALL run buttons to prevent multiple runners at once
@@ -93,14 +93,14 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
       this.button.textContent = "Loading...";
 
       try {
-        // Wait for Taquito
-        await this.waitForTaquito();
+        // Wait for octez.js
+        await this.waitForOctez();
         this.button.textContent = "Running...";
         outputContent.textContent = ""; // Clear loading message
         
         const win = window as any;
         if (!win.Tezos) {
-          throw new Error("Taquito failed to load.");
+          throw new Error("octez.js failed to load.");
         }
 
         // For wallet mode, connect wallet; otherwise configure signer
