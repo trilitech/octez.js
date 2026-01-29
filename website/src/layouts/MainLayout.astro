@@ -16,7 +16,7 @@ const defaultDescription = 'octez.js is a TypeScript library suite for developme
 const pageTitle = title ? `${title} | octez.js` : 'octez.js - TypeScript Library for Tezos Blockchain Development';
 const pageDescription = description || defaultDescription;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL('/og-image.png', Astro.site);
+const ogImageURL = new URL(`${base}og-image.png`, Astro.site);
 
 // JSON-LD structured data for the website
 const websiteJsonLd = {
@@ -31,10 +31,19 @@ const websiteJsonLd = {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#0D61FF" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
+    <!-- Theme initialization (prevents flash) -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalURL} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}

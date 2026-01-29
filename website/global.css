@@ -1,20 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @layer base {
   body {
     font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   }
+
+  code, pre {
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  }
 }
 
+/* Light theme (default) - aligned with octez-manager */
 @theme {
-    --color-background-primary: #FFE5A5;
-    --color-background-secondary: #E2AA6C;
-    --color-background-tertiary: #ECCDAA;
-    --color-primary: #D3822B;
-    --color-secondary: #FFB503;
-    --color-text-secondary: #333333;
+    /* Primary accent - Tezos Blue */
+    --color-accent: #0D61FF;
+    --color-accent-light: #e6f0ff;
+    --color-accent-dark: #0a4fd6;
+
+    /* Backgrounds */
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f8f9fa;
+    --color-background-tertiary: #f3f4f6;
+    --color-background-code: #f3f4f6;
+
+    /* Legacy aliases for compatibility */
+    --color-primary: #0D61FF;
+    --color-secondary: #0a4fd6;
+
+    /* Text colors */
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #374151;
+    --color-text-tertiary: #6b7280;
+    --color-text-muted: #9ca3af;
+
+    /* Borders */
+    --color-border: #e5e7eb;
+    --color-border-light: #f3f4f6;
 
     --breakpoint-3xl: 120rem;
     --breakpoint-4xl: 150rem;
+}
+
+/* Dark theme */
+:root[data-theme='dark'] {
+    --color-accent: #0D61FF;
+    --color-accent-light: #1e3a5f;
+    --color-accent-dark: #3b82f6;
+
+    --color-background-primary: #18181b;
+    --color-background-secondary: #1f1f23;
+    --color-background-tertiary: #27272a;
+    --color-background-code: #27272a;
+
+    --color-primary: #0D61FF;
+    --color-secondary: #3b82f6;
+
+    --color-text-primary: #fafafa;
+    --color-text-secondary: #d4d4d8;
+    --color-text-tertiary: #a1a1aa;
+    --color-text-muted: #71717a;
+
+    --color-border: #3f3f46;
+    --color-border-light: #27272a;
+}
+
+/* Theme toggle styles */
+.theme-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--color-text-secondary);
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.theme-toggle:hover {
+    color: var(--color-accent);
+    background-color: var(--color-background-tertiary);
+}
+
+/* Theme-dependent logo visibility */
+.logo-light {
+    display: inline;
+}
+
+.logo-dark {
+    display: none;
+}
+
+:root[data-theme='dark'] .logo-light {
+    display: none;
+}
+
+:root[data-theme='dark'] .logo-dark {
+    display: inline;
 }

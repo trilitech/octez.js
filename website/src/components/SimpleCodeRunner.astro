@@ -38,12 +38,12 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
 >
   <div class="mb-4">
       <pre class={`language-${language} m-0 p-4 overflow-x-auto code`} set:html={html} />
-      <button class="run-button bg-green-600 text-white border-none py-2 px-4 rounded text-sm font-medium cursor-pointer transition-colors duration-200 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+      <button class="run-button bg-green-600 text-white border-none py-2 px-4 rounded text-sm font-medium cursor-pointer transition-colors duration-200 hover:bg-green-700 disabled:bg-text-muted disabled:cursor-not-allowed">
         Run Code
       </button>
 
     <div class="output mt-2" hidden>
-      <pre class="output-content m-0 p-3 bg-gray-50 border border-gray-300 rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre>
+      <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre>
     </div>
   </div>
 </live-code-runner>
@@ -69,12 +69,12 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
       if (win.Tezos) return;
       
       // If we have a promise, await it
-      if (win.__taquitoReady) {
+      if (win.__octezReady) {
         // Race against timeout
         const timeoutPromise = new Promise((_, reject) => 
           setTimeout(() => reject(new Error("octez.js initialization timed out")), timeoutMs)
         );
-        await Promise.race([win.__taquitoReady, timeoutPromise]);
+        await Promise.race([win.__octezReady, timeoutPromise]);
         return;
       }
 
