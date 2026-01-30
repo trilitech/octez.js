@@ -1,7 +1,6 @@
 ---
-title: Changelog
-description: Release notes and version history for octez.js, the TypeScript library for Tezos blockchain development. Track new features, bug fixes, and breaking changes.
-author: Jev Bjorsell
+title: Taquito Release History
+description: Archive of Taquito release notes. octez.js is a fork of Taquito - this changelog documents the history of Taquito releases prior to the fork.
 layout: ../layouts/MarkdownLayout.astro
 ---
 # octez.js v24.3.0
@@ -407,7 +406,7 @@ and emptied decommissioned regional nodes (Users can still pass their own matrix
 - Added sitemap and improved SEO #3313
 - Improved performance and accessibility scores for Lighthouse/PageSpeed Insights #3309
 
-# octez.js v24.0.1
+# Taquito v24.0.1
 
 ## 🛠 Internal
 
@@ -417,7 +416,7 @@ and emptied decommissioned regional nodes (Users can still pass their own matrix
 - `@tezos-x/octez.js-http-utils` - made node only imports conditional
 - `@tezos-x/octez.js-signer` - supplemented `bn.js` after removal of `elliptic` package
 
-# octez.js v24.0.0
+# Taquito v24.0.0
 
 ## Summary
 
@@ -450,7 +449,7 @@ and emptied decommissioned regional nodes (Users can still pass their own matrix
 - updated logo twitter to x #3288
 - updated sapling terminology from "shielded pool" to "shielded set" #3281
 
-# octez.js v23.1.0
+# Taquito v23.1.0
 
 ## ⚠ **Breaking Change**⚠
 
@@ -537,7 +536,7 @@ and emptied decommissioned regional nodes (Users can still pass their own matrix
 - Upgraded `@ledgerhq/hw-transport` → **6.31.12** #3232
 ---
 
-# octez.js v23.0.0
+# Taquito v23.0.0
 ## Seoul Protocol Support
 
 ## ⚠ **Breaking Change** ⚠
@@ -729,7 +728,7 @@ const buf3 = b58DecodeAndCheckPrefix('tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM', [Pr
 const length = payloadLength[PrefixV2.Ed25519PublicKeyHash]
 ```
 
-# octez.js v22.0.0
+# Taquito v22.0.0
 ## Summary
 
 ### Rio Protocol Support
@@ -746,7 +745,7 @@ const length = payloadLength[PrefixV2.Ed25519PublicKeyHash]
 ### Breaking Changes
 `@tezos-x/octez.js-utils` - Deprecated `b58decodeL2Address` and `encodeL2Address` util functions, please use `b58decode` and `encodeAddress` instead #3130
 
-# octez.js v21.0.5
+# Taquito v21.0.5
 ## Summary
 
 ### Beacon version Update
@@ -756,7 +755,7 @@ const length = payloadLength[PrefixV2.Ed25519PublicKeyHash]
 `@tezos-x/octez.js-wallet-connect`- updated modal from @walletconnect/legacy-modal to @walletconnect/modal #3136
 website - updated firebase to fix website build issues #3141
 
-# octez.js v21.0.4
+# Taquito v21.0.4
 ## Summary
 
 ### Beacon version Update
@@ -765,7 +764,7 @@ Updated Beacon version to v4.5.0 #3133
 ### Internals
 Configured webpack polyfill of octez.js-beacon-wallet-vanilla #3133
 
-# octez.js v21.0.3
+# Taquito v21.0.3
 ## Summary
 
 ### Beacon version Update
@@ -774,7 +773,7 @@ Updated Beacon version to v4.4.0 #3117
 ### Internals
 Updated dependencies #3117
 
-# octez.js v21.0.2
+# Taquito v21.0.2
 ## Summary
 
 ### Beacon version Update
@@ -788,13 +787,13 @@ Updated ci script actions/upload-artifact to v4 #3110
 ### Documentation
 Updated documentation of tzip12.md and metadata-tzip16.md #3107
 
-# octez.js v21.0.1
+# Taquito v21.0.1
 ## Summary
 
 ### Beacon version Update
 Updated Beacon version to v4.3.2 #3107
 
-# octez.js v21.0.0
+# Taquito v21.0.0
 ## Summary
 
 ### Quebec Protocol Support
@@ -815,7 +814,7 @@ Fixed maps_bigmaps live code example bugs #3068
 Updated dependencies #3068
 Updated octez.js test dapp with Quebec support #3068
 
-# octez.js v20.1.2
+# Taquito v20.1.2
 ## Summary
 
 ### Node.js add support of v18
@@ -825,7 +824,7 @@ We decided to support node.js v18 again until this issue is resolved in the futu
 ### Documentation
 Fixing typo #3094
 
-# octez.js v20.1.1
+# Taquito v20.1.1
 ## Summary
 
 ### Beacon version Update
@@ -856,7 +855,7 @@ For more information, visit [ECAD Infra's website](https://www.ecadinfra.com/).
 --------
 Please ensure your systems are updated promptly to avoid any disruptions. If you have any questions or encounter issues, feel free to contact the ECAD Infra team or open a new issue in this repository.
 
-# octez.js v20.1.0
+# Taquito v20.1.0
 
 **Breaking changes:**
 * We removed `account` public property on `BeaconWallet` class. If you'd like to get the info, please use `subscribeToEvent` with `BeaconEvent.ACTIVE_ACCOUNT_SET`
@@ -888,7 +887,7 @@ Please ensure your systems are updated promptly to avoid any disruptions. If you
 * Removed octez.js-test-dapp parisnet label on staking operations PR #3033
 * Removed Netlify references after migrating to Cloudflare PR #3012
 
-# octez.js v20.0.0
+# Taquito v20.0.0
 ## Summary
 
 ### Paris(B) Protocol Support
@@ -988,7 +987,7 @@ const op = await Tezos.wallet.stake({
 await op.confirmation();
 ```
 
-# octez.js v19.2.0
+# Taquito v19.2.0
 
 **Breaking Changes**: (if applicable)
 
@@ -1010,7 +1009,7 @@ await op.confirmation();
 - Updated Airgap's Beacon package to version 4.2.1. For more information on the release, click [here](https://github.com/airgap-it/beacon-sdk/releases/tag/v4.2.1) [PR#2874](https://github.com/trilitech/octez.js/pull/2874)
 - Changed website build command for CloudFlare [PR#2804](https://github.com/trilitech/octez.js/pull/2804)
 
-# octez.js v19.1.0
+# Taquito v19.1.0
 
 **Potential Breaking Changes**:
 - `@tezos-x/octez.js-rpc` - replaced `OperationBalanceUpdatesItem` in favour of `OperationMetadataBalanceUpdates` #2817 #2827
@@ -1048,13 +1047,13 @@ await op.confirmation();
 - Added confirmation blocks on older integration tests [PR#2847](https://github.com/trilitech/octez.js/pull/2847)
 - Added small buffer to operation reveal fee fixed value [PR#2848](https://github.com/trilitech/octez.js/pull/2848)
 
-# octez.js v19.0.2
+# Taquito v19.0.2
 
 ### Bug Fixes
 - `@tezos-x/octez.js-local-forging` - Added the correct constants for staking/unstaking in the forger [PR#2824](https://github.com/trilitech/octez.js/pull/2824)
 
 
-# octez.js v19.0.1
+# Taquito v19.0.1
 
 ### Dependency updates
 - Updated Beacon version to v4.1.2 [PR#2811](https://github.com/trilitech/octez.js/pull/2811)
@@ -1062,7 +1061,7 @@ await op.confirmation();
 ### Documentation
 - Removed Sapling live code examples from the website due to large bundle sizes, static code examples will still exist [PR#2810](https://github.com/trilitech/octez.js/pull/2810)
 
-# octez.js v19.0.0
+# Taquito v19.0.0
 
 :::info
 You might have noticed that we jumped versions from v17.5.0 to v19.0.0 (no v18). We do this as an effort to be in parallel with the current Octez version.
@@ -1128,7 +1127,7 @@ Axios came with quite a large dependency tree, as well as multiple workarounds w
 With this change we hope for a more stable HTTP handler in octez.js while reducing the package size at the same time.
 
 
-# octez.js v17.4.0
+# Taquito v17.4.0
 
 **Potential Breaking Changes** :
 We have updated various dependencies to the latest version in this release. Please update and test our packages for compatibility. We encourage all users to get in touch with the octez.js team if you encounter any unexpected behaviours and/or side effects.
@@ -1147,7 +1146,7 @@ We have updated various dependencies to the latest version in this release. Plea
  - Added detectOpenHandles argument when running Flextesa integration tests as temporary workaround to Jest throwing circular JSON errors [PR#2721](https://github.com/trilitech/octez.js/pull/2721)
 
 
-# octez.js v17.3.2
+# Taquito v17.3.2
 
 ## Summary
 - Updated Beacon version to v4.0.12
@@ -1160,7 +1159,7 @@ We have updated various dependencies to the latest version in this release. Plea
 - Minor typo fix on variable name in `RpcEstimateProvider` [PR#2669](https://github.com/trilitech/octez.js/pull/2669)
 - Added `@tezos-x/octez.js-core` as an explicit dependency on other packages [PR#2673](https://github.com/trilitech/octez.js/pull/2673)
 
-# octez.js v17.3.1
+# Taquito v17.3.1
 
 ## Summary
 - This is a patch release to upgrade `@airgap/beacon-sdk` and `@airgap/beacon-dapp` packages to `v4.0.10` [PR#2649](https://github.com/trilitech/octez.js/pull/2649)
@@ -1168,7 +1167,7 @@ We have updated various dependencies to the latest version in this release. Plea
 - Updated the ledger dependencies [PR#2645](https://github.com/trilitech/octez.js/pull/2645)
 - Applied dependency upgrades in website suggested by dependabot [PR#2645](https://github.com/trilitech/octez.js/pull/2645)
 
-# octez.js v17.3.0
+# Taquito v17.3.0
 
 **A change in Licensing**:
 octez.js has moved from `MIT` to `Apache 2.0`.
@@ -1327,7 +1326,7 @@ Now it is:
 }
 ```
 
-# octez.js v17.2.0
+# Taquito v17.2.0
 
 **Potential Breaking Changes** :
 Further improved error classes
@@ -1402,13 +1401,13 @@ const op = {
 
 let simulate = await Tezos.rpc.simulateOperation(op)).contents[0]
 ```
-# octez.js v17.1.1
+# Taquito v17.1.1
 ## Summary
 This is a patch release to fix a potential issue with `verifySignature()` and `hex2buf()` util method.
 ### Bug Fixes
 - Fixed a potentially exploitable behaviour where `verifySignature()` was allowing an appended character to a message payload and still verify the signature correctly. It has now been fixed to validate against odd length characters #2578
 
-# octez.js v17.1.0
+# Taquito v17.1.0
 **Potential Breaking Changes**
 - Updated RxJS version from v6.6.3 to v7.8.1
 - Updated TS version into  v4.2.4
@@ -1442,7 +1441,7 @@ Some other subtle changes that might affect some developers:
 ### Internals
 - Updated version dependencies for `Sass` and `Dotenv` in `/website` [PR#2560](https://github.com/trilitech/octez.js/pull/2560)
 
-# octez.js v17
+# Taquito v17
 ### Potential Breaking Changes
 Protocol Nairobi comes with a couple potential breaking changes for our users:
 - `@tezos-x/octez.js` - Update gas limit changes that pertains to each different curve in Protocol N #2447
@@ -1555,11 +1554,11 @@ try {
 ### `@tezos-x/octez.js` - Tweaked the functionality of `PrepareProvider`
 The `PrepareProvider` is a somewhat new feature to octez.js that allows users to independently create a `PreparedOperation` object. It's behaviour is slightly changed so that it **does not** estimate directly when preparing. The estimation and the preparation process are now 2 separate process, removing the circular dependency it used to have.
 
-# octez.js v16.1.1
+# Taquito v16.1.1
 ## Bug Fixes
 - Fixed an issue where the package forked from `vespaiach/axios-fetch-adapter` was not able to be resolved by some package managers. We have since published the fork on NPM as `@tezos-x/octez.js-axios-fetch-adapter` [PR #2427](https://github.com/trilitech/octez.js/pull/2427)
 
-# octez.js v16.1.0
+# Taquito v16.1.0
 ## Summary
 - `@tezos-x/octez.js-rpc` - Added RPC endpoint to add pending transactions in mempool #2382
 - `@tezos-x/octez.js-rpc` - Added support for types of smart rollup operations in the RPC package #2409
@@ -1629,7 +1628,7 @@ const params = Tezos.prepare.toForge(prepared);
 const forgedBytes = await forger.forge(params);
 ```
 
-# octez.js v16.0.0
+# Taquito v16.0.0
 ## Summary
 
 ### Mumbai Support
@@ -1709,7 +1708,7 @@ These instructions now have bytes support of the opcodes. For more information, 
 The Mumbai protocol update now supports conversion between `bytes` and `nat` as well as `bytes` and `int`
 
 For more information, refer to [this page](https://gitlab.com/tezos/tezos/-/merge_requests/6681)
-# octez.js v15.1.0
+# Taquito v15.1.0
 ## Summary
 
 ### New Features
@@ -1771,7 +1770,7 @@ const op = await Tezos.wallet.increasePaidStorage({
 }).send();
 ```
 
-# octez.js v15.0.1
+# Taquito v15.0.1
 ## Hotfix
 - Fixed a bug where the `local-forging` package was using an outdated version of the codec when it's instantiated without passing in a protocol hash. Updated so that the default value uses the current protocol hash. #2242
 
@@ -1800,7 +1799,7 @@ const op = await Tezos.contract.updateConsensusKey({
 await op.confirmation();
 ```
 
-# octez.js v15.0.0
+# Taquito v15.0.0
 
 **Breaking Changes**:
 - Some types have changed to support the `consensus_key` change in Protocol Lima. Refer to issue #2069 for more details
@@ -1870,7 +1869,7 @@ The Lima protocol introduces a new Michelson type named `LAMBDA_REC`, and a new 
 
 The `TICKET` instruction now returns an optional ticket instead of a ticket. This change has also been reflected in the michel-codec parser.
 
-# octez.js v14.2.0-beta
+# Taquito v14.2.0-beta
 ## Summary
 ### New Features
 
@@ -1915,7 +1914,7 @@ Users can now create an `InMemorySigner` instance using the `fromMnemonic` metho
 const mnemonic = 'author crumble medal dose ribbon permit ankle sport final hood shadow vessel horn hawk enter zebra prefer devote captain during fly found despair business'
 const signer = InMemorySigner.fromMnemonic({ mnemonic, password, derivationPath: "44h/1729h/1/0", curve: 'secp256k1' });
 ```
-# octez.js v14.1.0-beta
+# Taquito v14.1.0-beta
 
 ## Summary
 
@@ -2050,7 +2049,7 @@ If you have feature or issue requests, please create an issue on http://github.c
 
 
 
-# octez.js v14.0.0-beta
+# Taquito v14.0.0-beta
 
 Note for the users of the lower level APIs: injecting more than one manager operation per block from the same account is now forbidden by Tezos in the Kathmandu protocol. You will now receive the following error message: `Error while applying operation opHash: Only one manager operation per manager per block allowed (found opHash2 with Xtez fee).` This change has no impact if you use the TezosToolkit to send operations. Waiting for the operation to be included in a block is already required before submitting another one.
 
@@ -2246,7 +2245,7 @@ Example of how to use the `LocalForger` class in a simple HTML script tag:
 ```
 
 
-# octez.js v13.0.0
+# Taquito v13.0.0
 
 **BREAKING CHANGES**
 The `NaiveEstimateProvider` class that was deprecated in v11 has been removed.
@@ -2350,7 +2349,7 @@ The `txRollupSubmitBatch` method also takes optional `storageLimit`, `gasLimit` 
 ## Known Issues
 - Version stamp is out of date, resulting in `getVersionInfo()` to return the older version (12.1.0) instead of the current release candidate. This will be fixed in the full release.
 
-# octez.js v12.1.0-beta
+# Taquito v12.1.0-beta
 
 ## Summary
 ### Jakarta initial support
@@ -2403,7 +2402,7 @@ A different timeout value can be configured when creating an instance of RpcClie
 new RpcClient('url', 'chain', new HttpBackend(50000));
 ```
 
-# octez.js v12.1.0-beta
+# Taquito v12.1.0-beta
 
 ## Summary
 ### Jakarta initial support
@@ -2456,11 +2455,11 @@ A different timeout value can be configured when creating an instance of RpcClie
 new RpcClient('url', 'chain', new HttpBackend(50000));
 ```
 
-# octez.js v12.0.1-beta
+# Taquito v12.0.1-beta
 
 `@octez.js-rpc` - Added support for missing properties related to Ithaca protocol in `OperationBalanceUpdatesItem` interface: `participation`, `revelation`, `committer`.
 
-# octez.js v12.0.0-beta
+# Taquito v12.0.0-beta
 
 **Please note the presence of two breaking changes in this release. Refer to the following link for a guide to upgrade from version 11 to 12:** https://octez.js.io/docs/upgrading_guide
 
@@ -2713,7 +2712,7 @@ await contact.methods.methodName().send();
 The estimate API only worked with a configured signer and not a wallet. It has been fixed to allow estimation of operations using a configured wallet.
 Note that the wallet account needs to be revealed to conduct any estimate as octez.js has no access to the wallet's public key required to simulate a reveal operation.
 
-# octez.js v11.2.0-beta
+# Taquito v11.2.0-beta
 
 ## Summary
 ### New features
@@ -2848,7 +2847,7 @@ The custom errors were implementing the Error class instead of extending it. Thu
 
 The error `Cannot read property 'DAppClient' of undefined` was thrown when using the `@tezos-x/octez.js-beacon-wallet` package without npm. This has been fixed by replacing the global name from `beaconSdk` to `beacon` in the octez.js-beacon-wallet.umd.js compiled file.
 
-# octez.js v11.1.0-beta
+# Taquito v11.1.0-beta
 
 ## Summary
 ### New features
@@ -2952,18 +2951,18 @@ RangeError: Invalid time value
 ```
 This format is now supported in the Timestamp token of the Michelson-encoder.
 
-# octez.js v11.0.2-beta
+# Taquito v11.0.2-beta
 
 - `@tezos-x/octez.js-beacon-wallet` - The beacon-sdk is updated to version 2.3.8
 - `@tezos-x/octez.js-utils` - Utility function to get Tezos Address (PKH) from a public key #643
 
-# octez.js v11.0.1-beta
+# Taquito v11.0.1-beta
 
 ## Bug fix
 There was an issue with lodash imports in @tezos-x/octez.js-rpc package that was causing the following error: Error: Cannot find module 'lodash/get'
 
 
-# octez.js v11.0.0-beta
+# Taquito v11.0.0-beta
 
 ## Summary
 
@@ -3074,7 +3073,7 @@ We plan to provide abstractions for some of the new Hangzhou features. For examp
 
 If you have feature or issue requests, please create an issue on http://github.com/trilitech/octez.js/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
 
-# octez.js v10.2.1-beta
+# Taquito v10.2.1-beta
 
 - Updated beacon-sdk to version 2.3.5: https://github.com/airgap-it/beacon-sdk/releases/tag/v2.3.5
 - RpcClientCache - Store the Promises instead of the resolved values in the cache:
@@ -3164,7 +3163,7 @@ We started preliminary work on integrating Hangzhounet, the next Tezos protocol 
 
 If you have feature or issue requests, please create an issue on http://github.com/trilitech/octez.js/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
 
-# octez.js v10.1.3-beta
+# Taquito v10.1.3-beta
 
 ## Bug fix - [Key ordering](https://github.com/trilitech/octez.js/pull/1044)
 Fixed key sorting in literal sets and maps when these collections have mixed key types.
@@ -3175,15 +3174,15 @@ This beacon-sdk release includes:
 - hangzhounet support
 - fix for [#269 Pairing with Kukai blocked](https://github.com/airgap-it/beacon-sdk/issues/269) (from -beta.0)
 
-# octez.js v10.1.2-beta
+# Taquito v10.1.2-beta
 
 Bug fix - Unhandled operation confirmation error #1040 & #1024
 
-# octez.js v10.1.1-beta
+# Taquito v10.1.1-beta
 
 Bug fix where the custom polling interval values for the confirmation methods were overridden with the default ones.
 
-# octez.js v10.1.0-beta
+# Taquito v10.1.0-beta
 
 **Breaking change**
 
@@ -3246,7 +3245,7 @@ A fix has been made to change the behavior of the `PollingSubscribeProvider`, wh
 
 
 
-# octez.js v10.0.0-beta
+# Taquito v10.0.0-beta
 ## Summary
 
 ### Remaining support for Granadanet
@@ -3417,7 +3416,7 @@ Thank you for your time and support!
 
 If you have feature or issue requests, please create an issue on http://github.com/trilitech/octez.js/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
 
-# octez.js v9.2.0-beta
+# Taquito v9.2.0-beta
 ## Summary
 
 ### New features
@@ -3495,11 +3494,11 @@ We plan to improve performance issues by implementing some caching. Please have 
 If you have feature or issue requests, please create an issue on http://github.com/trilitech/octez.js/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
 
 
-# octez.js v9.1.1-beta
+# Taquito v9.1.1-beta
 
 @tezos-x/octez.js-beacon-wallet - Updated beacon-sdk to version 2.2.9
 @tezos-x/octez.js-michelson-encoder - Fix for unexpected MapTypecheckError when loading contract storage - for cases where a map contains a big map as value #925
-# octez.js v9.1.0-beta
+# Taquito v9.1.0-beta
 ## Summary
 
 ### New features
@@ -3559,7 +3558,7 @@ We plan to improve the `michelson-encoder` implementation to open the door for T
 If you have feature or issue requests, please create an issue on http://github.com/trilitech/octez.js/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
 
 
-# octez.js v9.0.0-beta
+# Taquito v9.0.0-beta
 
 ## Summary
 
@@ -3588,7 +3587,7 @@ This introduced a breaking change for the method `getMultipleValues` of the `Big
 
 To give more flexibility to the user on the retry strategy, we removed the parameters `observableSubscriptionRetryDelay` and `observableSubscriptionRetries` introduced in version 8.1.1-beta and replaced them to accept an `OperatorFunction`. When users configure the ObservableSubscription to retry on error, we use the `retry` operators from `rxjs` by default. An example showing how to set a custom retry strategy is available [here](https://github.com/trilitech/octez.js/blob/master/example/example-streamer-custom-retry-logic.ts).
 
-# octez.js v8.1.1-beta
+# Taquito v8.1.1-beta
 
 ## Summary
 
@@ -3636,7 +3635,7 @@ There is new documentation on the website explaining how to produce signatures w
 
 A note on how to use the Kukai wallet for testing on Edonet has been added to the Wallet API documentation.
 
-# octez.js v8.1.0-beta
+# Taquito v8.1.0-beta
 
 ## Summary
 
