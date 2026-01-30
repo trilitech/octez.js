@@ -1,6 +1,6 @@
 # octez.js Ledger Signer package
 *Documentation can be found [here](https://octez.js.io/docs/ledger_signer)*  
-*TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_taquito_ledger_signer.html)*
+*TypeDoc style documentation is available [here](https://octez.js.io/typedoc/)*
 
 ## General Information
 `@tezos-x/octez.js-ledger-signer` is an npm package that provides developers with ledger signing functionality for octez.js. It implements the Signer interface of octez.js, allowing you to sign operations from a Ledger Nano device.

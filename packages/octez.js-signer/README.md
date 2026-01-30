@@ -1,7 +1,7 @@
 # octez.js Signer package
 
 *Documentation can be found [here](https://octez.js.io/docs/inmemory_signer)*
-*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_taquito_signer.html)*
+*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
 
 **Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 

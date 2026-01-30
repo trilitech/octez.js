@@ -23,7 +23,7 @@ See the top-level [https://github.com/trilitech/octez.js](https://github.com/tri
 
 ## API Documentation
 
-TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_taquito_http_utils.html)
+TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)
 
 ## Disclaimer
 

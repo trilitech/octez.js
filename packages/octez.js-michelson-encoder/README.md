@@ -1,7 +1,7 @@
 
 # octez.js Michelson Encoder package
 *Documentation can be found [here](https://octez.js.io/docs/michelson_encoder)*  
-*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_taquito_michelson_encoder.html)*
+*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
 
 `@tezos-x/octez.js-michelson-encoder` provides a JavaScript abstraction based on a Tezos Smart contracts code, parameters, storage, and views.
 
