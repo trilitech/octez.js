@@ -56,9 +56,9 @@ export default defineConfig({
     extendMarkdownConfig: true,
   }), sitemap({
     filter: (page) => {
-      // Exclude old documentation versions and 'next' from sitemap
-      // Only include current stable version (24.0.0) and non-versioned pages
-      const oldVersions = ['21.0.0', '22.0.0', '23.0.0', '23.1.0', 'next'];
+      // Exclude old documentation versions from sitemap
+      // Currently 'next' is the only version, so include it
+      const oldVersions = ['21.0.0', '22.0.0', '23.0.0', '23.1.0'];
       return !oldVersions.some(version => page.includes(`/docs/${version}/`));
     },
   })],
