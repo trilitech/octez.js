@@ -12,7 +12,7 @@ export type PackageScenarioId =
   | 'tzip12-behavior'
   | 'contracts-library-behavior'
   | 'timelock-behavior'
-  | 'beacon-wallet-import'
+  | 'dapp-wallet-import'
   | 'wallet-connect-import'
   | 'ledger-signer-behavior'
   | 'sapling-import'
@@ -91,9 +91,9 @@ export const packageScenarios: readonly PackageScenario[] = [
     description: 'imports timelock and opens a generated chest',
   },
   {
-    id: 'beacon-wallet-import',
-    packageName: '@tezos-x/octez.js-beacon-wallet',
-    description: 'imports beacon-wallet in a browser',
+    id: 'dapp-wallet-import',
+    packageName: '@tezos-x/octez.js-dapp-wallet',
+    description: 'imports dapp-wallet in a browser',
   },
   {
     id: 'wallet-connect-import',

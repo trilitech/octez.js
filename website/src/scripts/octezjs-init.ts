@@ -93,7 +93,7 @@ async function init() {
     // Dynamic imports
     const { TezosToolkit, compose, MichelsonMap, UnitValue, RpcReadAdapter, getRevealFee } = await import('@tezos-x/octez.js');
     const { InMemorySigner, importKey } = await import('@tezos-x/octez.js-signer');
-    const { BeaconWallet } = await import('@tezos-x/octez.js-beacon-wallet');
+    const { BeaconWallet } = await import('@tezos-x/octez.js-dapp-wallet');
     const { Tzip12Module, tzip12 } = await import('@tezos-x/octez.js-tzip12');
     const { Tzip16Module, tzip16, bytesToString, MichelsonStorageView } = await import('@tezos-x/octez.js-tzip16');
     const { stringToBytes, num2PaddedHex } = await import('@tezos-x/octez.js-utils');

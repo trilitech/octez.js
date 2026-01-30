@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    "taquito_local_forging": ['./src/octez.js-local-forging.ts']
+    "octezjs_local_forging": ['./src/octez.js-local-forging.ts']
   },
   mode: 'production',
   module: {

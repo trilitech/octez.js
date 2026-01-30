@@ -61,7 +61,7 @@ Sending operations using the Wallet API requires a wallet to be configured. The 
 
 ```ts
 import { TezosToolkit } from '@tezos-x/octez.js';
-import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
+import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 const wallet = new BeaconWallet(options);

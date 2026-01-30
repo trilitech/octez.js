@@ -5,7 +5,7 @@ import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 const pkg = require('./package.json');
 
-const libraryName = 'octez.js-beacon-wallet';
+const libraryName = 'octez.js-dapp-wallet';
 
 const mainConfig = {
   input: `src/${libraryName}.ts`,

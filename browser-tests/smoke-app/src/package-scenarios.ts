@@ -241,9 +241,9 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
     };
   },
 
-  'beacon-wallet-import': async () => {
-    const beaconWallet = await importPackage<typeof import('@tezos-x/octez.js-beacon-wallet')>(
-      '@tezos-x/octez.js-beacon-wallet'
+  'dapp-wallet-import': async () => {
+    const beaconWallet = await importPackage<typeof import('@tezos-x/octez.js-dapp-wallet')>(
+      '@tezos-x/octez.js-dapp-wallet'
     );
 
     return {
