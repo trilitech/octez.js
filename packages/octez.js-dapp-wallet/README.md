@@ -1,7 +1,7 @@
-# octez.js Beacon Wallet package
+# octez.js dApp Wallet package
 
 _Documentation can be found [here](https://octez.js.io/docs/wallet_API)_
-_TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_octez.js_beacon_wallet.html)_
+_TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_octez.js_dapp_wallet.html)_
 
 **Maintained by [Nomadic Labs](https://www.nomadic-labs.com/).**
 
