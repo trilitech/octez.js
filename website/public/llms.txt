@@ -121,7 +121,6 @@ The `next` version contains the latest unreleased documentation.
 - `batch-api` - Batch API
 
 ### Misc
-- `tutorial_links` - External Tutorials
 - `contract-test-collection` - Smart contract collection
 - `ballot` - Ballot Operation
 
