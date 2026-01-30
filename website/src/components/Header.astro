@@ -1,7 +1,8 @@
 ---
-import discordIcon from "../images/icons/discord.svg";
 import xIcon from "../images/icons/x.svg";
 import githubIcon from "../images/icons/github.svg";
+import octezLogoLight from "../images/octez-logo-light.png";
+import octezLogoDark from "../images/octez-logo-dark.png";
 import SearchModal from "./SearchModal.astro";
 import { VERSIONS, DEFAULT_VERSION } from "../pages/api/search/[version].json.ts"
 
@@ -46,7 +47,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       <div class="relative" id="version-dropdown-container">
         <button
           id="version-dropdown-btn"
-          class="font-medium flex items-center gap-1.5 hover:text-primary transition-colors"
+          class="font-medium flex items-center gap-1.5 hover:text-primary transition-colors nav-link"
           aria-expanded="false"
           aria-haspopup="true"
         >
@@ -78,22 +79,10 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       <!-- Socials -->
       <div class="flex items-center gap-6">
         <a
-          href="https://discord.gg/JgvVdWV7BN"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-text-secondary hover:text-accent transition-colors"
-        >
-          <img
-            src={discordIcon.src}
-            alt="Discord"
-            class="inline-block size-7 align-middle mr-1"
-          />
-        </a>
-        <a
           href="https://x.com/LabosNomades"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-text-secondary hover:text-accent transition-colors"
+          class="hover:text-accent transition-colors social-icon"
         >
           <img
             src={xIcon.src}
@@ -105,7 +94,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           href="https://github.com/trilitech/octez.js"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-text-secondary hover:text-accent transition-colors"
+          class="hover:text-accent transition-colors social-icon"
         >
           <img
             src={githubIcon.src}
@@ -194,18 +183,6 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       <a href={`/docs/${currentVersion}/quick_start`} class="bg-primary text-white hover:bg-primary/90 transition-colors duration-150 px-4 py-2 rounded-full text-center">Get Started</a>
       <!-- Socials -->
       <div class="flex items-center justify-center gap-6 pt-2">
-        <a
-          href="https://discord.gg/JgvVdWV7BN"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-text-secondary hover:text-accent transition-colors"
-        >
-          <img
-            src={discordIcon.src}
-            alt="Discord"
-            class="inline-block size-7 align-middle"
-          />
-        </a>
         <a
           href="https://x.com/LabosNomades"
           target="_blank"
@@ -444,5 +421,21 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
 
   #hamburger-btn.open .hamburger-line:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .nav-link {
+    color: #1a1a1a;
+  }
+
+  :root[data-theme='dark'] .nav-link {
+    color: #fafafa;
+  }
+
+  .social-icon img {
+    filter: none;
+  }
+
+  :root[data-theme='dark'] .social-icon img {
+    filter: invert(1);
   }
 </style>

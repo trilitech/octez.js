@@ -84,7 +84,7 @@
 
 /* Theme-dependent logo visibility */
 .logo-light {
-    display: inline;
+    display: block;
 }
 
 .logo-dark {
@@ -96,5 +96,5 @@
 }
 
 :root[data-theme='dark'] .logo-dark {
-    display: inline;
+    display: block;
 }

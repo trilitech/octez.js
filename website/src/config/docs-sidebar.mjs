@@ -8,6 +8,7 @@ export const sidebarConfig = [
     name: "Getting Started",
     items: [
       "quick_start",
+      "migration_from_taquito",
       "tutorial",
       "operation_flow",
       "rpc_nodes",

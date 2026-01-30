@@ -16,6 +16,7 @@ The `next` version contains the latest unreleased documentation.
 
 ### Getting Started
 - `quick_start` - Quick Start
+- `migration_from_taquito` - Migration from Taquito
 - `tutorial` - Building Your First dApp
 - `operation_flow` - Operation Flow
 - `rpc_nodes` - RPC nodes

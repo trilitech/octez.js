@@ -115,6 +115,15 @@ const articleJsonLd = {
       rel="stylesheet"
     />
 
+    <!-- Theme initialization (prevents flash) -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+
     <!-- Load octez.js -->
     <script src="../scripts/octezjs-init.ts"></script>
     <!-- Load Prism for syntax highlighting -->
