@@ -53,9 +53,9 @@ This file lists all documentation pages available at https://octez.js.io. Use th
 
 Documentation pages follow this pattern:
 - \`/docs/{version}/{page}\` - Versioned documentation
-- Example: \`/docs/next/quick_start\` or \`/docs/next/making_transfers\`
+- Example: \`/docs/0.9.0/quick_start\` or \`/docs/0.9.0/making_transfers\`
 
-The \`next\` version contains the latest unreleased documentation.
+The default version is \`0.9.0\`. The \`next\` version contains unreleased documentation.
 
 ## Documentation Pages
 
