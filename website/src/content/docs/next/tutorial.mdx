@@ -379,7 +379,7 @@ In the next step, we will add octez.js and the Beacon SDK to our app and create 
 
 In a new terminal in your projects directory, install octez.js and octez.js's Beacon Wallet package.
 ```bash
-npm i @tezos-x/octez.js @tezos-x/octez.js-beacon-wallet
+npm i @tezos-x/octez.js @tezos-x/octez.js-dapp-wallet
 ```
 
 Open the file `src/App.tsx` and replace the content with the code below. There will be errors, but you can ignore those for now, we will create the missing files in the next step.
@@ -390,7 +390,7 @@ import { TezosToolkit } from "@tezos-x/octez.js";
 import "./App.css";
 import ConnectButton from "./components/ConnectWallet";
 import Transfer from "./components/Transfer";
-import { BeaconWallet } from "@tezos-x/octez.js-beacon-wallet";
+import { BeaconWallet } from "@tezos-x/octez.js-dapp-wallet";
 
 const App = () => {
   const [Tezos] = useState<TezosToolkit>(
@@ -425,8 +425,8 @@ Create a new file `src/components/ConnectWallet.tsx` and add the following code:
 ```
 import { type Dispatch, type JSX, type SetStateAction, useEffect } from "react";
 import { TezosToolkit } from "@tezos-x/octez.js";
-import { BeaconWallet } from "@tezos-x/octez.js-beacon-wallet";
-import { NetworkType } from "@tezos-x/octez.js-beacon-wallet/types";
+import { BeaconWallet } from "@tezos-x/octez.js-dapp-wallet";
+import { NetworkType } from "@tezos-x/octez.js-dapp-wallet/types";
 
 type ButtonProps = {
 	Tezos: TezosToolkit;

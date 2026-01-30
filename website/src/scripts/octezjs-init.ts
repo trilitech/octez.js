@@ -216,12 +216,12 @@ async function init() {
     // Dynamic imports
     const { TezosToolkit, compose, MichelsonMap, UnitValue, RpcReadAdapter, getRevealFee, importKey } = await import('@tezos-x/octez.js');
     const { InMemorySigner } = await import('@tezos-x/octez.js-signer');
-    const { BeaconWallet } = await import('@tezos-x/octez.js-beacon-wallet');
+    const { BeaconWallet } = await import('@tezos-x/octez.js-dapp-wallet');
     const { Tzip12Module, tzip12 } = await import('@tezos-x/octez.js-tzip12');
     const { Tzip16Module, tzip16, MichelsonStorageView } = await import('@tezos-x/octez.js-tzip16');
     const { stringToBytes, num2PaddedHex, bytesToString } = await import('@tezos-x/octez.js-utils');
     const { BigNumber } = await import('bignumber.js');
-    const { SigningType } = await import('@tezos-x/octez.js-beacon-wallet/types')
+    const { SigningType } = await import('@tezos-x/octez.js-dapp-wallet/types')
     const { Parser, packDataBytes, emitMicheline } = await import('@tezos-x/octez.js-michel-codec');
     const { b58Encode, PrefixV2 } = await import('@tezos-x/octez.js-utils');
     const { WalletConnect, NetworkType, PermissionScopeMethods } = await import("@tezos-x/octez.js-wallet-connect");

@@ -1,18 +1,18 @@
-# octez.js Beacon Wallet package
+# octez.js DApp Wallet package
 
 _Documentation can be found [here](https://octez.js.io/docs/wallet_API)_
-_TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_taquito_beacon_wallet.html)_
+_TypeDoc style documentation is available [here](https://octez.js.io/typedoc/)_
 
 ## General Information
 
-`@tezos-x/octez.js-beacon-wallet` is an npm package implementing the TZIP-10 standard that describes the communication between decentralized applications and wallets. The package provides developers a way to connect a dapp built with octez.js to a wallet giving the freedom to the users of the dapp to choose the wallet they want.
+`@tezos-x/octez.js-dapp-wallet` is an npm package implementing the TZIP-10 standard that describes the communication between decentralized applications and wallets. The package provides developers a way to connect a dapp built with octez.js to a wallet giving the freedom to the users of the dapp to choose the wallet they want.
 
 ## Install
 
 Install the package as follows
 
 ```
-npm install @tezos-x/octez.js-beacon-wallet
+npm install @tezos-x/octez.js-dapp-wallet
 ```
 
 ## Usage
@@ -21,11 +21,11 @@ Create a wallet instance with defined option parameters and set the wallet provi
 
 ```ts
 import { TezosToolkit } from '@tezos-x/octez.js';
-import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
+import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 
 const options = {
   name: 'MyAwesomeDapp',
-  iconUrl: 'https://octez.js.io/img/favicon.svg',
+  iconUrl: 'https://octez.js.io/favicon.ico',
   network: { type: 'shadownet' },
   enableMetrics: true,
 };

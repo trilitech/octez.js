@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    "taquito_beacon_wallet": ['./src/octez.js-beacon-wallet.ts']
+    "octezjs_dapp_wallet": ['./src/octez.js-dapp-wallet.ts']
   },
   mode: 'production',
   module: {

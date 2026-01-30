@@ -15,9 +15,9 @@ import type {
 } from '../src/beacon-types';
 
 // BeaconEvent and DAppClientOptions live on the main entry point (not ./types)
-// because they require @ecadlabs/beacon-dapp which has side effects.
-import { BeaconEvent } from '../src/octez.js-beacon-wallet';
-import type { DAppClientOptions } from '../src/octez.js-beacon-wallet';
+// because they require @tezos-x/octez.connect-dapp which has side effects.
+import { BeaconEvent } from '../src/octez.js-dapp-wallet';
+import type { DAppClientOptions } from '../src/octez.js-dapp-wallet';
 
 describe('beacon-types re-exports (side-effect-free)', () => {
   it('should export NetworkType enum', () => {

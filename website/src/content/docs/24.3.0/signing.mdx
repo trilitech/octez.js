@@ -67,7 +67,7 @@ The hexadecimal/Micheline representation of the string must contain 4 pieces of 
 Once you have your bytes, you can send them to the wallet to have them signed:
 
 ```typescript
-import { RequestSignPayloadInput, SigningType } from '@tezos-x/octez.js-beacon-wallet/types';
+import { RequestSignPayloadInput, SigningType } from '@tezos-x/octez.js-dapp-wallet/types';
 
 const payload: RequestSignPayloadInput = {
   signingType: SigningType.MICHELINE,
@@ -88,7 +88,7 @@ Here is the full code to sign data with a wallet:
 
 ```ts
 import { stringToBytes } from '@tezos-x/octez.js-utils';
-import { RequestSignPayloadInput, SigningType } from '@tezos-x/octez.js-beacon-wallet/types';
+import { RequestSignPayloadInput, SigningType } from '@tezos-x/octez.js-dapp-wallet/types';
 
 // The data to format
 const dappUrl = 'tezos-test-d.app';

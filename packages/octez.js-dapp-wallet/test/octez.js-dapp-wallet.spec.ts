@@ -3,7 +3,7 @@ import {
   BeaconWallet,
   BeaconWalletNotInitialized,
   MissingRequiredScopes,
-} from '../src/octez.js-beacon-wallet';
+} from '../src/octez.js-dapp-wallet';
 import LocalStorageMock from './mock-local-storage';
 import {
   PermissionScope,

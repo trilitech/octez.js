@@ -48,13 +48,13 @@ Tezos.setProvider({signer:key});
 
 **WalletProvider:**
 By default, the TezosToolkit ships with an instance of LegacyWalletProvider. This wallet requires a signer configured on the TezosToolkit. In order to use the Wallet API with a wallet other than the LegacyWallet, the user needs to set a wallet on the TezosToolkit. octez.js provides the following wallets:
-- [BeaconWallet](wallets) (Built on the DAppClient from the '@airgap/beacon-sdk' package which handles all the logic related to connecting to beacon-compatible wallets and sending requests. The BeaconWallet provides developers a way to connect a dapp built with octez.js to a wallet giving the freedom to the users of the dapp to choose the wallet they want.)
+- [BeaconWallet](wallets) (Built on the DAppClient from the octez.connect packages which handle all the logic related to connecting to beacon-compatible wallets and sending requests. The BeaconWallet provides developers a way to connect a dapp built with octez.js to a wallet giving the freedom to the users of the dapp to choose the wallet they want.)
 
 A user can set any wallet on the TezosToolkit as long as it implements the WalletProvider interface.
 
 ```typescript
 import { TezosToolkit } from '@tezos-x/octez.js';
-import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
+import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 
 const options = {
   name: 'MyAwesomeDapp',

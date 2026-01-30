@@ -23,10 +23,10 @@ The main benefit of this workflow is that the user does not have to trust a dApp
 
 ## Using the Wallet API
 
-The Wallet API is built into the core octez.js package. To get started, simply install octez.js and Taquitos Beacon Wallet package (to help interact with wallets).
+The Wallet API is built into the core octez.js package. To get started, simply install octez.js and the octez.js DApp Wallet package (to help interact with wallets).
 
 ```
-npm install @tezos-x/octez.js @tezos-x/octez.js-beacon-wallet
+npm install @tezos-x/octez.js @tezos-x/octez.js-dapp-wallet
 ```
 
 If you plan to use Temple wallet directly (not through Beacon), you will also need `@temple-wallet/dapp`.
@@ -46,7 +46,7 @@ import { TezosToolkit } from '@tezos-x/octez.js';
 const Tezos = new TezosToolkit('https://tezos-shadownet.octez.io/');
 ```
 
-This object exposes different methods we are going to use to set up our wallet. TZIP-10 has become the official standard of communication and interaction between wallets and dApps, so let's start with the `@tezos-x/octez.js-beacon-wallet` package that implements this standard.
+This object exposes different methods we are going to use to set up our wallet. TZIP-10 has become the official standard of communication and interaction between wallets and dApps, so let's start with the `@tezos-x/octez.js-dapp-wallet` package that implements this standard.
 
 ### TZIP-10 wallet
 
@@ -55,7 +55,7 @@ The `BeaconWallet` is a package implementing the TZIP-10 standard that describes
 First, the `BeaconWallet` class must be imported:
 
 ```js
-import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
+import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 ```
 
 Then, you can start initializing the wallet:
@@ -63,7 +63,7 @@ Then, you can start initializing the wallet:
 ```js
 const options = {
   name: 'MyAwesomeDapp',
-  iconUrl: 'https://octez.js.io/favicon.svg',
+  iconUrl: 'https://octez.js.io/favicon.ico',
   network: { type: 'shadownet' },
   enableMetrics: true,
 };
@@ -73,7 +73,7 @@ console.log(wallet);
 
 The necessary bare minimum to instantiate the wallet is an object with a `name` property that contains the name of your dApp and the network you want it to point to. In this case, we choose to point it to `shadownet`.
 
-Beacon wallet allows you to customize your dApp responses to different events. In the example above, instead of getting the default Beacon pop-up after the user connects the wallet, it will display the available data in the console. You can use whatever solution you prefer for feedback. You can find a list of all the default handlers [in the beacon-sdk Github repo](https://github.com/airgap-it/beacon-sdk/blob/master/packages/beacon-dapp/src/events.ts).
+Beacon wallet allows you to customize your dApp responses to different events. In the example above, instead of getting the default Beacon pop-up after the user connects the wallet, it will display the available data in the console. You can use whatever solution you prefer for feedback.
 
 The `enableMetrics` property is an optional parameter that allows you to enable or disable the collection of metrics. It also allows the user to report bugs via a link in the wallet pop-up.
 
@@ -112,7 +112,7 @@ Tezos.setProvider({ wallet });
 Make sure you have a TZIP-10 compatible wallet installed (e.g., Temple browser extension or Kukai web wallet). The `BeaconWallet` works with any wallet that implements the TZIP-10 standard.
 
 ```js live wallet
-// import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
+// import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 // const options = { name: 'exampleWallet', enableMetrics: true };
 // const wallet = new BeaconWallet(options);
 
@@ -129,7 +129,7 @@ try {
 ### Subscribing to events
 
 While your dApp is connected to the wallet, different events can happen on the wallet side. A reactive dApp can subscribe to these events and update the UI to create a good user experience.
-The different types of events are defined in the type `BeaconEvent` that can be imported from `"@tezos-x/octez.js-beacon-wallet"`. Some of the events are: `ACTIVE_ACCOUNT_SET`, `PAIR_SUCCESS`, `SIGN_REQUEST_SUCCESS`.
+The different types of events are defined in the type `BeaconEvent` that can be imported from `"@tezos-x/octez.js-dapp-wallet"`. Some of the events are: `ACTIVE_ACCOUNT_SET`, `PAIR_SUCCESS`, `SIGN_REQUEST_SUCCESS`.
 To see all possible events, please check out the [BeaconEvent in Beacon SDK documentation](https://typedocs.walletbeacon.io/enums/beaconevent.html).
 
 You can subscribe to any of these events as follows:

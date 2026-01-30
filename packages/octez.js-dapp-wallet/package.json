@@ -1,6 +1,9 @@
 {
-  "name": "@tezos-x/octez.js-beacon-wallet",
-  "version": "24.3.0",
+  "name": "@tezos-x/octez.js-dapp-wallet",
+  "maintainers": [
+    "Nomadic Labs <contact@nomadic-labs.com>"
+  ],
+  "version": "1.0.0",
   "description": "TZIP-10 Beacon wallet integration for octez.js dapps built on the Beacon SDK DAppClient.",
   "keywords": [
     "octez.js",
@@ -10,14 +13,14 @@
     "wallet",
     "beacon"
   ],
-  "main": "dist/octez.js-beacon-wallet.umd.js",
-  "module": "dist/octez.js-beacon-wallet.es6.js",
-  "typings": "dist/types/octez.js-beacon-wallet.d.ts",
+  "main": "dist/octez.js-dapp-wallet.umd.js",
+  "module": "dist/octez.js-dapp-wallet.es6.js",
+  "typings": "dist/types/octez.js-dapp-wallet.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/octez.js-beacon-wallet.d.ts",
-      "import": "./dist/octez.js-beacon-wallet.es6.js",
-      "require": "./dist/octez.js-beacon-wallet.umd.js"
+      "types": "./dist/types/octez.js-dapp-wallet.d.ts",
+      "import": "./dist/octez.js-dapp-wallet.es6.js",
+      "require": "./dist/octez.js-dapp-wallet.umd.js"
     },
     "./types": {
       "types": "./dist/types/beacon-types.d.ts",
@@ -36,7 +39,7 @@
   "contributors": [
     "Roxane Letourneau <roxane@ecadlabs.com>",
     "Davis Sawali <davis.sawali@ecadlabs.com>",
-    "Jev Björsell (jevonearth)",
+    "Jev Bj\u00f6rsell (jevonearth)",
     "Simon Boissonneault-Robert <simon@ecadlabs.com>"
   ],
   "homepage": "https://octez.js.io/",
@@ -70,17 +73,17 @@
     ]
   },
   "dependencies": {
-    "@ecadlabs/beacon-dapp": "4.8.4-ecad-beta.1",
-    "@ecadlabs/beacon-types": "4.8.4-ecad-beta.1",
-    "@tezos-x/octez.js-core": "^24.3.0",
-    "@tezos-x/octez.js": "^24.3.0",
-    "@tezos-x/octez.js-utils": "^24.3.0",
+    "@tezos-x/octez.connect-dapp": "4.8.4",
+    "@tezos-x/octez.connect-types": "4.8.4",
+    "@tezos-x/octez.js-core": "^1.0.0",
+    "@tezos-x/octez.js": "^1.0.0",
+    "@tezos-x/octez.js-utils": "^1.0.0",
     "typedarray-to-buffer": "^4.0.0",
     "util": "^0.12.5"
   },
   "devDependencies": {
-    "@ecadlabs/beacon-transport-postmessage": "4.8.4-ecad-beta.1",
-    "@ecadlabs/beacon-ui": "4.8.4-ecad-beta.1",
+    "@tezos-x/octez.connect-transport-postmessage": "4.8.4",
+    "@tezos-x/octez.connect-ui": "4.8.4",
     "@types/bluebird": "^3.5.42",
     "@types/chrome": "0.1.40",
     "@types/node": "^22.0.0",
