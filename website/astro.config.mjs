@@ -56,10 +56,10 @@ export default defineConfig({
     extendMarkdownConfig: true,
   }), sitemap({
     filter: (page) => {
-      // Exclude old documentation versions from sitemap
-      // Currently 'next' is the only version, so include it
-      const oldVersions = ['21.0.0', '22.0.0', '23.0.0', '23.1.0'];
-      return !oldVersions.some(version => page.includes(`/docs/${version}/`));
+      // Exclude old documentation versions and 'next' (development) from sitemap
+      // Only index released versions (0.9.0+)
+      const excludedVersions = ['21.0.0', '22.0.0', '23.0.0', '23.1.0', 'next'];
+      return !excludedVersions.some(version => page.includes(`/docs/${version}/`));
     },
   })],
   markdown: {
