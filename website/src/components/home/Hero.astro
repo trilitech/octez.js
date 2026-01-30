@@ -1,18 +1,21 @@
 ---
 import { DEFAULT_VERSION } from "../../pages/api/search/[version].json.ts";
+import octezLogoLight from "../../images/octez-logo-light.png";
+import octezLogoDark from "../../images/octez-logo-dark.png";
 
 // Normalize base URL to always have trailing slash for path joining
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 ---
 
 <section class="bg-background-primary py-20 px-8">
-  <div class="md:max-w-1/2 mx-auto text-left">
-    <h1 class="text-4xl font-bold text-text-primary mb-6">
-      Developing on Tezos can be delicious!
+  <div class="md:max-w-1/2 mx-auto text-center">
+    <img src={octezLogoLight.src} alt="octez.js" class="h-32 w-auto mx-auto mb-8 logo-light" />
+    <img src={octezLogoDark.src} alt="octez.js" class="h-32 w-auto mx-auto mb-8 logo-dark" />
+    <h1 class="text-4xl font-bold mb-6 hero-title">
+      Build on Tezos with TypeScript
     </h1>
-    <p class="text-lg text-text-secondary mb-8">
-      Use our popular octez.js TypeScript library to develop your Tezos
-      blockchain apps faster and easier
+    <p class="text-lg mb-8 hero-subtitle">
+      Use octez.js to develop your Tezos blockchain apps faster and easier
     </p>
     <a
       href={`${base}docs/${DEFAULT_VERSION}/quick_start`}
@@ -21,3 +24,18 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
     >
   </div>
 </section>
+
+<style>
+  .hero-title {
+    color: #1a1a1a;
+  }
+  .hero-subtitle {
+    color: #374151;
+  }
+  :root[data-theme='dark'] .hero-title {
+    color: #fafafa;
+  }
+  :root[data-theme='dark'] .hero-subtitle {
+    color: #d4d4d8;
+  }
+</style>
