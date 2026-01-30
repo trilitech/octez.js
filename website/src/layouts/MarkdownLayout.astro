@@ -5,7 +5,6 @@ import 'prismjs/themes/prism.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import DocsSidebar from '../components/DocsSidebar.astro';
-import FeedbackWidget from '../components/docs/FeedbackWidget.astro';
 import ChatKitWidget from '@components/ChatKitWidget.astro';
 import { DEFAULT_VERSION } from '../pages/api/search/[version].json.ts'
 
@@ -230,7 +229,6 @@ const articleJsonLd = {
             <ChatKitWidget />
           </div>
 
-          {isDocsPage && <FeedbackWidget version={version} pageTitle={title} />}
         </div>
       </div>
       <aside
