@@ -1,5 +1,5 @@
 # octez.js Utils package
-*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_taquito_utils.html)*
+*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
 
 `@tezos-x/octez.js-utils` is an npm package that provides developers with utility functionality for octez.js.
 

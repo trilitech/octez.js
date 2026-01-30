@@ -1,6 +1,6 @@
 # octez.js TZIP-012 package
 *Documentation can be found [here](https://octez.js.io/docs/tzip12)*  
-*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_taquito_tzip12.html)*
+*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
 
 `@tezos-x/octez.js-tzip12` is an npm package that provides developers with TZIP-12 functionality for octez.js. The package allows retrieving metadata associated with tokens of FA2 contracts.
 

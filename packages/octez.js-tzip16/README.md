@@ -1,6 +1,6 @@
 # octez.js TZIP-016 package
 *Documentation can be found [here](https://octez.js.io/docs/metadata-tzip16/)*  
-*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_taquito_tzip16.html)*
+*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
 
 `@tezos-x/octez.js-tzip16` is an npm package that provides developers with TZIP-016 functionality for octez.js. TZIP-016 is a standard for encoding access to smart contract metadata either on-chain or off-chain. The `@tezos-x/octez.js-tzip16` package allows developers to retrieve the metadata associated with a smart contract and execute the off-chain views found in the metadata.
 

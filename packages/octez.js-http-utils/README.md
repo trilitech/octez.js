@@ -1,5 +1,5 @@
 # octez.js HTTP Utilities package
-*TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_taquito_http_utils.html)*
+*TypeDoc style documentation is available [here](https://octez.js.io/typedoc/)*
 
 `@tezos-x/octez.js-http-utils` is an npm package that provides developers with http functionality for octez.js.
 

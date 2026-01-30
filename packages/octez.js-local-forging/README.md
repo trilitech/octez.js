@@ -1,6 +1,6 @@
 
 # octez.js Local Forging package
-*TypeDoc style documentation is available [here](https://octez.js.io/typedoc/modules/_taquito_local_forging.html)*
+*TypeDoc style documentation is available [here](https://octez.js.io/typedoc/)*
 
 ## General Information
 

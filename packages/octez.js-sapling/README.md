@@ -1,7 +1,7 @@
 # octez.js Sapling package
 
 _Documentation can be found [here](https://octez.js.io/docs/next/sapling)_
-_TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/modules/_taquito_sapling.html)_
+_TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)_
 
 ## General Information
 
