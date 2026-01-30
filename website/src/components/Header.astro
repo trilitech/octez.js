@@ -1,7 +1,8 @@
 ---
-import discordIcon from "../images/icons/discord.svg";
 import xIcon from "../images/icons/x.svg";
 import githubIcon from "../images/icons/github.svg";
+import octezLogoLight from "../images/octez-logo-light.png";
+import octezLogoDark from "../images/octez-logo-dark.png";
 import SearchModal from "./SearchModal.astro";
 import { VERSIONS, DEFAULT_VERSION } from "../pages/api/search/[version].json.ts"
 
@@ -25,7 +26,8 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
 >
   <div class="mx-2 md:mx-8 flex justify-between items-center py-2">
     <a href={base} class="logo no-underline flex items-center gap-2" aria-label="octez.js home">
-      <div id="lottie-logo" class="w-32 md:w-40 flex items-center justify-center"></div>
+      <img src={octezLogoLight.src} alt="octez.js" class="h-20 w-auto logo-light" />
+      <img src={octezLogoDark.src} alt="octez.js" class="h-20 w-auto logo-dark" />
     </a>
 
     <!-- Desktop Navigation -->
@@ -46,7 +48,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       <div class="relative" id="version-dropdown-container">
         <button
           id="version-dropdown-btn"
-          class="font-medium flex items-center gap-1.5 hover:text-primary transition-colors"
+          class="font-medium flex items-center gap-1.5 hover:text-primary transition-colors nav-link"
           aria-expanded="false"
           aria-haspopup="true"
         >
@@ -72,27 +74,15 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           ))}
         </div>
       </div>
-      <a href={`${base}changelog`} class="font-medium">Release Notes</a>
+      <a href={`${base}changelog`} class="font-medium nav-link">Release Notes</a>
       <a href={`${base}docs/${currentVersion}/quick_start`} class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3 py-1.5 rounded-full">Get Started</a>
       <!-- Socials -->
       <div class="flex items-center gap-6">
         <a
-          href="https://discord.gg/JgvVdWV7BN"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-text-secondary hover:text-accent transition-colors"
-        >
-          <img
-            src={discordIcon.src}
-            alt="Discord"
-            class="inline-block size-7 align-middle mr-1"
-          />
-        </a>
-        <a
           href="https://x.com/LabosNomades"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-text-secondary hover:text-accent transition-colors"
+          class="hover:text-accent transition-colors social-icon"
         >
           <img
             src={xIcon.src}
@@ -104,7 +94,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
           href="https://github.com/trilitech/octez.js"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-text-secondary hover:text-accent transition-colors"
+          class="hover:text-accent transition-colors social-icon"
         >
           <img
             src={githubIcon.src}
@@ -193,18 +183,6 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
       <!-- Socials -->
       <div class="flex items-center justify-center gap-6 pt-2">
         <a
-          href="https://discord.gg/JgvVdWV7BN"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-text-secondary hover:text-accent transition-colors"
-        >
-          <img
-            src={discordIcon.src}
-            alt="Discord"
-            class="inline-block size-7 align-middle"
-          />
-        </a>
-        <a
           href="https://x.com/LabosNomades"
           target="_blank"
           rel="noopener noreferrer"
@@ -249,33 +227,6 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
 <SearchModal currentVersion={currentVersion} />
 
 <script>
-  import lottie from "lottie-web";
-
-  const logoContainer = document.getElementById("lottie-logo");
-  const baseUrl = document.querySelector('meta[name="base-url"]')?.getAttribute('content') || '/';
-
-  if (logoContainer) {
-    const animation = lottie.loadAnimation({
-      container: logoContainer,
-      renderer: "svg",
-      loop: true,
-      autoplay: false,
-      path: `${baseUrl}octez.js_loop_logo.json`,
-    });
-
-    const logoLink = logoContainer.closest(".logo");
-
-    if (logoLink) {
-      logoLink.addEventListener("mouseenter", () => {
-        animation.play();
-      });
-
-      logoLink.addEventListener("mouseleave", () => {
-        animation.stop();
-      });
-    }
-  }
-
   // Header hide/show on scroll
   let lastScrollY = window.scrollY;
   let ticking = false;
@@ -455,5 +406,21 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
 
   #hamburger-btn.open .hamburger-line:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .nav-link {
+    color: #1a1a1a;
+  }
+
+  :root[data-theme='dark'] .nav-link {
+    color: #fafafa;
+  }
+
+  .social-icon img {
+    filter: none;
+  }
+
+  :root[data-theme='dark'] .social-icon img {
+    filter: invert(1);
   }
 </style>

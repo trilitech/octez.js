@@ -1,0 +1,116 @@
+---
+title: Migration from Taquito
+author: [Nomadic Labs]
+---
+
+This guide helps existing Taquito users migrate to octez.js. The good news is that octez.js is a fork of Taquito, so the API is identical. Migration is straightforward and requires only package name changes.
+
+## Package Name Changes
+
+All packages have been renamed from `@taquito/*` to `@tezos-x/octez.js-*`:
+
+| Old Package | New Package |
+|-------------|-------------|
+| `@taquito/taquito` | `@tezos-x/octez.js` |
+| `@taquito/signer` | `@tezos-x/octez.js-signer` |
+| `@taquito/rpc` | `@tezos-x/octez.js-rpc` |
+| `@taquito/utils` | `@tezos-x/octez.js-utils` |
+| `@taquito/michelson-encoder` | `@tezos-x/octez.js-michelson-encoder` |
+| `@taquito/michel-codec` | `@tezos-x/octez.js-michel-codec` |
+| `@taquito/local-forging` | `@tezos-x/octez.js-local-forging` |
+| `@taquito/remote-signer` | `@tezos-x/octez.js-remote-signer` |
+| `@taquito/ledger-signer` | `@tezos-x/octez.js-ledger-signer` |
+| `@taquito/beacon-wallet` | `@tezos-x/octez.js-beacon-wallet` |
+| `@taquito/tzip12` | `@tezos-x/octez.js-tzip12` |
+| `@taquito/tzip16` | `@tezos-x/octez.js-tzip16` |
+| `@taquito/sapling` | `@tezos-x/octez.js-sapling` |
+| `@taquito/timelock` | `@tezos-x/octez.js-timelock` |
+| `@taquito/contracts-library` | `@tezos-x/octez.js-contracts-library` |
+| `@taquito/http-utils` | `@tezos-x/octez.js-http-utils` |
+| `@taquito/core` | `@tezos-x/octez.js-core` |
+
+## Migration Steps
+
+### 1. Update package.json
+
+Replace all `@taquito/*` dependencies with their `@tezos-x/octez.js-*` equivalents:
+
+```json
+// Before
+{
+  "dependencies": {
+    "@taquito/taquito": "^21.0.0",
+    "@taquito/signer": "^21.0.0",
+    "@taquito/beacon-wallet": "^21.0.0"
+  }
+}
+
+// After
+{
+  "dependencies": {
+    "@tezos-x/octez.js": "^0.9.0",
+    "@tezos-x/octez.js-signer": "^0.9.0",
+    "@tezos-x/octez.js-beacon-wallet": "^0.9.0"
+  }
+}
+```
+
+### 2. Update Imports
+
+Update all import statements in your code:
+
+```typescript
+// Before
+import { TezosToolkit } from '@taquito/taquito';
+import { InMemorySigner } from '@taquito/signer';
+import { BeaconWallet } from '@taquito/beacon-wallet';
+
+// After
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
+```
+
+### 3. Find and Replace
+
+You can use your IDE's find-and-replace feature to update imports across your project:
+
+| Find | Replace |
+|------|---------|
+| `@taquito/taquito` | `@tezos-x/octez.js` |
+| `@taquito/` | `@tezos-x/octez.js-` |
+
+> [!TIP]
+> Run the second replacement only after the first one, as `@taquito/taquito` should become `@tezos-x/octez.js`, not `@tezos-x/octez.js-taquito`.
+
+### 4. Install New Packages
+
+Remove old packages and install new ones:
+
+```bash
+# Remove old packages
+npm uninstall @taquito/taquito @taquito/signer @taquito/beacon-wallet
+
+# Install new packages
+npm install @tezos-x/octez.js @tezos-x/octez.js-signer @tezos-x/octez.js-beacon-wallet
+```
+
+## API Compatibility
+
+The API is fully compatible with Taquito. All classes, methods, and types work exactly the same way:
+
+- `TezosToolkit` - Same API
+- `InMemorySigner` - Same API
+- `BeaconWallet` - Same API
+- All contract interactions - Same API
+- All RPC methods - Same API
+
+Your existing code logic does not need to change.
+
+## Getting Help
+
+If you encounter any issues during migration:
+
+- Open an issue on [GitHub](https://github.com/trilitech/octez.js/issues)
+- Ask on [Tezos Stack Exchange](https://tezos.stackexchange.com/questions/tagged/octez.js)
+- Join the [Discord community](https://discord.com/invite/JgvVdWV7BN)
