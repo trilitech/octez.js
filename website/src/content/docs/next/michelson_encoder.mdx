@@ -7,7 +7,7 @@ The purpose of the `Michelson-Encoder` package is to create an abstraction over 
 Its integration into the main `octez.js` package makes it easier to write the storage when deploying a contract and the parameter when calling a contract entry-point.
 
 :::info
-With the release of octez.js vevsion 20.0.0, we have made a breaking change in the Michelson Encoder package.
+With the release of Taquito version 20.0.0, we have made a breaking change in the Michelson Encoder package.
 Please check the [Breaking Change to Field Numbering](#breaking-change-to-field-numbering) section of this document for more information and how to enable the old behavior.
 :::
 
@@ -17,8 +17,6 @@ There are three main classes in the Michelson Encoder:
 - `Token`
 - `ParameterSchema`
 - `Schema`
-
-[Here](/img/taquito-michelson-encoder.png) is a class diagram showing their members, methods, and relations.
 
 A specific token class in the package represents each different Michelson type (i.e., `nat`, `list`, `pair`, `or`, ...). Each of these classes extends the abstract class `Token` and needs to implement these four inherited abstract methods:
 - `Execute`: To convert Michelson data into familiar-looking javascript data
