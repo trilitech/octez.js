@@ -19,7 +19,7 @@ All packages have been renamed from `@taquito/*` to `@tezos-x/octez.js-*`:
 | `@taquito/local-forging` | `@tezos-x/octez.js-local-forging` |
 | `@taquito/remote-signer` | `@tezos-x/octez.js-remote-signer` |
 | `@taquito/ledger-signer` | `@tezos-x/octez.js-ledger-signer` |
-| `@taquito/beacon-wallet` | `@tezos-x/octez.js-beacon-wallet` |
+| `@taquito/beacon-wallet` | `@tezos-x/octez.js-dapp-wallet` |
 | `@taquito/tzip12` | `@tezos-x/octez.js-tzip12` |
 | `@taquito/tzip16` | `@tezos-x/octez.js-tzip16` |
 | `@taquito/sapling` | `@tezos-x/octez.js-sapling` |
@@ -49,7 +49,7 @@ Replace all `@taquito/*` dependencies with their `@tezos-x/octez.js-*` equivalen
   "dependencies": {
     "@tezos-x/octez.js": "^0.9.0",
     "@tezos-x/octez.js-signer": "^0.9.0",
-    "@tezos-x/octez.js-beacon-wallet": "^0.9.0"
+    "@tezos-x/octez.js-dapp-wallet": "^0.9.0"
   }
 }
 ```
@@ -67,7 +67,7 @@ import { BeaconWallet } from '@taquito/beacon-wallet';
 // After
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
-import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
+import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 ```
 
 ### 3. Find and Replace
@@ -91,7 +91,7 @@ Remove old packages and install new ones:
 npm uninstall @taquito/taquito @taquito/signer @taquito/beacon-wallet
 
 # Install new packages
-npm install @tezos-x/octez.js @tezos-x/octez.js-signer @tezos-x/octez.js-beacon-wallet
+npm install @tezos-x/octez.js @tezos-x/octez.js-signer @tezos-x/octez.js-dapp-wallet
 ```
 
 ## API Compatibility

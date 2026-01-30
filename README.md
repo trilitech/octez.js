@@ -75,7 +75,7 @@ octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of se
 | [@octez.js/utils](packages/octez.js-utils)                         | Encoding/decoding utilities                                                                           |
 | [@octez.js/tzip12](packages/octez.js-tzip12)                       | TZIP-12 support (retrieving NFT/token metadata)                                                       |
 | [@octez.js/tzip16](packages/octez.js-tzip16)                       | TZIP-16 support (retrieving contract metadata and executing off-chain views)                          |
-| [@octez.js/beacon-wallet](packages/octez.js-beacon-wallet)         | TZIP-10 implementation of a Wallet API                                                                |
+| [@octez.js/dapp-wallet](packages/octez.js-dapp-wallet)             | TZIP-10 implementation of a Wallet API                                                                |
 | [@octez.js/http-utils](packages/octez.js-http-utils)               | Configure and customize HTTP requests                                                                 |
 | [@octez.js/core](packages/octez.js-core)                           | Provides parent/core types, classes, and interfaces for octez.js packages or external uses             |
 | [@octez.js/sapling](packages/octez.js-sapling)                     | Functions to prepare and read sapling transactions                                                   |

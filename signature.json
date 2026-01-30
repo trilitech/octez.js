@@ -449,15 +449,15 @@
             "sha512": "724e24749b68c0b5212ad88e6468bfdb7ae3f2df5cd7e2daa71229443c6d5229d2765dca3356339c6db15e7bd5987790a3151b4f9b6f545b43ff2c91f98f94e3"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/dist/octez.js-beacon-wallet.es5.js",
+            "path": "packages/octez.js-dapp-wallet/dist/octez.js-dapp-wallet.es5.js",
             "sha512": "cc71205eedfdb568832e702c421c61447cc2697ab736eea1291bec550421fe5b9157993830cdc77ee29cc24bbca442bc9f2a66a9efccdc5aa6ebba14c1f343c8"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/dist/lib/octez.js-beacon-wallet.js",
+            "path": "packages/octez.js-dapp-wallet/dist/lib/octez.js-dapp-wallet.js",
             "sha512": "55f0381f01332df18b58c8a8f6c3e9a42d3417b6c369393cea712a23c7c3f2b430d51313270c78b628d22cbcd737e0cbda5f949896949b876fbcad908d82a240"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/dist/octez.js-beacon-wallet.umd.js",
+            "path": "packages/octez.js-dapp-wallet/dist/octez.js-dapp-wallet.umd.js",
             "sha512": "2c5198d6efcd320c92ccd8802f816f1c4e8aa54b61b27b83a624bc0abc63462b810b84a069065a044b933502eeec68ee6e103b9b52f6f5af6817e9de467d5707"
           },
           {
@@ -689,7 +689,7 @@
             "sha512": "0c204334d136fe270ad9ab43216658841edd85d9fc980f957217d7f744884a92c8617535b9fd938eb2ad6b4ba26f47300e5a1bbfec4542f49e9ca74ce8ea3e2f"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/package.json",
+            "path": "packages/octez.js-dapp-wallet/package.json",
             "sha512": "25fae90ee760f52a858382400bc2848931ad0c9417d28836d8d7df7d60de0013c508181bd617b9e9ddbd7f41b1c35e1328187c5cb238a1792e2f1606f07cd7bf"
           },
           {
@@ -741,7 +741,7 @@
             "sha512": "a5c819d130b6150070d7790d68e02b75163026317014804bab00c115cd1091266bbddbdee6adcb96598bb9a6e1369aedcc51f84ea6542e58a6ea968bbf518e46"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/signature.json",
+            "path": "packages/octez.js-dapp-wallet/signature.json",
             "sha512": "c55668ca7dbd0c76d43fb896cd0e0a7be5650128e37ce543be6636e1d19efa622b095ffc929bf72a250c5df50370746edc7a81be36a23c87e96cfd6cb293658a"
           },
           {
@@ -1205,15 +1205,15 @@
             "sha512": "9d859dbbd7961f8ac178db51bd8d982e0900a9c0cb85378c65a519d17725451cf80f5fcea1fcfbfde220685fa2db5c031d7bcc75dc050691d35c272d6e6a7bbe"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/dist/octez.js-beacon-wallet.es5.js.map",
+            "path": "packages/octez.js-dapp-wallet/dist/octez.js-dapp-wallet.es5.js.map",
             "sha512": "9717bcc63b3c1541b2c8d73e4b6b272ccd35ad94ebd7a5e8ea096bf9994581aa5a1fc8134d8afedb0d7820bbbe7105a635939c3a301e7c39f2894996d9f3961a"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/dist/lib/octez.js-beacon-wallet.js.map",
+            "path": "packages/octez.js-dapp-wallet/dist/lib/octez.js-dapp-wallet.js.map",
             "sha512": "13c61ed3ca05ba74a9dd7ea5093f5eb20614303f01b87ff57289998c9a23ceb5b171faac17f2532b51b911578327e37bcf100daa55f107ce9b3b8928a0952f78"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/dist/octez.js-beacon-wallet.umd.js.map",
+            "path": "packages/octez.js-dapp-wallet/dist/octez.js-dapp-wallet.umd.js.map",
             "sha512": "9b7a26eba6c8176a5fc412ed06931aa2eb020e0e75501111f794340d62bfeb9856d8c8692986a57c6faedc633ba549762def5ace7ae64c99fbb05fdb4337561f"
           },
           {
@@ -2253,7 +2253,7 @@
             "sha512": "e2a8021de439e9771a14532b03ac8c6abfa05b8c5445e804f4d613952ef8087ba394da58b13ebc5d81a893f12c36198f6397658374d1407cd593addc632035ca"
           },
           {
-            "path": "packages/octez.js-beacon-wallet/dist/types/octez.js-beacon-wallet.d.ts",
+            "path": "packages/octez.js-dapp-wallet/dist/types/octez.js-dapp-wallet.d.ts",
             "sha512": "9b4a5e143538bb929b421d9b8af183b6f057a9c2f2f36117f08672bacba79d55a7e5f243a2de16bb44be055a1238f9ddc02b0f3dae586cf0478755a454bbb3b7"
           },
           {

@@ -24,8 +24,8 @@
       "@tezos-x/octez.js-core": [
         "octez.js-core/src/octez.js-core.ts"
       ],
-      "@tezos-x/octez.js-beacon-wallet": [
-        "octez.js-beacon-wallet/src/octez.js-beacon-wallet.ts"
+      "@tezos-x/octez.js-dapp-wallet": [
+        "octez.js-dapp-wallet/src/octez.js-dapp-wallet.ts"
       ],
       "@tezos-x/octez.js-contracts-library": [
         "octez.js-contracts-library/src/octez.js-contracts-library.ts"

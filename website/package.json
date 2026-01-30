@@ -19,7 +19,7 @@
     "@cloudflare/workers-types": "^4.20251205.0",
     "@ledgerhq/hw-transport-webhid": "^6.30.10",
     "@lucide/astro": "^0.562.0",
-    "@tezos-x/octez.js-beacon-wallet": "*",
+    "@tezos-x/octez.js-dapp-wallet": "*",
     "@tezos-x/octez.js-ledger-signer": "*",
     "@tezos-x/octez.js-michel-codec": "*",
     "@tezos-x/octez.js-signer": "*",

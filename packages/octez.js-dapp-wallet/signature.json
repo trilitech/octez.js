@@ -5,31 +5,31 @@
       "value": {
         "files": [
           {
-            "path": "dist/octez.js-beacon-wallet.es5.js",
+            "path": "dist/octez.js-dapp-wallet.es5.js",
             "sha512": "658a1ea5cec9a5a9ff0b67d8cdc4faf66af004c2e294522ba780d88f22dd7c245b5f63cd6866752203fb9408dd7948b73a9b2e979b8c6119507821e178a72ae2"
           },
           {
-            "path": "dist/lib/octez.js-beacon-wallet.js",
+            "path": "dist/lib/octez.js-dapp-wallet.js",
             "sha512": "0a161618b9beb820232a5446162ffaa02f7bf3ea74b4d3f8a5aaa08b780c8265aa50bd362d82a97db773c466e55c8254ac2655741ec8e76772cf5cb5b3fb75e2"
           },
           {
-            "path": "dist/octez.js-beacon-wallet.umd.js",
+            "path": "dist/octez.js-dapp-wallet.umd.js",
             "sha512": "a725f6e9c038a73ea2e0961c66defa964a05d3ac036aa75b0c583263b50063e75fa85d1adeb47f5c04eca604e38ef66ace3241374e9860e1d7e1e951b3764c59"
           },
           {
-            "path": "dist/octez.js-beacon-wallet.es5.js.map",
+            "path": "dist/octez.js-dapp-wallet.es5.js.map",
             "sha512": "fe50738a39b96d628188c1cb4994506aab5740b2e713a8a5574c5c10f6961500855c82ffca66c484ba15c45a6c6c8f7302c95e3db23c1b2fdd6bd602a9d74c0a"
           },
           {
-            "path": "dist/lib/octez.js-beacon-wallet.js.map",
+            "path": "dist/lib/octez.js-dapp-wallet.js.map",
             "sha512": "9c4e154190c12e1586501d6f83cf68fa115a9f723213c7d37b8f6337d1a2583daf55dff5c1003949f5af889f98c9c4e0190866f12d9d5200865f3ed094da1961"
           },
           {
-            "path": "dist/octez.js-beacon-wallet.umd.js.map",
+            "path": "dist/octez.js-dapp-wallet.umd.js.map",
             "sha512": "c431f7badafa5d0ac145a51d04cb8d12460fd27a7a4676b08a9a1278933cc4d82e664b6bdebfe1cf87c0e081f3cf27123fcfd1277effdade1da4e6d43f90c6dd"
           },
           {
-            "path": "dist/types/octez.js-beacon-wallet.d.ts",
+            "path": "dist/types/octez.js-dapp-wallet.d.ts",
             "sha512": "72f96db06619b57573d9323b808f1d89baa70310485ed33b197c0b241b31e8790d88db91e9a35d016e34f0f5f082c7544e899f76a4a95565affd45915b7ac718"
           }
         ]
@@ -74,7 +74,7 @@
       "entry": "packageJson/v1alpha2",
       "value": {
         "packageJson": {
-          "name": "@tezos-x/octez.js-beacon-wallet",
+          "name": "@tezos-x/octez.js-dapp-wallet",
           "version": "8.0.4-beta.0",
           "description": "Beacon wallet provider",
           "keywords": [
@@ -82,9 +82,9 @@
             "blockchain",
             "websocket"
           ],
-          "main": "dist/octez.js-beacon-wallet.umd.js",
-          "module": "dist/octez.js-beacon-wallet.es5.js",
-          "typings": "dist/types/octez.js-beacon-wallet.d.ts",
+          "main": "dist/octez.js-dapp-wallet.umd.js",
+          "module": "dist/octez.js-dapp-wallet.es5.js",
+          "typings": "dist/types/octez.js-dapp-wallet.d.ts",
           "files": [
             "signature.json",
             "dist"

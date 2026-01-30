@@ -58,11 +58,11 @@ await Tezos.contract.transfer({ to: publicKeyHash, amount: 2 });
 
 **Configure a wallet to use the Wallet API**
 
-Sending operations using the Wallet API requires a wallet to be configured. The wallet API supports different kinds of wallets. For example, the `BeaconWallet` from the `@tezos-x/octez.js-beacon-wallet` (powered by [octez.connect](https://www.npmjs.com/package/@tezos-x/octez.connect)) can be used. Use the `setWalletProvider` method of the `TezosToolkit` to set the wallet:
+Sending operations using the Wallet API requires a wallet to be configured. The wallet API supports different kinds of wallets. For example, the `BeaconWallet` from the `@tezos-x/octez.js-dapp-wallet` (powered by [octez.connect](https://www.npmjs.com/package/@tezos-x/octez.connect)) can be used. Use the `setWalletProvider` method of the `TezosToolkit` to set the wallet:
 
 ```ts
 import { TezosToolkit } from '@tezos-x/octez.js';
-import { BeaconWallet } from '@tezos-x/octez.js-beacon-wallet';
+import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 const wallet = new BeaconWallet(options);
