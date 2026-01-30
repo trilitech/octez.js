@@ -57,9 +57,25 @@ jobs:
       - name: Publish to npm
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
+          # Token management - switch tokens on rate limit
+          CURRENT_TOKEN="$NPM_TOKEN_1"
+          USE_TOKEN_2=false
+
+          switch_token() {
+            if [ "$USE_TOKEN_2" = false ] && [ -n "$NPM_TOKEN_2" ]; then
+              echo "Switching to backup token..."
+              CURRENT_TOKEN="$NPM_TOKEN_2"
+              USE_TOKEN_2=true
+              # Update npm config with new token
+              npm config set //registry.npmjs.org/:_authToken "$CURRENT_TOKEN"
+              return 0
+            fi
+            return 1
+          }
+
           publish_with_retry() {
             local pkg="$1"
-            local max_retries=5
+            local max_retries=3
             local retry=0
             local wait=10
 
@@ -68,20 +84,33 @@ jobs:
 
               if echo "$output" | grep -q "E429\|429 Too Many Requests\|rate limit"; then
                 retry=$((retry + 1))
-                echo "Rate limited, waiting ${wait}s before retry $retry/$max_retries..."
+                echo "Rate limited with current token, retry $retry/$max_retries..."
+
+                # Try switching token after first rate limit
+                if [ $retry -eq 1 ]; then
+                  if switch_token; then
+                    echo "Retrying with backup token..."
+                    continue
+                  fi
+                fi
+
+                echo "Waiting ${wait}s..."
                 sleep $wait
-                wait=$((wait * 2))  # Exponential backoff
+                wait=$((wait * 2))
               elif echo "$output" | grep -q "E403\|previously published"; then
                 echo "Already published, skipping"
                 return 0
               else
                 echo "$output"
-                return 0  # Other errors, continue to next package
+                return 0
               fi
             done
             echo "Failed after $max_retries retries"
             return 1
           }
+
+          # Initialize with first token
+          npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN_1"
 
           for pkg in packages/*/; do
             if [ -f "$pkg/package.json" ]; then
@@ -92,4 +121,5 @@ jobs:
             fi
           done
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+          NPM_TOKEN_1: ${{ secrets.NPM_ACCESS_TOKEN }}
+          NPM_TOKEN_2: ${{ secrets.NPM_ACCESS_TOKEN_2 }}
