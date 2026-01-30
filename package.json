@@ -43,7 +43,7 @@
     "moduleNameMapper": {
       "^@tezos-x/octez.js-core$": "<rootDir>/packages/octez.js-core/src/octez.js-core.ts",
       "^pack-test-tool$": "<rootDir>/packages/octez.js-michel-codec/pack-test-tool/src/pack-test-tool.js",
-      "^@tezos-x/octez.js-beacon-wallet$": "<rootDir>/packages/octez.js-beacon-wallet/src/octez.js-beacon-wallet.ts",
+      "^@tezos-x/octez.js-dapp-wallet$": "<rootDir>/packages/octez.js-dapp-wallet/src/octez.js-dapp-wallet.ts",
       "^@tezos-x/octez.js-contracts-library$": "<rootDir>/packages/octez.js-contracts-library/src/contracts-library.ts",
       "^@tezos-x/octez.js-http-utils$": "<rootDir>/packages/octez.js-http-utils/src/octez.js-http-utils.ts",
       "^@tezos-x/octez.js-ledger-signer$": "<rootDir>/packages/octez.js-ledger-signer/src/octez.js-ledger-signer.ts",

@@ -3,7 +3,7 @@ module.exports = {
   readme: 'packages/octez.js/README.md',
   entryPoints: [
     './packages/octez.js/src/octez.js.ts',
-    './packages/octez.js-beacon-wallet/src/octez.js-beacon-wallet.ts',
+    './packages/octez.js-dapp-wallet/src/octez.js-dapp-wallet.ts',
     './packages/octez.js-core/src/octez.js-core.ts',
     './packages/octez.js-http-utils/src/octez.js-http-utils.ts',
     './packages/octez.js-ledger-signer/src/octez.js-ledger-signer.ts',

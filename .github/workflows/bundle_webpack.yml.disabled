@@ -29,10 +29,10 @@ jobs:
             packages/octez.js-local-forging/dist/octez_js_local_forging.js
             packages/octez.js-local-forging/dist/octez_js_local_forging.js.map
 
-      - run: npm -w packages/octez.js-beacon-wallet run build-webpack
+      - run: npm -w packages/octez.js-dapp-wallet run build-webpack
       - uses: actions/upload-artifact@v4
         with:
-          name: octez.js-beacon-wallet-vanilla
+          name: octez.js-dapp-wallet-vanilla
           path: |
-            packages/octez.js-beacon-wallet/dist/octez_js_beacon_wallet.js
-            packages/octez.js-beacon-wallet/dist/octez_js_beacon_wallet.js.map
+            packages/octez.js-dapp-wallet/dist/octez_js_beacon_wallet.js
+            packages/octez.js-dapp-wallet/dist/octez_js_beacon_wallet.js.map

@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    "octez_js_beacon_wallet": ['./src/octez.js-beacon-wallet.ts']
+    "octez_js_dapp_wallet": ['./src/octez.js-dapp-wallet.ts']
   },
   mode: 'production',
   module: {

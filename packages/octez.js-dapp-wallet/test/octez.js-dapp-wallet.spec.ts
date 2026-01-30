@@ -2,7 +2,7 @@ import {
   BeaconWallet,
   BeaconWalletNotInitialized,
   MissingRequiredScopes,
-} from '../src/octez.js-beacon-wallet';
+} from '../src/octez.js-dapp-wallet';
 import LocalStorageMock from './mock-local-storage';
 import { PermissionScope, LocalStorage, SigningType } from '@tezos-x/octez.connect-dapp';
 import { indexedDB } from 'fake-indexeddb';

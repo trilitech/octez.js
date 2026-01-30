@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @module @tezos-x/octez.js-beacon-wallet
+ * @module @tezos-x/octez.js-dapp-wallet
  */
 
 import {

@@ -1,15 +1,15 @@
 {
-  "name": "@tezos-x/octez.js-beacon-wallet",
+  "name": "@tezos-x/octez.js-dapp-wallet",
   "version": "0.9.0",
-  "description": "Beacon wallet provider",
+  "description": "dApp wallet provider for octez.js",
   "keywords": [
     "tezos",
     "blockchain",
     "websocket"
   ],
-  "main": "dist/octez.js-beacon-wallet.umd.js",
-  "module": "dist/octez.js-beacon-wallet.es6.js",
-  "typings": "dist/types/octez.js-beacon-wallet.d.ts",
+  "main": "dist/octez.js-dapp-wallet.umd.js",
+  "module": "dist/octez.js-dapp-wallet.es6.js",
+  "typings": "dist/types/octez.js-dapp-wallet.d.ts",
   "files": [
     "signature.json",
     "dist"
