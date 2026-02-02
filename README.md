@@ -58,31 +58,31 @@ We are active and enthusiastic participants of the following community channels:
 
 ## Project Organization
 
-octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of several npm packages that are [published to npmjs.org](https://www.npmjs.com/package/@octez.js/octez.js) under the `@octez.js` scope. Each package has its own README, found in its respective directory within `packages/`.
+octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of several npm packages that are [published to npmjs.org](https://www.npmjs.com/package/@tezos-x/octez.js) under the `@octez.js` scope. Each package has its own README, found in its respective directory within `packages/`.
 
 | High-Level Packages                                | Responsibility                                                                                          |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| [@octez.js/octez.js](packages/octez.js)               | A [Facade](https://en.wikipedia.org/wiki/Facade_pattern) to lower-level, package-specific functionality |
+| [@tezos-x/octez.js](packages/octez.js)               | A [Facade](https://en.wikipedia.org/wiki/Facade_pattern) to lower-level, package-specific functionality |
 
 | Low-Level Packages                                               | Responsibility                                                                                        |
 | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [@octez.js/local-forging](packages/octez.js-local-forging)         | Local serialization (“forging”) of Tezos operations as bytes                                          |
-| [@octez.js/michelson-encoder](packages/octez.js-michelson-encoder) | Creates JS abstractions of Smart Contracts                                                            |
-| [@octez.js/michel-codec](packages/octez.js-michel-codec)           | Converts Michelson between forms, expands macros, etc                                                 |
-| [@octez.js/remote-signer](packages/octez.js-remote-signer)         | Provides the facility to use a remote signer, such as https://signatory.io                            |
-| [@octez.js/rpc](packages/octez.js-rpc)                             | RPC client library, with a method for each RPC endpoint                                               |
-| [@octez.js/signer](packages/octez.js-signer)                       | Provides functionality to sign data using Tezos keys                                                  |
-| [@octez.js/utils](packages/octez.js-utils)                         | Encoding/decoding utilities                                                                           |
-| [@octez.js/tzip12](packages/octez.js-tzip12)                       | TZIP-12 support (retrieving NFT/token metadata)                                                       |
-| [@octez.js/tzip16](packages/octez.js-tzip16)                       | TZIP-16 support (retrieving contract metadata and executing off-chain views)                          |
-| [@octez.js/dapp-wallet](packages/octez.js-dapp-wallet)             | TZIP-10 implementation of a Wallet API                                                                |
-| [@octez.js/http-utils](packages/octez.js-http-utils)               | Configure and customize HTTP requests                                                                 |
-| [@octez.js/core](packages/octez.js-core)                           | Provides parent/core types, classes, and interfaces for octez.js packages or external uses             |
-| [@octez.js/sapling](packages/octez.js-sapling)                     | Functions to prepare and read sapling transactions                                                   |
-| [@octez.js/contracts-library](packages/octez.js-contracts-library) | Provides functionality to specify static data related to contracts                                    |
-| [@octez.js/ledger-signer](packages/octez.js-ledger-signer)         | Provides functionality for a Ledger signer provider                                                   |
-| [@octez.js/timelock](packages/octez.js-timelock)                   | Functions to create and open timelocks                                                                |
-| [@octez.js/wallet-connect](packages/octez.js-wallet-connect)       | Enables WalletConnect integration with the TezosToolkit’s wallet API                                  |
+| [@tezos-x/octez.js-local-forging](packages/octez.js-local-forging)         | Local serialization (“forging”) of Tezos operations as bytes                                          |
+| [@tezos-x/octez.js-michelson-encoder](packages/octez.js-michelson-encoder) | Creates JS abstractions of Smart Contracts                                                            |
+| [@tezos-x/octez.js-michel-codec](packages/octez.js-michel-codec)           | Converts Michelson between forms, expands macros, etc                                                 |
+| [@tezos-x/octez.js-remote-signer](packages/octez.js-remote-signer)         | Provides the facility to use a remote signer, such as https://signatory.io                            |
+| [@tezos-x/octez.js-rpc](packages/octez.js-rpc)                             | RPC client library, with a method for each RPC endpoint                                               |
+| [@tezos-x/octez.js-signer](packages/octez.js-signer)                       | Provides functionality to sign data using Tezos keys                                                  |
+| [@tezos-x/octez.js-utils](packages/octez.js-utils)                         | Encoding/decoding utilities                                                                           |
+| [@tezos-x/octez.js-tzip12](packages/octez.js-tzip12)                       | TZIP-12 support (retrieving NFT/token metadata)                                                       |
+| [@tezos-x/octez.js-tzip16](packages/octez.js-tzip16)                       | TZIP-16 support (retrieving contract metadata and executing off-chain views)                          |
+| [@tezos-x/octez.js-dapp-wallet](packages/octez.js-dapp-wallet)             | TZIP-10 implementation of a Wallet API                                                                |
+| [@tezos-x/octez.js-http-utils](packages/octez.js-http-utils)               | Configure and customize HTTP requests                                                                 |
+| [@tezos-x/octez.js-core](packages/octez.js-core)                           | Provides parent/core types, classes, and interfaces for octez.js packages or external uses             |
+| [@tezos-x/octez.js-sapling](packages/octez.js-sapling)                     | Functions to prepare and read sapling transactions                                                   |
+| [@tezos-x/octez.js-contracts-library](packages/octez.js-contracts-library) | Provides functionality to specify static data related to contracts                                    |
+| [@tezos-x/octez.js-ledger-signer](packages/octez.js-ledger-signer)         | Provides functionality for a Ledger signer provider                                                   |
+| [@tezos-x/octez.js-timelock](packages/octez.js-timelock)                   | Functions to create and open timelocks                                                                |
+| [@tezos-x/octez.js-wallet-connect](packages/octez.js-wallet-connect)       | Enables WalletConnect integration with the TezosToolkit’s wallet API                                  |
 
 ## API Documentation
 
@@ -179,7 +179,7 @@ Use `npm run commit` for your final commit to automatically format it according 
 The [octez.js website][4] is built with [Docusaurus][5]. To run it locally:
 
 1. `npm clean-install`
-2. `npm -w @octez.js/website start`
+2. `npm -w @tezos-x/octez.js-website start`
 
 ## Contributions / Reporting Issues
 
