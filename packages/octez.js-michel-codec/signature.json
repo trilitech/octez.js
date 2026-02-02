@@ -240,6 +240,9 @@
             "access": "public"
           },
           "author": "Eugene Zagidullin <eugene@ecadlabs.com>",
+          "maintainers": [
+            "Nomadic Labs <contact@nomadic-labs.com>"
+          ],
           "repository": {
             "type": "git",
             "url": "git+https://github.com/ecadlabs/octez.js.git"

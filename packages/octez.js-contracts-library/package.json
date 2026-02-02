@@ -13,6 +13,9 @@
     "dist"
   ],
   "author": "Roxane Letourneau <roxane@ecadlabs.com>",
+  "maintainers": [
+    "Nomadic Labs <contact@nomadic-labs.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trilitech/octez.js.git"

@@ -93,6 +93,9 @@
             "access": "public"
           },
           "author": "Simon Boissonneault-Robert <simon@ecadlabs.com>",
+          "maintainers": [
+            "Nomadic Labs <contact@nomadic-labs.com>"
+          ],
           "repository": {
             "type": "git",
             "url": ""
