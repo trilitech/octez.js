@@ -1,5 +1,8 @@
 {
   "name": "@tezos-x/octez.js-remote-signer",
+  "maintainers": [
+    "Nomadic Labs <contact@nomadic-labs.com>"
+  ],
   "version": "24.3.0",
   "description": "Remote signer client for octez.js, designed to work with services such as Signatory.",
   "keywords": [
@@ -21,7 +24,7 @@
   },
   "author": "ECAD Labs Inc <info@ecadlabs.com>",
   "contributors": [
-    "Jev Björsell (jevonearth)",
+    "Jev Bj\u00f6rsell (jevonearth)",
     "Davis Sawali <davis.sawali@ecadlabs.com>",
     "Roxane Letourneau <roxane@ecadlabs.com>",
     "Simon Boissonneault-Robert <simon@ecadlabs.com>"

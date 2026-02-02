@@ -6,6 +6,9 @@
   "private": true,
   "scripts": {},
   "author": "Eugene Zagidullin <eugene@ecadlabs.com>",
+  "maintainers": [
+    "Nomadic Labs <contact@nomadic-labs.com>"
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "@tezos-x/octez.js-rpc": "^24.3.0",

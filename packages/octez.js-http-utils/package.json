@@ -1,5 +1,8 @@
 {
   "name": "@tezos-x/octez.js-http-utils",
+  "maintainers": [
+    "Nomadic Labs <contact@nomadic-labs.com>"
+  ],
   "version": "24.3.0",
   "description": "HTTP transport utilities for octez.js RPC clients with retry, timeout, and error classification.",
   "keywords": [
@@ -20,7 +23,7 @@
   ],
   "author": "ECAD Labs Inc <info@ecadlabs.com>",
   "contributors": [
-    "Jev Björsell (jevonearth)",
+    "Jev Bj\u00f6rsell (jevonearth)",
     "Davis Sawali <davis.sawali@ecadlabs.com>",
     "Roxane Letourneau <roxane@ecadlabs.com>",
     "Simon Boissonneault-Robert <simon@ecadlabs.com>"
