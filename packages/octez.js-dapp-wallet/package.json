@@ -1,6 +1,6 @@
 {
   "name": "@tezos-x/octez.js-dapp-wallet",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "dApp wallet provider for octez.js",
   "keywords": [
     "tezos",
