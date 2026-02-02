@@ -4,7 +4,7 @@
 [![Node.js CI](https://github.com/trilitech/octez.js/workflows/Node.js%20CI/badge.svg)](https://github.com/trilitech/octez.js/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/trilitech/octez.js/branch/main/graph/badge.svg)](https://codecov.io/gh/trilitech/octez.js)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3204/badge)](https://bestpractices.coreinfrastructure.org/projects/3204)
-[![npm version](https://badge.fury.io/js/%40taquito%2Ftaquito.svg)](https://badge.fury.io/js/%40taquito%2Ftaquito)
+[![npm version](https://badge.fury.io/js/%40tezos-x%2Foctez.js.svg)](https://badge.fury.io/js/%40tezos-x%2Foctez.js)
 
 Welcome, Web3 developer!
 
@@ -61,16 +61,17 @@ We are active and enthusiastic participants of the following community channels:
 
 ## Project Organization
 
-octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of npm packages published under the `@octez.js` scope. The package catalog below is generated from package metadata so the npm links and descriptions stay in sync with the codebase. To refresh it after package changes, run `npm run sync:package-catalog`.
+octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of npm packages published under the `@tezos-x` scope. The package catalog below is generated from package metadata so the npm links and descriptions stay in sync with the codebase. To refresh it after package changes, run `npm run sync:package-catalog`.
 
 <!-- package-catalog:start -->
 ### Workspace Packages
 
 | Package | npm | Source | Description |
 | --- | --- | --- | --- |
-| `@tezos-x/octez.js-beacon-wallet` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-beacon-wallet) | [source](./packages/octez.js-beacon-wallet) | TZIP-10 Beacon wallet integration for octez.js dapps built on the Beacon SDK DAppClient. |
+| `@tezos-x/octez.js` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js) | [source](./packages/octez.js) | TypeScript SDK for building wallets, dapps, and tooling on Tezos. |
 | `@tezos-x/octez.js-contracts-library` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-contracts-library) | [source](./packages/octez.js-contracts-library) | Static Michelson scripts and entrypoints library for octez.js contract interactions. |
 | `@tezos-x/octez.js-core` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-core) | [source](./packages/octez.js-core) | Shared types, interfaces, and primitives for octez.js packages. |
+| `@tezos-x/octez.js-dapp-wallet` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-dapp-wallet) | [source](./packages/octez.js-dapp-wallet) | TZIP-10 Beacon wallet integration for octez.js dapps built on the Beacon SDK DAppClient. |
 | `@tezos-x/octez.js-http-utils` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-http-utils) | [source](./packages/octez.js-http-utils) | HTTP transport utilities for octez.js RPC clients with retry, timeout, and error classification. |
 | `@tezos-x/octez.js-ledger-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-ledger-signer) | [source](./packages/octez.js-ledger-signer) | Ledger hardware wallet signer integration for octez.js. |
 | `@tezos-x/octez.js-local-forging` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-local-forging) | [source](./packages/octez.js-local-forging) | Local Tezos operation forging for octez.js. |
@@ -80,7 +81,6 @@ octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of np
 | `@tezos-x/octez.js-rpc` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-rpc) | [source](./packages/octez.js-rpc) | TypeScript client and types for the Tezos RPC used by octez.js. |
 | `@tezos-x/octez.js-sapling` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling) | [source](./packages/octez.js-sapling) | Sapling transaction building and viewing support for octez.js. |
 | `@tezos-x/octez.js-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-signer) | [source](./packages/octez.js-signer) | Software signer implementations and signing utilities for octez.js. |
-| `@tezos-x/octez.js` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js) | [source](./packages/octez.js) | TypeScript SDK for building wallets, dapps, and tooling on Tezos. |
 | `@tezos-x/octez.js-timelock` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-timelock) | [source](./packages/octez.js-timelock) | Timelock cryptography support for octez.js and Tezos applications. |
 | `@tezos-x/octez.js-tzip12` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip12) | [source](./packages/octez.js-tzip12) | TZIP-12 token metadata support for octez.js. |
 | `@tezos-x/octez.js-tzip16` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip16) | [source](./packages/octez.js-tzip16) | TZIP-16 contract metadata support for octez.js. |
@@ -91,7 +91,7 @@ octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of np
 
 | Package | npm | Source | Description | Notes |
 | --- | --- | --- | --- | --- |
-| `@tezos-x/octez.js-sapling-wasm` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling-wasm) | [source](https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm) | Sapling Wasm bindings for octez.js and compatible consumers. | Official octez.js package, published from the separate `ecadlabs/sapling-wasm` repository. |
+| `@taquito/sapling-wasm` | [npm](https://www.npmjs.com/package/@taquito/sapling-wasm) | [source](https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm) | Sapling Wasm bindings for octez.js and compatible consumers. | Official octez.js package, published from the separate `ecadlabs/sapling-wasm` repository. |
 <!-- package-catalog:end -->
 
 ## API Documentation
@@ -217,9 +217,9 @@ The octez.js source code (all directories and files in this repository **except*
 
 ### Website & Documentation — Proprietary
 
-The contents of the [`website/`](website/) directory — including all documentation, written content, tutorials, guides, images, graphics, logos, design assets, and website source code — are the **exclusive property of ECAD Labs Inc.** and are **NOT** licensed under Apache 2.0 or any other open-source license. All rights are reserved. See [`website/LICENSE`](website/LICENSE) for details.
+The contents of the [`website/`](website/) directory — including all documentation, written content, tutorials, guides, images, graphics, logos, design assets, and website source code — are the **exclusive property of Nomadic Labs** and are **NOT** licensed under Apache 2.0 or any other open-source license. All rights are reserved. See [`website/LICENSE`](website/LICENSE) for details.
 
-For permissions or licensing inquiries regarding the website and documentation, please contact [info@ecadlabs.com](mailto:info@ecadlabs.com).
+For permissions or licensing inquiries regarding the website and documentation, please contact [contact@nomadic-labs.com](mailto:contact@nomadic-labs.com).
 
 ---
 

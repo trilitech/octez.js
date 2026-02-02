@@ -6,7 +6,7 @@ This directory contains the source code and content for the [octez.js website](h
 
 **This directory is NOT covered by the Apache License, Version 2.0.**
 
-All content in this directory and its subdirectories — including documentation, written content, tutorials, guides, images, graphics, logos, design assets, and website source code — is the exclusive property of **ECAD Labs Inc.** All rights reserved.
+All content in this directory and its subdirectories — including documentation, written content, tutorials, guides, images, graphics, logos, design assets, and website source code — is the exclusive property of **Nomadic Labs**. All rights reserved.
 
 See [LICENSE](LICENSE) in this directory for the full proprietary license terms.
 
@@ -21,4 +21,4 @@ npm -w @tezos-x/octez.js-website dev
 
 ## Contact
 
-For permissions or licensing inquiries, contact [info@ecadlabs.com](mailto:info@ecadlabs.com).
+For permissions or licensing inquiries, contact [contact@nomadic-labs.com](mailto:contact@nomadic-labs.com).

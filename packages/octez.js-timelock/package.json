@@ -1,5 +1,8 @@
 {
   "name": "@tezos-x/octez.js-timelock",
+  "maintainers": [
+    "Nomadic Labs <contact@nomadic-labs.com>"
+  ],
   "version": "24.3.0",
   "description": "Timelock cryptography support for octez.js and Tezos applications.",
   "keywords": [
@@ -23,7 +26,7 @@
     "Eugene Zagidullin <eugene@ecadlabs.com>",
     "hui-an.yang <hui-an.yang@ecadlabs.com>",
     "Davis Sawali <davis.sawali@ecadlabs.com>",
-    "Jev Björsell (jevonearth)"
+    "Jev Bj\u00f6rsell (jevonearth)"
   ],
   "homepage": "https://octez.js.io/",
   "repository": {
