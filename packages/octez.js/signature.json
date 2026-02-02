@@ -762,10 +762,10 @@
           "author": "Simon Boissonneault-Robert <simon@ecadlabs.com>",
           "repository": {
             "type": "git",
-            "url": "git+https://github.com/ecadlabs/octez.js.git"
+            "url": "git+https://github.com/trilitech/octez.js.git"
           },
           "bugs": {
-            "url": "https://github.com/ecadlabs/octez.js/issues"
+            "url": "https://github.com/trilitech/octez.js/issues"
           },
           "license": "MIT",
           "engines": {
