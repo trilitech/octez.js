@@ -3813,10 +3813,10 @@ describe('RpcClient test', () => {
       const url = 'https://mainnet.tezos.ecadinfra.com/';
       const rpcUrlMainnet = new RpcClient(url).getRpcUrl();
       expect(rpcUrlMainnet).toEqual('https://mainnet.tezos.ecadinfra.com/');
-      const rpcUrlGhostnet = new RpcClient('https://ghostnet.tezos.ecadinfra.com').getRpcUrl();
-      expect(rpcUrlGhostnet).toEqual('https://ghostnet.tezos.ecadinfra.com');
-      const rpcUrlShadownet = new RpcClient('https://shadownet.tezos.ecadinfra.com').getRpcUrl();
-      expect(rpcUrlShadownet).toEqual('https://shadownet.tezos.ecadinfra.com');
+      const rpcUrlGhostnet = new RpcClient('https://rpc.ghostnet.teztnets.com').getRpcUrl();
+      expect(rpcUrlGhostnet).toEqual('https://rpc.ghostnet.teztnets.com');
+      const rpcUrlShadownet = new RpcClient('https://rpc.shadownet.teztnets.com').getRpcUrl();
+      expect(rpcUrlShadownet).toEqual('https://rpc.shadownet.teztnets.com');
     });
   });
 
