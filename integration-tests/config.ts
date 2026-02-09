@@ -3,7 +3,7 @@ import {
   RpcForger,
   TezosToolkit,
   Protocols,
-  TaquitoLocalForger,
+  OctezJsLocalForger,
   PollingSubscribeProvider,
   importKey,
 } from '@tezos-x/octez.js';
@@ -574,10 +574,10 @@ if (process.env['RUN_WITH_SECRET_KEY']) {
 
 const setupForger = (Tezos: TezosToolkit, forger: ForgerType): void => {
   if (forger === ForgerType.LOCAL) {
-    Tezos.setProvider({ forger: Tezos.getFactory(TaquitoLocalForger)() });
+    Tezos.setProvider({ forger: Tezos.getFactory(OctezJsLocalForger)() });
   } else if (forger === ForgerType.COMPOSITE) {
     const rpcForger = Tezos.getFactory(RpcForger)();
-    const localForger = Tezos.getFactory(TaquitoLocalForger)();
+    const localForger = Tezos.getFactory(OctezJsLocalForger)();
     const composite = new CompositeForger([rpcForger, localForger]);
     Tezos.setProvider({ forger: composite });
   } else if (forger === ForgerType.RPC) {

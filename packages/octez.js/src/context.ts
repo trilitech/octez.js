@@ -23,7 +23,7 @@ import { TzReadProvider } from './read-provider/interface';
 import { RpcReadAdapter } from './read-provider/rpc-read-adapter';
 import { SubscribeProvider } from './subscribe/interface';
 import { PollingSubscribeProvider } from './subscribe/polling-subcribe-provider';
-import { TaquitoLocalForger } from './forger/octez.js-local-forger';
+import { OctezJsLocalForger } from './forger/octez.js-local-forger';
 import { PrepareProvider } from './prepare/prepare-provider';
 
 export interface TaquitoProvider<T, K extends Array<any>> {
@@ -83,7 +83,7 @@ export class Context {
     } else {
       this._rpcClient = this._rpc;
     }
-    this._forger = forger ? forger : new TaquitoLocalForger(this);
+    this._forger = forger ? forger : new OctezJsLocalForger(this);
     this._injector = injector ? injector : new RpcInjector(this);
     this.operationFactory = new OperationFactory(this);
     this._walletProvider = wallet ? wallet : new LegacyWalletProvider(this);

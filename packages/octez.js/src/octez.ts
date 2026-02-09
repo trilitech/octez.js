@@ -25,7 +25,7 @@ import { TzProvider } from './tz/interface';
 import { VERSION } from './version';
 import { LegacyWalletProvider, Wallet, WalletProvider } from './wallet';
 import { OperationFactory } from './wallet/operation-factory';
-import { TaquitoLocalForger } from './forger/octez.js-local-forger';
+import { OctezJsLocalForger } from './forger/octez.js-local-forger';
 import { EstimationProvider } from './estimate/estimate-provider-interface';
 import { ParserProvider } from './parser/interface';
 import { MichelCodecParser } from './parser/michel-codec-parser';
@@ -71,7 +71,7 @@ export {
 } from './read-provider/interface';
 export { RpcReadAdapter } from './read-provider/rpc-read-adapter';
 export * from './estimate';
-export { TaquitoLocalForger } from './forger/octez.js-local-forger';
+export { OctezJsLocalForger } from './forger/octez.js-local-forger';
 export * from './prepare';
 export { importKey } from './import-key';
 
@@ -212,7 +212,7 @@ export class TezosToolkit {
       this._options.forger = forger;
       this._context.forger = forger;
     } else if (this._options.forger === undefined) {
-      const f = this.getFactory(TaquitoLocalForger)();
+      const f = this.getFactory(OctezJsLocalForger)();
       this._options.forger = f;
       this._context.forger = f;
     }
