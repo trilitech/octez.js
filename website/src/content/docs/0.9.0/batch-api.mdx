@@ -28,7 +28,7 @@ import { TezosToolkit } from '@tezos-x/octez.js';
 const Tezos = new TezosToolkit('RPC address here');
 const batch = Tezos.wallet.batch(); // or Tezos.contract.batch()
 
-// Add here the operations to be emitted together 
+// Add here the operations to be emitted together
 // (i.e, batch.withTransfer, batch.withOrigination, etc)
 
 const batchOp = await batch.send();
@@ -87,7 +87,7 @@ const batch = await Tezos.wallet.batch()
 
 #### - The `array of transactions` method
 
-If you prefer having an array that contains objects with the different transactions you want to emit, you can use the `with` method. It allows you to group transactions as objects instead of concatenating function calls. The object you use expects the same properties as the parameter of the corresponding method with an additional `kind` property that indicates the kind of transaction you want to emit (a handy `opKind` enum is [exported from the octez.js package](https://github.com/trilitech/octez.js/blob/master/packages/taquito-rpc/src/opkind.ts) with the valid values for the `kind` property).
+If you prefer having an array that contains objects with the different transactions you want to emit, you can use the `with` method. It allows you to group transactions as objects instead of concatenating function calls. The object you use expects the same properties as the parameter of the corresponding method with an additional `kind` property that indicates the kind of transaction you want to emit (a handy `opKind` enum is [exported from the octez.js package](https://github.com/trilitech/octez.js/blob/master/packages/octez.js-rpc/src/opkind.ts) with the valid values for the `kind` property).
 
 ```js
 import { OpKind, UnitValue } from '@tezos-x/octez.js';

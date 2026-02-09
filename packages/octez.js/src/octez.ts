@@ -449,7 +449,7 @@ export class TezosToolkit {
   }
 
   /**
-   * Gets an object containing the version of octez.js library and git sha of the commit this library is compiled from
+   * @description Gets an object containing the version of Octez.js library and git sha of the commit this library is compiled from
    */
   getVersionInfo(): VersionInfo {
     return VERSION;
