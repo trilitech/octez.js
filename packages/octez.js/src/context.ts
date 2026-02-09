@@ -26,7 +26,7 @@ import { PollingSubscribeProvider } from './subscribe/polling-subcribe-provider'
 import { OctezJsLocalForger } from './forger/octez.js-local-forger';
 import { PrepareProvider } from './prepare/prepare-provider';
 
-export interface TaquitoProvider<T, K extends Array<any>> {
+export interface OctezJsProvider<T, K extends Array<any>> {
   new (context: Context, ...rest: K): T;
 }
 
