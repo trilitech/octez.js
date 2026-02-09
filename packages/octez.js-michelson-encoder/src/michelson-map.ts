@@ -1,13 +1,13 @@
 import { MichelsonV1Expression } from '@tezos-x/octez.js-rpc';
 import { Schema } from './schema/storage';
 import stringify from 'fast-json-stable-stringify';
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
  *  Error that indicates an invalid map type being passed or used
  */
-export class InvalidMapTypeError extends TaquitoError {
+export class InvalidMapTypeError extends OctezJsError {
   constructor(public readonly mapType: any, public readonly reason: string) {
     super();
     this.message = `The map type '${JSON.stringify(mapType)}' is invalid. Reason: ${reason}.`;
@@ -50,7 +50,7 @@ function validateMapType(value: MichelsonV1Expression): asserts value is {
  *  @category Error
  *  Error that indicates a map type mismatch, where an attempt to set a key or value in a Map doesn't match the defined type of the Map
  */
-export class MapTypecheckError extends TaquitoError {
+export class MapTypecheckError extends OctezJsError {
   name = 'MapTypecheckError';
 
   constructor(

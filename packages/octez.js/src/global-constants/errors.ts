@@ -1,10 +1,10 @@
-import { TaquitoError, TezosToolkitConfigError } from '@tezos-x/octez.js-core';
+import { OctezJsError, TezosToolkitConfigError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
  *  Error that indicates that a global constant does not exist
  */
-export class GlobalConstantNotFound extends TaquitoError {
+export class GlobalConstantNotFound extends OctezJsError {
   constructor(public readonly hash: string) {
     super();
     this.name = 'GlobalConstantNotFound';

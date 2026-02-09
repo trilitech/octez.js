@@ -1,4 +1,4 @@
-import { ParameterValidationError, TaquitoError } from '@tezos-x/octez.js-core';
+import { ParameterValidationError, OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
@@ -39,7 +39,7 @@ export class InvalidMerkleTreeError extends ParameterValidationError {
  *  @category Error
  *  Error indicates a failure when trying to construct the Merkle tree
  */
-export class TreeConstructionFailure extends TaquitoError {
+export class TreeConstructionFailure extends OctezJsError {
   constructor(public readonly message: string) {
     super();
     this.name = 'TreeConstructionFailure';
@@ -62,7 +62,7 @@ export class InvalidMemo extends ParameterValidationError {
  *  @category Error
  *  Error indicates not enough balance to prepare the sapling transaction
  */
-export class InsufficientBalance extends TaquitoError {
+export class InsufficientBalance extends OctezJsError {
   constructor(public readonly realBalance: string, public readonly amountToSpend: string) {
     super();
     this.name = 'InsufficientBalance';
@@ -74,7 +74,7 @@ export class InsufficientBalance extends TaquitoError {
  *  @category Error
  *  Error indicates SaplingTransactionViewer failure
  */
-export class SaplingTransactionViewerError extends TaquitoError {
+export class SaplingTransactionViewerError extends OctezJsError {
   constructor(public readonly message: string) {
     super();
     this.name = 'SaplingTransactionViewerError';

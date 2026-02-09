@@ -7,7 +7,7 @@ import {
   MichelsonTypePair,
 } from './michelson-types';
 import { HexParseError, LongIntegerError, TezosIdEncodeError } from './errors';
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 
 export type Tuple<N extends number, T> = N extends 1
   ? [T]
@@ -40,7 +40,7 @@ export type Nullable<T> = { [P in keyof T]: T[P] | null };
  *  @category Error
  *  Error that indicates a Michelson failure occurring
  */
-export class MichelsonError<T extends Expr = Expr> extends TaquitoError {
+export class MichelsonError<T extends Expr = Expr> extends OctezJsError {
   /**
    * @param val Value of a AST node caused the error
    * @param message An error message

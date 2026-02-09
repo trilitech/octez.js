@@ -1,10 +1,10 @@
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
  *  Error that indicates a failure when performing the scan step when parsing Michelson
  */
-export class ScanError extends TaquitoError {
+export class ScanError extends OctezJsError {
   constructor(
     public readonly src: string,
     public readonly idx: number,

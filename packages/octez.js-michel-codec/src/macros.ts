@@ -1,4 +1,4 @@
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 import { Prim, Expr, IntLiteral } from './micheline';
 import { DefaultProtocol, Protocol, ProtocolOptions, ProtoInferiorTo } from './michelson-types';
 import { Tuple, NoArgs, ReqArgs, NoAnnots } from './utils';
@@ -7,7 +7,7 @@ import { Tuple, NoArgs, ReqArgs, NoAnnots } from './utils';
  *  @category Error
  *  Error that indicates macros failed to be expanded
  */
-export class MacroError extends TaquitoError {
+export class MacroError extends OctezJsError {
   constructor(public readonly prim: Prim, public readonly message: string) {
     super();
     this.name = 'MacroError';

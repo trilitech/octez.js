@@ -1,4 +1,4 @@
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 import { TicketTokenSchema } from '../schema/types';
 import { IntToken } from './comparable/int';
 import { ContractToken } from './contract';
@@ -8,7 +8,7 @@ import { Token, TokenFactory, Semantic, SemanticEncoding } from './token';
  *  @category Error
  *  Error that indicates a failure when encoding and sending a ticket to the blockchain
  */
-export class EncodeTicketError extends TaquitoError {
+export class EncodeTicketError extends OctezJsError {
   name = 'TicketEncodeError';
 
   constructor() {

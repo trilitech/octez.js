@@ -12,13 +12,13 @@ import {
 import { expandMacros } from './macros';
 import { ProtocolOptions } from './michelson-types';
 import { expandGlobalConstants } from './global-constants';
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
  *  Error that indicates a failure when parsing Micheline expressions
  */
-export class MichelineParseError extends TaquitoError {
+export class MichelineParseError extends OctezJsError {
   /**
    * @param token A token caused the error
    * @param message An error message
@@ -36,7 +36,7 @@ export class MichelineParseError extends TaquitoError {
  *  @category Error
  *  Error indicates a failure when parsing Micheline JSON
  */
-export class JSONParseError extends TaquitoError {
+export class JSONParseError extends OctezJsError {
   /**
    * @param node A node caused the error
    * @param message An error message

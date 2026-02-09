@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { InvalidViewParameterError, TaquitoError } from '@tezos-x/octez.js-core';
+import { InvalidViewParameterError, OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
@@ -27,7 +27,7 @@ export class ParameterEncodingError extends InvalidViewParameterError {
  *  @category Error
  *  Error that indicates an invalid on-chain view found on the script
  */
-export class InvalidScriptError extends TaquitoError {
+export class InvalidScriptError extends OctezJsError {
   name = 'InvalidScriptError';
   constructor(
     public readonly script: any,
@@ -47,7 +47,7 @@ export class InvalidScriptError extends TaquitoError {
  *  @category Error
  *  Error that indicates an invalid RPC response being passed or used
  */
-export class InvalidRpcResponseError extends TaquitoError {
+export class InvalidRpcResponseError extends OctezJsError {
   public name = 'InvalidRpcResponseError';
   constructor(
     public readonly script: any,
@@ -67,7 +67,7 @@ export class InvalidRpcResponseError extends TaquitoError {
  *  @category Error
  *  Error that indicates an invalid big map schema being passed or used
  */
-export class InvalidBigMapSchemaError extends TaquitoError {
+export class InvalidBigMapSchemaError extends OctezJsError {
   public name = 'InvalidBigMapSchemaError';
   constructor(public message: string) {
     super(message);
@@ -78,7 +78,7 @@ export class InvalidBigMapSchemaError extends TaquitoError {
  *  @category Error
  *  Error that indicates an invalid big map diff being passed or used
  */
-export class InvalidBigMapDiffError extends TaquitoError {
+export class InvalidBigMapDiffError extends OctezJsError {
   public name = 'InvalidBigMapDiffError';
   constructor(
     public message: string,
@@ -92,7 +92,7 @@ export class InvalidBigMapDiffError extends TaquitoError {
  *  @category Error
  *  Error that indicates a failure when trying to encode big maps
  */
-export class BigMapEncodingError extends TaquitoError {
+export class BigMapEncodingError extends OctezJsError {
   public name = 'BigMapEncodingError';
   constructor(
     obj: 'key' | 'value',
@@ -111,7 +111,7 @@ export class BigMapEncodingError extends TaquitoError {
  *  @category Error
  *  Error that indicates a failure when trying to encode storage
  */
-export class StorageEncodingError extends TaquitoError {
+export class StorageEncodingError extends OctezJsError {
   public name = 'StorageEncodingError';
   constructor(
     obj: string,
@@ -133,7 +133,7 @@ export class StorageEncodingError extends TaquitoError {
  *  @category Error
  *  General error that indicates a function not being passed a necessary argument
  */
-export class MissingArgumentError extends TaquitoError {
+export class MissingArgumentError extends OctezJsError {
   public name = 'MissingArgumentError';
   constructor(public message: string) {
     super(message);

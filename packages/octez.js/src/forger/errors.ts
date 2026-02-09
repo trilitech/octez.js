@@ -1,10 +1,10 @@
-import { TaquitoError, TezosToolkitConfigError } from '@tezos-x/octez.js-core';
+import { OctezJsError, TezosToolkitConfigError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
  *  Error that indicates CompositeForger.forge() results doesn't match each other
  */
-export class ForgingMismatchError extends TaquitoError {
+export class ForgingMismatchError extends OctezJsError {
   constructor(public readonly results: string[]) {
     super();
     this.name = 'ForgingMismatchError';
