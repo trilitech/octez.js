@@ -8,7 +8,7 @@ import {
 import { Protocols } from '../constants';
 import { Context } from '../context';
 
-export class TaquitoLocalForger implements Forger {
+export class OctezJsLocalForger implements Forger {
   constructor(private context: Context) {}
 
   private async getNextProto(): Promise<ProtocolsHash> {

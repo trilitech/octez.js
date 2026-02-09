@@ -1,4 +1,4 @@
-import { TaquitoLocalForger } from '../../src/forger/octez.js-local-forger';
+import { OctezJsLocalForger } from '../../src/forger/octez.js-local-forger';
 import { Context, Protocols } from '../../src/octez';
 
 describe('octez.js local forger', () => {
@@ -13,13 +13,13 @@ describe('octez.js local forger', () => {
   });
 
   it('is instantiable', () => {
-    expect(new TaquitoLocalForger(new Context('url'))).toBeInstanceOf(TaquitoLocalForger);
+    expect(new OctezJsLocalForger(new Context('url'))).toBeInstanceOf(OctezJsLocalForger);
   });
 
   it('should take the protocol hash from context.proto if it is defined', async () => {
     const context = new Context(mockRpcClient as any);
     context.proto = Protocols.PtHangz2;
-    const forger = new TaquitoLocalForger(context);
+    const forger = new OctezJsLocalForger(context);
 
     // When calling the forge method, an instance of LocalForger is created
     // which required the protocol hash in its constructor
@@ -31,7 +31,7 @@ describe('octez.js local forger', () => {
   });
 
   it('should fetch protocol hash from the Rpc', async () => {
-    const forger = new TaquitoLocalForger(new Context(mockRpcClient as any));
+    const forger = new OctezJsLocalForger(new Context(mockRpcClient as any));
 
     // When calling the forge method, an instance of LocalForger is created
     // which required the protocol hash in its constructor

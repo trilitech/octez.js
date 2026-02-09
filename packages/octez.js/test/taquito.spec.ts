@@ -8,7 +8,7 @@ import { RpcClient } from '@tezos-x/octez.js-rpc';
 import { RPCEstimateProvider } from '../src/estimate/rpc-estimate-provider';
 import { OperationFactory } from '../src/wallet/operation-factory';
 import { NoopGlobalConstantsProvider } from '../src/global-constants/noop-global-constants-provider';
-import { TaquitoLocalForger } from '../src/forger/octez.js-local-forger';
+import { OctezJsLocalForger } from '../src/forger/octez.js-local-forger';
 import { RpcInjector } from '../src/octez';
 
 describe('TezosToolkit test', () => {
@@ -145,7 +145,7 @@ describe('TezosToolkit test', () => {
 
   providerKey.forEach((key) => {
     it(`setting ${key} provider should not override the forger provider`, () => {
-      expect(toolkit['_context'].forger).toBeInstanceOf(TaquitoLocalForger);
+      expect(toolkit['_context'].forger).toBeInstanceOf(OctezJsLocalForger);
       toolkit.setProvider({ forger: 'test' as any });
       const instance = toolkit['_context'].forger;
       expect(instance).toEqual('test');
