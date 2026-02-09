@@ -6,7 +6,7 @@
 import { RpcClient, RpcClientInterface } from '@tezos-x/octez.js-rpc';
 import { Forger } from '@tezos-x/octez.js-local-forging';
 import { Protocols } from './constants';
-import { ConfigConfirmation, Context, TaquitoProvider } from './context';
+import { ConfigConfirmation, Context, OctezJsProvider } from './context';
 import { ContractProvider } from './contract/interface';
 import { Extension } from './extension/extension';
 import { format } from '@tezos-x/octez.js-utils';
@@ -37,7 +37,7 @@ export { FieldNumberingStrategy, Token, MichelsonMap, UnitValue } from '@tezos-x
 export { Forger, ForgeParams, ForgeResponse } from '@tezos-x/octez.js-local-forging';
 export * from './constants';
 export * from './context';
-export { TaquitoProvider } from './context';
+export { OctezJsProvider } from './context';
 export * from './contract';
 export * from './contract/big-map';
 export { CompositeForger } from './forger/composite-forger';
@@ -442,7 +442,7 @@ export class TezosToolkit {
     }
   }
 
-  getFactory<T, K extends Array<any>>(ctor: TaquitoProvider<T, K>) {
+  getFactory<T, K extends Array<any>>(ctor: OctezJsProvider<T, K>) {
     return (...args: K) => {
       return new ctor(this._context, ...args);
     };
