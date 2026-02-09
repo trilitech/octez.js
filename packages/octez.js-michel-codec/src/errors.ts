@@ -1,4 +1,4 @@
-import { ParameterValidationError, TaquitoError } from '@tezos-x/octez.js-core';
+import { ParameterValidationError, OctezJsError } from '@tezos-x/octez.js-core';
 /**
  *  @category Error
  *  Error that indicates an invalid Michelson being passed or used
@@ -59,7 +59,7 @@ export class TezosIdEncodeError extends ParameterValidationError {
  *  @category Error
  *  Error that indicates a general error happening when trying to create a LongInteger
  */
-export class LongIntegerError extends TaquitoError {
+export class LongIntegerError extends OctezJsError {
   constructor(public readonly message: string) {
     super();
     this.name = 'LongIntegerError';
@@ -70,7 +70,7 @@ export class LongIntegerError extends TaquitoError {
  *  @category Error
  *  Error that indicates a failure occurring when trying to parse a hex byte
  */
-export class HexParseError extends TaquitoError {
+export class HexParseError extends OctezJsError {
   constructor(public readonly hexByte: string) {
     super();
     this.name = 'HexParseError';

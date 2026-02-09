@@ -1,4 +1,4 @@
-import { PermissionDeniedError, TaquitoError } from '@tezos-x/octez.js-core';
+import { PermissionDeniedError, OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
@@ -15,7 +15,7 @@ export class OperationNotAuthorizedError extends PermissionDeniedError {
  *  @category Error
  *  Error that indicates bad signing data
  */
-export class BadSigningDataError extends TaquitoError {
+export class BadSigningDataError extends OctezJsError {
   constructor(
     public readonly cause: any,
     public readonly bytes: string,
@@ -33,7 +33,7 @@ export class BadSigningDataError extends TaquitoError {
  *  @category Error
  *  Error that indicates a mismatch between the initialized and the requested public key
  */
-export class PublicKeyVerificationError extends TaquitoError {
+export class PublicKeyVerificationError extends OctezJsError {
   constructor(
     public readonly requestedPk: string,
     public readonly requestedPkh: string,
@@ -49,7 +49,7 @@ export class PublicKeyVerificationError extends TaquitoError {
  *  @category Error
  *  Error
  */
-export class SignatureVerificationError extends TaquitoError {
+export class SignatureVerificationError extends OctezJsError {
   public name = 'SignatureVerificationFailedError';
   constructor(public readonly bytes: string, public readonly signature: string) {
     super();

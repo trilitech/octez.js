@@ -1,4 +1,4 @@
-import { ParameterValidationError, TaquitoError, TezosToolkitConfigError } from '@tezos-x/octez.js-core';
+import { ParameterValidationError, OctezJsError, TezosToolkitConfigError } from '@tezos-x/octez.js-core';
 
 export { InvalidViewParameterError } from '@tezos-x/octez.js-core';
 
@@ -6,7 +6,7 @@ export { InvalidViewParameterError } from '@tezos-x/octez.js-core';
  *  @category Error
  *  Error that indicates missing big map metadata (non compliance to the TZIP-16 standard)
  */
-export class BigMapContractMetadataNotFoundError extends TaquitoError {
+export class BigMapContractMetadataNotFoundError extends OctezJsError {
   constructor(public readonly invalidBigMapId: any) {
     super();
     this.name = 'BigMapContractMetadataNotFoundError';
@@ -19,7 +19,7 @@ export class BigMapContractMetadataNotFoundError extends TaquitoError {
  *  @category Error
  *  Error that indicates missing metadata in storage
  */
-export class ContractMetadataNotFoundError extends TaquitoError {
+export class ContractMetadataNotFoundError extends OctezJsError {
   constructor(public readonly info: string) {
     super();
     this.name = 'ContractMetadataNotFoundError';
@@ -31,7 +31,7 @@ export class ContractMetadataNotFoundError extends TaquitoError {
  *  @category Error
  *  Error that indicates missing URI (non compliance to the TZIP-16 standard)
  */
-export class UriNotFoundError extends TaquitoError {
+export class UriNotFoundError extends OctezJsError {
   constructor() {
     super();
     this.name = 'UriNotFoundError';
@@ -44,7 +44,7 @@ export class UriNotFoundError extends TaquitoError {
  *  @category Error
  *  Error that indicates an invalid URI (non compliance to the TZIP-16 standard)
  */
-export class InvalidUriError extends TaquitoError {
+export class InvalidUriError extends OctezJsError {
   constructor(public readonly uri: string) {
     super();
     this.name = 'InvalidUriError';
@@ -56,7 +56,7 @@ export class InvalidUriError extends TaquitoError {
  *  @category Error
  *  Error that indicates invalid metadata (non compliance to the TZIP-16 standard)
  */
-export class InvalidContractMetadataError extends TaquitoError {
+export class InvalidContractMetadataError extends OctezJsError {
   constructor(public readonly invalidMetadata: string) {
     super();
     this.name = 'InvalidContractMetadataError';
@@ -80,7 +80,7 @@ export class ProtocolNotSupportedError extends ParameterValidationError {
  *  @category Error
  *  Error that indicates the metadata type is invalid (non compliance to the TZIP-16 standard)
  */
-export class InvalidContractMetadataTypeError extends TaquitoError {
+export class InvalidContractMetadataTypeError extends OctezJsError {
   constructor() {
     super();
     this.name = 'InvalidContractMetadataTypeError';
@@ -106,7 +106,7 @@ export class UnconfiguredContractMetadataProviderError extends TezosToolkitConfi
  *  @category Error
  *  Error that indicates a forbidden instruction being found inside the View code
  */
-export class ForbiddenInstructionInViewCodeError extends TaquitoError {
+export class ForbiddenInstructionInViewCodeError extends OctezJsError {
   constructor(public readonly instruction: string) {
     super();
     this.name = 'ForbiddenInstructionInViewCodeError';

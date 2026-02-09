@@ -2,13 +2,13 @@ import { Token, TokenFactory, Semantic, ComparableToken, SemanticEncoding } from
 import { OrToken } from './or';
 import { PairTokenSchema } from '../schema/types';
 import { MichelsonV1Expression, MichelsonV1ExpressionExtended } from '@tezos-x/octez.js-rpc';
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
  *  Error that indicates in invalid token argument being passed
  */
-export class TokenArgumentValidationError extends TaquitoError {
+export class TokenArgumentValidationError extends OctezJsError {
   public name = 'TokenArgumentValidationError';
   constructor(public message: string) {
     super(message);
@@ -19,7 +19,7 @@ export class TokenArgumentValidationError extends TaquitoError {
  *  @category Error
  *  Error that indicates a failure occurring when doing a comparison of tokens
  */
-export class TokenComparisonError extends TaquitoError {
+export class TokenComparisonError extends OctezJsError {
   public name = 'TokenComparisonError';
   constructor(
     public val1: string,

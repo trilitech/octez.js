@@ -1,10 +1,10 @@
-import { ParameterValidationError, TaquitoError } from '@tezos-x/octez.js-core';
+import { ParameterValidationError, OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
  *  Error that indicates an invalid or unparseable ledger response
  */
-export class InvalidLedgerResponseError extends TaquitoError {
+export class InvalidLedgerResponseError extends OctezJsError {
   constructor(public readonly message: string) {
     super();
     this.name = 'InvalidLedgerResponseError';
@@ -15,7 +15,7 @@ export class InvalidLedgerResponseError extends TaquitoError {
  *  @category Error
  *  Error that indicates a failure when trying to retrieve a Public Key from Ledger signer
  */
-export class PublicKeyRetrievalError extends TaquitoError {
+export class PublicKeyRetrievalError extends OctezJsError {
   constructor(public readonly cause: any) {
     super();
     this.name = 'PublicKeyRetrievalError';
@@ -27,7 +27,7 @@ export class PublicKeyRetrievalError extends TaquitoError {
  *  @category Error
  *  Error that indicates a failure when trying to retrieve a Public Key Hash from Ledger signer
  */
-export class PublicKeyHashRetrievalError extends TaquitoError {
+export class PublicKeyHashRetrievalError extends OctezJsError {
   constructor() {
     super();
     this.name = 'PublicKeyHashRetrievalError';

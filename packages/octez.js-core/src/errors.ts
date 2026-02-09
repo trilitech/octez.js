@@ -24,13 +24,13 @@ const resultDesc: { [key in ValidationResult]?: string } = {
  *  @category Error
  *  Parent error class all octez.js errors to extend from
  */
-export class TaquitoError extends Error {}
+export class OctezJsError extends Error {}
 
 /**
  *  @category Error
  *  Error that indicates invalid user inputs
  */
-export class ParameterValidationError extends TaquitoError {
+export class ParameterValidationError extends OctezJsError {
   public readonly errorDetail?: string;
   public readonly result?: ValidationResult;
 
@@ -79,31 +79,31 @@ export class ParameterValidationError extends TaquitoError {
  *  @category Error
  *  Error returned by RPC node
  */
-export class RpcError extends TaquitoError {}
+export class RpcError extends OctezJsError {}
 
 /**
  *  @category Error
  *  Error that indicates TezosToolKit has not been configured appropriately
  */
-export class TezosToolkitConfigError extends TaquitoError {}
+export class TezosToolkitConfigError extends OctezJsError {}
 
 /**
  *  @category Error
  *  Error that indicates a requested action is not supported by octez.js
  */
-export class UnsupportedActionError extends TaquitoError {}
+export class UnsupportedActionError extends OctezJsError {}
 
 /**
  *  @category Error
  *  Error during a network operation
  */
-export class NetworkError extends TaquitoError {}
+export class NetworkError extends OctezJsError {}
 
 /**
  *  @category Error
  *  Error that indicates user attempts an action without necessary permissions
  */
-export class PermissionDeniedError extends TaquitoError {}
+export class PermissionDeniedError extends OctezJsError {}
 
 // ==========================================================================================
 // common error classes for octez.js
@@ -384,7 +384,7 @@ export class ProhibitedActionError extends UnsupportedActionError {
  *  @category Error
  *  Error that indicates a failure in grabbing the public key
  */
-export class PublicKeyNotFoundError extends TaquitoError {
+export class PublicKeyNotFoundError extends OctezJsError {
   constructor(
     public readonly pkh: string,
     public readonly cause?: any

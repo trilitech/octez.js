@@ -1,5 +1,5 @@
 import {
-  TaquitoError,
+  OctezJsError,
   ParameterValidationError,
   RpcError,
   TezosToolkitConfigError,
@@ -30,7 +30,7 @@ describe('parent errors classes', () => {
       throw new ParameterValidationError();
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
-      expect(error).toBeInstanceOf(TaquitoError);
+      expect(error).toBeInstanceOf(OctezJsError);
       expect(error).toBeInstanceOf(ParameterValidationError);
     }
   });
@@ -40,7 +40,7 @@ describe('parent errors classes', () => {
       throw new RpcError();
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
-      expect(error).toBeInstanceOf(TaquitoError);
+      expect(error).toBeInstanceOf(OctezJsError);
       expect(error).toBeInstanceOf(RpcError);
     }
   });
@@ -50,7 +50,7 @@ describe('parent errors classes', () => {
       throw new TezosToolkitConfigError();
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
-      expect(error).toBeInstanceOf(TaquitoError);
+      expect(error).toBeInstanceOf(OctezJsError);
       expect(error).toBeInstanceOf(TezosToolkitConfigError);
     }
   });
@@ -60,7 +60,7 @@ describe('parent errors classes', () => {
       throw new UnsupportedActionError();
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
-      expect(error).toBeInstanceOf(TaquitoError);
+      expect(error).toBeInstanceOf(OctezJsError);
       expect(error).toBeInstanceOf(UnsupportedActionError);
     }
   });
@@ -70,7 +70,7 @@ describe('parent errors classes', () => {
       throw new NetworkError();
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
-      expect(error).toBeInstanceOf(TaquitoError);
+      expect(error).toBeInstanceOf(OctezJsError);
       expect(error).toBeInstanceOf(NetworkError);
     }
   });
@@ -80,7 +80,7 @@ describe('parent errors classes', () => {
       throw new PermissionDeniedError();
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
-      expect(error).toBeInstanceOf(TaquitoError);
+      expect(error).toBeInstanceOf(OctezJsError);
       expect(error).toBeInstanceOf(PermissionDeniedError);
     }
   });

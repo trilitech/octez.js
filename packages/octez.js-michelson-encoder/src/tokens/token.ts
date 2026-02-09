@@ -1,12 +1,12 @@
 import { MichelsonV1Expression, MichelsonV1ExpressionExtended } from '@tezos-x/octez.js-rpc';
 import { TokenSchema } from '../schema/types';
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
  *  Error that indicates a failure when encoding invalid or incorrect data (e.g. if an address is expected but a number is received)
  */
-export abstract class TokenValidationError extends TaquitoError {
+export abstract class TokenValidationError extends OctezJsError {
   name = 'TokenValidationError';
 
   constructor(

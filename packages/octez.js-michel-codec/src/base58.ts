@@ -1,4 +1,4 @@
-import { InvalidMessageError, TaquitoError } from '@tezos-x/octez.js-core';
+import { InvalidMessageError, OctezJsError } from '@tezos-x/octez.js-core';
 
 const H = [
   0x6a09e667 | 0,
@@ -82,7 +82,7 @@ const K = [
  *  @category Error
  *  Error that indicates a failure when decoding a base58 encoding
  */
-export class Base58DecodingError extends TaquitoError {
+export class Base58DecodingError extends OctezJsError {
   constructor(public readonly message: string) {
     super();
     this.name = 'Base58DecodingError';

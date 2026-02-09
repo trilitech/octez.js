@@ -1,4 +1,4 @@
-import { TaquitoError } from '@tezos-x/octez.js-core';
+import { OctezJsError } from '@tezos-x/octez.js-core';
 import { TicketDeprecatedTokenSchema } from '../schema/types';
 import { IntToken } from './comparable/int';
 import { ContractToken } from './contract';
@@ -8,7 +8,7 @@ import { Token, TokenFactory, Semantic, SemanticEncoding } from './token';
  *  @category Error
  *  Error that indicates a failure when encoding and sending a ticket to the blockchain
  */
-export class EncodeTicketDeprecatedError extends TaquitoError {
+export class EncodeTicketDeprecatedError extends OctezJsError {
   name = 'TicketDeprecatedEncodeError';
 
   constructor() {
@@ -74,7 +74,7 @@ export class TicketDeprecatedToken extends Token {
       amount: amount.Execute(val.args[2], semantics),
     };
   }
-  
+
   generateSchema(): TicketDeprecatedTokenSchema {
     return {
       __michelsonType: TicketDeprecatedToken.prim,

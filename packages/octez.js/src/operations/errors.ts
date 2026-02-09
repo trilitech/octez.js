@@ -1,4 +1,4 @@
-import { ParameterValidationError, RpcError, TaquitoError } from '@tezos-x/octez.js-core';
+import { ParameterValidationError, RpcError, OctezJsError } from '@tezos-x/octez.js-core';
 import {
   MichelsonV1ExpressionBase,
   OperationContentsAndResult,
@@ -161,7 +161,7 @@ export const flattenErrors = (
  *  @category Error
  *  Error that indicates a general failure happening during an origination operation.
  */
-export class OriginationOperationError extends TaquitoError {
+export class OriginationOperationError extends OctezJsError {
   constructor(public readonly message: string) {
     super();
     this.name = 'OriginationOperationError';
