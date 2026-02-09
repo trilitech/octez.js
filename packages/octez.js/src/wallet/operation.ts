@@ -160,7 +160,8 @@ export class WalletOperation {
   /**
    *
    * @param opHash Operation hash
-   * @param context octez.js context allowing access to rpc and signer
+   * @param raw Raw operation that was injected
+   * @param context Octez.js context allowing access to rpc and signer
    * @throws {InvalidOperationHashError}
    */
   constructor(
