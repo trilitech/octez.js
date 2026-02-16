@@ -94,7 +94,7 @@ describe('SaplingTransactionViewer', () => {
         },
         {
           value: new BigNumber('4000000'),
-          memo: 'octez.js',
+          memo: 'taquito',
           paymentAddress: 'zet134HVqfm5DVp8PZccMeQQjeNXFJZg2VyZigpBSR31ppdfvddkRuqGyEWPLiaXULtDR',
         },
         {

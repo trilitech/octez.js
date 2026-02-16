@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "24.3.0",
+  "version": "1.0.0",
   "description": "WalletConnect integration for octez.js applications.",
   "keywords": [
     "octez.js",
@@ -58,7 +58,7 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js": "^24.3.0",
+    "@tezos-x/octez.js": "^1.0.0",
     "@walletconnect/modal": "^2.7.0",
     "@walletconnect/sign-client": "^2.23.9",
     "@walletconnect/types": "^2.23.9",

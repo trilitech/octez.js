@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "24.3.0",
+  "version": "1.0.0",
   "description": "Encoding, crypto, and utility helpers for octez.js.",
   "keywords": [
     "octez.js",
@@ -60,7 +60,7 @@
   "dependencies": {
     "@noble/curves": "^1.9.7",
     "@noble/hashes": "^2.0.1",
-    "@tezos-x/octez.js-core": "^24.3.0",
+    "@tezos-x/octez.js-core": "^1.0.0",
     "@types/bs58check": "^2.1.2",
     "bignumber.js": "^10.0.2",
     "blakejs": "^1.2.1",

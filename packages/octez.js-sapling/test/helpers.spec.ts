@@ -6,7 +6,7 @@ describe('Sapling helper functions', () => {
     expect(memoHexToUtf8(memoTaco)).toEqual('taco');
 
     const memoTaquito = Buffer.from([116, 97, 113, 117, 105, 116, 111, 0]).toString('hex');
-    expect(memoHexToUtf8(memoTaquito)).toEqual('octez.js');
+    expect(memoHexToUtf8(memoTaquito)).toEqual('taquito');
 
     const memoTest = Buffer.from([116, 101, 115, 116, 0, 0, 0, 0]).toString('hex');
     expect(memoHexToUtf8(memoTest)).toEqual('test');
