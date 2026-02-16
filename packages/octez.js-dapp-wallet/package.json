@@ -1,6 +1,6 @@
 {
   "name": "@tezos-x/octez.js-dapp-wallet",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "dApp wallet provider for octez.js",
   "keywords": [
     "tezos",
@@ -103,7 +103,7 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.connect-dapp": "^0.9.0",
+    "@tezos-x/octez.connect-dapp": "^1.0.0",
     "@tezos-x/octez.js-core": "*",
     "@tezos-x/octez.js": "*",
     "crypto-browserify": "^3.12.1",

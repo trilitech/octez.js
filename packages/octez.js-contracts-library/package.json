@@ -1,6 +1,6 @@
 {
   "name": "@tezos-x/octez.js-contracts-library",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Can be used as an extension on the TezosToolkit to provide contracts data",
   "keywords": [
     "tezos"

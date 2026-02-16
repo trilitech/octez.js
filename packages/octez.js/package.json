@@ -1,6 +1,6 @@
 {
   "name": "@tezos-x/octez.js",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "High level functionality that builds upon the other packages in the Tezos Typescript Library Suite.",
   "keywords": [
     "tezos",

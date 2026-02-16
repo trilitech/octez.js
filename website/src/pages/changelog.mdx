@@ -4,38 +4,52 @@ description: Release notes for octez.js and archive of Taquito releases prior to
 layout: ../layouts/MarkdownLayout.astro
 ---
 
+# octez.js v1.0.0
+
+### Dependencies
+
+- Updated `@tezos-x/octez.connect-dapp` to v1.0.0 in `@tezos-x/octez.js-dapp-wallet`
+- Updated `@tezos-x/octez.connect-sdk` to v1.0.0 in the website
+
+---
+
 # octez.js v0.9.0
 
 **Initial release** - octez.js is a fork of [Taquito](https://github.com/ecadlabs/taquito) v24.0.2.
 
-This release establishes octez.js as the continuation of Taquito under new stewardship. The API remains fully compatible with Taquito - see the [migration guide](/docs/0.9.0/migration_from_taquito) for details on updating your imports.
+The API remains fully compatible with Taquito - see the [migration guide](/docs/0.9.0/migration_from_taquito) for details on updating your imports.
 
 ### Changes from Taquito
+
 - Renamed all packages from `@taquito/*` to `@tezos-x/octez.js-*`
-- Updated documentation and branding
+- Updated documentation
 - New website at [octez-js.tezos.com](https://octez-js.tezos.com)
 
 ---
 
 # Taquito History
 
-> **Note:** The following releases are from [Taquito](https://github.com/ecadlabs/taquito), the project from which octez.js was forked. These releases document the evolution of the library before it became octez.js.
+> **Note:** The following releases are from [Taquito](https://github.com/ecadlabs/taquito), the project from which octez.js was forked.
 
 # Taquito v24.0.2
 
 ## Summary
 
 ### Beacon Version Update
+
 `@taquito/beacon-wallet` - Updated Beacon version to v4.7.0 #3314
 
 ### Bug Fixes
+
 `@taquito/https-utils` - Fixed fetch module overwrite and Electron detection #3310 #3302
 
 ### Internal Changes
+
 `integration-tests` - Added new testnet `tezlinkshadownet` configuration #3315
 `@taquito/saplings` - Added security comments for zero nonce in encrypted key decryption #3000
 
 ### Website Improvements
+
 - Improved XSS protection in search results #3291
 - Improved stability of ChatKit #3291
 - Improved accessibility of carousels #3291
@@ -49,6 +63,7 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 - snyk dependencies updates #3243
 
 ## 🐞 Bug Fixes
+
 - `@taquito/http-utils` - made node only imports conditional
 - `@taquito/signer` - supplemented `bn.js` after removal of `elliptic` package
 
@@ -57,6 +72,7 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 # Summary
 
 ## Tallinn Protocol Support
+
 > This is official release of v24.0.0.
 > There are only websites and internal changes since 24.0.0-RC.0
 
@@ -67,8 +83,8 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 - `@taquito/local-forging` – Added support for Michelson instructions: `INDEX_ADDRESS` and `GET_ADDRESS_INDEX` #3238
 
 ### Improvements & Fixes
-- `@taquito/rpc` – Updated multiple RPC types to align with **Protocol 24 (Tallinn)** schemas, including: VotingInfoResponse, OperationContentsAndResultMetadataExtended1, BakingRightsQueryArgumentsBase, AttestationRightsQueryArguments, OperationResultTransaction, ConstantsResponse, ConstantsResponseProto024, BlockMetadata #3244, #3245, #3261
 
+- `@taquito/rpc` – Updated multiple RPC types to align with **Protocol 24 (Tallinn)** schemas, including: VotingInfoResponse, OperationContentsAndResultMetadataExtended1, BakingRightsQueryArgumentsBase, AttestationRightsQueryArguments, OperationResultTransaction, ConstantsResponse, ConstantsResponseProto024, BlockMetadata #3244, #3245, #3261
 
 ### Dependencies
 
@@ -93,14 +109,17 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 - Removed deprecated APIs, constants, and methods across packages #3228:
   - @tezos-x/octez.js: `DEFAULT_GAS_LIMIT`, `DEFAULT_FEE`, `DEFAULT_STORAGE_LIMIT`, `tezos.contract.methods`, `tezos.contract.getBigMapKey`, `tezos.batch`, `tezos.wallet.getPK`
   - @taquito/utils: `Prefix`, `prefix`, `prefixLength`, `b58cdecode`, `b58cencode`, `b58decode`, `b58decodeL2Address`, `encodePubKey`, `encodeL2Address`, `char2Bytes`, `bytes2Char`, `invalidDetail`, `PkPrefix`, `validatePkAndExtractPrefix`
+
 ---
 
 ## 🚀 New Features
 
 ### `@tezos-x/octez.js`
+
 - Supported `registerGlobalConstant` operation in WalletAPI and WalletBatchAPI #3219
 
 ### `@taquito/rpc`
+
 - Added RPC endpoints `getActiveStakingParameters` and `getPendingStakingParameters` #3211
 
 ---
@@ -108,21 +127,25 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 ## 🧠 Improvements
 
 ### `@tezos-x/octez.js`
+
 - Updated constant `BATCH_KINDS` and type `BatchKinds` to include all batch supported operations #3249
 - Updated `minimumPollingInterval` to 700ms as the lowest threshold #3249
 - Updated `increasePaidStorage` params.amount=0 to throw error #3249
 
 ### `@taquito/signer`
+
 - Replaced `elliptic` with `@noble/curves` due to security concerns #3217
 
-
 ### `@taquito/michelson-encoder`
+
 - Refactored `compare` logic in ./src/tokens/key.ts to use `publicKeyFromString` from `@taquito/signer` #3217
 
 ### `@taquito/beacon-wallet`
+
 - Updated `formatParameters` `params` type to ensure type safety #3229
 
 ### Build & Tooling
+
 - Added node polyfills for better browser compatibility #3230
 
 ---
@@ -130,11 +153,13 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 ## 🧹 Deprecations
 
 ### `@taquito/utils`
+
 - Removed deprecated `Prefix`, `prefix` and `prefixLength` #3228
 - Removed deprecated `b58cdecode`, `b58cencode`, `b58decode`, `b58decodeL2Address`, `encodePubKey`, `encodeL2Address`, `char2Bytes` and `bytes2Char` #3228
 - Removed deprecated `invalidDetail`, `PkPrefix` and `validatePkAndExtractPrefix` #3228
 
 ### `@tezos-x/octez.js`
+
 - Removed deprecated `DEFAULT_GAS_LIMIT`, `DEFAULT_FEE` and `DEFAULT_STORAGE_LIMIT` #3228
 - Removed deprecated smart contract call method `tezos.contract.methods`, please use `tezos.contract.methodsObject` instead #3228
 - Removed deprecated contractAPI method `tezos.contract.getBigMapKey`, please use `tezos.contract.getBigMapKeyByID` instead #3228
@@ -146,9 +171,11 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 ## 🐞 Bug Fixes
 
 ### `@tezos-x/octez.js`
+
 - Added required parameter `source` to ballot and proposal operations #3222
 
 ### General Fixes
+
 - Fixed node-fetch failure in webpack-bundled builds #3246
 
 ---
@@ -156,35 +183,44 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 ## 🛠 Internal
 
 ### `@taquito/beacon-wallet`
+
 - updated Beacon version to v4.6.4 #3248
 
 ### `Website`
+
 - Updated Docusaurus Sass packages #3225
 
 ### Build & Tooling
+
 - Migrated Node.js support from lts18 to lts20 and above #3208
 - Refactored multiple packages to avoid circular dependencies #3230
 - Sorted all rollup warnings across packages #3230
 - Upgraded Lerna and Nx tooling #3247
 
 ### Snyk Security Upgrades
+
 - Upgraded `@ledgerhq/devices` → **8.6.1** #3231
 - Upgraded `@ledgerhq/hw-transport` → **6.31.12** #3232
+
 ---
 
 # Taquito v23.0.0
+
 ## Seoul Protocol Support
 
 ## ⚠ **Breaking Change** ⚠
-* Affecting all users to `reveal` a new account, taquito versions before v23 are not forward compatible with the new encoding introduced in protocol Seoul. Please update to v23 and above to ensure backwards compatability in `LocalForger`.
-* With the addition of BLS (tz4) key support across octez.js packages, we have refactored validation logic and updated associated error classes in `@taquito/utils` and `@taquito/core`. This may affect how validation errors are returned or handled.
+
+- Affecting all users to `reveal` a new account, taquito versions before v23 are not forward compatible with the new encoding introduced in protocol Seoul. Please update to v23 and above to ensure backwards compatability in `LocalForger`.
+- With the addition of BLS (tz4) key support across octez.js packages, we have refactored validation logic and updated associated error classes in `@taquito/utils` and `@taquito/core`. This may affect how validation errors are returned or handled.
 
 ---
 
 ## 🚀 New Features
 
 ### `@tezos-x/octez.js`
+
 > These are all supported in `contractProvider`, `estimateProvider`, `batchProvider`, `prepareProvider`
+
 - Supported BLS(tz4) `reveal` operation with optional `proof` parameter. #3158
 - Supported `updateConsensusKey` to also take a BLS consensus key with optional `proof` parameter. #3159
 - Added new operation`updateCompanionKey` to use (only) BLS as companion key for DAL operations. #3160
@@ -251,7 +287,9 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 - Refactored validation logic for `address`, `key`, `key_hash`, and `contract` tokens. May result in different validation outcomes.
 
 ### `@tezos-x/octez.js`
+
 > This aligns with Seoul protocol updates hence removing the previous `InvalidStakingAddressError`
+
 - Removed the limitation in the `finalizeUnstake` pseudo-operation requiring the source and destination to match. #3165
 
 ## 🧹 Deprecations
@@ -280,16 +318,21 @@ This release establishes octez.js as the continuation of Taquito under new stewa
 - Upgraded `@airgap/beacon` dependencies to `v4.6.1-beta.4`.
 
 ### `@taquito/signer`
+
 - Refactored internal signingKeys classes with additional PublicKey classes to handle compare logic #3188
 
 ### `@tezos-x/octez.js` & `@taquito/core`
+
 - Refactored to move interface `Signer` to @taquito/core to avoid circular dependencies #3192
 
 ---
 
 ## Example Usage
+
 ### tz4 reveal contractProvider
-* When using `inMemorySigner` taquito can automatically generate proof for the `reveal` operation
+
+- When using `inMemorySigner` taquito can automatically generate proof for the `reveal` operation
+
 ```
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { InMemorySigner } from '@taquito/signer';
@@ -299,7 +342,9 @@ const signer = new InMemorySigner('BLsk...');
 const revealOp = tezos.contract.reveal({})
 await revealOp.confirmation()
 ```
-* Optionally users can choose to pass the proof by themselves
+
+- Optionally users can choose to pass the proof by themselves
+
 ```
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { InMemorySigner } from '@taquito/signer';
@@ -311,6 +356,7 @@ await revealOp.confirmation()
 ```
 
 ### updateConsensusKey and updateCompanionKey to tz4 contractProvider
+
 ```
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { InMemorySigner } from '@taquito/signer';
@@ -325,7 +371,9 @@ await companionOp.confirmation()
 ```
 
 ### inMemorySigner with BLS keys
-* InMemorySigner can be used directly
+
+- InMemorySigner can be used directly
+
 ```
 import { InMemorySigner } from '@taquito/signer';
 
@@ -336,7 +384,9 @@ const sig = await signer.sign('0x1234')
 const proof = await signer.provePossession()
 const isPop = await signer.canProvePossession
 ```
-* InMemorySigner passed into TezosToolkit
+
+- InMemorySigner passed into TezosToolkit
+
 ```
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { InMemorySigner } from '@taquito/signer';
@@ -365,11 +415,13 @@ const length = payloadLength[PrefixV2.Ed25519PublicKeyHash]
 ```
 
 # Taquito v22.0.0
+
 ## Summary
 
 ### Rio Protocol Support
 
 ### New Features
+
 `@taquito/local-forging` - Update `localForger` to `forge` and `parse` a tz4 address as `delegate` for `delegation` operation #3113
 `@taquito/local-forging` - Update `localForger` to `forge` and `parse` a tz4 `pk` and `proof` for `update_consensus_key` operation #3113
 `@taquito/utils` - Updated `b58decode`, `encodePubKey`, `encodeAddress`, and `encodeKeyHash` to encode and decode tz4 public keys and addresses #3113
@@ -379,154 +431,192 @@ const length = payloadLength[PrefixV2.Ed25519PublicKeyHash]
 `@taquito/rpc` - Added new types `OperationContentsDalEntrapmentEvidence`, `OperationContentsAndResultDalEntrapmentEvidence` and `OperationContentsAndResultMetadataDalEntrapmentEvidence` for new anonymous operation `dal_entrapment_evidence` #3116
 
 ### Breaking Changes
+
 `@taquito/utils` - Deprecated `b58decodeL2Address` and `encodeL2Address` util functions, please use `b58decode` and `encodeAddress` instead #3130
 
 # Taquito v21.0.5
+
 ## Summary
 
 ### Beacon version Update
+
 `@taquito/beacon-wallet` - updated Beacon version to v4.5.0 #3143
 
 ### Internals
+
 `@taquito/wallet-connect`- updated modal from @walletconnect/legacy-modal to @walletconnect/modal #3136
 website - updated firebase to fix website build issues #3141
 
 # Taquito v21.0.4
+
 ## Summary
 
 ### Beacon version Update
+
 Updated Beacon version to v4.5.0 #3133
 
 ### Internals
+
 Configured webpack polyfill of taquito-beacon-wallet-vanilla #3133
 
 # Taquito v21.0.3
+
 ## Summary
 
 ### Beacon version Update
+
 Updated Beacon version to v4.4.0 #3117
 
 ### Internals
+
 Updated dependencies #3117
 
 # Taquito v21.0.2
+
 ## Summary
 
 ### Beacon version Update
+
 Updated Beacon version to v4.3.3 #3110
 
 ### Internals
+
 Cleaned up paris references after mainnet migration #3107
 Updated @ledgerhq/hw-transport-webhid to v6.30.0 #3110
 Updated ci script actions/upload-artifact to v4 #3110
 
 ### Documentation
+
 Updated documentation of tzip12.md and metadata-tzip16.md #3107
 
 # Taquito v21.0.1
+
 ## Summary
 
 ### Beacon version Update
+
 Updated Beacon version to v4.3.2 #3107
 
 # Taquito v21.0.0
+
 ## Summary
 
 ### Quebec Protocol Support
 
 ### New Features
+
 `@taquito/rpc` - Added `getSpendable`, `getBalanceAndFrozenBonds` and `getSpendableAndFrozenBonds` rpc endpoint #3023
 
 ### Improvement
+
 `@taquito/rpc` - Updated `getPendingOperations` with param `source` and `operationHash` #3034
 `@taquito/rpc` - Added Quebec protocol constant, `ConstantsResponseProto021`, to `ConstantsResponse` #3037
 `@taquito/rpc` - Removed endorsement compatibility (still kept rpc types and readProvider for user querying old blocks) #3036
 
 ### Documentation
+
 Updated documentation with Quebec support #3068
 Fixed maps_bigmaps live code example bugs #3068
 
 ### Internals
+
 Updated dependencies #3068
 Updated octez.js test dapp with Quebec support #3068
 
 # Taquito v20.1.2
+
 ## Summary
 
 ### Node.js add support of v18
+
 There is a [node.js confirmed HTTP bug](https://github.com/nodejs/node/issues/47228) from v19 that occasionally causes HTTP requests to fail with a socket hang-up error.
 We decided to support node.js v18 again until this issue is resolved in the future node.js release #3098
 
 ### Documentation
+
 Fixing typo #3094
 
 # Taquito v20.1.1
+
 ## Summary
 
 ### Beacon version Update
+
 Updated Beacon version to v4.3.1 #3087
 
 ### ECAD Infra Tezos RPC addresses update
+
 Updated network addresses for mainnet, ghostnet, parisnet, and quebecnet from Old format: `https://$\{network_name\}.ecadinfra.com` to New format: `https://$\{network_name\}.tezos.ecadinfra.com` #3090
 
 - Mappings
-Below are the mappings for the updated RPC addresses for all current networks:
+  Below are the mappings for the updated RPC addresses for all current networks:
 
-Old Address | New Address
--- | --
-https://mainnet.ecadinfra.com | https://mainnet.tezos.ecadinfra.com
-https://ghostnet.ecadinfra.com | https://ghostnet.tezos.ecadinfra.com
-https://parisnet.ecadinfra.com | https://parisnet.tezos.ecadinfra.com
-https://quebecnet.ecadinfra.com | https://quebecnet.tezos.ecadinfra.com
+| Old Address                     | New Address                           |
+| ------------------------------- | ------------------------------------- |
+| https://mainnet.ecadinfra.com   | https://mainnet.tezos.ecadinfra.com   |
+| https://ghostnet.ecadinfra.com  | https://ghostnet.tezos.ecadinfra.com  |
+| https://parisnet.ecadinfra.com  | https://parisnet.tezos.ecadinfra.com  |
+| https://quebecnet.ecadinfra.com | https://quebecnet.tezos.ecadinfra.com |
 
 - Action Required
-Update all scripts, configurations, and codebases using the old RPC addresses to point to the new format.
-Validate that your systems and services using these RPC endpoints continue to function as expected after the update.
+  Update all scripts, configurations, and codebases using the old RPC addresses to point to the new format.
+  Validate that your systems and services using these RPC endpoints continue to function as expected after the update.
 
 - Deprecation Notice
-The old addresses are considered deprecated, but will remain active until further notice. Users are strongly encouraged to transition to the new format as soon as possible to avoid potential disruptions in the future.
+  The old addresses are considered deprecated, but will remain active until further notice. Users are strongly encouraged to transition to the new format as soon as possible to avoid potential disruptions in the future.
 
 - Reference
-For more information, visit [ECAD Infra's website](https://www.ecadinfra.com/).
---------
+  For more information, visit [ECAD Infra's website](https://www.ecadinfra.com/).
+
+---
+
 Please ensure your systems are updated promptly to avoid any disruptions. If you have any questions or encounter issues, feel free to contact the ECAD Infra team or open a new issue in this repository.
 
 # Taquito v20.1.0
 
 **Breaking changes:**
-* We removed `account` public property on `BeaconWallet` class. If you'd like to get the info, please use `subscribeToEvent` with `BeaconEvent.ACTIVE_ACCOUNT_SET`
-* We migrated `Node.js` support from LTS18 to LTS20 and above
+
+- We removed `account` public property on `BeaconWallet` class. If you'd like to get the info, please use `subscribeToEvent` with `BeaconEvent.ACTIVE_ACCOUNT_SET`
+- We migrated `Node.js` support from LTS18 to LTS20 and above
 
 ## Summary
+
 ### New features
-* `@tezos-x/octez.js` - Supported operation `transferTicket` in walletAPI PR #3003
+
+- `@tezos-x/octez.js` - Supported operation `transferTicket` in walletAPI PR #3003
 
 ### Improvement
-* `@tezos-x/octez.js` - Exported SmartRollupExecuteOutboxMessageParams PR #3031
-* `@taquito/beacon-wallet` - reverted `subscribeToEvent` of `ACTIVE_ACCOUNT_SET` in the package to ensure users will get a console warning, if they didn't subscribe events themselves PR #2987
-* `@taquito/rpc` - Updated rpc type `FrozenStaker`  with `Baker_edge` PR #2987
-* `@taquito/rpc` - Updated rpc type `METADATA_BALANCE_UPDATES_CATEGORY` and`OperationMetadataBalanceUpdates` to have backwards compatible PR #2987
+
+- `@tezos-x/octez.js` - Exported SmartRollupExecuteOutboxMessageParams PR #3031
+- `@taquito/beacon-wallet` - reverted `subscribeToEvent` of `ACTIVE_ACCOUNT_SET` in the package to ensure users will get a console warning, if they didn't subscribe events themselves PR #2987
+- `@taquito/rpc` - Updated rpc type `FrozenStaker` with `Baker_edge` PR #2987
+- `@taquito/rpc` - Updated rpc type `METADATA_BALANCE_UPDATES_CATEGORY` and`OperationMetadataBalanceUpdates` to have backwards compatible PR #2987
 
 ### Documentation
-* Updated `michelson_encoder` documentation with section `#flattening-nested-tokens-pairunion` PR #3002
-* Updated `signing` documentation with section `#generating-a-tzip-32-message-signature` PR #2879
+
+- Updated `michelson_encoder` documentation with section `#flattening-nested-tokens-pairunion` PR #3002
+- Updated `signing` documentation with section `#generating-a-tzip-32-message-signature` PR #2879
 
 ### Testing
-* @taquito/beacon-wallet - Added broadcast-channel mock for @airgap/beacon-transport-postmessage in unit test
-* Removed flextesa tests from CI workflow PR #3001
-* Fixed tzip16 test with new public IPFS gateway domain PR #3033
-* Updated staking and failing_noop integration tests to be robust PR #3033
+
+- @taquito/beacon-wallet - Added broadcast-channel mock for @airgap/beacon-transport-postmessage in unit test
+- Removed flextesa tests from CI workflow PR #3001
+- Fixed tzip16 test with new public IPFS gateway domain PR #3033
+- Updated staking and failing_noop integration tests to be robust PR #3033
 
 ### Internals
-* `@taquito/http-utils` Configured the `fetch` call to be `keepalive=false` to fix socket hangup errors after node19 PR #2986
-* Updated denpendencies PR #3018 #3038 #3043 #3052
-* Removed taquito-test-dapp parisnet label on staking operations PR #3033
-* Removed Netlify references after migrating to Cloudflare PR #3012
+
+- `@taquito/http-utils` Configured the `fetch` call to be `keepalive=false` to fix socket hangup errors after node19 PR #2986
+- Updated denpendencies PR #3018 #3038 #3043 #3052
+- Removed taquito-test-dapp parisnet label on staking operations PR #3033
+- Removed Netlify references after migrating to Cloudflare PR #3012
 
 # Taquito v20.0.0
+
 ## Summary
 
 ### Paris(B) Protocol Support
+
 Paris(B) Protocol has new Adaptive Issuance features, including staking pseudo-operations and rpc endpoints.
 
 ⚠️ Warning ⚠️
@@ -535,6 +625,7 @@ Adaptive Issuance, Staking, and Adaptive slashing will be in effect roughly two 
 ### ⚠️ Breaking Changes ⚠️
 
 ### Beacon Migration
+
 As of Beacon version 4.2.0, Beacon has migrated from using `dAppClient.getActiveAccount()` to using an event subscription method `BeaconEvent.ACTIVE_ACCOUNT_SET` for handling active account changes.
 
 **IF YOU ARE STILL USING THE `eventHandlers` PROPERTY WHEN INITIALIZING A DAPP CLIENT, PLEASE UPDATE YOUR CODE.**
@@ -548,10 +639,13 @@ await wallet.client.subscribeToEvent(BeaconEvent.ACTIVE_ACCOUNT_SET, (data) => {
 });
 await wallet.requestPermissions();
 ```
+
 ### Michelson-encoder
+
 We fixed a bug in `@taquito/Michelson-encoder` when there are nested `pair` and `or` without having `annots` consistently; the indexing key will have unexpected behaviour as below. This is an API behaviour-breaking change; if your dApp depends on the old behaviour or changing is too much effort, you can configure your `TezosToolkit` with `Tezos.setFieldNumberingStrategy('Legacy')` to keep the previous behaviour. But please note that this option might be removed in a future release.
 
 Previous behaviour - inner object's field numbers depend on the object's location in its parent, and start with '2'
+
 ```
 {
   '0': 'firstValue',
@@ -562,7 +656,9 @@ Previous behaviour - inner object's field numbers depend on the object's locatio
   }
 }
 ```
+
 New behaviour - inner object's field number will start with '0'
+
 ```
 {
   '0': 'firstValue',
@@ -575,6 +671,7 @@ New behaviour - inner object's field number will start with '0'
 ```
 
 ### New Features
+
 - `@tezos-x/octez.js` - Added staking pseudo operations (stake, unstake, finalize_unstake) to the Contract API. This includes support for `prepareProvider`, `estimationProvider`, and `rpcContractProvider` #2886
 - `@tezos-x/octez.js` - Added staking related pseudo operations (stake, unstake, finalize_unstake) to the Wallet API #2921
 - `@taquito/rpc` - Added various RPC endpoints related to Adaptive Issuance (Staking) #2676 #2678
@@ -589,6 +686,7 @@ New behaviour - inner object's field number will start with '0'
 - `@taquito/michel-codec` - Updated Michelson type definitions and validators to include the new Paris protocol ticket literals [PR#2940](https://github.com/ecadlabs/taquito/pull/2940)
 
 ### Internals
+
 - Updated protocol constants integration test for Paris protocol #2869
 - Configured keygen and integration test configs for Paris protocol #2888
 - Added forger integration test for protocol migrations #2850
@@ -600,15 +698,15 @@ New behaviour - inner object's field number will start with '0'
 - Updated the Paris protocol hash to reflect the latest Octez fix [PR](https://github.com/ecadlabs/taquito/pull/2974)
 
 ### Documentation
+
 - Updated documentation for new Adaptive Issuance related features [PR#2928](https://github.com/ecadlabs/taquito/pull/2928)
 - Added Tezos Foundation public testnet nodes to rpc_nodes on website #2933
-
 
 ### `@tezos-x/octez.js` - Added staking pseudo operations (stake, unstake, finalize_unstake) to the Contract API
 
 ```javascript
 const op = await Tezos.contract.stake({
-  amount: 100
+  amount: 100,
 });
 await op.confirmation();
 ```
@@ -616,10 +714,12 @@ await op.confirmation();
 ### `@tezos-x/octez.js` - Added staking pseudo operations (stake, unstake, finalize_unstake) to the Wallet API
 
 ```javascript
-const op = await Tezos.wallet.stake({
-  amount: 100,
-  mutez: false
-}).send();
+const op = await Tezos.wallet
+  .stake({
+    amount: 100,
+    mutez: false,
+  })
+  .send();
 await op.confirmation();
 ```
 
@@ -630,10 +730,12 @@ await op.confirmation();
 ## Summary
 
 ### New Features
+
 - `@taquito/timelock`- A new package for Timelocks have been introduced #2843. Users will now be able to create Chests, unlock Chests, and utilize Chests. For more information, please refer to this [document](https://taquito.io/docs/next/timelock)
 - `@taquito/beacon-wallet` - the `beacon-wallet` package is now bundled in a `.zip` file for [PR#2860](https://github.com/ecadlabs/taquito/pull/2860)
 
 ### Documentation
+
 - UX improvements to search funtionality on the octez.js website #2858
 - Simplify tutorial for building dApps [PR#2852](https://github.com/ecadlabs/taquito/pull/2852)
 - Updated several documentation blobs on the octez.js website [PR#2860](https://github.com/ecadlabs/taquito/pull/2860)
@@ -641,6 +743,7 @@ await op.confirmation();
 - Changed octez.js documentation website domain from `tezostaquito.io` to `taquito.io` [PR#2876](https://github.com/ecadlabs/taquito/pull/2876)
 
 ### Internals
+
 - Re-added Flextesa test scripts run `drain_delegate` and `ballot` operations' integration test against a Nairobi sandbox #2851
 - Updated Airgap's Beacon package to version 4.2.1. For more information on the release, click [here](https://github.com/airgap-it/beacon-sdk/releases/tag/v4.2.1) [PR#2874](https://github.com/ecadlabs/taquito/pull/2874)
 - Changed website build command for CloudFlare [PR#2804](https://github.com/ecadlabs/taquito/pull/2804)
@@ -648,34 +751,40 @@ await op.confirmation();
 # Taquito v19.1.0
 
 **Potential Breaking Changes**:
+
 - `@taquito/rpc` - replaced `OperationBalanceUpdatesItem` in favour of `OperationMetadataBalanceUpdates` #2817 #2827
 - `@tezos-x/octez.js` - Several optimizations made to fees and estimation in octez.js #2532
-    - removed `DEFAULT_GAS_LIMIT`, `DEFAULT_STORAGE_LIMIT`, `DEFAULT_FEE` in favour of `getRevealFee`, more details
-    - Added a small buffer to `gasLimit` (varying depending on operations)
-    - Reduced `suggestedFeeMutez` buffer from 100 to 20 per op
-    - Refined `gasLimit` and `storageLimit` according to `simulate_operation` results from the octez-client
+  - removed `DEFAULT_GAS_LIMIT`, `DEFAULT_STORAGE_LIMIT`, `DEFAULT_FEE` in favour of `getRevealFee`, more details
+  - Added a small buffer to `gasLimit` (varying depending on operations)
+  - Reduced `suggestedFeeMutez` buffer from 100 to 20 per op
+  - Refined `gasLimit` and `storageLimit` according to `simulate_operation` results from the octez-client
 
 ## Summary
 
 ### New Features
+
 - `@tezos-x/octez.js` - Added smart rollup execute outbox message operation #2321 (please note that this feature is not fully tested due to some parts requiring the use of `octez-client`)
-`@taquito/beacon-wallet` - added beacon-wallet bundle script to output a `.zip` bundle for browser only environments #2744
+  `@taquito/beacon-wallet` - added beacon-wallet bundle script to output a `.zip` bundle for browser only environments #2744
 
 ### Improvement
+
 - `@taquito/michelson-encoder` - replaced references of `[['unit']]` to be `UnitValue` instead [PR#2813](https://github.com/ecadlabs/taquito/pull/2813)
 - `@tezos-x/octez.js` - added 20 storageLimit buffer to prevent `storage_exhausted` error #2854
 - `@tezos-x/octez.js` - removed the storageLimit cap mechanism #2855
 
 ### Documentation
+
 - Added michel-codec to Typedoc documentation #2806
 - Updated `docs` and `examples` to use `methodsObject` instead of `methods` wherever needed [PR#2813](https://github.com/ecadlabs/taquito/pull/2813)
 - Removed `giganode` references from octez.js documentation [PR#2813](https://github.com/ecadlabs/taquito/pull/2813)
 
 ### Deprecation
+
 - `@taquito/utils` - Deprecated several util methods and updated their names into something more representative. Slight improvements to existing util methods #2372 #2274
 - `@tezos-x/octez.js` - Deprecated `methods` in favour of `methodsObject`. `methodsObject`'s syntax is more consistent with storage params, supports all Michelson data types, and will be maintained going forward #2813
 
 ### Internals
+
 - Updated various dependencies in octez.js website and the Test DApp (Sass, Firebase, Algoliasearch, Dotenv) [PR#2834](https://github.com/ecadlabs/taquito/pull/2834)
 - Updated integration tests to use network types instead of hard coding RPC URL #2164
 - Organized integration tests into more meaningful subfolders and renamed some files for brevity #2203
@@ -686,21 +795,24 @@ await op.confirmation();
 # Taquito v19.0.2
 
 ### Bug Fixes
-- `@taquito/local-forging` - Added the correct constants for staking/unstaking in the forger [PR#2824](https://github.com/ecadlabs/taquito/pull/2824)
 
+- `@taquito/local-forging` - Added the correct constants for staking/unstaking in the forger [PR#2824](https://github.com/ecadlabs/taquito/pull/2824)
 
 # Taquito v19.0.1
 
 ### Dependency updates
+
 - Updated Beacon version to v4.1.2 [PR#2811](https://github.com/ecadlabs/taquito/pull/2811)
 
 ### Documentation
+
 - Removed Sapling live code examples from the website due to large bundle sizes, static code examples will still exist [PR#2810](https://github.com/ecadlabs/taquito/pull/2810)
 
 # Taquito v19.0.0
 
 :::info
 You might have noticed that we jumped versions from v17.5.0 to v19.0.0 (no v18). We do this as an effort to be in parallel with the current Octez version.
+
 - Oxford - v18
 - Oxford2 - v19
 
@@ -711,22 +823,21 @@ octez.js v19 supports Oxford2, and not the previously named Oxford protocol.
 Oxford2 comes with quite a few breaking changes, please make sure to update your projects accordingly.
 
 Oxford2 changes:
+
 - Removed transactional rollups (tx rollup) references in octez.js #2650
 - Removed origination proof from smart rollups #2597
 - Updated all references of `endorsement` into `attestation` for Oxford2 #2599
 - `@taquito/rpc` - Updated RPC types for Oxford2 compatibility #2596
 
-
 ## Summary
 
 ### New Features
-- `@taquito/local-forging` - Added new property `whitelist` in smart rollup origination operation #2776
 
+- `@taquito/local-forging` - Added new property `whitelist` in smart rollup origination operation #2776
 
 ### Documentation
 
 ### Internals
-
 
 # octez.js 17.5.0
 
@@ -738,22 +849,27 @@ We are not expecting any breaking changes, but if there are any issues that you 
 ## Summary
 
 ### New Features
+
 - `@tezos-x/octez.js` - Expose and publicly `smartContractAbstractionSemantic` #2534
 
 ### Improvement
+
 - `@taquito/http-utils` - Removed `Axios` as a dependency of octez.js in favour of `fetch`/`node-fetch` #2461
+
 ### Documentation
+
 - Updated RPC nodes on the website [PR#2732](https://github.com/ecadlabs/taquito/pull/2732
 - Updated Michelson encoder documentation to reference `generateSchema` instead of the outdated `extractSchema` #2630
 - Added a octez.js Chatbot assistant for the octez.js website to help answer user questions #2684
 
 ### Internals
+
 - Removed archive node, and references to it in octez.js [PR#2743](https://github.com/ecadlabs/taquito/pull/2743)
 - Updated Sass, Lerna, and Firebase versions [PR#2749](https://github.com/ecadlabs/taquito/pull/2749)
 - Updated integration tests to increase speed and reliability #2741
 
-
 ## `@taquito/http-utils` - Removed `Axios` in favour of `fetch`
+
 The `taquito/http-utils` is responsible for handling all HTTP incoming and outgoing HTTP requests in octez.js. It utilized `Axios` as a main dependency to handle requests coming in and out of octez.js.
 
 Now that browsers and Node have supported `fetch` natively, it makes more sense for us to move towards it.
@@ -761,7 +877,6 @@ Now that browsers and Node have supported `fetch` natively, it makes more sense 
 Axios came with quite a large dependency tree, as well as multiple workarounds we needed to include for it to work properly (i.e. the `axios-fetch-adapter`)
 
 With this change we hope for a more stable HTTP handler in octez.js while reducing the package size at the same time.
-
 
 # Taquito v17.4.0
 
@@ -771,6 +886,7 @@ We have updated various dependencies to the latest version in this release. Plea
 ## Summary
 
 ### Documentation
+
 - Updated docs on flattening nested Michelson type pairs and unions #2458 #2328
 - Added docs to obtain operation hash before injecting an operation #2550
 - Added details of FA2 contract entrypoint `balance_of` param #2719
@@ -778,28 +894,32 @@ We have updated various dependencies to the latest version in this release. Plea
 - Updated the octez.js test dApp to output events #2707
 
 ### Internals
- - Updated various dependencies [PR#2693](https://github.com/ecadlabs/taquito/pull/2693) [PR#2720](https://github.com/ecadlabs/taquito/pull/2720)
- - Added detectOpenHandles argument when running Flextesa integration tests as temporary workaround to Jest throwing circular JSON errors [PR#2721](https://github.com/ecadlabs/taquito/pull/2721)
 
+- Updated various dependencies [PR#2693](https://github.com/ecadlabs/taquito/pull/2693) [PR#2720](https://github.com/ecadlabs/taquito/pull/2720)
+- Added detectOpenHandles argument when running Flextesa integration tests as temporary workaround to Jest throwing circular JSON errors [PR#2721](https://github.com/ecadlabs/taquito/pull/2721)
 
 # Taquito v17.3.2
 
 ## Summary
+
 - Updated Beacon version to v4.0.12
 
 ## Documentation
+
 - Updated website documentation to group sections by logical order instead of alphabetical #2665
 - Added detail for `getBalance()` method documentation that it returns balances in mutez #2495
 
 ## Internals
+
 - Minor typo fix on variable name in `RpcEstimateProvider` [PR#2669](https://github.com/ecadlabs/taquito/pull/2669)
 - Added `@taquito/core` as an explicit dependency on other packages [PR#2673](https://github.com/ecadlabs/taquito/pull/2673)
 
 # Taquito v17.3.1
 
 ## Summary
+
 - This is a patch release to upgrade `@airgap/beacon-sdk` and `@airgap/beacon-dapp` packages to `v4.0.10` [PR#2649](https://github.com/ecadlabs/taquito/pull/2649)
-- Updating license to `Apache-2.0` in `package.json` files  [PR#2636](https://github.com/ecadlabs/taquito/pull/2636)
+- Updating license to `Apache-2.0` in `package.json` files [PR#2636](https://github.com/ecadlabs/taquito/pull/2636)
 - Updated the ledger dependencies [PR#2645](https://github.com/ecadlabs/taquito/pull/2645)
 - Applied dependency upgrades in website suggested by dependabot [PR#2645](https://github.com/ecadlabs/taquito/pull/2645)
 
@@ -881,9 +1001,11 @@ But now it returns:
     },
 }
 ```
+
 ### Internals
- * `integration-tests` config improvement [#2163](https://github.com/ecadlabs/taquito/issues/2163)
- * update RPC urls to align with the updated infrastructure [PR#2576](https://github.com/ecadlabs/taquito/pull/2576) [#2633](https://github.com/ecadlabs/taquito/pull/2633)
+
+- `integration-tests` config improvement [#2163](https://github.com/ecadlabs/taquito/issues/2163)
+- update RPC urls to align with the updated infrastructure [PR#2576](https://github.com/ecadlabs/taquito/pull/2576) [#2633](https://github.com/ecadlabs/taquito/pull/2633)
 
 ## `@taquito/michelson-encoder` - Validate that an `OrToken`'s `EncodeObject` method only accepts an object with a single field
 
@@ -947,6 +1069,7 @@ Previously, `schema` would be equal to:
     }
 }
 ```
+
 Which was inconsistent with what `Execute` created and what `EncodeObject` accepted.
 Now it is:
 
@@ -966,34 +1089,42 @@ Now it is:
 
 **Potential Breaking Changes** :
 Further improved error classes
- - In `@taquito/sapling` `InvalidMerkleRootError` is renamed to `InvalidMerkleTreeError`
- - In `@taquito/sapling` `InvalidParameter` is renamed to `SaplingTransactionViewerError`
- - In `@taquito/michel-codec` `InvalidContractError` is renamed to `InvalidMichelsonError`
+
+- In `@taquito/sapling` `InvalidMerkleRootError` is renamed to `InvalidMerkleTreeError`
+- In `@taquito/sapling` `InvalidParameter` is renamed to `SaplingTransactionViewerError`
+- In `@taquito/michel-codec` `InvalidContractError` is renamed to `InvalidMichelsonError`
 
 ## Summary
 
 ### New Features
- - Added new RPC endpoint `simulateOperation` #2548
- - Added support for signing `failingNoop` operation in `Contract API` and `Wallet API` #952 #2507
+
+- Added new RPC endpoint `simulateOperation` #2548
+- Added support for signing `failingNoop` operation in `Contract API` and `Wallet API` #952 #2507
 
 ### Bug Fixes
+
 - Updated sapling live code example contract on website #2542
 
 ### Improvement
- Improved error classes for the following packages:
-  - `@taquito-sapling` #2568
-  - `@taquito-michel-codec` #2568
+
+Improved error classes for the following packages:
+
+- `@taquito-sapling` #2568
+- `@taquito-michel-codec` #2568
 
 ### Documentation
- - Updated local forger documentation #2571
- - Adjusted website wallet page design and removed website lambda view page broken link #1652
+
+- Updated local forger documentation #2571
+- Adjusted website wallet page design and removed website lambda view page broken link #1652
 
 ### Internals
- - Updated beacon dependency to v4.0.6 #2584
- - Updated estimation process to use `simulateOperation()` instead of `runOperation()` #2548
- - Updated website dependencies [PR#2587](https://github.com/ecadlabs/taquito/pull/2587)
+
+- Updated beacon dependency to v4.0.6 #2584
+- Updated estimation process to use `simulateOperation()` instead of `runOperation()` #2548
+- Updated website dependencies [PR#2587](https://github.com/ecadlabs/taquito/pull/2587)
 
 ## `@tezos-x/octez.js` - Add support of failing_noop operation in Contract and Wallet API
+
 octez.js now supports the `failing_noop` operation
 
 ```
@@ -1037,19 +1168,27 @@ const op = {
 
 let simulate = await Tezos.rpc.simulateOperation(op)).contents[0]
 ```
+
 # Taquito v17.1.1
+
 ## Summary
+
 This is a patch release to fix a potential issue with `verifySignature()` and `hex2buf()` util method.
+
 ### Bug Fixes
+
 - Fixed a potentially exploitable behaviour where `verifySignature()` was allowing an appended character to a message payload and still verify the signature correctly. It has now been fixed to validate against odd length characters #2578
 
 # Taquito v17.1.0
+
 **Potential Breaking Changes**
+
 - Updated RxJS version from v6.6.3 to v7.8.1
-- Updated TS version into  v4.2.4
+- Updated TS version into v4.2.4
 - Please be wary due to the RxJS version upgrade, we've been seeing intermittent timeouts when testing against a Flextesa sandbox. This behaviour is **not** present when using it against a regular node (Mainnet, Nairobinet, etc). We are still investigating what the cause might be. #2261
 
 Some other subtle changes that might affect some developers:
+
 - In `@tezos-x/octez.js` - `IntegerError` is renamed to `InvalidBalanceError`
 - In `@tezos-x/octez.js` - `PrepareProvider` used to throw `RevealEstimateError` now will throw `PublicKeyNotFoundError`
 - In `@taquito/tzip-16` - `MetadataNotFound` is renamed to `ContractMetadataNotFoundError`
@@ -1063,23 +1202,30 @@ Some other subtle changes that might affect some developers:
 - In `@taquito/tzip-16` - `ForbiddenInstructionInViewCode` is renamed to `ForbiddenInstructionInViewCodeError`
 
 ## Summary
+
 ### New Features
+
 - Exposed the injector to be customizable from the TezosToolkit class #1344
 
 ### Improvement
+
 - Simplified generated Lambda for `transferToContract` [PR#2404](https://github.com/ecadlabs/taquito/pull/2404)
 - Improved error classes for these following packages:
-    - `@tezos-x/octez.js` [PR#2559](https://github.com/ecadlabs/taquito/pull/2559)
-    - `@taquito/michelson-encoder` #1995
-    - `@taquito/tzip12` [PR#2559](https://github.com/ecadlabs/taquito/pull/2559)
-    - `@taquito/tzip16` [PR#2559](https://github.com/ecadlabs/taquito/pull/2559)
+  - `@tezos-x/octez.js` [PR#2559](https://github.com/ecadlabs/taquito/pull/2559)
+  - `@taquito/michelson-encoder` #1995
+  - `@taquito/tzip12` [PR#2559](https://github.com/ecadlabs/taquito/pull/2559)
+  - `@taquito/tzip16` [PR#2559](https://github.com/ecadlabs/taquito/pull/2559)
 
 ### Internals
+
 - Updated version dependencies for `Sass` and `Dotenv` in `/website` [PR#2560](https://github.com/ecadlabs/taquito/pull/2560)
 
 # Taquito v17
+
 ### Potential Breaking Changes
+
 Protocol Nairobi comes with a couple potential breaking changes for our users:
+
 - `@tezos-x/octez.js` - Update gas limit changes that pertains to each different curve in Protocol N #2447
 - `@taquito/rpc` - Update operation result of `sc_rollup_cement_result` to have the newly added field #2448
 - Changed error class names #2505 :
@@ -1088,88 +1234,105 @@ Protocol Nairobi comes with a couple potential breaking changes for our users:
   - `@taquito/remote-signer` - `SignatureVerificationFailedError` renamed to `SignatureVerificationError`
 
 ## Summary
+
 ### Nairobi Support
+
 - `@tezos-x/octez.js` - Update gas limit changes that pertains to each different curve in Protocol N #2447
 - `@taquito/rpc` - Update operation result of `sc_rollup_cement_result` to have the newly added field #2448
 
 ### New Features
+
 - `@tezos-x/octez.js` & `@taquito/michelson-encoder`- Introduced a new feature called `EventAbstraction` that provides an abstraction to Events, similar to `ContractAbstraction` #2128
 -
+
 ### Bug Fixes
+
 - `@tezos-x/octez.js` - Fixed contract call estimation to check for unrevealed keys #2500
 
 ### Testing
+
 - Fixed ballot operation testing to have a dynamic wait #2403
 
 ### Improvement
+
 - Further improved error classes and updated error class hierarchy for the following packages #2509 & #2505:
-    - `@taquito/http-utils`
-    - `@taquito/contracts-library`
-    - `@taquito/beacon-wallet`
-    - `@taquito/ledger-signer`
-    - `@taquito/remote-signer`
+  - `@taquito/http-utils`
+  - `@taquito/contracts-library`
+  - `@taquito/beacon-wallet`
+  - `@taquito/ledger-signer`
+  - `@taquito/remote-signer`
 - Improved error capturing/validation for RPC calls #1996
 
 ### Documentation
+
 - Added docs for making contract calls with JSON Michelson as a workaround to limitations that are introduced by complex contract call parameters #2443
 
 ### Internals
+
 - Upgrade `netlify-cli` package to fix CI issues [PR#2496](https://github.com/ecadlabs/taquito/pull/2496)
+
 # Taquito v16.2.0
+
 ## **Potential Breaking Changes**:
+
 - Some error classes may have been moved to the `@taquito/core` package. Note to developers if they are exporting any error classes to capture errors, there might be a need to adjust the export path.
 - We have an ongoing error class refactoring which includes ticket #1992 (create an error class hierarchy), #1993 (consolidate duplicate errors in octez.js) and #1994 (improve error classes in individual packages, namely `@taquito/utils`, `@taquito/local-forging` and `@taquito/signer`). Here are a list of notable changes:
-    1. `@taquito/sapling` Class SaplingToolkit function prepareUnshieldedTransaction used to throw InvalidKeyError now throw a InvalidAddressError instead
-    2. `@taquito/rpc` when validateContractAddress used to throw InvalidAddressError will now throw InvalidContractAddressError.
-    3. `@taquito/sapling` prepareUnshieldedTransaction function when validateDestinationImplicitAddress used to throw InvalidAddressError now throw InvalidKeyHashError
-    4. `@taquito/local-forging` smartRollupAddressDecoder used to throw InvalidAddressError now throw InvalidSmartRollupAddressError
-    5. `@taquito/local-forging` used to have class InvalidSmartRollupContractAddressError now is InvalidSmartRollupCommitmentHashError
-    6. `@taquito/local-forging` function smartRollupContractAddressEncoder rename to smartRollupCommitmentHashEncoder
-    7. `@taquito/signer` PrivateKeyError is replaced by common error InvalidKeyError from `@taquito/core`
+  1. `@taquito/sapling` Class SaplingToolkit function prepareUnshieldedTransaction used to throw InvalidKeyError now throw a InvalidAddressError instead
+  2. `@taquito/rpc` when validateContractAddress used to throw InvalidAddressError will now throw InvalidContractAddressError.
+  3. `@taquito/sapling` prepareUnshieldedTransaction function when validateDestinationImplicitAddress used to throw InvalidAddressError now throw InvalidKeyHashError
+  4. `@taquito/local-forging` smartRollupAddressDecoder used to throw InvalidAddressError now throw InvalidSmartRollupAddressError
+  5. `@taquito/local-forging` used to have class InvalidSmartRollupContractAddressError now is InvalidSmartRollupCommitmentHashError
+  6. `@taquito/local-forging` function smartRollupContractAddressEncoder rename to smartRollupCommitmentHashEncoder
+  7. `@taquito/signer` PrivateKeyError is replaced by common error InvalidKeyError from `@taquito/core`
 
-- In `@taquito/michelson-encoder` we introduced a new semantic `{ Some: null}`  to EncodeObject() for nested options type like (option (option nat)). The old semantic still works when making contract calls but will look to deprecated them in the future as table below. And the corresponding `Execute()` will now return new semantic `{ Some: 1 }` as previously return `1` will be deprecated soon. #2344
-![image](https://github.com/ecadlabs/taquito/assets/106410553/455e7f9f-9d6a-4503-bb89-8f337c322063)
+- In `@taquito/michelson-encoder` we introduced a new semantic `{ Some: null}` to EncodeObject() for nested options type like (option (option nat)). The old semantic still works when making contract calls but will look to deprecated them in the future as table below. And the corresponding `Execute()` will now return new semantic `{ Some: 1 }` as previously return `1` will be deprecated soon. #2344
+  ![image](https://github.com/ecadlabs/taquito/assets/106410553/455e7f9f-9d6a-4503-bb89-8f337c322063)
 
 **Note**: There are also significant (backwards compatible) changes to the `@tezos-x/octez.js` package, largely regarding the flow of preparing, estimating, forging, and injecting operations into a node. No breaking changes are expected, but users are welcomed to reach out to the team if any issues arise.
 
 ## Summary
+
 ### New Features
+
 - Introduction of the new `@taquito/core` package, which will contain important types and shared classes #1992
 
-
 ### Bug Fixes
+
 - Fixed contract calls with nested `option` with `Some None` #2344
 - Fixed a broken `isNode` check that checks whether the runtime environment is a Node environment or not [PR#2498](https://github.com/ecadlabs/taquito/pull/2498)
 
 ### Improvement
+
 - `@tezos-x/octez.js` - Tweaked the functionality of `PrepareProvider` to not have coupling with Estimation, it will now output `PreparedOperation` with default fees, gas limits and, storage limits #2257
 - `@tezos-x/octez.js` - Added a filter for events listener to exclude failed events #2319
 - `@taquito/utils` - Updated address validation to include smart rollup addresses #2444
 - Removed duplicate error classes and did a small audit to streamline them across all packages #1993
 - Improved error messages and fix relevant error classes in `@taquito/local-forging` and `@taquito/signer` #1994
 
-
 ### Documentation
+
 - Updated old Michelson code in our smart contract documentation #2482
 - Updated `README` to reference Mumbainet #2459
 - Updated wrong example in docs for Tezos domains #2436
 - Added extra detail on complex parameter calls in the docs #2443
 
-
 ### Internals
+
 - `OperationEmitter` class in `@tezos-x/octez.js` have been replaced with `PrepareProvider` and the `Provider` abstract class #2257
-    - RpcContractProvider, RpcEstimateProvider, RpcBatchProvider, and RpcTzProvider no longer extends `OperationEmitter`, and is replaced with a more lightweight abstract class `Provider` #2428, #2429, #2430, #2431
+  - RpcContractProvider, RpcEstimateProvider, RpcBatchProvider, and RpcTzProvider no longer extends `OperationEmitter`, and is replaced with a more lightweight abstract class `Provider` #2428, #2429, #2430, #2431
 - Removed the dependency `axios-fetch-adapter` and adapted the code directly into octez.js [PR#2457](https://github.com/ecadlabs/taquito/pull/2457)
 
 ### `@tezos-x/octez.js` - Added a filter for events listener to exclude failed events
+
 Introduces a new filter `excludeFailedOperations` to determine whether you'd want to filter out failed events or not
+
 ```typescript
 const Tezos = new TezosToolkit(RPC_URL);
 
 Tezos.setStreamProvider(
   Tezos.getFactory(PollingSubscribeProvider)({
     shouldObservableSubscriptionRetry: true,
-    pollingIntervalMilliseconds: 1500
+    pollingIntervalMilliseconds: 1500,
   })
 );
 
@@ -1177,41 +1340,47 @@ try {
   const sub = Tezos.stream.subscribeEvent({
     tag: 'tagName',
     address: 'KT1_CONTRACT_ADDRESS',
-    excludeFailedOperations: true
+    excludeFailedOperations: true,
   });
 
   sub.on('data', console.log);
-
 } catch (e) {
   console.log(e);
 }
 ```
 
 ### `@tezos-x/octez.js` - Tweaked the functionality of `PrepareProvider`
+
 The `PrepareProvider` is a somewhat new feature to octez.js that allows users to independently create a `PreparedOperation` object. It's behaviour is slightly changed so that it **does not** estimate directly when preparing. The estimation and the preparation process are now 2 separate process, removing the circular dependency it used to have.
 
 # Taquito v16.1.1
+
 ## Bug Fixes
+
 - Fixed an issue where the package forked from `vespaiach/axios-fetch-adapter` was not able to be resolved by some package managers. We have since published the fork on NPM as `@taquito/axios-fetch-adapter` [PR #2427](https://github.com/ecadlabs/taquito/pull/2427)
 
 # Taquito v16.1.0
+
 ## Summary
+
 - `@taquito/rpc` - Added RPC endpoint to add pending transactions in mempool #2382
 - `@taquito/rpc` - Added support for types of smart rollup operations in the RPC package #2409
-    - `smart_rollup_publish`
-    - `smart_rollup_cement`
-    - `smart_rollup_recover_bond`
-    - `smart_rollup_refute`
-    - `smart_rollup_timeout`
+  - `smart_rollup_publish`
+  - `smart_rollup_cement`
+  - `smart_rollup_recover_bond`
+  - `smart_rollup_refute`
+  - `smart_rollup_timeout`
 - `@tezos-x/octez.js` - Added support for `contractCall()` in the estimate provider #2019
 - `@tezos-x/octez.js` - Added support for `smart_rollup_originate` operation #2306
 - `@tezos-x/octez.js` - Added utility functions in prepare provider to accomodate forging and operation pre-apply (dry runs) #2256
 - `@taquito/local-forging` - Added support for `set_deposits_limit` in the local forger [PR #2237](https://github.com/ecadlabs/taquito/pull/2237)
 
 ### Bug Fixes
+
 - Fixed a bug with the Prepare Provider where operation counters get carried over in subsequent method calls #2425
 
 ### Documentation
+
 - Fixed typo in octez.js README [PR #2275](https://github.com/ecadlabs/taquito/pull/2275)
 - Updated example in signing documentation [PR #2399](https://github.com/ecadlabs/taquito/pull/2399)
 - Added Exaion node as a commercial provider [PR #2401](https://github.com/ecadlabs/taquito/pull/2401)
@@ -1227,6 +1396,7 @@ await rpcClient.getPendingOperations();
 ### `@tezos-x/octez.js` - Added support for `contractCall()` in the estimate provider
 
 The estimate provider now supports estimates for contract calls directly, and is usable as such:
+
 ```typescript
 const contract = await Tezos.contract.at(contractAddress!);
 const opEntrypoint = contract.methods.default(5);
@@ -1234,6 +1404,7 @@ const estimate = await Tezos.estimate.contractCall(opEntrypoint);
 ```
 
 ### `@tezos-x/octez.js` - Added `smart_rollup_originate` operation support
+
 Added support in the contract provider to inject `smart_rollup_originate` operations
 
 ```typescript
@@ -1245,7 +1416,9 @@ const op = await Tezos.contract.smartRollupOriginate({
 ```
 
 ### `@tezos-x/octez.js` - Added utility functions in prepare provider to accomodate forging and operation pre-apply (dry runs)
+
 Provided 2 utility functions to convert results from the `PrepareProvider` (`PreparedOperation` type objects) into `ForgeParams` and `PreapplyParams`
+
 ```typescript!
 // pre-apply
 const prepared = await Tezos.prepare.transaction({
@@ -1265,31 +1438,35 @@ const forgedBytes = await forger.forge(params);
 ```
 
 # Taquito v16.0.0
+
 ## Summary
 
 ### Mumbai Support
+
 - `@tezos-x/octez.js` Support new operation `smart_rollup_add_messages` #2309
 - `@tezos-x/octez.js` Updated `transferTicket` operation in the contract API to support ticket transfers between implicit accounts #2320
 - `@taquito/local-forging` Support new Mumbai operations #2308
-    - `smart_rollup_originate`,
-    - `smart_rollup_add_messages`,
-    - `smart_rollup_execute_outbox_message`
+  - `smart_rollup_originate`,
+  - `smart_rollup_add_messages`,
+  - `smart_rollup_execute_outbox_message`
 - `@taquito/local-forging` updated validation to allow tz4 addresses #2350
 - `@taquito/rpc` support Mumbai operation types in the RPC package #2307
 - `@taquito/rpc` added Mumbai protocol constants in the RPC package #2375
 - `@taquito/rpc` removed `consumed_gas` property in `update_consensus_key` return type in the RPC package #2273
 - `@taquito/rpc` added new RPC endpoints #2270:
-    - `getTicketBalance`
-    - `getAllTicketBalances`
+  - `getTicketBalance`
+  - `getAllTicketBalances`
 - `@taquito/michel-codec` Added support for `bytes` in these following Michelson instructions #2267:
-    - `AND`, `OR`, `XOR`, `NOT`, `LSL`, `LSR`
+  - `AND`, `OR`, `XOR`, `NOT`, `LSL`, `LSR`
 - `@taquito/michel-codec` added support for bytes-nat conversion in Michelson #2268
 
 ### Bug Fixes
+
 - Fixed broken website live examples #2305
 - Updated estimation to validate against decimal values to prevent unwanted errors #2318
 
 ### Documentation
+
 - Removed Cryptonomic links from the commercial RPC list on the website #2332
 - Added documentation on `MANAGER_LAMBDA` #1718
 - Added documentation on ~100 most popular contract entrypoint parameter examples on Tezos #2153
@@ -1304,8 +1481,8 @@ const forgedBytes = await forger.forge(params);
 - Updated Ledger examples to point to Ghostnet [PR](https://github.com/ecadlabs/taquito/pull/2365)
 - Updated README to include cases for specific Linux distros [PR](https://github.com/ecadlabs/taquito/pull/2330)
 
-
 ### Internals
+
 - Removed Kathmandu references from local-forger #2131
 - Bumped Node versions to 16 [PR](https://github.com/ecadlabs/taquito/pull/2359) #1845
 - Delete TezEdge workflows [PR](https://github.com/ecadlabs/taquito/pull/2364)
@@ -1313,17 +1490,21 @@ const forgedBytes = await forger.forge(params);
 - Removed references to older protocols in octez.js and updated integration tests and examples #485
 
 ## `@tezos-x/octez.js` - Support for new operation `smart_rollup_add_messages`
+
 Support for a new manager operation to add messages to a smart rollup inbox have been added, and can be used as follows:
+
 ```typescript
 const op = await Tezos.contract.smartRollupAddMessages({
   message: [
-    '0000000031010000000b48656c6c6f20776f726c6401bdb6f61e4f12c952f807ae7d3341af5367887dac000000000764656661756c74'
-  ]
+    '0000000031010000000b48656c6c6f20776f726c6401bdb6f61e4f12c952f807ae7d3341af5367887dac000000000764656661756c74',
+  ],
 });
 ```
 
 ## `@taquito/rpc` - Support for new Mumbai operation types in the RPC package
+
 Added a few new types to accommodate for Mumbai protocol changes:
+
 - `OperationContentsAndResultSmartRollupOriginate`
 - `OperationContentsAndResultSmartRollupAddMessages`
 - `OperationContentsAndResultSmartRollupExecuteOutboxMessage`
@@ -1335,29 +1516,36 @@ Added a few new types to accommodate for Mumbai protocol changes:
 - `OperationContentsAndResultMetadataSmartRollupExecuteOutboxMessage`
 
 ## `@taquito/michel-codec` - Added support for `bytes`
+
 The Mumbai protocol update introduces a change where the following Michelson instructions support `bytes`: `AND`, `OR`, `XOR`, `NOT`, `LSL`, `LSR`
 
 These instructions now have bytes support of the opcodes. For more information, refer to [this document](https://gitlab.com/tezos/tezos/-/merge_requests/6055)
 
-
 ## `@taquito/michel-codec` - Added support for bytes-nat conversion in Michelson
+
 The Mumbai protocol update now supports conversion between `bytes` and `nat` as well as `bytes` and `int`
 
 For more information, refer to [this page](https://gitlab.com/tezos/tezos/-/merge_requests/6681)
+
 # Taquito v15.1.0
+
 ## Summary
 
 ### New Features
+
 - `@tezos-x/octez.js` New provider support `PrepareProvider` to facilitate preparation of operations in octez.js. #2020
 - `@tezos-x/octez.js` Support new operation `increase_paid_storage` on the wallet API #1768
 
 ### Bug Fixes
+
 - Fixed a bug where `axios-fetch-adapter` was not returning the response body from errors, causing the wrong error to be captured by the calling method #2187
 
 ### Documentation
+
 - Update octez.js website live code examples to use Ghostnet endpoint. #2224
 
 ### Internals
+
 - Updated Beacon version to v3.3.1 [PR](https://github.com/ecadlabs/taquito/pull/2266)
 - Updated octez.js Github Workflows to use Node LTS/Gallium (v16) [PR](https://github.com/ecadlabs/taquito/pull/2301)
 
@@ -1368,12 +1556,13 @@ For more information, refer to [this page](https://gitlab.com/tezos/tezos/-/merg
 ```typescript
 // example of a transaction operation preparation
 const prepare = await Tezos.prepare.transaction({
-    to: 'tz1KvJCU5cNdz5RAS3diEtdRvS9wfhRC7Cwj',
-    amount: 5
+  to: 'tz1KvJCU5cNdz5RAS3diEtdRvS9wfhRC7Cwj',
+  amount: 5,
 });
 ```
 
 The expected output will look something like this:
+
 ```typescript
 {
         opOb: {
@@ -1397,39 +1586,50 @@ The expected output will look something like this:
 ```
 
 ## `@tezos-x/octez.js` - Increase paid storage operation support in the wallet API
+
 octez.js now supports `increase_paid_storage` operation in the Wallet API (previously only available in the Contract API).
 
 ```typescript
-const op = await Tezos.wallet.increasePaidStorage({
-  amount: 1,
-  destination: simpleContractAddress
-}).send();
+const op = await Tezos.wallet
+  .increasePaidStorage({
+    amount: 1,
+    destination: simpleContractAddress,
+  })
+  .send();
 ```
 
 # Taquito v15.0.1
+
 ## Hotfix
+
 - Fixed a bug where the `local-forging` package was using an outdated version of the codec when it's instantiated without passing in a protocol hash. Updated so that the default value uses the current protocol hash. #2242
 
 ## Summary
+
 - `@tezos-x/octez.js` Support new operation `drain_delegate` in the Contract API #2068
 - `@taquito/local-forging` Support new operation `drain_delegate` #2065
 
 ## Bug Fixes
+
 - `@taquito/michelson-encoder` fix MapTypecheck bug triggered by nested maps ending with a big_map #1762
 
 ### Documentation
+
 - Auto hide sticky navbar for mobile view to increase readability on mobile devices.
-PR: https://github.com/ecadlabs/taquito/pull/2236
+  PR: https://github.com/ecadlabs/taquito/pull/2236
 
 ### Internals
+
 - Start running integration tests against testnets for external PRs.
-PR: https://github.com/ecadlabs/taquito/pull/2221
+  PR: https://github.com/ecadlabs/taquito/pull/2221
 
 ## `@tezos-x/octez.js` drain_delegate operation support
+
 A new manager operation related to the consensus_key change in Lima has been added:
+
 ```typescript
 const op = await Tezos.contract.updateConsensusKey({
-    pk: 'PUBLIC_KEY'
+  pk: 'PUBLIC_KEY',
 });
 
 await op.confirmation();
@@ -1438,11 +1638,13 @@ await op.confirmation();
 # Taquito v15.0.0
 
 **Breaking Changes**:
+
 - Some types have changed to support the `consensus_key` change in Protocol Lima. Refer to issue #2069 for more details
 
 ## Summary
 
 ### Lima Support
+
 - `@tezos-x/octez.js` Support new operation `update_consensus_key` in the Contract API #2067
 - `@taquito/local-forging` Support new operation `update_consensus_key` #2065
 - `@taquito/local-forging` Support new instruction `LAMBDA_REC` and value `Lambda_rec` and support changes related to the `TICKET` instruction #2074 #2072
@@ -1452,40 +1654,50 @@ await op.confirmation();
 - `@taquito/michel-codec` Support new instruction `LAMBDA_REC` and value `Lambda_rec` and support changes related to the `TICKET` instruction #2181 #2075
 
 ### Testing
+
 - Removed tests that referenced Timelock feature (`CHEST_OPEN` Michelson instruction) #2070
 - Added tests for `unparsing_mode` #2077
 - Updated tx-rollup tests to use address from config instead of hard coded addresses #2170
 - Fixed local-forging tests failing in Limanet #2158
 
 ### Documentation
+
 - Added documentation for consensus key operations (`update_consensus_key`) #2067 #2068
+
 ### Internals
+
 - Removed legacy `lerna bootstrap` commands from build workflow #2188
 
 ### Deprecation
+
 `@taquito/tezbridge-signer` and `@taquito/tezbridge-wallet` has been deprecated, and references to them have been removed from the codebase #2080
 
 ### Others
+
 - Removed Jakarta protocol references in on chain view related code #2098
 - Removed temple-wallet/dapp dependency from octez.js website that was producing build errors [PR](https://github.com/ecadlabs/taquito/pull/2202)
 
-
 ## `@tezos-x/octez.js` - Added support for `update_consensus_key`
+
 A new manager operation to update consensus keys can be used as follows:
+
 ```typescript
 const op = await Tezos.contract.updateConsensusKey({
-    pk: 'PUBLIC_KEY'
+  pk: 'PUBLIC_KEY',
 });
 
 await op.confirmation();
 ```
 
 ## `@taquito/local-forging` - Added support for Lima operations and instructions
+
 - Updated local-forger to forge and parse `update_consensus_key` and `drain_delegate`
 - Updated local-forger to support the new Michelson instruction `LAMBDA_REC` and the new data constructor named `Lambda_rec` which enables recursive LAMBDA
 
 ## `@taquito/rpc` - Updated types to support Lima protocol
+
 Added a few new types to accommodate Lima protocol changes:
+
 - `OperationContentsUpdateConsensusKey`
 - `OperationContentsDrainDelegate`
 - `OperationContentsAndResultMetadataUpdateConsensusKey`
@@ -1497,6 +1709,7 @@ Added a few new types to accommodate Lima protocol changes:
 Also updates to existing types to accommodate changes regarding consensus keys.
 
 ## `@taquito/michelson-encoder` - Support new type `TICKET_DEPRECATED`
+
 - Added support for the new Michelson type `TICKET_DEPRECATED`. More info here: https://tezos.gitlab.io/protocols/015_lima.html#breaking-changes
 
 ## `@taquito/michel-codec` - Support new instruction `LAMBDA_REC` and value `Lambda_rec`
@@ -1506,7 +1719,9 @@ The Lima protocol introduces a new Michelson type named `LAMBDA_REC`, and a new 
 The `TICKET` instruction now returns an optional ticket instead of a ticket. This change has also been reflected in the michel-codec parser.
 
 # Taquito v14.2.0-beta
+
 ## Summary
+
 ### New Features
 
 - `@tezos-x/octez.js` - Added support for `Ballot` operation in the Contract API #1630
@@ -1514,42 +1729,54 @@ The `TICKET` instruction now returns an optional ticket instead of a ticket. Thi
 - `@taquito/signer` - Added new method `fromMnemonic` to the `InMemorySigner` #1228
 
 ### Documentation
+
 - Updated and organized octez.js README to prepare for translations to other languages #2015
 
 ### Internals
+
 - Added integration test for `Ballot` and `Proposals` operation #2087
 - Configured NPM workspaces for octez.js to improve build process #2127
 
 ## `@tezos-x/octez.js` - Added support for `Ballot` operation
+
 We added a new Contract API method to support the `Ballot` operation. Bakers can now cast their ballots using this operation from octez.js as follows:
 
 ```typescript
 const op = await Tezos.contract.ballot({
   proposal: 'PROTOCOL_HASH',
-  ballot: 'BALLOT_VOTE_STRING'
+  ballot: 'BALLOT_VOTE_STRING',
 });
 
 await op.confirmation();
 ```
 
 ## `@tezos-x/octez.js` - Added support for `Proposals` operation
+
 Alongside the `Ballot` operation support, bakers can now also submit proposals using the `Proposals` operation that can be used as follows:
 
 ```typescript
 const op = await Tezos.contract.proposals({
-  proposals: ['PROTOCOL_HASH1', 'PROTOCOL_HASH2']
+  proposals: ['PROTOCOL_HASH1', 'PROTOCOL_HASH2'],
 });
 
 await op.confirmation();
 ```
 
 ## `@taquito/signer` - Added new method `fromMnemonic`
+
 Users can now create an `InMemorySigner` instance using the `fromMnemonic` method for a tz1, tz2, or tz3 address: ed25519, secp256k1, or p256 respectively.
 
 ```typescript
-const mnemonic = 'author crumble medal dose ribbon permit ankle sport final hood shadow vessel horn hawk enter zebra prefer devote captain during fly found despair business'
-const signer = InMemorySigner.fromMnemonic({ mnemonic, password, derivationPath: "44h/1729h/1/0", curve: 'secp256k1' });
+const mnemonic =
+  'author crumble medal dose ribbon permit ankle sport final hood shadow vessel horn hawk enter zebra prefer devote captain during fly found despair business';
+const signer = InMemorySigner.fromMnemonic({
+  mnemonic,
+  password,
+  derivationPath: '44h/1729h/1/0',
+  curve: 'secp256k1',
+});
 ```
+
 # Taquito v14.1.0-beta
 
 ## Summary
@@ -1561,32 +1788,35 @@ const signer = InMemorySigner.fromMnemonic({ mnemonic, password, derivationPath:
 - `@taquito/ledger-signer` - Add support for bip25519 curve #1869
 
 ### Bug fixes
+
 - `@taquito/http-utils` - Issue using octez.js in service worker environment #2025
 - `@tezos-x/octez.js` - `confirmationPollingTimeoutSecond` not working #2006
 - `@tezos-x/octez.js` - `PollingSubscribeProvider` used in contract confirmations might skip blocks #1783
 - `@taquito/michelson-encoder` - Fixed Michelson encoder for timestamp to handle numbers being passed #1888
 
 ### Improvement
+
 - `@tezos-x/octez.js` - Allow users to customize the parser #660
 - `@tezos-x/octez.js` - Accept amount, `fee`, `gasLimit`, and `storageLimit` as parameters of the `withContractCall` method #1717
 - `@taquito/tzip16` - Add more high level functions for tzip16 metadata #584
 - `@tezos-x/octez.js` - Support `string` or `number` for the `balance` property for contract origination #1795
 
 ### Documentation
+
 - Documentation page dedicated to multi-sig: https://taquito.io/docs/next/multisig_doc/
 - Fixed broken link in the Wallet doc #1865
 
 ### Others
+
 - `@taquito-beacon-wallet` - Updated `@airgap/beacon-dapp` to version 3.3.0: https://github.com/airgap-it/beacon-sdk/releases/tag/v3.3.0
 
 ### Internals
+
 - Speed up build with nx #2013
 - Integrate the taquito-test-dapp into the octez.js pipeline #663
 - Add a flextesa node to our CI pipeline #457
 - Add unit tests for taquito-beacon-wallet #1863
 - Adapt integration tests config so they can be run against a sandbox. #1971
-
-
 
 ## `@tezos-x/octez.js` - Provide a subscriber to events
 
@@ -1598,11 +1828,10 @@ const Tezos = new TezosToolkit(RPC_URL);
 try {
   const sub = Tezos.stream.subscribeEvent({
     tag: 'tagName',
-    address: 'KT1_CONTRACT_ADDRESS'
+    address: 'KT1_CONTRACT_ADDRESS',
   });
 
   sub.on('data', console.log);
-
 } catch (e) {
   console.log(e);
 }
@@ -1629,12 +1858,7 @@ We added support for the bip32-ed25519 derivation scheme in the ledger package. 
 
 ```typescript
 const transport = await TransportNodeHid.create();
-const signer = new LedgerSigner(
-    transport,
-    "44'/1729'/0'/0'",
-    false,
-    DerivationType.BIP32_ED25519
-)
+const signer = new LedgerSigner(transport, "44'/1729'/0'/0'", false, DerivationType.BIP32_ED25519);
 ```
 
 ## `@taquito/http-utils` - Issue using octez.js in a service worker environment
@@ -1680,21 +1904,21 @@ The balance property was a string in the parameters to pass to originate a new c
 We are currently working on compatibility support for the Lima protocol.
 We are also investigating the integration of wallet connect 2 in octez.js.
 
-
 If you have feature or issue requests, please create an issue on http://github.com/ecadlabs/taquito/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
-
-
 
 # Taquito v14.0.0-beta
 
 Note for the users of the lower level APIs: injecting more than one manager operation per block from the same account is now forbidden by Tezos in the Kathmandu protocol. You will now receive the following error message: `Error while applying operation opHash: Only one manager operation per manager per block allowed (found opHash2 with Xtez fee).` This change has no impact if you use the TezosToolkit to send operations. Waiting for the operation to be included in a block is already required before submitting another one.
 
 **Breaking changes:**
+
 - Be aware that if you implemented the readProvider interface, we added a new method named `getSaplingDiffByContract`.
 - We removed the context class in the constructor of the ReadAdapter class and replaced it with RpcClient.
 
 ## Summary
+
 ### Kathmandu support
+
 - `@tezos-x/octez.js` - Support new operation `increase_paid_storage` on the Contract API #1767
 - `@taquito/local-forging` - Support the `increase_paid_storage` operation and the `Emit` instruction #1766 #1742
 - `@taquito/michel-codec` - Support EMIT instruction #1743
@@ -1703,34 +1927,39 @@ Note for the users of the lower level APIs: injecting more than one manager oper
 - `@taquito/rpc` - Add support for `run_script_view` endpoint #1750
 
 ### New features
+
 - Sapling package
 - `@tezos-x/octez.js` - Added support for the `transfer_ticket` operation #1680
 
 ### Bug fixes
+
 - `@taquito/michelson-encoder` - Display contract storage properly when it contains a `ticket` inside a `map` #1762
 - `@taquito/michelson-encoder` - `Schema.generateSchema()` fails for `sapling_transaction_deprecated` #1763
 - `@taquito/michel-codec`- Fixed comb pairs unpacking #1471
 
 ### Improvement
+
 - `@taquito/http-utils` - Added request info to the `HttpRequestFailed` error #1091
 - `@tezos-x/octez.js` - Retrieve contract addresses from batched operation #1661
 - `@taquito/michelson-encoder` - Accept hex prefixed with 0x as well #1624
 - `@tezos-x/octez.js` - Use the new `run_script_view` endpoint to execute on chain views #1750
 
 ### Documentation
+
 - Added documentation feedback to octez.js website #1732
 - Fixed live code example - try temple wallet was getting an error about bad parameters #1698
 - Added documentation on TORU deposit/withdrawals: https://taquito.io/docs/next/tx_rollups
 - Added links to commercial nodes (submit a PR if some are missing): https://taquito.io/docs/next/rpc_nodes/
 
 ### Testing
+
 - Emptying an implicit account does not cost extra gas anymore #1771
 - Added more Manager_lambda scenarios to contract multisig integration tests #1724
 
 ### Others
+
 - `@taquito-beacon-wallet` - Updated `@airgap/beacon-dapp` to version 3.1.4
 - `@taquito/local-forging` - Pure JS implementation #441
-
 
 ## `@tezos-x/octez.js` - Support new operation `increase_paid_storage` on the Contract API
 
@@ -1762,13 +1991,13 @@ We added support for the new Michelson instruction `Emit`, which can emit contra
 
 In Kathmandu, the property `consumed_gas` that was previously deprecated in favor of `consumed_milligas` has been removed.
 
-In octez.js (Contract API), the classes that extend the `Operation` class like `BatchOperation`,  `DelegateOperation`, `OriginationOperation`, `TransactionOperation`, and so on, have a `consumedGas` getter. We did an internal change to calculate the consumed gas based on the consumed milligas, so there is no breaking change for the users. We also implemented a new `consumedMilligas` getter which returns the consumed milligas.
+In octez.js (Contract API), the classes that extend the `Operation` class like `BatchOperation`, `DelegateOperation`, `OriginationOperation`, `TransactionOperation`, and so on, have a `consumedGas` getter. We did an internal change to calculate the consumed gas based on the consumed milligas, so there is no breaking change for the users. We also implemented a new `consumedMilligas` getter which returns the consumed milligas.
 
 On the wallet API side, the `WalletOperation` class has a `receipt` method that returns a `Receipt` object containing a `totalGas` property. It is now calculated based on the consumed milligas, and we added an additional `totalMilliGas` property.
 
 ## `@taquito/rpc` - Support new properties/operations for Kathmandu
 
-Kathmandu brings new operation kinds that can be found in a block response. New interfaces representing the new operations have been added to the `OperationContents` and `OperationContentsAndResult` types of the RPC package. The new operation kinds are: `increase_paid_storage`, `vdf_revelation`.  There is also a new internal operation named `event`.
+Kathmandu brings new operation kinds that can be found in a block response. New interfaces representing the new operations have been added to the `OperationContents` and `OperationContentsAndResult` types of the RPC package. The new operation kinds are: `increase_paid_storage`, `vdf_revelation`. There is also a new internal operation named `event`.
 
 The `DelegatesResponse` interface returned by the `getDelegates` method on the `RpcCLient` has the new properties `current_ballot`, `current_proposals` and `remaining_proposals`.
 
@@ -1867,10 +2096,10 @@ To accommodate users working in native mobile development, we added a separate p
 The bundle wraps functions in the `@taquito/local-forging` package into a single variable called `taquito_local_forging`.
 To use the JS bundle for your project, download the zip file under `Assets` on the [release page](https://github.com/ecadlabs/taquito/releases).
 
-
 After that, copy the `.js` file and the `.map.js` file into your project.
 
 Example of how to use the `LocalForger` class in a simple HTML script tag:
+
 ```
 <script type="text/javascript" src="/path/to/taquito_local_forging.js"></script>
 <script type="text/javascript">
@@ -1880,14 +2109,15 @@ Example of how to use the `LocalForger` class in a simple HTML script tag:
 </script>
 ```
 
-
 # Taquito v13.0.0
 
 **BREAKING CHANGES**
 The `NaiveEstimateProvider` class that was deprecated in v11 has been removed.
 
 ## Summary
+
 ### Jakarta support
+
 - `@taquito/rpc` - Allow retrieving the state and inbox of a rollup #1617
 - `@taquito/rpc` - Added appropriate types related to TORU #1614, #1676
 - `@taquito/local-forging` - Added support for the operations `transfer_ticket`, `tx_rollup_origination` and `tx_rollup_submit_batch` #1615
@@ -1897,14 +2127,14 @@ The `NaiveEstimateProvider` class that was deprecated in v11 has been removed.
 - `@tezos-x/octez.js` - Added support for the `tx_rollup_origination` and `tx_rollup_submit_batch` operations #1616
 
 ### Documentation
+
 - Remove outdated RPC nodes: https://taquito.io/docs/next/rpc_nodes/
 - Fixed broken links #1629
 
 ### Others
+
 - Add to The octez.js Integration Tests the Contract Security tests from InferenceAG / TezosSecurityBaselineChecking #1631, #1632, #1654
 - `@taquito/beacon-wallet` - The beacon-dapp is updated to version 3.1.1: https://github.com/airgap-it/beacon-sdk/releases/tag/v3.1.1
-
-
 
 ## `@taquito/rpc` - Allow retrieving the state and inbox of a rollup
 
@@ -1947,7 +2177,7 @@ The `TxRollupL2AddressToken` class allows users of octez.js to pass `tz4` addres
 
 > A new instruction MIN_BLOCK_TIME has been added. It can be used to push the current minimal time between blocks onto the stack. The value is obtained from the protocol's minimal_block_delay constant.
 
-*Reference: https://tezos.gitlab.io/protocols/013jakarta.html#michelson*
+_Reference: https://tezos.gitlab.io/protocols/013jakarta.html#michelson_
 
 ## `@taquito/michel-codec` - Annotating the top-level parameter constructor to designate the root entry point is now forbidden
 
@@ -1955,7 +2185,7 @@ If the top-level parameter constructor is annotated when parsing a contract, a `
 
 > Annotating the parameter toplevel constructor to designate the root entrypoint is now forbidden. Put the annotation on the parameter type instead. E.g. replace parameter %a int; by parameter (int %a);
 
-*Reference: https://tezos.gitlab.io/protocols/013jakarta.html#michelson*
+_Reference: https://tezos.gitlab.io/protocols/013jakarta.html#michelson_
 
 ## `@tezos-x/octez.js` - Added support for the `tx_rollup_origination` and `tx_rollup_submit_batch` operations
 
@@ -1964,15 +2194,18 @@ We added support on the contract, batch, and estimate API allowing users to depl
 We plan to add support for the remaining operations related to TORU in subsequent releases.
 
 **Example of originating a rollup with octez.js:**
+
 ```typescript=
 const op = await Tezos.contract.originateTxRollup();
 await op.confirmation();
 
 const rollup = op.originatedRollup;
 ```
+
 The `originateTxRollup` method takes optional `storageLimit`, `gasLimit` and `fee` as parameters.
 
 **Example of sending a batch to a rollup with octez.js:**
+
 ```typescript=
 const op = await Tezos.contract.txRollupSubmitBatch({
     content: '626c6f62',
@@ -1980,37 +2213,44 @@ const op = await Tezos.contract.txRollupSubmitBatch({
 });
 await op.confirmation();
 ```
+
 The `txRollupSubmitBatch` method also takes optional `storageLimit`, `gasLimit` and `fee` as parameters.
 
 ## Known Issues
+
 - Version stamp is out of date, resulting in `getVersionInfo()` to return the older version (12.1.0) instead of the current release candidate. This will be fixed in the full release.
 
 # Taquito v12.1.0-beta
 
 ## Summary
+
 ### Jakarta initial support
+
 - Compatibility with the Jakarta protocol
 
 ### Improvements
+
 - `@tezos-x/octez.js` - Avoid doing POST call to fetch contract script with the RPC #1532
 - Review and improve Error classes in octez.js #1472
 - `@taquito/http-utils` - Make HttpBackend.defaultTimeout configurable #751
 - `@taquito/local-forging` - Reject Invalid Inputs When Forging #483
 
 ### Documentation
+
 - How to capture failwith errors: https://taquito.io/docs/next/failwith_errors
 
-
-
 ## Compatibility with the Jakarta protocol
+
 We addressed the Jakarta protocol's breaking changes, making this version of octez.js compatible with the Jakarta protocol. This early integration has been possible by using the Mondaynet testnet.
 
 The Jakarta protocol addresses the [malleability issue](https://tezos.gitlab.io/alpha/sapling.html#preventing-malleability) discovered in Sapling. It introduces changes around the sapling related types and instructions that are now supported in octez.js:
+
 - The encoding of `sapling_transaction` has changed; we added support for it in the `@taquito/local-forging` package and support for `sapling_transaction_deprecated`.
 
 - The optional type returned by the `SAPLING_VERIFY_UPDATE` instruction contains an additional property named `bound_data`. We added support for it in the `@taquito/michel-codec` package.
 
 This release introduces some breaking changes in the `@taquito/rpc` package:
+
 - The type of the proposal response items returned by the `getProposals` methods has changed from `[string, number]` to `[string, BigNumber]`.
 - The type of the properties in the response of the `getBallots` methods have changed from `number` to `BigNumber`.
 - In the response of `getVotesListings`, the field `rolls` is now optional as it has been replaced by `voting_power`, which type is a `BigNumber`.
@@ -2041,29 +2281,34 @@ new RpcClient('url', 'chain', new HttpBackend(50000));
 # Taquito v12.1.0-beta
 
 ## Summary
+
 ### Jakarta initial support
+
 - Compatibility with the Jakarta protocol
 
 ### Improvements
+
 - `@tezos-x/octez.js` - Avoid doing POST call to fetch contract script with the RPC #1532
 - Review and improve Error classes in octez.js #1472
 - `@taquito/http-utils` - Make HttpBackend.defaultTimeout configurable #751
 - `@taquito/local-forging` - Reject Invalid Inputs When Forging #483
 
 ### Documentation
+
 - How to capture failwith errors: https://taquito.io/docs/next/failwith_errors
 
-
-
 ## Compatibility with the Jakarta protocol
+
 We addressed the Jakarta protocol's breaking changes, making this version of octez.js compatible with the Jakarta protocol. This early integration has been possible by using the Mondaynet testnet.
 
 The Jakarta protocol addresses the [malleability issue](https://tezos.gitlab.io/alpha/sapling.html#preventing-malleability) discovered in Sapling. It introduces changes around the sapling related types and instructions that are now supported in octez.js:
+
 - The encoding of `sapling_transaction` has changed; we added support for it in the `@taquito/local-forging` package and support for `sapling_transaction_deprecated`.
 
 - The optional type returned by the `SAPLING_VERIFY_UPDATE` instruction contains an additional property named `bound_data`. We added support for it in the `@taquito/michel-codec` package.
 
 This release introduces some breaking changes in the `@taquito/rpc` package:
+
 - The type of the proposal response items returned by the `getProposals` methods has changed from `[string, number]` to `[string, BigNumber]`.
 - The type of the properties in the response of the `getBallots` methods have changed from `number` to `BigNumber`.
 - In the response of `getVotesListings`, the field `rolls` is now optional as it has been replaced by `voting_power`, which type is a `BigNumber`.
@@ -2100,7 +2345,9 @@ new RpcClient('url', 'chain', new HttpBackend(50000));
 **Please note the presence of two breaking changes in this release. Refer to the following link for a guide to upgrade from version 11 to 12:** https://taquito.io/docs/upgrading_guide
 
 ## Summary
+
 ### Ithaca support
+
 - @taquito/local-forging - Support forging and parsing of endorsement operation #1288
 - @taquito/local-forging - Support for the new `SUB_MUTEZ` instruction #1292
 - @taquito/rpc - Updated the `RpcClient` types based on the changes to the balance updates and the new type of operations #1255
@@ -2109,9 +2356,11 @@ new RpcClient('url', 'chain', new HttpBackend(50000));
 - Updated octez.js website live code examples to use ithacanet #1441
 
 ### New feature
+
 - @tezos-x/octez.js - Introduction of a "Read" interface #1389
 
 ### Improvements
+
 - @taquito/signer, @taquito/remote-signer and @taquito/ledger-signer - Replacement of libsodium with stablelib #991
 - @tezos-x/octez.js - Use the RPC `run_view` to execute lambda views #1298
 - @tezos-x/octez.js - Replacement of some RPC methods for performance purposes #1348
@@ -2120,17 +2369,16 @@ new RpcClient('url', 'chain', new HttpBackend(50000));
 - Integration tests - Rewrote the contract-permit test (TZIP-17) #1095: https://github.com/ecadlabs/taquito/blob/master/integration-tests/contract-permits.spec.ts
 
 ### Bug Fixes
+
 - @tezos-x/octez.js - Fixed the `ContractAbstraction` instantiated by the `contract` method of the `OriginationWalletOperation` class #1379
 - @tezos-x/octez.js - Allow estimating operations using a wallet #1387
 
 ### Documentation
+
 - Examples of using the BeaconWallet instance as a singleton #1045: https://taquito.io/docs/beaconwallet-singleton
 - Fixed link to Tezos faucet #1383
 - Updated all website examples to show contract and wallet API example variants #493
 - Algolia improvements - Fixed search bar returning dead links and duplicates #1411
-
-
-
 
 ## @taquito/local-forging - Support forging and parsing of endorsement operations
 
@@ -2147,6 +2395,7 @@ Example of an endorsement for Ithaca:
     block_payload_hash: "vh3FEkypvxUYLwjGYd2Sme7aWyfX8npDsqxcL6imVpBWnAZeNn2n"
 }
 ```
+
 Example of an endorsement before Ithaca:
 
 ```json=
@@ -2162,7 +2411,7 @@ We added support to forge and parse operations containing the new `SUB_MUTEZ` in
 
 > [SUB_MUTEZ] is similar to the mutez case of the SUB instruction but its return type is option mutez instead of mutez. This allows subtracting mutez values without failing in case of underflow.
 
-*source: https://tezos.gitlab.io/protocols/012ithaca.html#michelson*
+_source: https://tezos.gitlab.io/protocols/012ithaca.html#michelson_
 
 ## @taquito/rpc - Updated the `RpcClient` types based on the changes to the balance updates and the new type of operations
 
@@ -2188,6 +2437,7 @@ For more information on the balance update changes, refer to https://tezos.gitla
 **Response**: An array of objects having the properties `level`, `delegates`, and an optional `estimated_time` at which the rights can be exercised. The `delegates` property is an array of objects with the delegate’s public key hash, the delegate’s first slot, and the delegate’s endorsing power.
 
 Response example for ithacanet:
+
 ```json=
 [
       {
@@ -2203,7 +2453,9 @@ Response example for ithacanet:
       }
     ]
 ```
+
 Response example for hangzhounet:
+
 ```json=
 [
       {
@@ -2226,6 +2478,7 @@ Response example for hangzhounet:
 **Response**: The property `priority` has been renamed to `round`.
 
 Response example for ithacanet:
+
 ```json=
 [
       {
@@ -2236,7 +2489,9 @@ Response example for ithacanet:
       }...
 ]
 ```
+
 Response example for hangzhounet:
+
 ```json=
 [
       {
@@ -2247,6 +2502,7 @@ Response example for hangzhounet:
       }...
 ]
 ```
+
 ## @taquito/michel-codec - Support for the `SUB_MUTEZ` instruction and the `MAP` instruction applied to an optional type
 
 `@taquitp/michel-codec` is responsible, among others, to validate Michelson code to ensure its correctness. The package now supports the new `SUB_MUTEZ` instruction and the `MAP` instruction applied to values of optional type.
@@ -2265,10 +2521,13 @@ The `confirmationPollingIntervalSecond` and the `ConfigStreamer` are removed fro
 `TezosToolkit`. Configuration for the PollingSubscribeProvider needs to be specified in its constructor:
 
 **Before:**
+
 ```
 Tezos.setProvider({ config: { confirmationPollingIntervalSecond: 5 }});
 ```
+
 **Now:**
+
 ```
 Tezos.setStreamProvider(Tezos.getFactory(PollingSubscribeProvider)({ pollingIntervalMilliseconds:5000 }));
 ```
@@ -2281,10 +2540,10 @@ These changes consist of preliminary work to better support indexers in octez.js
 
 Reduction of the bundle size:
 
-| Package   | signer   |remote-signer | ledger-signer  |
-| --------- | -------- | ------------ | -------------  |
-| Libsodium | 795kB    | 813.3kB      | 790.6kB        |
-| Stablelib | 254.9kB  | 254.1kB      | 232.2kB        |
+| Package   | signer  | remote-signer | ledger-signer |
+| --------- | ------- | ------------- | ------------- |
+| Libsodium | 795kB   | 813.3kB       | 790.6kB       |
+| Stablelib | 254.9kB | 254.1kB       | 232.2kB       |
 
 ## @tezos-x/octez.js - Use the RPC `run_view` to execute lambda views
 
@@ -2307,15 +2566,15 @@ Follow this link for full documentation on the lambda view feature: https://taqu
 ## @tezos-x/octez.js - Replacement of some RPC methods for performance purposes
 
 The octez.js codebase is doing different calls to the RPC to construct the various operations or prepare the different requests. Thanks to Michael Zaikin's suggestions, we did the following optimizations:
+
 - Retrieve the `chain_id` using the `getChainId` method of the `RpcClient` instead of `getBlockHeader` as it can be cached.
 - Retrieve the `timestamp` and `level` using `getBlockHeader` instead of `getBlock` to reduce the response payload size.
-- Implemented a new method named `getProtocols` on the `RpcClient` class using the RPC `protocols` endpoint.  In the codebase, we are now retrieving the next protocol value using the `getProtocols` method instead of `getBlockMetadata` as it offers the possibility to be cached at least for a cycle.
+- Implemented a new method named `getProtocols` on the `RpcClient` class using the RPC `protocols` endpoint. In the codebase, we are now retrieving the next protocol value using the `getProtocols` method instead of `getBlockMetadata` as it offers the possibility to be cached at least for a cycle.
 
 ## @tezos-x/octez.js - Use the LocalForger by default instead of the RpcForger
 
 Before version 12, the default forger set on the `TezosToolkit` was the `RpcForger`. It is important to ensure that the node is trusted when forging with the RPC and users can change the forger implementation by calling the `setForgerProvider` method.
 As the octez.js local forging implementation provided in the `@taquito/local-forger` package has been battle-tested in the past month, we decided to change the default forger configured in the `TezosToolkit` in favor of the local one.
-
 
 Note that octez.js also provides a composite forger to validate the forged bytes against different implementations. The composite forger gives the most protection against supply chain attacks on octez.js and malicious RPCs.
 Follow this [link](https://taquito.io/docs/forger) for an example of how to configure a composite forger.
@@ -2331,6 +2590,7 @@ The usage of `xhr2-cookies` has been replaced with `axios`, which works both on 
 A bug has been fixed where the `ContractAbstraction` instance created by calling the `contract` method on an `OriginationWalletOperation` instance was unusable. The configured wallet was not cloned correctly in the internal context class and resulted in an `UnconfiguredSignerError` if trying to call an entry point of the contract.
 
 Example of the code that was resulting in an error:
+
 ```typescript=
 const origination = await Tezos.wallet.originate({
     code,
@@ -2351,6 +2611,7 @@ Note that the wallet account needs to be revealed to conduct any estimate as oct
 # Taquito v11.2.0-beta
 
 ## Summary
+
 ### New features
 
 - @taquito/utils - Implemented additional hash checksum validation functions in octez.js #95
@@ -2379,13 +2640,12 @@ Note that the wallet account needs to be revealed to conduct any estimate as oct
 - Improved documentation showing the difference between `setDelegate` and `RegisterDelegate` methods: https://taquito.io/docs/set_delegate
 - Improvements of the README files
 
-
-
 ## @taquito/utils - Implemented additional hash checksum validation functions in octez.js
 
 Added utility functions to validate operation, block, and protocol hash.
 
 Example of use:
+
 ```typescript=
 import { validateBlock, validateOperation, validateProtocol } from '@taquito/utils';
 
@@ -2417,6 +2677,7 @@ For each token, `generateSchema` returns an object of type `TokenSchema`. TokenS
 ### Examples:
 
 The michelson type: `{ prim: 'option', args: [{ prim: 'int' }], annots: [] }` will be represented as follows by the generateSchema method:
+
 ```json=
 {
     __michelsonType: 'option',
@@ -2428,6 +2689,7 @@ The michelson type: `{ prim: 'option', args: [{ prim: 'int' }], annots: [] }` wi
 ```
 
 The michelson type: `{ prim: 'pair', args: [{ prim: 'int', annots: ['test'] }, { prim: 'string', annots: ['test2'] }], }` will be represented as follows by the generateSchema method:
+
 ```json=
 // Nested pair will be brought to the same level (as it is the case with the ExtractSchema)
 {
@@ -2446,6 +2708,7 @@ The michelson type: `{ prim: 'pair', args: [{ prim: 'int', annots: ['test'] }, {
 ```
 
 The michelson type: `{ prim: 'map', args: [{ prim: 'string' }, { prim: 'int' }], annots: [] }` will be represented as follows by the generateSchema method:
+
 ```json=
 // schema of a map has `key` and `value` properties
 {
@@ -2486,11 +2749,15 @@ The error `Cannot read property 'DAppClient' of undefined` was thrown when using
 # Taquito v11.1.0-beta
 
 ## Summary
+
 ### New features
+
 - @tezos-x/octez.js - Support for simulating contract views #1117
 - @taquito/michel-codec - Option added to the Parser to expand global constants in script #1219
 - @tezos-x/octez.js - Support contract origination using the storage property when there are global constants in the storage part of the contract code #1220
+
 ### Bug Fixes
+
 - @taquito/michelson-encoder - Fixed the Timestamp token to support decoding UNIX string format #1109
 
 ## @tezos-x/octez.js - Support for simulating contract views
@@ -2499,11 +2766,11 @@ octez.js provides an abstraction on the `ContractAbstraction` class, allowing to
 
 When an instance of `ContractAbstraction` is created using the `at` method of the Contract or Wallet API, the `contractViews` member of the `ContractAbstraction` instance is dynamically populated with methods that match the on-chain view names.
 
-*The `contractViews` member is an object where the key is the view name, and the value is a function that takes the view arguments as a parameter and returns an instance of `OnChainView` class.*
+_The `contractViews` member is an object where the key is the view name, and the value is a function that takes the view arguments as a parameter and returns an instance of `OnChainView` class._
 
 When a view argument is of a complex type (i.e., a `pair`), the view parameter is expected in an object format and not as "flattened arguments".
 
-*The "object format" refers to the same format used when deploying a contract using the `storage` property. The "flattened arguments" is the format used when calling a contract entry point using the `methods` member. We plan to move away from the "flattened arguments" format in favor of the object one.*
+_The "object format" refers to the same format used when deploying a contract using the `storage` property. The "flattened arguments" is the format used when calling a contract entry point using the `methods` member. We plan to move away from the "flattened arguments" format in favor of the object one._
 
 As an example, if the Michelson view argument type is `{ prim: 'pair', args: [{ prim: 'nat' }, { prim: 'address' }] }`, the parameter expected by octez.js will have the following format `{0: 'nat', 1: 'address'}` instead of `nat, address`.
 
@@ -2540,9 +2807,11 @@ const p = new Parser(parserOptions);
 ## @tezos-x/octez.js - Support contract origination using the storage property when there are global constants in the storage part of the contract code
 
 In the release note v11.0.0-beta, there was a note about the following limitation:
+
 > Only the 'init' property can be used if you want to originate a contract having a global constant in the storage section of its code. Do not use the `storage` property, which depends on the `Michelson-Encoder`.
 >
 > Here is an example:
+>
 > ```typescript=
 > const op = await Tezos.contract.originate({
 >   code: [
@@ -2558,6 +2827,7 @@ It is now possible to deploy a contract having a global constant in the storage 
 A global constants provider has been added to the `TezosToolkit` class. Currently, octez.js provides a `DefaultGlobalConstantsProvider`, which can be injected in the TezosToolkit and where the user needs to specify the hashes and corresponding expressions used in its contracts.
 
 Here is a example:
+
 ```typescript=
 import { TezosToolkit, DefaultGlobalConstantsProvider } from '@tezos-x/octez.js';
 
@@ -2580,11 +2850,13 @@ Here is a link to the documentation: https://taquito.io/docs/global_constant#how
 ## @taquito/michelson-encoder - Fixed the Timestamp token to support decoding UNIX string format
 
 The Michelson-Encoder did not correctly support the UNIX string format. Therefore, Michelson data having the format "string":"1613034908" could not be decoded and generated the following error:
+
 ```
 RangeError: Invalid time value
   at Date.toISOString
   at TimestampToken.Execute
 ```
+
 This format is now supported in the Timestamp token of the Michelson-encoder.
 
 # Taquito v11.0.2-beta
@@ -2595,8 +2867,8 @@ This format is now supported in the Timestamp token of the Michelson-encoder.
 # Taquito v11.0.1-beta
 
 ## Bug fix
-There was an issue with lodash imports in @taquito/rpc package that was causing the following error: Error: Cannot find module 'lodash/get'
 
+There was an issue with lodash imports in @taquito/rpc package that was causing the following error: Error: Cannot find module 'lodash/get'
 
 # Taquito v11.0.0-beta
 
@@ -2607,38 +2879,41 @@ This release of octez.js supports the upcoming Hangzhou protocol. As usual, this
 We encourage all developers to update their projects to use version octez.js v11 as soon as is practical and absolutely before the Tezos mainnet transition from Granada to Hangzhou.
 
 ### New features - Hangzhou protocol
+
 - `@tezos-x/octez.js` - Support for the new operation kind `register_global_constant` on the contract, batch and estimate APIs #1075
 - ``@taquito/local-forging`
-    - Support the new types and instructions related to operations-on-timelock #1070
-    - Support the new `constant` primitive #1077
-    - Support the new operation kind `register_global_constant` #1077
-    - Support the new high-level section `view` and the `VIEW` instruction #1074
+  - Support the new types and instructions related to operations-on-timelock #1070
+  - Support the new `constant` primitive #1077
+  - Support the new operation kind `register_global_constant` #1077
+  - Support the new high-level section `view` and the `VIEW` instruction #1074
 - `@taquito/michelson-encoder` - Support new types related to operations-on-timelock #1071
 - `@taquito/michel-codec`
-    - Support the new types and instruction related to operations-on-timelock #1072
-    - Support the new high-level section `view` and the `VIEW` instruction #1073
+  - Support the new types and instruction related to operations-on-timelock #1072
+  - Support the new high-level section `view` and the `VIEW` instruction #1073
 
 ### New features - General
+
 - `@taquito/utils` - Provide utility to verify signatures #611
 - `@taquito/rpc` - Support for the RPC endpoint`context/contracts/{contract}/script/normalized`. #1114
 
 ### Documentation
+
 - Add documentation on how to sign Michelson data #588: https://taquito.io/docs/signing#signing-michelson-data
 - Add a "dApp pre-launch checklist" to website documentation #1135: https://taquito.io/docs/dapp_prelaunch
 - Add a documentation page about wallets #1123: https://taquito.io/docs/wallets
 
 ### Others
+
 - Preliminary support for Idiazabalnet protocol
 - `@taquito/beacon-wallet` - The beacon-sdk is updated to version 2.3.7: https://github.com/airgap-it/beacon-sdk/releases/tag/v2.3.7
 - Migrate supported companion DApps to Hangzhou: Beacon Test DApp, octez.js React, and Metadata explorer #1065
-
-
 
 ## Important note:
 
 Please note that the `Michelson-Encoder` does not support the global constant in this current release (11.0.0-beta). The expanded contract scripts need to be used with the `Michelson-Encoder` until further support. This brings the following limitation: only the 'init' property can be used if you want to originate a contract having a global constant in the storage section of its code. Do not use the `storage` property, which depends on the `Michelson-Encoder`.
 
 Here an example:
+
 ```ts
 const op = await Tezos.contract.originate({
   code: [
@@ -2651,17 +2926,20 @@ const op = await Tezos.contract.originate({
 
 ## `@tezos-x/octez.js` - Support the new operation kind `register_global_constant` on the contract, batch and estimate APIs
 
-The new manager operation `register_global_constant` has been added to the contract, batch, and estimate APIs.  This new operation allows users to register Micheline expressions in a global table of constants.
+The new manager operation `register_global_constant` has been added to the contract, batch, and estimate APIs. This new operation allows users to register Micheline expressions in a global table of constants.
 
 A `registerGlobalConstant` method is available on the `ContractProvider` class. A `value` representing the Micheline expression to register in its JSON format is required as a parameter. The `registerGlobalConstant` method returns an instance of `RegisterGlobalConstantOperation` containing a `globalConstantHash` member that corresponds to the index(hash) of the newly registered constant.
 
 ```ts
 const op = await Tezos.contract.registerGlobalConstant({
-    value: { "prim": "or",
-                "args":
-                  [ { "prim": "int", "annots": [ "%decrement" ] },
-                    { "prim": "int", "annots": [ "%increment" ] } ] }
-    });
+  value: {
+    prim: 'or',
+    args: [
+      { prim: 'int', annots: ['%decrement'] },
+      { prim: 'int', annots: ['%increment'] },
+    ],
+  },
+});
 await op.confirmation();
 const hash = op.globalConstantHash; // expr...
 ```
@@ -2699,6 +2977,7 @@ Internally in octez.js, the usage of `getScript` has been replaced by `getNormal
 
 This release includes preliminary support for the Idiazabal protocol to allow early testing.
 Please note the following:
+
 - The protocol constant `cost_per_byte` is mistakenly set to `1000` instead of `250`. Meaning that storage costs are higher than on the precedent testnet until this is fixed in the next I network.
 - The `Endorsement` operation has new required properties `slot`, `round` and `block_payload_hash` that are not yet supported in the `@taquito/local-forging` package.
 - The RPC `context/delegates/${address}` has new properties that are not yet supported in the `@taquito/rpc` package.
@@ -2713,13 +2992,15 @@ If you have feature or issue requests, please create an issue on http://github.c
 
 - Updated beacon-sdk to version 2.3.5: https://github.com/airgap-it/beacon-sdk/releases/tag/v2.3.5
 - RpcClientCache - Store the Promises instead of the resolved values in the cache:
-When requests were done in parallel to the same RPC endpoint, they were not hitting the cache. This is solved by storing the promise in the cache as soon as the first request is made. If another request tries to reach the same URL, during the configured TTL, the cached promise is returned.
-More details can be found here: https://github.com/ecadlabs/taquito/discussions/916
+  When requests were done in parallel to the same RPC endpoint, they were not hitting the cache. This is solved by storing the promise in the cache as soon as the first request is made. If another request tries to reach the same URL, during the configured TTL, the cached promise is returned.
+  More details can be found here: https://github.com/ecadlabs/taquito/discussions/916
+
 # Taquito v10.2.0-beta
 
 ## Summary
 
 ### New features
+
 - @taquito/contract-library - [Performance] Embed popular contracts into your application using the new ContractAbstraction instantiation #1049
 - @taquito/rpc - [Performance] Enable RPC caching in your application using the RpcClient cache implementation #924
 - @tezos-x/octez.js - [DevExp] octez.js Entrypoint methods now accept javascript object format for contract method calls (parametric calls are unchanged!) #915
@@ -2740,6 +3021,7 @@ The ContractsLibrary class is populated by at project compile time, using contra
 When creating a ContractAbstraction instance using the `at` method of the Contract or the Wallet API, if a `ContractsLibrary` is present on the TezosToolkit instance, the script and entry points of matching contracts will be loaded from the ContractsLibrary. Otherwise, the values will be fetched from the RPC as usual.
 
 **Example of use:**
+
 ```ts
 import { ContractsLibrary } from '@taquito/contracts-library';
 import { TezosToolkit } from '@tezos-x/octez.js';
@@ -2748,23 +3030,22 @@ const contractsLibrary = new ContractsLibrary();
 const Tezos = new TezosToolkit('rpc');
 
 contractsLibrary.addContract({
-    'contractAddress1': {
-        script: script1, // script should be obtained from Tezos.rpc.getScript('contractAddress1')
-        entrypoints: entrypoints1 // entrypoints should be obtained from Tezos.rpc.getEntrypoints('contractAddress1')
-    },
-    'contractAddress2': {
-        script: script2,
-        entrypoints: entrypoints2
-    },
-    //...
-})
+  contractAddress1: {
+    script: script1, // script should be obtained from Tezos.rpc.getScript('contractAddress1')
+    entrypoints: entrypoints1, // entrypoints should be obtained from Tezos.rpc.getEntrypoints('contractAddress1')
+  },
+  contractAddress2: {
+    script: script2,
+    entrypoints: entrypoints2,
+  },
+  //...
+});
 
 Tezos.addExtension(contractsLibrary);
 
 // The script and entrypoints are loaded from the contractsLibrary instead of the RPC
 const contract = await Tezos.contract.at('contractAddress1');
 ```
-
 
 ## @taquito/RPC - New RpcClient implementation that caches RPC data
 
@@ -2773,6 +3054,7 @@ Similar to the new `ContractsLibrary` feature, octez.js provides an additional w
 The constructor of the `RpcClientCache` class takes an `RpcClient` instance as a parameter and an optional TTL (time to live). By default, the TTL is of 1000 milliseconds. The `RpcClientCache` acts as a decorator over the `RpcClient` instance. The `RpcClient` responses are cached for the period defined by the TTL.
 
 **Example of use:**
+
 ```ts
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { RpcClient, RpcClientCache } from '@taquito/rpc';
@@ -2802,10 +3084,13 @@ If you have feature or issue requests, please create an issue on http://github.c
 # Taquito v10.1.3-beta
 
 ## Bug fix - [Key ordering](https://github.com/ecadlabs/taquito/pull/1044)
+
 Fixed key sorting in literal sets and maps when these collections have mixed key types.
 
 ## Upgrade beacon-sdk to version 2.3.3
+
 This beacon-sdk release includes:
+
 - updated Kukai logo
 - hangzhounet support
 - fix for [#269 Pairing with Kukai blocked](https://github.com/airgap-it/beacon-sdk/issues/269) (from -beta.0)
@@ -2822,7 +3107,7 @@ Bug fix where the custom polling interval values for the confirmation methods we
 
 **Breaking change**
 
-In version 9.2.0-beta of octez.js, the ability to send more than one operation in the same block was added to octez.js. This ability relied on a workaround solution. The `helpers/preapply/operations` and `helpers/scripts/run_operation`  RPC methods do not accept a counter higher than the head `counter + 1` as described in issue [tezos/tezos#376](https://gitlab.com/tezos/tezos/-/issues/376). Despite the limitation of these RPC's, the Tezos protocol itself does allow the inclusion of more than one operation from the same implicit account. In version 9.2.0-beta of octez.js, we introduced an internal counter and simulated the operation using a counter value that the `preapply` & `run_operation` will accept. This allowed octez.js to send many operations in a single block. However, we found that the workaround used may lead to inconsistent states, and results that violate the [principle of least astonishment](https://en.wikipedia.org/wiki/Principle_of_least_astonishment). We decided to remove this feature temporarily.  We aim to reintroduce this feature when Tezos RPC issue [tezos/tezos#376](https://gitlab.com/tezos/tezos/-/issues/376) is addressed and considers the transaction in the mempool when checking the account counter value or otherwise by providing a separate and adapted new interface to support this use case properly.
+In version 9.2.0-beta of octez.js, the ability to send more than one operation in the same block was added to octez.js. This ability relied on a workaround solution. The `helpers/preapply/operations` and `helpers/scripts/run_operation` RPC methods do not accept a counter higher than the head `counter + 1` as described in issue [tezos/tezos#376](https://gitlab.com/tezos/tezos/-/issues/376). Despite the limitation of these RPC's, the Tezos protocol itself does allow the inclusion of more than one operation from the same implicit account. In version 9.2.0-beta of octez.js, we introduced an internal counter and simulated the operation using a counter value that the `preapply` & `run_operation` will accept. This allowed octez.js to send many operations in a single block. However, we found that the workaround used may lead to inconsistent states, and results that violate the [principle of least astonishment](https://en.wikipedia.org/wiki/Principle_of_least_astonishment). We decided to remove this feature temporarily. We aim to reintroduce this feature when Tezos RPC issue [tezos/tezos#376](https://gitlab.com/tezos/tezos/-/issues/376) is addressed and considers the transaction in the mempool when checking the account counter value or otherwise by providing a separate and adapted new interface to support this use case properly.
 
 ## Summary
 
@@ -2843,17 +3128,15 @@ In version 9.2.0-beta of octez.js, the ability to send more than one operation i
 - [Documentation for FA2 functionality](https://taquito.io/docs/fa2_parameters) #715
 - [Documentation for confirmation event stream for wallet API](https://taquito.io/docs/confirmation_event_stream) #159
 
-
-
 ## @tezos-x/octez.js - Made PollingSubscribeProvider's polling interval configurable
 
 The default streamer set on the `TezosToolkit` used a hardcoded polling interval of 20 seconds, and there was no easy way to change this. To reduce the probability of missing blocks, it is now possible to configure the interval as follow:
 
 ```ts
-const tezos = new TezosToolkit('https://mainnet.tezos.ecadinfra.com')
+const tezos = new TezosToolkit('https://mainnet.tezos.ecadinfra.com');
 tezos.setProvider({ config: { streamerPollingIntervalMilliseconds: 15000 } });
 
-const sub = tezos.stream.subscribeOperation(filter)
+const sub = tezos.stream.subscribeOperation(filter);
 ```
 
 ## @tezos-x/octez.js - Possibility to withdraw delegate
@@ -2863,7 +3146,7 @@ It is now possible to `undelegate` by executing a new setDelegate operation and 
 ```ts
 // const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 
-await Tezos.contract.setDelegate({ source: 'tz1_source'});
+await Tezos.contract.setDelegate({ source: 'tz1_source' });
 ```
 
 ## @tezos-x/octez.js - Property status doesn't exist on a batched transaction for the wallet API
@@ -2874,21 +3157,18 @@ When multiple operations were batched together using the `batch` method of the w
 
 The `Execute` and `ExecuteOnBigMapValue` methods of the `Schema` class could not deserialize Michelson when ticket values were not in the optimized (Edo) notation. Both representations are now supported.
 
-
 ## @tezos-x/octez.js - Fixed a "Memory leak" in the PollingSubscribeProvider
 
 A fix has been made to change the behavior of the `PollingSubscribeProvider`, which was keeping all blocks in memory.
 
-
-
 # Taquito v10.0.0-beta
+
 ## Summary
 
 ### Remaining support for Granadanet
 
 - @taquito/rpc - Support `deposits` field in `frozen_balance` #919
 - @taquito/rpc - Support new fields introduced by Granada in block metadata #918
-
 
 ### Bug Fixes
 
@@ -2901,12 +3181,9 @@ A fix has been made to change the behavior of the `PollingSubscribeProvider`, wh
 - Document storage and fee passing from wallet to dapp #926
 - Add integration tests for Permit contracts (TZIP-17) #661
 
-
 ### Enhancements
 
 - **Breaking changes** - @taquito/michelson-encoder - Improvement to the `Schema.ExtractSchema()` method #960 and #933
-
-
 
 ## @taquito/rpc - Support deposits field in frozen_balance
 
@@ -2917,7 +3194,6 @@ In Granada, when fetching delegate information from the RPC, the `deposit` prope
 The `balance_updates` property in block metadata now includes the new origin `subsidy`, besides the existing ones: `block` and `migration`.
 
 The support for the new `liquidity_baking_escape_ema` and `implicit_operations_results` properties in block metadata has been added in the `RpcClient` class.
-
 
 ## @tezos-x/octez.js - Drain an unrevealed account
 
@@ -2940,6 +3216,7 @@ The`ExtractSchema` method of the `Schema` class indicates how to structure contr
 Before version 10.0.0-beta, when calling the `Schema.ExtractSchema` method, the Michelson type `list` was represented only by the keyword `list`. This behavior has been changed to return an object where the key is `list` and the value indicates the list's composition.
 
 **Example:**
+
 ```typescript=
 const storageType = {
     prim: 'list',
@@ -2957,11 +3234,15 @@ const storageSchema = new Schema(storageType);
 const extractSchema = storageSchema.ExtractSchema();
 console.log(JSON.stringify(extractSchema, null, 2));
 ```
-*before version 10.0.0-beta, the returned value was:*
+
+_before version 10.0.0-beta, the returned value was:_
+
 ```typescript=
 'list'
 ```
-*in version 10.0.0-beta the returned value is:*
+
+_in version 10.0.0-beta the returned value is:_
+
 ```typescript=
 {
     list: {
@@ -2970,7 +3251,9 @@ console.log(JSON.stringify(extractSchema, null, 2));
     }
 }
 ```
+
 Based on the information returned by the `ExtractSchema` method, the storage can be writen as follow:
+
 ```typescript=
 Tezos.contract
   .originate({
@@ -2989,6 +3272,7 @@ Tezos.contract
 The representation of the `big_map` type returned by the `Schema.ExtractSchema` method has changed to increase consistency with the `map` representation. Similar to the `map` type, an object is now returned where its key is `big_map,` and its value is another object having a `key` and a `value` property, indicating the type of the key and value of the big map. At the same time, this change fixed an issue where the key of a big map as pair was not represented properly and returned "[object Object]" instead.
 
 **Example:**
+
 ```typescript=
 const storageType = {
 	prim: 'big_map',
@@ -3007,7 +3291,9 @@ const storageSchema = new Schema(storageType);
 const extractSchema = storageSchema.ExtractSchema();
 console.log(JSON.stringify(extractSchema, null, 2));
 ```
-*before version 10.0.0-beta the returned value was:*
+
+_before version 10.0.0-beta the returned value was:_
+
 ```json=
 {
     "address": {
@@ -3016,7 +3302,9 @@ console.log(JSON.stringify(extractSchema, null, 2));
     }
 }
 ```
-*in version 10.0.0-beta the returned value is:*
+
+_in version 10.0.0-beta the returned value is:_
+
 ```json=
 {
     "big_map": {
@@ -3028,7 +3316,9 @@ console.log(JSON.stringify(extractSchema, null, 2));
     }
 }
 ```
+
 Based on the information returned by the `ExtractSchema` method, the storage can be writen as follow:
+
 ```typescript=
 const bigMap = new MichelsonMap();
 bigMap.set('tz1...', { // address
@@ -3053,6 +3343,7 @@ Thank you for your time and support!
 If you have feature or issue requests, please create an issue on http://github.com/ecadlabs/taquito/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
 
 # Taquito v9.2.0-beta
+
 ## Summary
 
 ### New features
@@ -3072,7 +3363,6 @@ If you have feature or issue requests, please create an issue on http://github.c
 ### Enhancements
 
 - Updated various dependencies and switched from tslint to eslint
-
 
 ## @taquito/michelson-encoder - Accept bytes in Uint8Array
 
@@ -3096,6 +3386,7 @@ Note that no additional abstractions or ability to decrypt Sapling transactions 
 ## @taquito/rpc - Added sapling RPC
 
 The RPC endpoints related to sapling have been added to the RpcClient:
+
 - the `getSaplingDiffById` method takes a sapling state ID as a parameter and returns its associated values.
 - the `getSaplingDiffByContract` takes the address of a contract as a parameter and returns its sapling state.
 
@@ -3104,6 +3395,7 @@ The RPC endpoints related to sapling have been added to the RpcClient:
 When accessing a `sapling_state` in the storage with the RPC, only the sapling state's ID is returned.
 When fetching the storage of a contract containing a `sapling_state`, octez.js will provide an instance of `SaplingStateAbstraction`. The `SaplingStateAbstraction` class has a `getId` and a `getSaplingDiff` methods.
 The `getSaplingDiff` method returns an object of the following type:
+
 ```
 {
   root: SaplingTransactionCommitmentHash,
@@ -3120,7 +3412,6 @@ The node accepts the injection of more than one operation from the same account 
 
 We added a counter property (a map of an account and its counter) on the TezosToolkit instance as a workaround. The counter is incremented when sending more than one operation in a row and used to inject the operation. However, the counter used in the prevalidation or the estimation is the head counter + 1. Note that if you send multiple operations in a block to a contract, the estimate will not take into account the impact of the previous operation on the storage of the contract. Consider using the batch API to send many operations at the same time. The solution presented in this issue is a workaround; the operations will need to be sent from the same TezosToolkit instance as it will hold the counter state.
 
-
 ## What's coming next for octez.js?
 
 We will work on integrating flextesa node into our CI pipeline. We are currently relying on testnets for testing purposes. Since many octez.js users use flextesa for testing, including it in our development process will help provide better support, especially regarding errors encountered during Operation.confirmation() issues.
@@ -3129,12 +3420,13 @@ We plan to improve performance issues by implementing some caching. Please have 
 
 If you have feature or issue requests, please create an issue on http://github.com/ecadlabs/taquito/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
 
-
 # Taquito v9.1.1-beta
 
 @taquito/beacon-wallet - Updated beacon-sdk to version 2.2.9
 @taquito/michelson-encoder - Fix for unexpected MapTypecheckError when loading contract storage - for cases where a map contains a big map as value #925
+
 # Taquito v9.1.0-beta
+
 ## Summary
 
 ### New features
@@ -3147,15 +3439,13 @@ If you have feature or issue requests, please create an issue on http://github.c
 - @tezos-x/octez.js - Include estimate for reveal operation on batch estimate #772
 - @tezos-x/octez.js - Export return types of public API methods (BatchOperation, Operation, OperationBatch, TransferParams, ParamsWithKind) #583
 - @taquito/michelson-encoder - Types chain_id, key, option, or, signature, and unit made comparable #603
--  @taquito/rpc - Added big_map_diff, lazy_storage_diff properties and failing_noop operation to RPC types #870
+- @taquito/rpc - Added big_map_diff, lazy_storage_diff properties and failing_noop operation to RPC types #870
 - @taquito/beacon-wallet - Updated beacon-sdk to version [2.2.8](https://github.com/airgap-it/beacon-sdk/releases/tag/v2.2.8)
 
 ### Bug fixes
 
 - @taquito/signer - Fixed a public key derivation bug in InMemorySigner class #848
 - @taquito/michelson-encoder - Fixed a bug in the `Execute` method of the `OrToken` class
-
-
 
 ## @tezos-x/octez.js - Added reveal operation on the `RpcContractProvider` and the `RPCEstimateProvider` classes & Include estimate for reveal operation on batch estimate
 
@@ -3168,7 +3458,7 @@ Moreover, when estimating a batch operation where a reveal operation is needed, 
 
 ## @taquito/signer - Fixed a public key derivation bug in InMemorySigner class
 
-There was an issue in the derivation of public keys by the InMemorySigner with the `p256` and `secp256k1` curves having a `y` coordinate shorter than 32 bytes. For these specific cases, the returned public key was erroneous. *Please remember that this signer implementation is for development workflows.*
+There was an issue in the derivation of public keys by the InMemorySigner with the `p256` and `secp256k1` curves having a `y` coordinate shorter than 32 bytes. For these specific cases, the returned public key was erroneous. _Please remember that this signer implementation is for development workflows._
 
 ## @taquito/michelson-encoder - Types `chain_id`, `key`, `option`, `or`, `signature`, and `unit` made comparable
 
@@ -3182,7 +3472,6 @@ The execute method allows converting Michelson data into familiar-looking javasc
 
 We are currently seeing a high number of transactions being backtracked with "storage exhausted" errors in high-traffic dapps in the ecosystem. To mitigate this issue and knowing that dapps are in a better position to assess reasonable values than the wallet, we now provide the ability to specify the storage, gas limit, and fee via the wallet API. As the `beacon-sdk`, which @taquito/beacon-wallet package is built on, accepts those parameters, dapp developers will now have the ability to specify those parameters. One important note is that at the end, it is the wallet that has control over what is actually used when injecting the operation.
 
-
 ## What's coming next for octez.js?
 
 We will work on integrating flextesa node into our CI pipeline. We are currently relying on testnets for testing purposes. Since many octez.js users use flextesa for testing, including it in our development process will help provide better support, especially regarding errors encountered during Operation.confirmation() issues.
@@ -3192,7 +3481,6 @@ We started some preliminary work on integrating Granadanet, the next Tezos proto
 We plan to improve the `michelson-encoder` implementation to open the door for Type generation from contracts and to provide easier discoverability of what parameters endpoints and initial storage take. We opened a discussion on this subject on GitHub where any feedback or suggestions are appreciated: https://github.com/ecadlabs/taquito/discussions/840.
 
 If you have feature or issue requests, please create an issue on http://github.com/ecadlabs/taquito/issues or join us on the octez.js community support channel on Telegram https://t.me/tezostaquito
-
 
 # Taquito v9.0.0-beta
 
@@ -3206,8 +3494,8 @@ If you have feature or issue requests, please create an issue on http://github.c
 - Updated beacon-sdk version to v2.2.5 which includes several performance improvements for p2p pairing.
 
 ### Documentation updates
-- Added documentation about the Michelson encoder package [here](https://taquito.io/docs/michelson_encoder).
 
+- Added documentation about the Michelson encoder package [here](https://taquito.io/docs/michelson_encoder).
 
 ## Forward compatibility for Florence
 
@@ -3228,14 +3516,17 @@ To give more flexibility to the user on the retry strategy, we removed the param
 ## Summary
 
 ### Enhancements
+
 - Dynamically set the polling interval based on the RPC constants
 - Added a configurable delay and number of retries to the ObservableSubscription
 
 ### Bug fixes
+
 - Corrected the prefix for the prefixSig property
 - Corrected sorting of numeric values when encoding
 
 ### Documentation updates
+
 - Added the telegram group to the Website community links
 - Fixed some broken links
 - New documentation about signing with wallet
@@ -3326,7 +3617,7 @@ IMPORTANT NOTE: Preview builds are not official releases. They are helpful for t
 
 ## Fetch multiple bigmaps at once.
 
-octez.js now provides a new API `getMultipleValues` that fetches multiple keys in a single call.  octez.js ensures that all fetched keys are fetched from the same block level. Future enhancements for this feature may include octez.js directly fetching multiple big maps from an RPC call as and when such an RPC is added to the Tezos nodes. See docs [here](https://taquito.io/docs/maps_bigmaps#fetch-multiple-big-map-values-at-once)
+octez.js now provides a new API `getMultipleValues` that fetches multiple keys in a single call. octez.js ensures that all fetched keys are fetched from the same block level. Future enhancements for this feature may include octez.js directly fetching multiple big maps from an RPC call as and when such an RPC is added to the Tezos nodes. See docs [here](https://taquito.io/docs/maps_bigmaps#fetch-multiple-big-map-values-at-once)
 
 ## Expanded property value support for tickets and better `nat` type support.
 
@@ -3380,18 +3671,17 @@ If you have feature or issue requests, please create an issue on http://github.c
 
 # 8.0.6-beta.0 Updated beacon-sdk, bug fixed related to contract callback entry point
 
-* Updated beacon-sdk to version 2.2.2 #677
-* char2Bytes and bytes2char functions (initially in the taquito-tzip16 package) have been added to the taquito-utils package #589
-* Allow specifying an entry point in a contract callback #652
-* Improved CI by adding retry for some of the integration tests
+- Updated beacon-sdk to version 2.2.2 #677
+- char2Bytes and bytes2char functions (initially in the taquito-tzip16 package) have been added to the taquito-utils package #589
+- Allow specifying an entry point in a contract callback #652
+- Improved CI by adding retry for some of the integration tests
 
 ## 8.0.4-beta.0 Refactor batch API, improve errors for LamdbaView
 
-* TezosToolkit.batch has been deprecated in favour of a batch() method on the contract and wallet API. See preliminary docs here: https://github.com/ecadlabs/taquito/pull/648/files and many examples of usage in our integration tests.
-* LamdbaView returns a useful error message when a signer is not configured in octez.js
-* More intergration-tests to cover the Wallet API
-* Many small fixes to the octez.js documentation
-
+- TezosToolkit.batch has been deprecated in favour of a batch() method on the contract and wallet API. See preliminary docs here: https://github.com/ecadlabs/taquito/pull/648/files and many examples of usage in our integration tests.
+- LamdbaView returns a useful error message when a signer is not configured in octez.js
+- More intergration-tests to cover the Wallet API
+- Many small fixes to the octez.js documentation
 
 ## 8.0.3-beta.0 Fix for batch origination
 
@@ -3399,11 +3689,10 @@ If you have feature or issue requests, please create an issue on http://github.c
 
 ## 8.0.2-beta.0 Fixes for Protocol ENUM, getBakingRights and support for comb-pairs in local-forging package
 
-
-* A type in the Protocols enum was fixed. Protocols.PtEdo27k is now Protocols.PtEdo2Zk If you use this ENUM value, you will need to update your code. The protocol hash value has not changed.
-* getBakingRights issue when max_priority set to 0 has been fixed (Thank you to @itkach for report, thank you to @kjaiswal for first PR taco tada )
-* Support for comb-pairs has been added to the local-forging package
-* Integration test has been added to originate sapling contracts with various initial storage states
+- A type in the Protocols enum was fixed. Protocols.PtEdo27k is now Protocols.PtEdo2Zk If you use this ENUM value, you will need to update your code. The protocol hash value has not changed.
+- getBakingRights issue when max_priority set to 0 has been fixed (Thank you to @itkach for report, thank you to @kjaiswal for first PR taco tada )
+- Support for comb-pairs has been added to the local-forging package
+- Integration test has been added to originate sapling contracts with various initial storage states
 
 ## 8.0.1-beta.1 Final v8.0.1 - Update Now - mainnet transitions to edo on Feb 13th 2021!
 
@@ -3417,12 +3706,12 @@ If you are using a public testnet for your development or testing, please verify
 
 ## Summary
 
-* Support for the upcoming EDO protocol (Comes into effect on February 13th 2021)
-* Contract and Token Metadata features
-* Support for off-chain Michelson views
-* Michel-codec type checks all your Michelson
-* Ships with @airgap/beacon-sdk v2.2.1 for the octez.js Beacon wallet provider.
-* As per the octez.js Versioning Strategy this v8.0.0 release supports the upcoming edonet Tezos Protocol which will activate on the Tezos mainnet on February 13th 2021.
+- Support for the upcoming EDO protocol (Comes into effect on February 13th 2021)
+- Contract and Token Metadata features
+- Support for off-chain Michelson views
+- Michel-codec type checks all your Michelson
+- Ships with @airgap/beacon-sdk v2.2.1 for the octez.js Beacon wallet provider.
+- As per the octez.js Versioning Strategy this v8.0.0 release supports the upcoming edonet Tezos Protocol which will activate on the Tezos mainnet on February 13th 2021.
 
 ## edonet Support
 
@@ -3516,7 +3805,6 @@ This release updates octez.js's Wallet API provider for TZIP-10/beacon-sdk to 1.
 
 As per the octez.js [Versioning Strategy](https://github.com/ecadlabs/taquito#versioning-strategy) this v7.0.0 release supports the upcoming Delphinet Tezos Protocol which we are expecting to reach quorum in the coming days.
 
-
 ### Delphinet Support
 
 In Delphinet, consumed gas is also provided in `milligas` for a more accurate description of the gas consumption. Replaced property `_gasLimit` by `_milligasLimit` in the `Estimate` class. Added a new method called `consumedMilligas`. This method estimates the gas that the operation will consume in `milligas`. However, the `gasLimit` still needs to be specified in gas (not in `milligas`) when sending transactions.
@@ -3525,7 +3813,6 @@ For more details on the Delphi protocol see:
 
 Delphi release announcement: https://blog.nomadic-labs.com/delphi-official-release.html
 Delphi changelogs: https://blog.nomadic-labs.com/delphi-changelog.html#007-delphi-changelog
-
 
 ### Ledger support for signing
 
@@ -3537,7 +3824,6 @@ We have tested using both Ledger Nano S and X devices.
 
 Both the [Madfish](https://www.madfish.solutions/) ([Temple Wallet](https://templewallet.com/)) and Agile Ventures (Tezos Domains) have put this package to use in their products. A special thanks to Klas and Luis of the Kukai team for their early feedback.
 
-
 ### More documentation!
 
 - [Web3js → octez.js](https://taquito.io/docs/web3js_taquito)
@@ -3546,7 +3832,6 @@ Both the [Madfish](https://www.madfish.solutions/) ([Temple Wallet](https://temp
   - [RPC Node](https://taquito.io/docs/rpc_nodes_integration_test)
 - [Docs for RPC](https://taquito.io/docs/rpc_package)
 - [Docs for popular public Tezos nodes](https://taquito.io/docs/rpc_nodes)
-
 
 ### Breaking Changes
 
@@ -3560,12 +3845,12 @@ The three most notable changes are:
 
 Users of octez.js must specifically set their RPC URL. We have published a list of [public nodes Tezos RPC nodes](https://taquito.io/docs/rpc_nodes/).
 
-
 #### Removal of the default Tezos singleton
 
 Users must now make a new instance of the octez.js `TezosToolkit`. This change is related to the removal of the default RPC node URL.
 
 #### Remove the deprecated `Tezos.importKey` method from the main octez.js package
+
 We deprecated the top-level `importKey` method last march, and now it’s finally time to remove it. The method continues to be available in the `@taquito/signer` package as usual.
 
 ### Bugs / Improvements
@@ -3593,7 +3878,6 @@ octez.js now meets all the criteria for CII Best Practices which you can review 
 octez.js v7 is considered very stable, but there are still some items we want to get perfect before removing the `beta` tag. Namely complete architectural documentation to assist developers and auditors with understanding the internals. Documentation is part of the project, and we think our documentation is getting better but we want to go further.
 
 A big thank you to Roxane Létourneau for her excellent work on this octez.js release!
-
 
 ## v6.3.4-beta.0 Release Notes
 
@@ -3668,6 +3952,7 @@ Tezos.importKey() has been marked as deprecated. Please update your application 
 `import { importKey } from '@taquito/signer';`
 
 ### Documentation
+
 All run-able code examples that broadcast operations now all target carthagenet.
 
 Several improvements to documentation. The TypeDoc API docs are now more prominently linked from within our documentation website
@@ -3680,7 +3965,6 @@ The streamer and indexer packages have been removed
 
 Replace instanceof with static method to allow cross-module type checks [#325]
 Correct types are applied to parameters on the RPC response #312
-
 
 ## v6.1.0-beta.0 Release Notes
 
@@ -3695,51 +3979,52 @@ This release introduces `MichelsonMap()` class that provides an abstraction over
 Existing code that accesses Map or BigMap storage via the octez.js data abstraction in the following fashion:
 
 ```typescript
-const account = storage.accounts["tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD"]
+const account = storage.accounts['tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD'];
 ```
 
 Must be updated to use the `get()` and `set()` methods as follows;
 
 ```typescript
-const account = storage.accounts.get("tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD")
+const account = storage.accounts.get('tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD');
 ```
+
 Additionally, if existing code initializes storage (during contract origination for example), this code must be updated. One can create a new `MichelsonMap()` as follows:
 
 ```typescript
-    const map = new MichelsonMap()
+const map = new MichelsonMap();
 
-    map.set({firstName:"Joe", lastName: "Bloe"}, "myValue")
+map.set({ firstName: 'Joe', lastName: 'Bloe' }, 'myValue');
 
-    Tezos.contract.originate({
-        code: myContractWithAPairAsKeyCode,
-        storage: map
-    })
+Tezos.contract.originate({
+  code: myContractWithAPairAsKeyCode,
+  storage: map,
+});
 ```
 
 Or one can also use the `fromLiteral` convenience method, as illustrated below.
 
 ```typescript
-    Tezos.contract.originate({
-        code: assertContractCode,
-        storage: {
-            owner: "tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD",
-            accounts: MichelsonMap.fromLiteral({
-                "tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD": {
-                    balance: "1",
-                    allowances: MichelsonMap.fromLiteral({
-                      "tz3YjfexGakCDeCseXFUpcXPSAN9xHxE9TH2": "1"
-                    })
-                }
-            })
-        }
-    })
+Tezos.contract.originate({
+  code: assertContractCode,
+  storage: {
+    owner: 'tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD',
+    accounts: MichelsonMap.fromLiteral({
+      tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD: {
+        balance: '1',
+        allowances: MichelsonMap.fromLiteral({
+          tz3YjfexGakCDeCseXFUpcXPSAN9xHxE9TH2: '1',
+        }),
+      },
+    }),
+  },
+});
 ```
 
 A pair can by uses as a key as follows:
 
 ```typescript
-map.set({firstName:"Joe", lastName: "Bloe"}, "myValue")
-storage.get({firstName:"Joe", lastName: "Bloe"})
+map.set({ firstName: 'Joe', lastName: 'Bloe' }, 'myValue');
+storage.get({ firstName: 'Joe', lastName: 'Bloe' });
 ```
 
 [https://github.com/ecadlabs/taquito/issues/251](https://github.com/ecadlabs/taquito/issues/251)
@@ -3750,19 +4035,22 @@ New documentation covering how to interact with Smart Contracts using octez.js [
 
 ### Improvements & Fixes
 
-* Add a `UnitType` symbol to the `MichelsonEncoder` [#221][[https://github.com/ecadlabs/taquito/issues/221](https://github.com/ecadlabs/taquito/issues/221)]
-* Improved test coverage throughout the project
-* Represent all Operation kinds as an ENUM
-* Fix for handling of Zarith numbers as reported by Doyensec's security audit [https://github.com/ecadlabs/taquito/issues/264](https://github.com/ecadlabs/taquito/issues/264)
-* Validate entrypoint name length as reported by Doyensec's security audit [https://github.com/ecadlabs/taquito/issues/265](https://github.com/ecadlabs/taquito/issues/265)
-* Improve [multi-sig integration test](https://github.com/ecadlabs/taquito/blob/f3a19c4682ba5af2073e72c5d06734860596f455/integration-tests/multisig-contract-scenario.spec.ts) example
-* Add the mutez option in send method for Smart contract abstraction #255
+- Add a `UnitType` symbol to the `MichelsonEncoder` [#221][https://github.com/ecadlabs/taquito/issues/221](https://github.com/ecadlabs/taquito/issues/221)]
+- Improved test coverage throughout the project
+- Represent all Operation kinds as an ENUM
+- Fix for handling of Zarith numbers as reported by Doyensec's security audit [https://github.com/ecadlabs/taquito/issues/264](https://github.com/ecadlabs/taquito/issues/264)
+- Validate entrypoint name length as reported by Doyensec's security audit [https://github.com/ecadlabs/taquito/issues/265](https://github.com/ecadlabs/taquito/issues/265)
+- Improve [multi-sig integration test](https://github.com/ecadlabs/taquito/blob/f3a19c4682ba5af2073e72c5d06734860596f455/integration-tests/multisig-contract-scenario.spec.ts) example
+- Add the mutez option in send method for Smart contract abstraction #255
 
 ### CDN Bundle
 
 ```html
-<script src="https://unpkg.com/@tezos-x/octez.js@6.1.0-beta.0/dist/taquito.min.js"
-crossorigin="anonymous" integrity="sha384-sk4V+57zLUCfkna8z4p1u6CioucJqmeo+QnaiXoFiuE8vdkm7/ae2TNFLbL+Ys02"></script>
+<script
+  src="https://unpkg.com/@tezos-x/octez.js@6.1.0-beta.0/dist/taquito.min.js"
+  crossorigin="anonymous"
+  integrity="sha384-sk4V+57zLUCfkna8z4p1u6CioucJqmeo+QnaiXoFiuE8vdkm7/ae2TNFLbL+Ys02"
+></script>
 ```
 
 ## 6.0.3-beta.0 Local Forging, Batch Ops and more
@@ -3824,7 +4112,7 @@ We have made a subscribe API that will poll the RPC behind the scenes. The API a
 
 ### Tests
 
-We have added many new  unit and integration tests including but not limited to multisig contract interaction scenarios, emptying of accounts, and multiple big map encoding scenarios
+We have added many new unit and integration tests including but not limited to multisig contract interaction scenarios, emptying of accounts, and multiple big map encoding scenarios
 
 ### Fixes
 
@@ -3849,7 +4137,7 @@ We wish to thank the Zengo, Kukai, TQ Group, Truffle Michael Klein, Matej Šima 
 
 ### Features
 
-- Introduction of the remote signer package, allowing octez.js to interact with the Tezos HTTP  remote signer API
+- Introduction of the remote signer package, allowing octez.js to interact with the Tezos HTTP remote signer API
 - `gasLimit`, `storageLimit` and `fees` are now surfaced on `Orgination`, `Transaction` and `Delegation` operations
 - Our HTTP backend package now throws more useful errors, which extend javascript's `Error`
 - New bigmap abstraction (released in 5.1.0-beta.1 but not announced)
@@ -3870,7 +4158,7 @@ This release supports Babylon/Proto005. With this release, it is possible to inj
 Developers have two options around operating with the blockchain during the protocol amendment. First option, you can specify the protocol you expect to use in your provider as follows:
 
 ```js
-Tezos.setProvider({protocol: Protocols.PsBabyM1})
+Tezos.setProvider({ protocol: Protocols.PsBabyM1 });
 ```
 
 Second option is to not specify the protocol in your provider. octez.js will discover the current protocol before injection an operation by querying the RPC. This method requires less code, but adds an additional RPC query for every injection and is thus slightly slower.
@@ -3880,14 +4168,12 @@ Second option is to not specify the protocol in your provider. octez.js will dis
 - Polling interval for operation confirmation can be set globally for a taquito instance. Useful when working with `zeronet`
 
 ```js
-Tezos.setProvider(
-    {
-        config: {
-            confirmationPollingIntervalSecond: 10,
-            confirmationPollingTimeoutSecond: 180
-        }
-    }
-)
+Tezos.setProvider({
+  config: {
+    confirmationPollingIntervalSecond: 10,
+    confirmationPollingTimeoutSecond: 180,
+  },
+});
 ```
 
 ### Caveats
@@ -3902,7 +4188,7 @@ Support for the new Babylon multiple BigMap feature is not yet supported.
 
 ### BREAKING CHANGES
 
-- In order to be consistent with Tezos RPC. All RPC types are now all *snake_case*.
+- In order to be consistent with Tezos RPC. All RPC types are now all _snake_case_.
 
 Documentation:
 
