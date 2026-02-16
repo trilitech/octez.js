@@ -1,6 +1,6 @@
 {
   "name": "@tezos-x/octez.js-timelock",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "TypeScript implementation of the Timelock feature in Tezos",
   "main": "./dist/octez.js-timelock.umd.js",
   "module": "./dist/octez.js-timelock.es6.js",

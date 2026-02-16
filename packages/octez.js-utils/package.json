@@ -1,6 +1,6 @@
 {
   "name": "@tezos-x/octez.js-utils",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "converts michelson data and types into convenient JS/TS objects",
   "keywords": [
     "tezos",
