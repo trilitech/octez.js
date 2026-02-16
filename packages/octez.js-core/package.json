@@ -1,6 +1,6 @@
 {
   "name": "@tezos-x/octez.js-core",
-  "version": "24.3.0",
+  "version": "1.0.0",
   "description": "Shared types, interfaces, and primitives for octez.js packages.",
   "keywords": [
     "octez.js",
@@ -22,7 +22,7 @@
   "contributors": [
     "hui-an.yang <hui-an.yang@ecadlabs.com>",
     "Davis Sawali <davis.sawali@ecadlabs.com>",
-    "Jev Björsell (jevonearth)"
+    "Jev Bj\u00f6rsell (jevonearth)"
   ],
   "homepage": "https://octez.js.io/",
   "repository": {

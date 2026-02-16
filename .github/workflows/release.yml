@@ -66,9 +66,9 @@ jobs:
       - name: Verify Sapling release handoff
         run: |
           set -euo pipefail
-          sapling_wasm_version=$(node -p "require('./packages/octez.js-sapling/package.json').dependencies['@tezos-x/octez.js-sapling-wasm']")
+          sapling_wasm_version=$(node -p "require('./packages/octez.js-sapling/package.json').dependencies['@taquito/sapling-wasm']")
           if [ "${sapling_wasm_version}" = "0.1.1" ]; then
-            echo "@tezos-x/octez.js-sapling still depends on @tezos-x/octez.js-sapling-wasm@0.1.1. Publish sapling-wasm 0.2.0+ and bump packages/octez.js-sapling/package.json before release publication." >&2
+            echo "@tezos-x/octez.js-sapling still depends on @taquito/sapling-wasm@0.1.1. Publish sapling-wasm 0.2.0+ and bump packages/octez.js-sapling/package.json before release publication." >&2
             exit 1
           fi
 
@@ -96,14 +96,14 @@ jobs:
       - name: Publish prerelease packages
         if: ${{ inputs.prerelease }}
         # npm publication relies on the GitHub Actions <-> npm trusted publishing
-        # connection plus provenance, not on a repo-held npm automation token.
-        run: npm publish --workspaces --tag "${DIST_TAG}" --provenance --access public
+        # connection, not on a repo-held npm automation token.
+        run: npm publish --workspaces --tag "${DIST_TAG}" --access public
 
       - name: Publish stable packages
         if: ${{ !inputs.prerelease }}
         # npm publication relies on the GitHub Actions <-> npm trusted publishing
-        # connection plus provenance, not on a repo-held npm automation token.
-        run: npm publish --workspaces --tag "${DIST_TAG}" --provenance --access public
+        # connection, not on a repo-held npm automation token.
+        run: npm publish --workspaces --tag "${DIST_TAG}" --access public
 
       - name: Create GitHub Release
         env:

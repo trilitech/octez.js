@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "24.3.0",
+  "version": "1.0.0",
   "description": "HTTP transport utilities for octez.js RPC clients with retry, timeout, and error classification.",
   "keywords": [
     "octez.js",
@@ -59,7 +59,7 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-core": "^24.3.0"
+    "@tezos-x/octez.js-core": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

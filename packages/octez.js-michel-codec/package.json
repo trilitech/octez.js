@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "24.3.0",
+  "version": "1.0.0",
   "description": "Michelson parser, validator, and formatter for octez.js.",
   "keywords": [
     "octez.js",
@@ -60,7 +60,7 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-core": "^24.3.0"
+    "@tezos-x/octez.js-core": "^1.0.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.42",

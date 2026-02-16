@@ -7,7 +7,7 @@ layout: ../layouts/MarkdownLayout.astro
 
 ## Network reliability, browser compatibility, and internal modernization
 
-**TL;DR:** Node 22 is the new minimum for dev and server-side use. Ghostnet has been retired, migrate to Shadownet. The Beacon `NetworkType` enum has been trimmed of 15 dead protocol testnets (breaking for anyone who imported them). Gas estimation now matches `octez-client` semantics on mainnet. `@tezos-x/octez.js-sapling` no longer runs a `postinstall` network fetch. Beacon defaults now route through the Trilitech-operated `octez.io` relay nodes via our `@ecadlabs/beacon-*` fork. Several browser compatibility fixes for bundled dApps.
+**TL;DR:** Node 22 is the new minimum for dev and server-side use. Ghostnet has been retired, migrate to Shadownet. The Beacon `NetworkType` enum has been trimmed of 15 dead protocol testnets (breaking for anyone who imported them). Gas estimation now matches `octez-client` semantics on mainnet. `@tezos-x/octez.js-sapling` no longer runs a `postinstall` network fetch. Beacon defaults now route through the Trilitech-operated `octez.io` relay nodes via our `@tezos-x/octez.connect-*` fork. Several browser compatibility fixes for bundled dApps.
 
 ---
 
@@ -18,8 +18,8 @@ Most of these are dependency bumps that require little or no code changes:
 - **Node.js >=22 is now required for development and server-side use.** Node 20 reaches EOL April 2026; Node 22 ships with native `globalThis.fetch`, which let us drop `node-fetch`. This affects build toolchains, CI pipelines, and applications that import octez.js server-side. Bundled browser applications are unaffected.
 - **TypeScript upgraded from 5.5.4 to 5.9.3.** Compilation target moved from `es6` to `es2020`, and `useUnknownInCatchVariables` is now enabled. If you import octez.js's types, check that your TS version is compatible.
 - **`bignumber.js` upgraded to v10.** octez.js normalizes at its own API boundary, so this is transparent for most consumers. If your code names `BigNumber` in its own type signatures, add a direct `bignumber.js@^10` dependency to avoid TypeScript treating the transitive copy as a different type. ([#3383](https://github.com/trilitech/octez.js/pull/3383))
-- **Beacon `NetworkType` enum trimmed (breaking for some).** Fifteen long-retired Tezos protocol testnets (`DELPHINET`, `EDONET`, `FLORENCENET`, `GRANADANET`, `HANGZHOUNET`, `ITHACANET`, `JAKARTANET`, `KATHMANDUNET`, `LIMANET`, `MUMBAINET`, `NAIROBINET`, `OXFORDNET`, `PARISNET`, `QUEBECNET`, `RIONET`) have been removed from `NetworkType`. If your code imports any of these via `@tezos-x/octez.js-beacon-wallet/types`, TypeScript will fail until you delete the references. `GHOSTNET` and `SEOULNET` are now `@deprecated` aliases, migrate to `SHADOWNET` and `TALLINNNET` respectively; both will be removed in a future release. New: `TEZOSX_PREVIEWNET` and `USHUAIANET`. See the Beacon SDK fork section below.
-- **`@tezos-x/octez.js-sapling` no longer uses `postinstall`.** The install-time network fetch was a supply-chain risk: installs depended on external availability, and the fetched parameters were not integrity-checked. Proving parameters are now lazy-loaded at runtime via `initSapling()`, SHA-256 verified before use regardless of source, and served from a first-party mirror at `sapling.octez.js.io` by default. Viewing-only flows (key derivation, balances, history) need no initialization. If you want to hide first-use latency, call `preloadSaplingParams()` after init. The wasm dependency moved from `@airgap/sapling-wasm` to `@tezos-x/octez.js-sapling-wasm@0.2.0`. Four source modes are supported: `'octez.js'` (default), `'zcash'`, custom remote URLs with SHA-256 digests, and local filesystem paths for Node.js/CI. If you don't use sapling, none of this affects you. Thanks to the [ShieldBridge](https://shieldbridge.xyz/) team for feedback on the sapling runtime changes.
+- **Beacon `NetworkType` enum trimmed (breaking for some).** Fifteen long-retired Tezos protocol testnets (`DELPHINET`, `EDONET`, `FLORENCENET`, `GRANADANET`, `HANGZHOUNET`, `ITHACANET`, `JAKARTANET`, `KATHMANDUNET`, `LIMANET`, `MUMBAINET`, `NAIROBINET`, `OXFORDNET`, `PARISNET`, `QUEBECNET`, `RIONET`) have been removed from `NetworkType`. If your code imports any of these via `@tezos-x/octez.js-dapp-wallet/types`, TypeScript will fail until you delete the references. `GHOSTNET` and `SEOULNET` are now `@deprecated` aliases, migrate to `SHADOWNET` and `TALLINNNET` respectively; both will be removed in a future release. New: `TEZOSX_PREVIEWNET` and `USHUAIANET`. See the Beacon SDK fork section below.
+- **`@tezos-x/octez.js-sapling` no longer uses `postinstall`.** The install-time network fetch was a supply-chain risk: installs depended on external availability, and the fetched parameters were not integrity-checked. Proving parameters are now lazy-loaded at runtime via `initSapling()`, SHA-256 verified before use regardless of source, and served from a first-party mirror at `sapling.octez.js.io` by default. Viewing-only flows (key derivation, balances, history) need no initialization. If you want to hide first-use latency, call `preloadSaplingParams()` after init. The wasm dependency moved from `@airgap/sapling-wasm` to `@taquito/sapling-wasm@0.2.0`. Four source modes are supported: `'octez.js'` (default), `'zcash'`, custom remote URLs with SHA-256 digests, and local filesystem paths for Node.js/CI. If you don't use sapling, none of this affects you. Thanks to the [ShieldBridge](https://shieldbridge.xyz/) team for feedback on the sapling runtime changes.
 - **`@tezos-x/octez.js-wallet-connect` and `WalletProvider` type surface tweaks.** `getAllExistingSessionKeys()` and `configureWithExistingSessionKey()` are now synchronous in the type surface, and `WalletProvider` requires the mapper methods used by octez.js's wallet pipeline. Runtime `await` still works; only typed consumers with custom wallet providers or local declaration shims need to update.
 - **Estimation gas/fee values may shift.** See the gas patching section below. This is a correctness fix, not an API change.
 
@@ -39,10 +39,10 @@ If you use an AI coding assistant (Claude Code, Cursor, Copilot, etc.), you can 
 > 2. **TypeScript compatibility** -- octez.js now targets `es2020` and enables `useUnknownInCatchVariables`. Check that this project's `tsconfig.json` target and lib are compatible (es2020 or later). If catch blocks use untyped `e.message` patterns, they may need `unknown` narrowing.
 > 3. **`bignumber.js`** -- octez.js now depends on v10. Search the project for `BigNumber` in type positions (`: BigNumber`, `<BigNumber>`, `as BigNumber`). If any are found, add a direct `bignumber.js@^10` dependency to `package.json`. If `BigNumber` only appears as a runtime value consumed from octez.js without being annotated, no change is needed.
 > 4. **Beacon `NetworkType`** -- Fifteen dead protocol testnets were removed from the enum. Search the project (case-insensitive) for `NetworkType.DELPHINET`, `NetworkType.EDONET`, `NetworkType.FLORENCENET`, `NetworkType.GRANADANET`, `NetworkType.HANGZHOUNET`, `NetworkType.ITHACANET`, `NetworkType.JAKARTANET`, `NetworkType.KATHMANDUNET`, `NetworkType.LIMANET`, `NetworkType.MUMBAINET`, `NetworkType.NAIROBINET`, `NetworkType.OXFORDNET`, `NetworkType.PARISNET`, `NetworkType.QUEBECNET`, and `NetworkType.RIONET`. Delete any references. Also migrate `NetworkType.GHOSTNET` to `NetworkType.SHADOWNET` and `NetworkType.SEOULNET` to `NetworkType.TALLINNNET`; the old names still work but will be removed in a future release.
-> 5. **`@tezos-x/octez.js-sapling`** -- If this project uses sapling, the wasm dependency moved from `@airgap/sapling-wasm` to `@tezos-x/octez.js-sapling-wasm`. The `postinstall` fetch is gone; proving parameters are now lazy-loaded from a first-party CDN at runtime via `initSapling()`. Update imports and add an `initSapling()` call before any proof-generating flow. If sapling is not used, skip this.
+> 5. **`@tezos-x/octez.js-sapling`** -- If this project uses sapling, the wasm dependency moved from `@airgap/sapling-wasm` to `@taquito/sapling-wasm`. The `postinstall` fetch is gone; proving parameters are now lazy-loaded from a first-party CDN at runtime via `initSapling()`. Update imports and add an `initSapling()` call before any proof-generating flow. If sapling is not used, skip this.
 > 6. **`@tezos-x/octez.js-wallet-connect`** -- If this project uses WalletConnect, `getAllExistingSessionKeys()` and `configureWithExistingSessionKey()` are now synchronous in the type surface. Runtime `await` on these calls still works and is not an error, do not remove it. Only update type declarations for custom `WalletProvider` implementations or local declaration shims that mirror the old async signatures.
 > 7. **Ghostnet references** -- Ghostnet has been retired. Search for `ghostnet` (case-insensitive) across the project. If this project references Ghostnet RPC URLs or network names, migrate them to Shadownet.
-> 8. **Beacon relay nodes** -- If this project hardcodes Matrix relay URLs containing `papers.tech` (e.g. `beacon-node-*.sky.papers.tech`), remove them. octez.js now defaults to Trilitech-operated relays on the `octez.io` domain via the `@ecadlabs/beacon-*` fork.
+> 8. **Beacon relay nodes** -- If this project hardcodes Matrix relay URLs containing `papers.tech` (e.g. `beacon-node-*.sky.papers.tech`), remove them. octez.js now defaults to Trilitech-operated relays on the `octez.io` domain via the `@tezos-x/octez.connect-*` fork.
 >
 > Do not:
 > - Upgrade unrelated dependencies.
@@ -81,9 +81,9 @@ Ghostnet has been retired. Shadownet succeeds it. Integration and CI coverage ha
 
 ### Beacon SDK fork (4.8.1-ecad.7)
 
-octez.js now depends on `@ecadlabs/beacon-*` `4.8.1-ecad.7`, published from our `octez.js-patches` maintenance line. This package is effectively a fork of both the upstream Papers-maintained Beacon SDK and Trilitech's `octez.connect`, combining selected backports from `octez.connect` with ECAD-maintained fixes on top of the `4.8.1` base. For background on the ECAD-maintained Beacon package line, see the [`beacon-sdk-octez.js-patches` README](https://github.com/ecadlabs/beacon-sdk-octez.js-patches/blob/octez.js-patches/README.md).
+octez.js now depends on `@tezos-x/octez.connect-*` `4.8.1-ecad.7`, published from our `octez.js-patches` maintenance line. This package is effectively a fork of both the upstream Papers-maintained Beacon SDK and Trilitech's `octez.connect`, combining selected backports from `octez.connect` with ECAD-maintained fixes on top of the `4.8.1` base. For background on the ECAD-maintained Beacon package line, see the [`beacon-sdk-octez.js-patches` README](https://github.com/ecadlabs/beacon-sdk-octez.js-patches/blob/octez.js-patches/README.md).
 
-**Tezos network surface cleanup (breaking).** `NetworkType` has been trimmed of 15 long-deactivated protocol testnets. If your dApp or wallet imports any of `DELPHINET`, `EDONET`, `FLORENCENET`, `GRANADANET`, `HANGZHOUNET`, `ITHACANET`, `JAKARTANET`, `KATHMANDUNET`, `LIMANET`, `MUMBAINET`, `NAIROBINET`, `OXFORDNET`, `PARISNET`, `QUEBECNET`, or `RIONET` from `@tezos-x/octez.js-beacon-wallet/types`, the TypeScript compile will fail. Delete the references. `GHOSTNET` and `SEOULNET` are now `@deprecated`, migrate to `SHADOWNET` and `TALLINNNET` respectively. New: `TEZOSX_PREVIEWNET` (TzKT: `tzkt.previewnet.tezosx.nomadic-labs.com`) and `USHUAIANET` (TzKT: `ushuaianet.tzkt.io`). `BlockExplorer.rpcUrls` type changed from `{ [key in NetworkType]: string }` to `{ [key in NetworkType]?: string }` so custom subclasses no longer have to enumerate every network; `getLinkForNetwork` now throws a clear error when a network has no configured URL instead of returning `undefined`.
+**Tezos network surface cleanup (breaking).** `NetworkType` has been trimmed of 15 long-deactivated protocol testnets. If your dApp or wallet imports any of `DELPHINET`, `EDONET`, `FLORENCENET`, `GRANADANET`, `HANGZHOUNET`, `ITHACANET`, `JAKARTANET`, `KATHMANDUNET`, `LIMANET`, `MUMBAINET`, `NAIROBINET`, `OXFORDNET`, `PARISNET`, `QUEBECNET`, or `RIONET` from `@tezos-x/octez.js-dapp-wallet/types`, the TypeScript compile will fail. Delete the references. `GHOSTNET` and `SEOULNET` are now `@deprecated`, migrate to `SHADOWNET` and `TALLINNNET` respectively. New: `TEZOSX_PREVIEWNET` (TzKT: `tzkt.previewnet.tezosx.nomadic-labs.com`) and `USHUAIANET` (TzKT: `ushuaianet.tzkt.io`). `BlockExplorer.rpcUrls` type changed from `{ [key in NetworkType]: string }` to `{ [key in NetworkType]?: string }` so custom subclasses no longer have to enumerate every network; `getLinkForNetwork` now throws a clear error when a network has no configured URL instead of returning `undefined`.
 
 **`axios` removed from the Beacon SDK fork.** The Matrix transport HTTP client, `WalletClient` push-notification oracle, and `DAppClient` notification send were rewritten on top of native `fetch` + `AbortController`. Public API contracts are preserved, and error semantics for callers that inspect Matrix `errcode` bodies on rejection are preserved. This closes [GHSA-r4q5-vmmm-2653](https://github.com/advisories/GHSA-r4q5-vmmm-2653) (`follow-redirects` leaks custom auth headers to cross-domain redirect targets) at the source, and drops nine packages from the lockfile transitive closure (`axios`, `follow-redirects`, `form-data`, `proxy-from-env`, plus helpers).
 
@@ -103,15 +103,15 @@ Tezos X/Tezlink fee estimation was updated to use the live fee parameters expose
 - Wallet confirmation handling was fixed to avoid hanging indefinitely after a timeout.
 - Subscription polling was fixed to avoid canceling in-flight RPC requests.
 - The TZIP-16 metadata URI parser was rewritten to eliminate a CodeQL-flagged ReDoS pattern. ([#3385](https://github.com/trilitech/octez.js/pull/3385))
-- `@tezos-x/octez.js-beacon-wallet` package `exports` conditions were reordered to fix bundler resolution. ([#3390](https://github.com/trilitech/octez.js/pull/3390))
+- `@tezos-x/octez.js-dapp-wallet` package `exports` conditions were reordered to fix bundler resolution. ([#3390](https://github.com/trilitech/octez.js/pull/3390))
 
 ### Browser compatibility
 
 - `@tezos-x/octez.js-michelson-encoder` no longer relies on Node.js `Buffer` for hex conversion. BLS12-381, chest, chest-key, bytes, and sapling-transaction token types now use `buf2hex` from `@tezos-x/octez.js-utils`. ([#3400](https://github.com/trilitech/octez.js/pull/3400))
 - `@tezos-x/octez.js-utils` dropped `typedarray-to-buffer` in favor of `Buffer.from()` in `b58Encode`. ([#3400](https://github.com/trilitech/octez.js/pull/3400))
-- `@tezos-x/octez.js-sapling` now explicitly imports the `buffer` polyfill and re-exports `@tezos-x/octez.js-sapling-wasm` through a shim that ensures `globalThis.Buffer` is available. ([#3400](https://github.com/trilitech/octez.js/pull/3400))
+- `@tezos-x/octez.js-sapling` now explicitly imports the `buffer` polyfill and re-exports `@taquito/sapling-wasm` through a shim that ensures `globalThis.Buffer` is available. ([#3400](https://github.com/trilitech/octez.js/pull/3400))
 - `process.env` access in `@tezos-x/octez.js-http-utils` and `@tezos-x/octez.js` is now guarded behind `typeof process !== 'undefined'`, preventing crashes in browser environments that don't shim `process`. ([#3400](https://github.com/trilitech/octez.js/pull/3400))
-- `crypto-browserify` was dropped from `@tezos-x/octez.js-beacon-wallet` dependencies. ([#3394](https://github.com/trilitech/octez.js/pull/3394))
+- `crypto-browserify` was dropped from `@tezos-x/octez.js-dapp-wallet` dependencies. ([#3394](https://github.com/trilitech/octez.js/pull/3394))
 - Browser smoke coverage now includes a hosted Sapling parameter preload flow against `sapling.octez.js.io`, and obsolete browser shim paths were removed.
 - A browser package smoke test suite now covers import and basic instantiation for all published packages under Vite/esbuild. ([#3400](https://github.com/trilitech/octez.js/pull/3400))
 
@@ -132,7 +132,7 @@ Tezos X/Tezlink fee estimation was updated to use the live fee parameters expose
 
 - The repo is moving from Jest to Vitest.
 - TypeDoc upgraded from 0.26 to 0.28.
-- Release version-sync now only rewrites dependency ranges for actual workspace packages, preserving external scoped packages like `@tezos-x/octez.js-sapling-wasm`. Release and rehearsal workflows install the stamped graph before version-stamp, build, test, and publish. ([#3391](https://github.com/trilitech/octez.js/pull/3391))
+- Release version-sync now only rewrites dependency ranges for actual workspace packages, preserving external scoped packages like `@taquito/sapling-wasm`. Release and rehearsal workflows install the stamped graph before version-stamp, build, test, and publish. ([#3391](https://github.com/trilitech/octez.js/pull/3391))
 - Documentation and website content received a broad cleanup pass, including `SECURITY.md`, root `README.md`, and website doc drift. Security reporting now routes through GitHub private vulnerability reporting with email fallback. A repository CODEOWNERS file was added for `@trilitech/octez.js-team`. ([#3386](https://github.com/trilitech/octez.js/pull/3386), [#3388](https://github.com/trilitech/octez.js/pull/3388))
 - Website live code examples and Ledger documentation were fixed for browser compatibility. ([#3404](https://github.com/trilitech/octez.js/pull/3404), [#3405](https://github.com/trilitech/octez.js/pull/3405))
 
@@ -154,7 +154,7 @@ Report bugs on [GitHub](https://github.com/trilitech/octez.js/issues). Questions
 
 ## Fixes wallet connection freezes, simplifies Beacon imports
 
-**TL;DR:** Wallet connections that freeze on page load are fixed (affected ~33% of users). You can now import `NetworkType`, `BeaconEvent`, etc. from `@tezos-x/octez.js-beacon-wallet` instead of depending on Beacon SDK packages directly. Update your imports and remove `@airgap/beacon-*` from your `package.json`.
+**TL;DR:** Wallet connections that freeze on page load are fixed (affected ~33% of users). You can now import `NetworkType`, `BeaconEvent`, etc. from `@tezos-x/octez.js-dapp-wallet` instead of depending on Beacon SDK packages directly. Update your imports and remove `@airgap/beacon-*` from your `package.json`.
 
 ---
 
@@ -162,7 +162,7 @@ Report bugs on [GitHub](https://github.com/trilitech/octez.js/issues). Questions
 
 If your dApp's wallet connection has been hanging indefinitely on page load, with no way to recover except manually clearing site data, this release fixes it. We estimate roughly 33% of users have been affected, corresponding to those with established sessions on relay servers that were decommissioned during the Octez.connect & Papers node transition/reorganization.
 
-This beta ships with a patched Beacon SDK fork maintained by ECAD Labs ([ecadlabs/beacon-sdk-octez.js-patches](https://github.com/ecadlabs/beacon-sdk-octez.js-patches)), published as `@ecadlabs/beacon-*` on npm. The Beacon SDK is outside the scope of octez.js and not maintained by the octez.js team, but these bugs are urgent enough that we've taken matters into our own hands.
+This beta ships with a patched Beacon SDK fork maintained by ECAD Labs ([ecadlabs/beacon-sdk-octez.js-patches](https://github.com/ecadlabs/beacon-sdk-octez.js-patches)), published as `@tezos-x/octez.connect-*` on npm. The Beacon SDK is outside the scope of octez.js and not maintained by the octez.js team, but these bugs are urgent enough that we've taken matters into our own hands.
 
 Fixes are available to the AirGap, Beacon SDK, and Octez.connect teams. They will be dropped from the fork if and when upstream merges and adequately tests them.
 
@@ -175,30 +175,30 @@ Fixes are available to the AirGap, Beacon SDK, and Octez.connect teams. They wil
 - **No more hung promises**: concurrent callers get a proper error instead of waiting forever
 - **Connections route to working servers**: octez.js injects known-good relay nodes operated by Papers and Trilitech, replacing decommissioned ones
 
-### Beacon SDK types re-exported from `@tezos-x/octez.js-beacon-wallet`
+### Beacon SDK types re-exported from `@tezos-x/octez.js-dapp-wallet`
 
-Until now, using `@tezos-x/octez.js-beacon-wallet` for basic things like setting a network type or subscribing to wallet events required installing and importing directly from Beacon SDK packages. That couples your app to whichever Beacon implementation octez.js happens to use internally, and the underlying package name has already changed across releases.
+Until now, using `@tezos-x/octez.js-dapp-wallet` for basic things like setting a network type or subscribing to wallet events required installing and importing directly from Beacon SDK packages. That couples your app to whichever Beacon implementation octez.js happens to use internally, and the underlying package name has already changed across releases.
 
-`@tezos-x/octez.js-beacon-wallet` now re-exports the Beacon SDK types that dApps actually use, so you no longer need a direct dependency on any Beacon package.
+`@tezos-x/octez.js-dapp-wallet` now re-exports the Beacon SDK types that dApps actually use, so you no longer need a direct dependency on any Beacon package.
 
 **Side-effect-free types** (enums, interfaces) are available from the `./types` subpath:
 
 ```typescript
-import { NetworkType, SigningType, PermissionScope } from '@tezos-x/octez.js-beacon-wallet/types';
-import type { RequestSignPayloadInput } from '@tezos-x/octez.js-beacon-wallet/types';
+import { NetworkType, SigningType, PermissionScope } from '@tezos-x/octez.js-dapp-wallet/types';
+import type { RequestSignPayloadInput } from '@tezos-x/octez.js-dapp-wallet/types';
 ```
 
 **`BeaconEvent` and `DAppClientOptions`** are re-exported from the main entry point (they live in `beacon-dapp` which has unavoidable side effects):
 
 ```typescript
-import { BeaconWallet, BeaconEvent } from '@tezos-x/octez.js-beacon-wallet';
-import type { DAppClientOptions } from '@tezos-x/octez.js-beacon-wallet';
+import { BeaconWallet, BeaconEvent } from '@tezos-x/octez.js-dapp-wallet';
+import type { DAppClientOptions } from '@tezos-x/octez.js-dapp-wallet';
 ```
 
 **Dynamic imports** also work with the new paths:
 
 ```typescript
-const { SigningType } = await import('@tezos-x/octez.js-beacon-wallet/types');
+const { SigningType } = await import('@tezos-x/octez.js-dapp-wallet/types');
 ```
 
 #### Migration
@@ -210,15 +210,15 @@ const { SigningType } = await import('@tezos-x/octez.js-beacon-wallet/types');
 -import { BeaconEvent } from '@airgap/beacon-sdk';
 
  // After
-+import { NetworkType } from '@tezos-x/octez.js-beacon-wallet/types';
-+import { BeaconEvent } from '@tezos-x/octez.js-beacon-wallet';
++import { NetworkType } from '@tezos-x/octez.js-dapp-wallet/types';
++import { BeaconEvent } from '@tezos-x/octez.js-dapp-wallet';
 ```
 
 ```diff
  {
    "dependencies": {
      "@tezos-x/octez.js": "^24.2.0-beta.1",
-     "@tezos-x/octez.js-beacon-wallet": "^24.2.0-beta.1",
+     "@tezos-x/octez.js-dapp-wallet": "^24.2.0-beta.1",
 -    "@airgap/beacon-dapp": "...",
 -    "@airgap/beacon-sdk": "...",
 -    "@airgap/beacon-types": "..."
@@ -230,7 +230,7 @@ If you had `@airgap/beacon-*` overrides in your `package.json`, those can also b
 
 #### Build config updates
 
-If your Vite, webpack, or other bundler config references `@airgap/beacon-*` packages by name (e.g., in `manualChunks`, `externals`, or chunk splitting), update those references. The underlying packages are now `@ecadlabs/beacon-*`:
+If your Vite, webpack, or other bundler config references `@airgap/beacon-*` packages by name (e.g., in `manualChunks`, `externals`, or chunk splitting), update those references. The underlying packages are now `@tezos-x/octez.connect-*`:
 
 ```diff
  // vite.config.ts
@@ -240,15 +240,15 @@ If your Vite, webpack, or other bundler config references `@airgap/beacon-*` pac
 -    "@airgap/beacon-dapp",
 -    "@airgap/beacon-ui",
 -    "@airgap/beacon-types",
-+    "@tezos-x/octez.js-beacon-wallet",
-+    "@ecadlabs/beacon-dapp",
-+    "@ecadlabs/beacon-ui",
-+    "@ecadlabs/beacon-types",
++    "@tezos-x/octez.js-dapp-wallet",
++    "@tezos-x/octez.connect-dapp",
++    "@tezos-x/octez.connect-ui",
++    "@tezos-x/octez.connect-types",
    ],
  }
 ```
 
-Note: there is no `@ecadlabs/beacon-sdk` meta-package. If you referenced `@airgap/beacon-sdk` in your build config, drop it or replace with the specific packages above.
+Note: there is no `@tezos-x/octez.connect-sdk` meta-package. If you referenced `@airgap/beacon-sdk` in your build config, drop it or replace with the specific packages above.
 
 #### Who must migrate now
 
@@ -262,10 +262,10 @@ Everyone else. Your current imports still work under npm's flat hoisting, but if
 
 | Symbol | Import from |
 |--------|-------------|
-| `NetworkType`, `SigningType`, `PermissionScope`, `Regions` | `@tezos-x/octez.js-beacon-wallet/types` |
-| `RequestPermissionInput`, `RequestSignPayloadInput`, `NodeDistributions` (type-only) | `@tezos-x/octez.js-beacon-wallet/types` |
-| `BeaconEvent` | `@tezos-x/octez.js-beacon-wallet` |
-| `DAppClientOptions` (type-only) | `@tezos-x/octez.js-beacon-wallet` |
+| `NetworkType`, `SigningType`, `PermissionScope`, `Regions` | `@tezos-x/octez.js-dapp-wallet/types` |
+| `RequestPermissionInput`, `RequestSignPayloadInput`, `NodeDistributions` (type-only) | `@tezos-x/octez.js-dapp-wallet/types` |
+| `BeaconEvent` | `@tezos-x/octez.js-dapp-wallet` |
+| `DAppClientOptions` (type-only) | `@tezos-x/octez.js-dapp-wallet` |
 
 If you import other Beacon SDK types not listed here (e.g., `ExtendedPeerInfo`, `PeerInfo`), those are not re-exported. You'll need to import them from the underlying Beacon package directly, but consider whether your code actually needs them.
 
@@ -280,9 +280,9 @@ or @airgap/beacon-types.
 For each one found:
 - If the imported symbol is NetworkType, SigningType, PermissionScope, Regions,
   RequestPermissionInput, RequestSignPayloadInput, or NodeDistributions, change
-  the import to: import { ... } from '@tezos-x/octez.js-beacon-wallet/types'
+  the import to: import { ... } from '@tezos-x/octez.js-dapp-wallet/types'
 - If the imported symbol is BeaconEvent or DAppClientOptions, change the import
-  to: import { ... } from '@tezos-x/octez.js-beacon-wallet'
+  to: import { ... } from '@tezos-x/octez.js-dapp-wallet'
 - If the imported symbol is something else, flag it for manual review.
 
 Also check:
@@ -290,10 +290,10 @@ Also check:
   These can be removed.
 - Build configs (vite.config.ts, webpack.config.js, etc.) for references to
   @airgap/beacon-* in manualChunks, externals, or similar. Replace with the
-  corresponding @ecadlabs/beacon-* package, but note there is no
-  @ecadlabs/beacon-sdk meta-package — drop that entry or replace with the
-  specific packages (@ecadlabs/beacon-dapp, @ecadlabs/beacon-ui,
-  @ecadlabs/beacon-types).
+  corresponding @tezos-x/octez.connect-* package, but note there is no
+  @tezos-x/octez.connect-sdk meta-package — drop that entry or replace with the
+  specific packages (@tezos-x/octez.connect-dapp, @tezos-x/octez.connect-ui,
+  @tezos-x/octez.connect-types).
 
 Show me a summary of all changes before making them.
 ```
@@ -372,7 +372,7 @@ Regarding Octez.connect: we are currently evaluating it for a future octez.js re
 ---
 
 ### Beacon Version Update
-- @tezos-x/octez.js-beacon-wallet
+- @tezos-x/octez.js-dapp-wallet
    - Updated Beacon version to v4.8.0 #3325 #3326
    - overrode Beacon SDK default matrix relay nodes with a curated list of Papers and Trilitech operated nodes (Synapse 1.148.0)
 and emptied decommissioned regional nodes (Users can still pass their own matrixNodes to override octez.js's defaults)
@@ -762,7 +762,7 @@ website - updated firebase to fix website build issues #3141
 Updated Beacon version to v4.5.0 #3133
 
 ### Internals
-Configured webpack polyfill of octez.js-beacon-wallet-vanilla #3133
+Configured webpack polyfill of octez.js-dapp-wallet-vanilla #3133
 
 # Taquito v21.0.3
 ## Summary
@@ -956,7 +956,7 @@ New behaviour - inner object's field number will start with '0'
 - Updated protocol constants integration test for Paris protocol #2869
 - Configured keygen and integration test configs for Paris protocol #2888
 - Added forger integration test for protocol migrations #2850
-- Updated `@tezos-x/octez.js-beacon-wallet` to use event subscription instead of `getActiveAccount()` #2958
+- Updated `@tezos-x/octez.js-dapp-wallet` to use event subscription instead of `getActiveAccount()` #2958
 - Updated some website dependencies [PR#2961](https://github.com/trilitech/octez.js/pull/2961)
 - Updated Beacon wallet dependency to the latest version `v4.2.2` (includes Paris protocol definitions) [PR#2956](https://github.com/trilitech/octez.js/pull/2956)
 - Fixed nested `pair` and `or` indexing bug #2927
@@ -995,7 +995,7 @@ await op.confirmation();
 
 ### New Features
 - `@tezos-x/octez.js-timelock`- A new package for Timelocks have been introduced #2843. Users will now be able to create Chests, unlock Chests, and utilize Chests. For more information, please refer to this [document](https://octez.js.io/docs/next/timelock)
-- `@tezos-x/octez.js-beacon-wallet` - the `beacon-wallet` package is now bundled in a `.zip` file for [PR#2860](https://github.com/trilitech/octez.js/pull/2860)
+- `@tezos-x/octez.js-dapp-wallet` - the `beacon-wallet` package is now bundled in a `.zip` file for [PR#2860](https://github.com/trilitech/octez.js/pull/2860)
 
 ### Documentation
 - UX improvements to search funtionality on the octez.js website #2858
@@ -1941,13 +1941,13 @@ const signer = InMemorySigner.fromMnemonic({ mnemonic, password, derivationPath:
 - Fixed broken link in the Wallet doc #1865
 
 ### Others
-- `@octez.js-beacon-wallet` - Updated `@airgap/beacon-dapp` to version 3.3.0: https://github.com/airgap-it/beacon-sdk/releases/tag/v3.3.0
+- `@octez.js-dapp-wallet` - Updated `@airgap/beacon-dapp` to version 3.3.0: https://github.com/airgap-it/beacon-sdk/releases/tag/v3.3.0
 
 ### Internals
 - Speed up build with nx #2013
 - Integrate the octez.js-test-dapp into the octez.js pipeline #663
 - Add a flextesa node to our CI pipeline #457
-- Add unit tests for octez.js-beacon-wallet #1863
+- Add unit tests for octez.js-dapp-wallet #1863
 - Adapt integration tests config so they can be run against a sandbox. #1971
 
 
@@ -2092,7 +2092,7 @@ Note for the users of the lower level APIs: injecting more than one manager oper
 - Added more Manager_lambda scenarios to contract multisig integration tests #1724
 
 ### Others
-- `@octez.js-beacon-wallet` - Updated `@airgap/beacon-dapp` to version 3.1.4
+- `@octez.js-dapp-wallet` - Updated `@airgap/beacon-dapp` to version 3.1.4
 - `@tezos-x/octez.js-local-forging` - Pure JS implementation #441
 
 
@@ -2221,7 +2221,7 @@ The execution of the on-chain views previously relied on the `helpers/scripts/ru
 
 We added a feedback component at the bottom of each documentation page. We encourage you to provide feedback. It will help us evaluate which pages are the most helpful and which could benefit from improvement.
 
-## `@octez.js-beacon-wallet` - Updated `@airgap/beacon-dapp` to version 3.1.4
+## `@octez.js-dapp-wallet` - Updated `@airgap/beacon-dapp` to version 3.1.4
 
 We are now using the beacon-dapp's `getDAppClientInstance` method instead of the `new DAppClient`. This new method ensures that only one instance is created. The same cached instance is returned if called multiple times.
 
@@ -2845,7 +2845,7 @@ The custom errors were implementing the Error class instead of extending it. Thu
 
 ## @taquito/beacon-wallet - Fixed error `Cannot read property 'DAppClient' of undefined`
 
-The error `Cannot read property 'DAppClient' of undefined` was thrown when using the `@tezos-x/octez.js-beacon-wallet` package without npm. This has been fixed by replacing the global name from `beaconSdk` to `beacon` in the octez.js-beacon-wallet.umd.js compiled file.
+The error `Cannot read property 'DAppClient' of undefined` was thrown when using the `@tezos-x/octez.js-dapp-wallet` package without npm. This has been fixed by replacing the global name from `beaconSdk` to `beacon` in the octez.js-dapp-wallet.umd.js compiled file.
 
 # Taquito v11.1.0-beta
 

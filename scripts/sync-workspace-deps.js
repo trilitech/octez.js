@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Sets the version in workspace package.json files and syncs cross-workspace
 // dependency ranges without touching external packages that happen to share
-// the @octez.js scope.
+// the @tezos-x scope.
 
 const { existsSync, readdirSync, readFileSync, writeFileSync } = require('fs');
 const { join } = require('path');

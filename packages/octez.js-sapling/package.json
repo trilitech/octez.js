@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "24.3.0",
+  "version": "1.0.0",
   "description": "Sapling transaction building and viewing support for octez.js.",
   "keywords": [
     "octez.js",
@@ -62,14 +62,14 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-sapling-wasm": "0.2.0",
+    "@taquito/sapling-wasm": "0.2.0",
     "@scure/bip39": "^2.0.1",
     "@noble/hashes": "^2.0.1",
     "@stablelib/nacl": "^1.0.4",
-    "@tezos-x/octez.js-core": "^24.3.0",
-    "@tezos-x/octez.js-rpc": "^24.3.0",
-    "@tezos-x/octez.js": "^24.3.0",
-    "@tezos-x/octez.js-utils": "^24.3.0",
+    "@tezos-x/octez.js-core": "^1.0.0",
+    "@tezos-x/octez.js-rpc": "^1.0.0",
+    "@tezos-x/octez.js": "^1.0.0",
+    "@tezos-x/octez.js-utils": "^1.0.0",
     "buffer": "^6.0.3",
     "bignumber.js": "^10.0.2",
     "blakejs": "^1.2.1",

@@ -85,7 +85,7 @@ If you provide local digests, octez.js verifies them. If you omit them, the trus
 The supported browser contract is:
 
 - `@tezos-x/octez.js-sapling` stays ESM-first for application code.
-- `@tezos-x/octez.js-sapling-wasm` ships the Wasm binary in npm.
+- `@taquito/sapling-wasm` ships the Wasm binary in npm.
 - proving parameters are fetched lazily at runtime instead of being embedded in the normal browser import path.
 
 This keeps initial Sapling page loads smaller and removes the need for third-party ESM rewriting or browser `require()` shims.

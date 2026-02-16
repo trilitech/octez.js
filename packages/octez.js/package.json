@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "24.3.0",
+  "version": "1.0.0",
   "description": "TypeScript SDK for building wallets, dapps, and tooling on Tezos.",
   "keywords": [
     "octez.js",
@@ -63,14 +63,14 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-core": "^24.3.0",
-    "@tezos-x/octez.js-http-utils": "^24.3.0",
-    "@tezos-x/octez.js-local-forging": "^24.3.0",
-    "@tezos-x/octez.js-michel-codec": "^24.3.0",
-    "@tezos-x/octez.js-michelson-encoder": "^24.3.0",
-    "@tezos-x/octez.js-rpc": "^24.3.0",
-    "@tezos-x/octez.js-signer": "^24.3.0",
-    "@tezos-x/octez.js-utils": "^24.3.0",
+    "@tezos-x/octez.js-core": "^1.0.0",
+    "@tezos-x/octez.js-http-utils": "^1.0.0",
+    "@tezos-x/octez.js-local-forging": "^1.0.0",
+    "@tezos-x/octez.js-michel-codec": "^1.0.0",
+    "@tezos-x/octez.js-michelson-encoder": "^1.0.0",
+    "@tezos-x/octez.js-rpc": "^1.0.0",
+    "@tezos-x/octez.js-signer": "^1.0.0",
+    "@tezos-x/octez.js-utils": "^1.0.0",
     "bignumber.js": "^10.0.2",
     "rxjs": "^7.8.2"
   },

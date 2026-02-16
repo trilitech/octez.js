@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "24.3.0",
+  "version": "1.0.0",
   "description": "Timelock cryptography support for octez.js and Tezos applications.",
   "keywords": [
     "octez.js",
@@ -64,9 +64,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@tezos-x/octez.js-signer": "^24.3.0",
-    "@tezos-x/octez.js": "^24.3.0",
-    "@tezos-x/octez.js-utils": "^24.3.0",
+    "@tezos-x/octez.js-signer": "^1.0.0",
+    "@tezos-x/octez.js": "^1.0.0",
+    "@tezos-x/octez.js-utils": "^1.0.0",
     "@types/node": "^22.0.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",

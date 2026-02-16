@@ -10,4 +10,4 @@ if (typeof globalWithBuffer.Buffer === 'undefined') {
   globalWithBuffer.Buffer = Buffer;
 }
 
-export * from '@tezos-x/octez.js-sapling-wasm';
+export * from '@taquito/sapling-wasm';
