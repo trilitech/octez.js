@@ -1,0 +1,40 @@
+name: Clear S3 Buckets
+
+on:
+  workflow_dispatch:
+
+jobs:
+  clear:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials production
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+          aws-region: eu-west-1
+
+      - name: Clear production bucket
+        run: aws s3 rm s3://site-prod.octez-js.tezos.com/ --recursive
+
+      - name: Invalidate CloudFront production
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_PROD }} \
+            --paths "/*"
+
+      - name: Configure AWS credentials staging
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-1
+
+      - name: Clear staging bucket
+        run: aws s3 rm s3://site-stage.next-octez-js.tzstaging.com/ --recursive
+
+      - name: Invalidate CloudFront staging
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_STAGING }} \
+            --paths "/*"
