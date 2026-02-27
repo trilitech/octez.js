@@ -89,34 +89,32 @@ const isParentActive = (items: DocItem[]) => {
 
 <aside
   id="docs-sidebar"
-  class="hidden lg:block w-64 pb-4 pt-12 pl-8 pr-4 shrink-0 sticky top-0 self-start max-h-screen overflow-y-auto border-r border-border bg-background-primary relative"
+  class="hidden lg:block shrink-0 sticky top-0 self-start max-h-screen overflow-y-auto border-r bg-background-primary relative sidebar-border docs-sidebar-desktop"
 >
   <nav>
-    <ul class="list-none p-0 m-0 space-y-4">
+    <ul class="list-none p-0 m-0">
       {categories.map((category) => (
-        <li>
-          <div class="font-bold text-text-secondary mb-2 text-sm uppercase tracking-wide">
-            {category.name}
-          </div>
-          <ul class="list-none p-0 m-0 space-y-1">
+        <li class="mb-1">
+          <button class="sidebar-category-title" aria-expanded="true">
+            <span>{category.name}</span>
+            <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+          <ul class="list-none p-0 m-0">
             {category.items.map((item) => {
               if ('items' in item) {
-                const parentActive = isParentActive(item.items);
                 return (
                   <li>
-                    <div class="text-text-secondary font-semibold text-sm py-1 px-2">
+                    <div class="sidebar-group-title">
                       {item.title}
                     </div>
-                    <ul class="list-none p-0 m-0 ml-4 space-y-1">
+                    <ul class="list-none p-0 m-0">
                       {item.items.map((subItem) => (
                         <li>
                           <a
                             href={`${base}docs/${subItem.slug}`}
-                            class={`block py-1 px-2 text-sm no-underline transition-all border-l-2 ${
-                              isActive(subItem.slug)
-                                ? 'text-accent border-accent font-medium'
-                                : 'text-text-tertiary border-transparent hover:text-accent hover:border-accent'
-                            }`}
+                            class={`sidebar-link sidebar-link-child ${isActive(subItem.slug) ? 'sidebar-link-active' : ''}`}
                           >
                             {subItem.title}
                           </a>
@@ -130,11 +128,7 @@ const isParentActive = (items: DocItem[]) => {
                   <li>
                     <a
                       href={`${base}docs/${item.slug}`}
-                      class={`block py-1 px-2 text-sm no-underline transition-all border-l-2 ${
-                        isActive(item.slug)
-                          ? 'text-accent border-accent font-medium'
-                          : 'text-text-tertiary border-transparent hover:text-accent hover:border-accent'
-                      }`}
+                      class={`sidebar-link sidebar-link-child ${isActive(item.slug) ? 'sidebar-link-active' : ''}`}
                     >
                       {item.title}
                     </a>
@@ -183,31 +177,30 @@ const isParentActive = (items: DocItem[]) => {
         </svg>
       </button>
     </div>
-    <nav class="p-4">
-      <ul class="list-none p-0 m-0 space-y-4">
+    <nav class="p-2">
+      <ul class="list-none p-0 m-0">
         {categories.map((category) => (
-          <li>
-            <div class="font-bold text-text-secondary mb-2 text-sm uppercase tracking-wide">
-              {category.name}
-            </div>
-            <ul class="list-none p-0 m-0 space-y-1">
+          <li class="mb-1">
+            <button class="sidebar-category-title" aria-expanded="true">
+              <span>{category.name}</span>
+              <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+            <ul class="list-none p-0 m-0">
               {category.items.map((item) => {
                 if ('items' in item) {
                   return (
                     <li>
-                      <div class="text-text-secondary font-semibold text-sm py-1 px-2">
+                      <div class="sidebar-group-title">
                         {item.title}
                       </div>
-                      <ul class="list-none p-0 m-0 ml-4 space-y-1">
+                      <ul class="list-none p-0 m-0">
                         {item.items.map((subItem) => (
                           <li>
                             <a
                               href={`${base}docs/${subItem.slug}`}
-                              class={`block py-1 px-2 text-sm no-underline transition-all border-l-2 ${
-                                isActive(subItem.slug)
-                                  ? 'text-accent border-accent font-medium'
-                                  : 'text-text-tertiary border-transparent hover:text-accent hover:border-accent'
-                              }`}
+                              class={`sidebar-link sidebar-link-child ${isActive(subItem.slug) ? 'sidebar-link-active' : ''}`}
                             >
                               {subItem.title}
                             </a>
@@ -221,11 +214,7 @@ const isParentActive = (items: DocItem[]) => {
                     <li>
                       <a
                         href={`${base}docs/${item.slug}`}
-                        class={`block py-1 px-2 text-sm no-underline transition-all border-l-2 ${
-                          isActive(item.slug)
-                            ? 'text-accent border-accent font-medium'
-                            : 'text-text-tertiary border-transparent hover:text-accent hover:border-accent'
-                        }`}
+                        class={`sidebar-link sidebar-link-child ${isActive(item.slug) ? 'sidebar-link-active' : ''}`}
                       >
                         {item.title}
                       </a>
@@ -294,19 +283,121 @@ const isParentActive = (items: DocItem[]) => {
       }
     });
   }
+
+  // Category collapse/expand
+  document.querySelectorAll('.sidebar-category-title').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+      const list = btn.nextElementSibling as HTMLElement;
+      if (list) {
+        list.style.display = isExpanded ? 'none' : '';
+      }
+    });
+  });
 </script>
 
 <style>
+  :root {
+    --doc-sidebar-width: 300px;
+    --ifm-color-content-secondary: #525860;
+  }
+
+  .docs-sidebar-desktop {
+    width: var(--doc-sidebar-width);
+  }
+
+  .docs-sidebar-desktop nav {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .sidebar-border {
+    border-right: 1px solid var(--ifm-toc-border-color);
+  }
+
+  /* Category section title */
+  .sidebar-category-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-family: 'GT Eesti Display', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    padding: 0.375rem 0.75rem;
+    margin-top: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 4px;
+    transition: background-color 0.15s;
+  }
+
+  .sidebar-category-title:hover {
+    background-color: #0000000d;
+  }
+
+  .sidebar-chevron {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar-category-title[aria-expanded="true"] .sidebar-chevron {
+    transform: rotate(90deg);
+  }
+
+  /* Sub-group title */
+  .sidebar-group-title {
+    font-family: 'GT Eesti Display', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4a4e52;
+    padding: 0.375rem 0.75rem;
+  }
+
+  /* Link items */
+  .sidebar-link {
+    --ifm-menu-link-padding-horizontal: 0.75rem;
+    --ifm-menu-link-padding-vertical: 0.375rem;
+    display: block;
+    font-family: 'GT Eesti Display', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #4a4e52;
+    text-decoration: none;
+    padding: var(--ifm-menu-link-padding-vertical) var(--ifm-menu-link-padding-horizontal);
+    line-height: 26px;
+    border-radius: 4px;
+    transition: color 0.3s;
+  }
+
+  .sidebar-link-child {
+    padding-left: 1.5rem;
+  }
+
+  .sidebar-link:hover {
+    color: #0d61ff !important;
+    background-color: #0000000d;
+  }
+
+  .sidebar-link-active {
+    background-color: #0000000d;
+    color: #0d61ff !important;
+    font-weight: 500;
+  }
+
   @media (min-width: 1024px) {
     #docs-sidebar::before {
       content: '';
       position: fixed;
       top: 0;
       left: 0;
-      width: 16rem;
+      width: var(--doc-sidebar-width);
       height: 100vh;
       background: var(--color-background-primary);
-      border-right: 2px solid var(--color-secondary);
+      border-right: 1px solid var(--ifm-toc-border-color);
       pointer-events: none;
       z-index: -1;
     }

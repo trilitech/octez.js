@@ -1,21 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'GT Eesti Display';
+  src: url('/GT-Eesti-Display-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Eesti Display';
+  src: url('/GT-Eesti-Display-Light.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Eesti Display';
+  src: url('/GT-Eesti-Display-Light.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GT Eesti Display';
+  src: url('/GT-Eesti-Display-Regular.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Eesti Display';
+    src: url('/GT-Eesti-Display-Medium.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
 @layer base {
   body {
-    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'GT Eesti Display', sans-serif;
   }
 
   code, pre {
-    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
-  }
+    font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    }
+}
+
+:not(pre) > code[class*="language-"], pre[class*="language-"] {
+    color: rgb(57, 58, 52);
+    background-color: rgb(246, 248, 250) !important;
 }
 
 /* Light theme (default) - aligned with octez-manager */
 @theme {
+    /* Color palette */
+    --color-white: #fff;
+    --color-black: #000;
+    --color-brand-dark: #030405;
+    --color-gray-100: #F5F6F7;
+    --color-gray-200: #EBEDF0;
+    --color-gray-300: #DADDE1;
+    --color-gray-400: #CCD0D5;
+    --color-gray-500: #BEC3C9;
+    --color-gray-600: #8D949E;
+    --color-gray-700: #606770;
+    --color-gray-800: #444950;
+    --color-gray-900: #1C1E21;
     /* Primary accent - Tezos Blue */
-    --color-accent: #0D61FF;
+    --color-accent: #3578e5;
     --color-accent-light: #e6f0ff;
     --color-accent-dark: #0a4fd6;
 
@@ -38,6 +101,7 @@
     /* Borders */
     --color-border: #e5e7eb;
     --color-border-light: #f3f4f6;
+    --ifm-toc-border-color: #DADDE1;
 
     --breakpoint-3xl: 120rem;
     --breakpoint-4xl: 150rem;
