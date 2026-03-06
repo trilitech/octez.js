@@ -1,10 +1,38 @@
 ---
 import { DEFAULT_VERSION } from "../../pages/api/search/[version].json.ts";
-import octezLogoLight from "../../images/octez-logo-light.png";
-import octezLogoDark from "../../images/octez-logo-dark.png";
 
-// Normalize base URL to always have trailing slash for path joining
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
+const cards = [
+  {
+    emoji: "🚀",
+    title: "Quick Start",
+    description: "Set up octez.js in minutes and send your first transaction on the Tezos blockchain.",
+    cta: "Get started",
+    href: `${base}docs/${DEFAULT_VERSION}/quick_start`,
+  },
+  {
+    emoji: "📋",
+    title: "Release Notes",
+    description: "Stay up to date with the latest octez.js releases, new features, and breaking changes.",
+    cta: "View changelog",
+    href: `${base}changelog`,
+  },
+  {
+    emoji: "🔐",
+    title: "Wallet API",
+    description: "Learn how to use the Wallet API to interact with Tezos wallets in your dApp.",
+    cta: "Learn more",
+    href: `${base}docs/${DEFAULT_VERSION}/wallet_API`,
+  },
+  {
+    emoji: "📄",
+    title: "Smart Contract Interaction",
+    description: "Originate contracts, call entrypoints, and read on-chain storage with the contract API.",
+    cta: "Explore contracts",
+    href: `${base}docs/${DEFAULT_VERSION}/smartcontracts`,
+  },
+];
 ---
 
 <section class="bg-background-primary py-20 px-8">
@@ -24,19 +52,160 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
       >Get Started</a
     >
   </div>
-</section>
+</div>
+
+<!-- Spacer so the page flow accounts for the overlapping cards -->
+<div class="cards-spacer"></div>
 
 <style>
+  .hero-wrapper {
+    position: relative;
+  }
+
+  /* ── Hero banner ── */
+  .hero-section {
+    position: relative;
+    background-color: #3578e5;
+    background-image: url('/bg.png');
+    background-size: cover;
+    background-position: center;
+    /* extra bottom padding leaves room for the overlapping cards */
+    padding: 9rem 2rem 12rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
   .hero-title {
-    color: #1a1a1a;
+    font-family: 'GT Eesti Display', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1.25rem;
+    line-height: 1.15;
   }
+
   .hero-subtitle {
-    color: #374151;
+    font-family: 'GT Eesti Display', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.7;
+    margin: 0;
   }
-  :root[data-theme='dark'] .hero-title {
-    color: #fafafa;
+
+  /* ── Overlapping cards container ── */
+  .cards-overlap {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* shift cards so exactly 50% sits over the blue, 50% below */
+    transform: translateY(70%);
+    z-index: 10;
+    padding: 0 2rem;
   }
-  :root[data-theme='dark'] .hero-subtitle {
-    color: #d4d4d8;
+
+  .cards-placeholder {
+    height: 140px;
+    background: var(--color-background-primary);
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e6e8ee;
+    border-radius: 10px;
+    box-shadow: 1px 2px 8px 0 #0000001a;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: auto;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 2px 4px 20px 0 #00000026;
+    transform: translateY(-2px);
+  }
+
+  .card-emoji {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .card-title {
+    /* font-family: 'GT Eesti Display', sans-serif; */
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .card-description {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    color: #525860;
+    line-height: 1.65;
+    flex: 1;
+    margin: 0;
+  }
+
+  .card-cta {
+    font-family: 'GT Eesti Display', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #0d61ff;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  .card-cta:hover {
+    color: #0a4fd6;
+    text-decoration: underline;
+  }
+
+  /* Spacer that matches the 50% card height pushed below the hero */
+  .cards-spacer {
+    /* approximate card height: padding(60px) + content(~160px) = ~220px, half = ~110px */
+    height: 340px;
+    background: var(--color-background-primary);
+  }
+
+  /* Responsive: stack to 2 cols then 1 col */
+  @media (max-width: 900px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .cards-spacer {
+      height: 580px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+    .cards-overlap {
+      transform: translateY(50%);
+    }
+    .cards-spacer {
+      height: 560px;
+    }
   }
 </style>

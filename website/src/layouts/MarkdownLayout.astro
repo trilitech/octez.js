@@ -114,13 +114,9 @@ const articleJsonLd = {
       rel="stylesheet"
     />
 
-    <!-- Theme initialization (prevents flash) -->
+    <!-- Theme initialization -->
     <script is:inline>
-      (function() {
-        const theme = localStorage.getItem('theme') ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
+      document.documentElement.setAttribute('data-theme', 'light');
     </script>
 
     <!-- Load octez.js -->
@@ -133,7 +129,7 @@ const articleJsonLd = {
     <Header />
     <main class="w-full flex">
       {isDocsPage && <DocsSidebar currentSlug={currentSlug} version={version} />}
-      <div class="flex-1 min-w-0 px-4 sm:px-8 lg:px-12 xl:px-24 pt-12">
+      <div class="flex-1 min-w-0 px-6 lg:px-10 pt-8">
         <div class="max-w-4xl mx-auto">
           {
             isDocsPage && (
@@ -235,9 +231,8 @@ const articleJsonLd = {
       </div>
       <aside
         id="sidebar"
-        class="hidden md:block pt-12 w-64 pr-8 shrink-0 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pl-1">
+        class="hidden md:block pt-8 pr-4 shrink-0 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pl-4 border-l border-[var(--ifm-toc-border-color)] toc-sidebar">
         <div id="sidebar-content" class="relative">
-          <div id="sidebar-line" class="w-[2px] bg-secondary absolute left-0 top-0 bottom-0"></div>
           <nav>
             <ul id="sidebar-nav" class="list-none p-0 m-0"></ul>
           </nav>
@@ -300,6 +295,39 @@ const articleJsonLd = {
   .markdown-body .pre .code {
     font-size: 14px; /* Inherit from pre */
   }
+
+  .toc-sidebar {
+    margin-top: 20px;
+    width: 300px;
+  }
+
+  /* Right sidebar TOC */
+  .toc-link {
+    display: block;
+    padding: 0.2rem 0.5rem;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--ifm-color-content-secondary, #525860);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .toc-link:hover {
+    color: var(--color-accent);
+  }
+
+  .toc-link-h1 {
+    font-weight: 500;
+  }
+
+  .toc-link-h2 {
+    font-weight: 400;
+  }
+
+  .toc-link-h3 {
+    font-weight: 400;
+    font-size: 12px;
+  }
 </style>
 
 <script>
@@ -337,17 +365,14 @@ const articleJsonLd = {
       const li = document.createElement('li');
 
       if (heading.tagName === 'H1') {
-        li.className = 'mb-2';
-        a.className =
-          'block py-1 px-2 text-text-secondary no-underline text-base border-l-2 border-transparent hover:text-primary hover:border-primary transition-all';
+        li.className = 'mb-1';
+        a.className = 'toc-link toc-link-h1';
       } else if (heading.tagName === 'H2') {
-        li.className = 'mb-1 ml-4';
-        a.className =
-          'block py-1 px-2 text-text-tertiary no-underline text-sm border-l-2 border-transparent hover:text-primary hover:border-primary transition-all';
+        li.className = 'mb-0.5';
+        a.className = 'toc-link toc-link-h2';
       } else if (heading.tagName === 'H3') {
-        li.className = 'mb-1 ml-6';
-        a.className =
-          'block py-1 px-2 text-text-tertiary no-underline text-sm border-l-2 border-transparent hover:text-primary hover:border-primary transition-all';
+        li.className = 'mb-0.5 ml-3';
+        a.className = 'toc-link toc-link-h3';
       }
 
       a.href = `#${heading.id}`;
@@ -360,17 +385,6 @@ const articleJsonLd = {
       li.appendChild(a);
       sidebarNav.appendChild(li);
     });
-
-    const sidebarContent = document.getElementById('sidebar-content');
-    const sidebarLine = document.getElementById('sidebar-line');
-    if (sidebarContent && sidebarLine) {
-      const updateLineHeight = () => {
-        sidebarLine.style.height = `${sidebarContent.offsetHeight}px`;
-      };
-      updateLineHeight();
-      const resizeObserver = new ResizeObserver(updateLineHeight);
-      resizeObserver.observe(sidebarContent);
-    }
   }
 
   const headings = document.querySelectorAll(

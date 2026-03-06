@@ -36,13 +36,9 @@ const websiteJsonLd = {
     <meta name="theme-color" content="#0D61FF" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
-    <!-- Theme initialization (prevents flash) -->
+    <!-- Theme initialization -->
     <script is:inline>
-      (function() {
-        const theme = localStorage.getItem('theme') ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
+      document.documentElement.setAttribute('data-theme', 'light');
     </script>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalURL} />
