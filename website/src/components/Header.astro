@@ -24,11 +24,49 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
   id="main-header"
 >
   <div class="flex justify-between items-center py-3">
-    <a href={base} class="logo no-underline flex items-center gap-2" aria-label="octez.js home">
-      <img src={octezLogo.src} alt="octez.js" class="h-7 w-auto object-contain" />
-    </a>
+    <!-- Left side: logo + primary nav items -->
+    <div class="flex items-center gap-8">
+      <a href={base} class="logo no-underline flex items-center gap-2" aria-label="octez.js home">
+        <img src={octezLogo.src} alt="octez.js" class="h-7 w-auto object-contain" />
+      </a>
+      <!-- Version Dropdown, Release Notes, Get Started (desktop only) -->
+      <div class="hidden lg:flex items-center gap-8">
+        <!-- Version Dropdown -->
+        <div class="relative" id="version-dropdown-container">
+          <button
+            id="version-dropdown-btn"
+            class="flex items-center gap-1.5 hover:text-primary transition-colors nav-link"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            <span id="version-display">{currentVersion}</span>
+            <svg class="w-4 h-4 transition-transform duration-200" id="version-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div
+            id="version-dropdown-menu"
+            class="absolute top-full left-0 mt-2 py-2 bg-background-secondary rounded-lg shadow-lg border border-border min-w-32 opacity-0 invisible transition-all duration-200 z-50"
+          >
+            {VERSIONS.map((version) => (
+              <a
+                href={`${base}docs/${version}/${currentPageSlug}`}
+                class:list={[
+                  "block px-4 py-2 text-sm hover:bg-accent-light transition-colors",
+                  version === currentVersion ? "text-accent bg-accent-light" : "text-text-secondary"
+                ]}
+              >
+                {version}
+              </a>
+            ))}
+          </div>
+        </div>
+        <a href={`${base}docs/${currentVersion}/quick_start`} class="nav-link">Get Started</a>
+        <a href={`${base}changelog`} class="nav-link">Release Notes</a>
+      </div>
+    </div>
 
-    <!-- Desktop Navigation -->
+    <!-- Desktop Navigation (right side: search + socials) -->
     <nav class="hidden lg:flex items-center gap-8">
       <!-- Search Button -->
       <button
@@ -42,38 +80,7 @@ const currentPageSlug = pageSlugMatch?.[1] || "quick_start";
         <span>Search</span>
         <kbd class="hidden xl:inline-block ml-2 px-1.5 py-0.5 text-xs text-text-muted bg-background-tertiary rounded">⌘K</kbd>
       </button>
-      <!-- Version Dropdown -->
-      <div class="relative" id="version-dropdown-container">
-        <button
-          id="version-dropdown-btn"
-          class="flex items-center gap-1.5 hover:text-primary transition-colors nav-link"
-          aria-expanded="false"
-          aria-haspopup="true"
-        >
-          <span id="version-display">{currentVersion}</span>
-          <svg class="w-4 h-4 transition-transform duration-200" id="version-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div
-          id="version-dropdown-menu"
-          class="absolute top-full left-0 mt-2 py-2 bg-background-secondary rounded-lg shadow-lg border border-border min-w-32 opacity-0 invisible transition-all duration-200 z-50"
-        >
-          {VERSIONS.map((version) => (
-            <a
-              href={`${base}docs/${version}/${currentPageSlug}`}
-              class:list={[
-                "block px-4 py-2 text-sm hover:bg-accent-light transition-colors",
-                version === currentVersion ? "text-accent bg-accent-light" : "text-text-secondary"
-              ]}
-            >
-              {version}
-            </a>
-          ))}
-        </div>
-      </div>
-      <a href={`${base}changelog`} class="nav-link">Release Notes</a>
-      <a href={`${base}docs/${currentVersion}/quick_start`} class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3 py-1.5 rounded-full">Get Started</a>
+      <a href="https://docs.tezos.com/overview/resources#documentation-map" target="_blank" class="nav-link">Doc map</a>
       <!-- Socials -->
       <div class="flex items-center gap-6">
         <a
