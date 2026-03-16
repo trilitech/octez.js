@@ -27,7 +27,7 @@ import { BeaconWallet, BeaconEvent } from '@tezos-x/octez.js-dapp-wallet';
 
 const options = {
   name: 'MyAwesomeDapp',
-  iconUrl: 'https://octez.js.io/img/favicon.svg',
+  iconUrl: 'https://octez.js.io/img/favicon.ico',
   network: { type: 'ghostnet' },
   enableMetrics: true,
 };

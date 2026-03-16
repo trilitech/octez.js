@@ -1573,7 +1573,7 @@
             "sha512": "5c5a9885c3e956b66ffeb9a7c8b3c18802f85acae956eaade98ce1a026af2ead1a737986ae0d78806ba49aa3a2de2c95111572200a73ad065405d21185fc39dd"
           },
           {
-            "path": "website/static/img/favicon.svg",
+            "path": "website/static/img/favicon.ico",
             "sha512": "b51b286090aa06bb8f2b7250383e07d36b66461287f24b3818f7b80e7bc637f786e7be60e8af5a79d7e09080b1914d6871d0ac593fec2f1f920529d759d907da"
           },
           {
