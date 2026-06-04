@@ -1,9 +1,10 @@
-import * as sapling from '@airgap/sapling-wasm';
+import { Buffer } from 'buffer';
+import * as sapling from '../sapling-wasm';
 import { ParametersSpendProof, SaplingSpendDescription } from '../types';
 import { decryptKey } from './helpers';
 
 /**
- * @description holds the proving key, create proof for spend descriptions
+ * holds the proving key, create proof for spend descriptions
  * The class can be instantiated from a proving key or a spending key
  */
 export class InMemoryProvingKey {
@@ -14,7 +15,7 @@ export class InMemoryProvingKey {
   }
 
   /**
-   * @description Allows to instantiate the InMemoryProvingKey from an encrypted/unencrypted spending key
+   * Allows to instantiate the InMemoryProvingKey from an encrypted/unencrypted spending key
    *
    * @param spendingKey Base58Check-encoded spending key
    * @param password Optional password to decrypt the spending key
@@ -31,7 +32,7 @@ export class InMemoryProvingKey {
   }
 
   /**
-   * @description Prepare an unsigned sapling spend description using the proving key
+   * Prepare an unsigned sapling spend description using the proving key
    *
    * @param parametersSpendProof.saplingContext The sapling proving context
    * @param parametersSpendProof.address The address of the input
@@ -40,7 +41,6 @@ export class InMemoryProvingKey {
    * @param parametersSpendProof.amount The value of the input
    * @param parametersSpendProof.root The root of the merkle tree
    * @param parametersSpendProof.witness The path of the commitment in the tree
-   * @param derivationPath tezos current standard 'm/'
    * @returns The unsinged spend description
    */
   async prepareSpendDescription(

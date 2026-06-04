@@ -1,4 +1,4 @@
-import { CONFIGS } from "../../config";
+import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from "../../config";
 import { MANAGER_LAMBDA } from "@tezos-x/octez.js";
 import { genericMultisig } from "../../data/multisig";
 
@@ -7,7 +7,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 
   describe(`Test multisig contract through wallet api for origination, contract interaction, and tranfer to an implicit account with: ${rpc}`, () => {
     beforeEach(async () => {
-      await setup()
+      await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 })
     })
     test('Verify contract.originate, contract interaction, and transfer to an implicit account for a contract with multiple signatures', async () => {
       const account1 = await createAddress();
@@ -25,7 +25,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
         }
       }).send();
       const contract = await op.contract();
-      expect(op.status).toBeTruthy
+      expect(await op.status()).toBe('applied');
 
       // Utility function that mimics the PAIR operation of michelson
       // deepcode ignore no-any: any is good enough
@@ -51,7 +51,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
             { "int": "0" },
             {
               prim: 'Left',
-              args: [MANAGER_LAMBDA.transferImplicit("tz1eY5Aqa1kXDFoiebL28emyXFoneAoVg1zh", 500)]
+              args: [MANAGER_LAMBDA.transferImplicit(TEST_FUNDS_RECOVERY_ADDRESS, 500)]
             }
           ]
           // deepcode ignore no-any: any is good enough
@@ -114,7 +114,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
           payload: {
             counter: "0",
             action: {
-              operation: MANAGER_LAMBDA.transferImplicit("tz1eY5Aqa1kXDFoiebL28emyXFoneAoVg1zh", 500)
+              operation: MANAGER_LAMBDA.transferImplicit(TEST_FUNDS_RECOVERY_ADDRESS, 500)
             }
           },
           sigs: [signature1.prefixSig, signature2.prefixSig, null]
@@ -122,6 +122,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
       ).send()
 
       await op2.confirmation();
+      expect(await op2.status()).toBe('applied');
     })
   })
 });

@@ -1,7 +1,9 @@
 import { CONFIGS } from '../../config';
 import { tokenCode } from '../../data/tokens';
 import { MichelsonMap, BigMapAbstraction } from '@tezos-x/octez.js';
-import BigNumber from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
     const Tezos = lib;
@@ -10,7 +12,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
         /**  The contract code doesn't have annotations, so the keys of the storage and of the bigmap are indexes. */
 
         beforeEach(async () => {
-            await setup();
+            await setup({ preferFreshKey: true, minBalanceMutez: 2_000_000 });
         });
 
         test('Verify contract.originate for a contract with a BigMap with multiple values to be indexed (also fetching the Storage/BigMap)', async () => {

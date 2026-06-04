@@ -3,6 +3,7 @@
  * @module @tezos-x/octez.js-ledger-signer
  */
 
+import { Buffer } from 'buffer';
 import { Signer } from '@tezos-x/octez.js-core';
 import Transport from '@ledgerhq/hw-transport';
 import { b58Encode, PrefixV2 } from '@tezos-x/octez.js-utils';
@@ -14,7 +15,7 @@ import {
   validateResponse,
   extractValue,
 } from './utils';
-import { hash } from '@stablelib/blake2b';
+import { blake2b } from '@noble/hashes/blake2.js';
 import {
   PublicKeyHashRetrievalError,
   PublicKeyRetrievalError,
@@ -44,7 +45,7 @@ export { VERSION } from './version';
 
 /**
  *
- * @description Implementation of the Signer interface that will allow signing operation from a Ledger Nano device
+ * Implementation of the Signer interface that will allow signing operation from a Ledger Nano device
  *
  * @param transport A transport instance from LedgerJS libraries depending on the platform used (e.g. Web, Node)
  * @param path The ledger derivation path (default is "44'/1729'/0'/0'")
@@ -120,7 +121,7 @@ export class LedgerSigner implements Signer {
 
     const prefixes = this.getPrefixes();
     const publicKey = b58Encode(compressedPublicKey, prefixes.prefPk);
-    const publicKeyHash = b58Encode(hash(compressedPublicKey, 20), prefixes.prefPkh);
+    const publicKeyHash = b58Encode(blake2b(compressedPublicKey, { dkLen: 20 }), prefixes.prefPkh);
 
     this._publicKey = publicKey;
     this._publicKeyHash = publicKeyHash;

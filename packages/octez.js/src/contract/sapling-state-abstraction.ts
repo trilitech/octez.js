@@ -1,22 +1,29 @@
-import BigNumber from 'bignumber.js';
-import { ContractProvider } from './interface';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
+import { StorageProvider } from './interface';
+import { BlockIdentifier } from '../read-provider/interface';
 
 export class SaplingStateAbstraction {
-    constructor(private id: BigNumber, private provider: ContractProvider) { }
+  constructor(
+    private id: BigNumber,
+    private provider: StorageProvider,
+    private defaultBlock?: BlockIdentifier
+  ) {}
 
-    /**
-     *
-     * @description Fetch the sapling state
-     * 
-     * @param block optional block level to fetch the values from (head will be use by default)
-     * @returns Return a json object of the sapling_state
-     *
-     */
-    async getSaplingDiff(block?: number) {
-        return this.provider.getSaplingDiffByID(this.id.toString(), block);
-    }
+  /**
+   *
+   * Fetch the sapling state
+   *
+   * @param block optional block level to fetch the values from (head will be use by default)
+   * @returns Return a json object of the sapling_state
+   *
+   */
+  async getSaplingDiff(block?: BlockIdentifier) {
+    return this.provider.getSaplingDiffByID(this.id.toString(), block ?? this.defaultBlock);
+  }
 
-    getId() {
-        return this.id.toString();
-    }
+  getId() {
+    return this.id.toString();
+  }
 }

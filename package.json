@@ -1,9 +1,37 @@
 {
+  "name": "octez-js-monorepo",
+  "version": "24.3.0",
+  "description": "Canonical monorepo for the Octez.js TypeScript SDK for Tezos, maintained by Trilitech.",
   "private": true,
+  "author": "Trilitech <contact@trili.tech>",
+  "contributors": [
+    "Simon Boissonneault-Robert <simon@ecadlabs.com>",
+    "Roxane Letourneau <roxane@ecadlabs.com>",
+    "Davis Sawali <davis.sawali@ecadlabs.com>",
+    "Jev Björsell (jevonearth)"
+  ],
+  "homepage": "https://docs.tezos.com/dApps/octez",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trilitech/octez.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/trilitech/octez.js/issues"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "octez.js",
+    "tezos",
+    "typescript",
+    "sdk",
+    "wallet",
+    "dapp",
+    "michelson",
+    "rpc"
+  ],
   "workspaces": [
     "packages/*",
     "packages/octez.js-michel-codec/pack-test-tool",
-    "apps/",
     "example",
     "integration-tests",
     "website"
@@ -14,116 +42,120 @@
     "build-all": "nx run-many --target=build --exclude=@tezos-x/octez.js-website",
     "build-website": "npm ci && npm run build && cd website && npm ci && npm run build",
     "rebuild": "npm run clean && npm install && npm run build",
-    "test": "nx run-many --target=test --exclude=integration-tests,@tezos-x/octez.js-website --collectCoverage",
-    "lint": "lerna run lint",
-    "clean": "lerna clean --yes && rm -rf ./node_modules/**",
-    "commit": "git-cz",
-    "precommit": "lerna run --concurrency 1 --stream precommit",
+    "check:package-catalog": "node ./scripts/package-catalog.js --check",
+    "sync:package-catalog": "node ./scripts/package-catalog.js --write",
+    "test": "nx run-many --target=test --exclude=integration-tests,@tezos-x/octez.js-website -- --coverage",
+    "test:dist:esm-imports": "node ./scripts/check-esm-imports.js",
+    "lint": "npm run check:package-catalog && npm run --workspaces --if-present lint",
+    "clean": "rimraf node_modules packages/*/node_modules packages/octez.js-michel-codec/pack-test-tool/node_modules example/node_modules integration-tests/node_modules website/node_modules",
+    "precommit": "npm run --workspaces --if-present precommit",
     "example": "cd example && npm run example",
     "build-docs": "typedoc --tsconfig ./tsconfig.typedoc.json",
     "gh-pages": "gh-pages",
-    "integration-tests": "npm -w integration-tests run test:originate-known-contracts && npm -w integration-tests run test:secret-key -- --testPathIgnorePatterns ledger-signer-failing-tests.spec.ts ledger-signer.spec.ts contract-estimation-tests.spec.ts rpc-get-protocol-constants.spec.ts",
-    "version-stamp": "lerna run version-stamp"
-  },
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "ts-jest"
-    },
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/integration-tests/"
-    ],
-    "testEnvironment": "node",
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "moduleNameMapper": {
-      "^@tezos-x/octez.js-core$": "<rootDir>/packages/octez.js-core/src/octez.js-core.ts",
-      "^pack-test-tool$": "<rootDir>/packages/octez.js-michel-codec/pack-test-tool/src/pack-test-tool.js",
-      "^@tezos-x/octez.js-dapp-wallet$": "<rootDir>/packages/octez.js-dapp-wallet/src/octez.js-dapp-wallet.ts",
-      "^@tezos-x/octez.js-contracts-library$": "<rootDir>/packages/octez.js-contracts-library/src/contracts-library.ts",
-      "^@tezos-x/octez.js-http-utils$": "<rootDir>/packages/octez.js-http-utils/src/octez.js-http-utils.ts",
-      "^@tezos-x/octez.js-ledger-signer$": "<rootDir>/packages/octez.js-ledger-signer/src/octez.js-ledger-signer.ts",
-      "^@tezos-x/octez.js-local-forging$": "<rootDir>/packages/octez.js-local-forging/src/octez.js-local-forging.ts",
-      "^@tezos-x/octez.js-michelson-encoder$": "<rootDir>/packages/octez.js-michelson-encoder/src/octez.js-michelson-encoder.ts",
-      "^@tezos-x/octez.js-michel-codec$": "<rootDir>/packages/octez.js-michel-codec/src/octez.js-michel-codec.ts",
-      "^@tezos-x/octez.js-remote-signer$": "<rootDir>/packages/octez.js-remote-signer/src/octez.js-remote-signer.ts",
-      "^@tezos-x/octez.js-rpc$": "<rootDir>/packages/octez.js-rpc/src/octez.js-rpc.ts",
-      "^@tezos-x/octez.js-sapling$": "<rootDir>/packages/octez.js-sapling/octez.js-sapling.ts",
-      "^@tezos-x/octez.js-signer$": "<rootDir>/packages/octez.js-signer/src/octez.js-signer.ts",
-      "^@tezos-x/octez.js$": "<rootDir>/packages/octez.js/src/octez.ts",
-      "^@tezos-x/octez.js-timelock$": "<rootDir>/packages/octez.js-timelock/src/octez.js-timelock.ts",
-      "^@tezos-x/octez.js-tzip12$": "<rootDir>/packages/octez.js-tzip12/src/octez.js-tzip12.ts",
-      "^@tezos-x/octez.js-tzip16$": "<rootDir>/packages/octez.js-tzip16/src/octez.js-tzip16.ts",
-      "^@tezos-x/octez.js-utils$": "<rootDir>/packages/octez.js-utils/src/octez.js-utils.ts",
-      "^@tezos-x/octez.js-wallet-connect$": "<rootDir>/packages/octez.js-wallet-connect/src/octez.js-wallet-connect.ts"
-    },
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test/"
-    ],
-    "collectCoverageFrom": [
-      "packages/**/src/**/*.{js,ts}"
-    ],
-    "watchPathIgnorePatterns": [
-      "/node_modules/",
-      "/integration-tests/",
-      "/example/"
-    ]
+    "integration-tests": "npm -w integration-tests run originate-known-contracts && npm -w integration-tests run test:secret-key",
+    "version-stamp": "npm run --workspaces --if-present version-stamp",
+    "test:scripts": "node --test scripts/*.test.js",
+    "test:browser:packages": "npm run build && npm run test:dist:esm-imports && playwright test --config browser-tests/playwright.config.ts --project=chromium",
+    "test:browser:packages:firefox": "npm run build && npm run test:dist:esm-imports && playwright test --config browser-tests/playwright.config.ts --project=firefox",
+    "test:browser:packages:webkit": "npm run build && npm run test:dist:esm-imports && playwright test --config browser-tests/playwright.config.ts --project=webkit",
+    "test:browser:packages:all": "npm run build && npm run test:dist:esm-imports && playwright test --config browser-tests/playwright.config.ts",
+    "test:browser:packages:ci": "npm run test:browser:packages"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@nrwl/jest": "^19.5.3",
+    "@nx/vite": "^22.5.4",
+    "@playwright/test": "^1.60.0",
     "@types/bluebird": "^3.5.42",
-    "@types/estree": "^1.0.5",
-    "@types/jest": "^29.5.12",
+    "@types/estree": "^1.0.9",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20",
+    "@types/node": "^22.19.19",
     "@types/typedarray-to-buffer": "^4.0.4",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "@vitest/coverage-v8": "^4.1.6",
+    "@vitest/ui": "^4.1.6",
     "colors": "^1.4.0",
-    "commitizen": "^4.3.0",
-    "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "gh-pages": "^6.1.1",
     "husky": "^9.1.4",
-    "jest": "^29.7.0",
-    "jest-config": "^29.7.0",
-    "lerna": "^9.0.3",
     "lint-staged": "^15.2.7",
     "lodash.camelcase": "^4.3.0",
-    "nx": "^21.6.10",
-    "prettier": "^3.3.3",
+    "nx": "^22.5.3",
+    "prettier": "^3.8.3",
     "prompt": "^1.3.0",
     "replace-in-file": "^8.1.0",
     "rimraf": "^6.0.1",
-    "rollup": "^4.22.4",
+    "rollup": "^4.60.4",
     "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-typescript2": "^0.36.0",
+    "rollup-plugin-typescript2": "^0.37.0",
     "shelljs": "^0.8.5",
-    "ts-jest": "^29.2.3",
     "ts-node": "^10.9.2",
     "ts-toolbelt": "^9.6.0",
-    "typedoc": "^0.26.5",
-    "typescript": "5.5.4"
+    "typedoc": "^0.28.19",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.6"
   },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+  "overrides": {
+    "@airgap/beacon-dapp": "npm:@ecadlabs/beacon-dapp@4.8.4-ecad-beta.1",
+    "@airgap/beacon-core": "npm:@ecadlabs/beacon-core@4.8.4-ecad-beta.1",
+    "@airgap/beacon-types": "npm:@ecadlabs/beacon-types@4.8.4-ecad-beta.1",
+    "@airgap/beacon-utils": "npm:@ecadlabs/beacon-utils@4.8.4-ecad-beta.1",
+    "@airgap/beacon-ui": "npm:@ecadlabs/beacon-ui@4.8.4-ecad-beta.1",
+    "@airgap/beacon-transport-matrix": "npm:@ecadlabs/beacon-transport-matrix@4.8.4-ecad-beta.1",
+    "@airgap/beacon-transport-postmessage": "npm:@ecadlabs/beacon-transport-postmessage@4.8.4-ecad-beta.1",
+    "@airgap/beacon-transport-walletconnect": "npm:@ecadlabs/beacon-transport-walletconnect@4.8.4-ecad-beta.1",
+    "@ecadlabs/beacon-transport-walletconnect": {
+      "@walletconnect/core": "2.18.0",
+      "@walletconnect/sign-client": "2.18.0",
+      "@walletconnect/types": "2.18.0",
+      "@walletconnect/utils": "2.18.0"
+    },
+    "@babel/plugin-transform-modules-systemjs": "7.29.4",
+    "axios": "1.16.1",
+    "fast-uri": "3.1.2",
+    "follow-redirects": "^1.16.0",
+    "lodash": "4.18.1",
+    "brace-expansion@^1.1.7": "1.1.13",
+    "brace-expansion@^1.1.11": "1.1.13",
+    "brace-expansion@^2.0.1": "2.0.3",
+    "brace-expansion@^2.0.2": "2.0.3",
+    "brace-expansion@^5.0.2": "5.0.6",
+    "anymatch": {
+      "picomatch": "2.3.2"
+    },
+    "defu": "6.1.5",
+    "h3": {
+      ".": "1.15.9",
+      "defu": "6.1.5"
+    },
+    "micromatch": {
+      "picomatch": "2.3.2"
+    },
+    "postcss": "8.5.14",
+    "vite": "7.3.2",
+    "unstorage": {
+      "h3": "1.15.9"
+    },
+    "yaml@^1.10.0": "1.10.3",
+    "yaml@^2.6.0": "2.9.0",
+    "yaml@^2.7.0": "2.9.0",
+    "yaml@^2.8.1": "2.9.0",
+    "@rollup/plugin-inject": {
+      "picomatch": "4.0.4"
+    },
+    "@rollup/plugin-json": {
+      "picomatch": "4.0.4"
+    },
+    "@rollup/plugin-node-resolve": {
+      "picomatch": "4.0.4"
+    },
+    "picomatch@^2.0.4": "2.3.2",
+    "picomatch@^2.2.2": "2.3.2",
+    "picomatch@^2.2.3": "2.3.2",
+    "picomatch@^2.3.1": "2.3.2",
+    "picomatch@^4.0.2": "4.0.4",
+    "picomatch@^4.0.3": "4.0.4"
   }
 }

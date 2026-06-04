@@ -1,7 +1,8 @@
+import { Buffer } from 'buffer';
 import { InMemoryViewingKey } from './in-memory-viewing-key';
-import * as sapling from '@airgap/sapling-wasm';
+import * as sapling from '../sapling-wasm';
 import { b58Encode, PrefixV2 } from '@tezos-x/octez.js-utils';
-import * as bip39 from 'bip39';
+import * as bip39 from '@scure/bip39';
 import {
   ParametersSpendProof,
   ParametersSpendSig,
@@ -11,7 +12,7 @@ import {
 import { decryptKey } from './helpers';
 
 /**
- * @description holds the spending key, create proof and signature for spend descriptions
+ * holds the spending key, create proof and signature for spend descriptions
  * can instantiate from mnemonic word list or decrypt a encrypted spending key
  * with access to instantiate a InMemoryViewingKey
  */
@@ -37,8 +38,8 @@ export class InMemorySpendingKey {
     // no password passed here. password provided only changes from sask -> MMXj
     const fullSeed = await bip39.mnemonicToSeed(mnemonic);
 
-    const first32: Buffer = fullSeed.slice(0, 32);
-    const second32: Buffer = fullSeed.slice(32);
+    const first32 = fullSeed.slice(0, 32);
+    const second32 = fullSeed.slice(32);
     // reduce seed bytes must be 32 bytes reflecting both halves
     const seed = Buffer.from(first32.map((byte, index) => byte ^ second32[index]));
 
@@ -66,7 +67,7 @@ export class InMemorySpendingKey {
   }
 
   /**
-   * @description Prepare an unsigned sapling spend description using the spending key
+   * Prepare an unsigned sapling spend description using the spending key
    * @param parametersSpendProof.saplingContext The sapling proving context
    * @param parametersSpendProof.address The address of the input
    * @param parametersSpendProof.randomCommitmentTrapdoor The randomness of the commitment
@@ -74,7 +75,6 @@ export class InMemorySpendingKey {
    * @param parametersSpendProof.amount The value of the input
    * @param parametersSpendProof.root The root of the merkle tree
    * @param parametersSpendProof.witness The path of the commitment in the tree
-   * @param derivationPath tezos current standard 'm/'
    * @returns The unsigned spend description
    */
   async prepareSpendDescription(
@@ -100,7 +100,7 @@ export class InMemorySpendingKey {
   }
 
   /**
-   * @description Sign a sapling spend description
+   * Sign a sapling spend description
    * @param parametersSpendSig.publicKeyReRandomization The re-randomization of the public key
    * @param parametersSpendSig.unsignedSpendDescription The unsigned Spend description
    * @param parametersSpendSig.hash The data to be signed
@@ -131,7 +131,7 @@ export class InMemorySpendingKey {
   }
 
   /**
-   * @description Return a proof authorizing key from the configured spending key
+   * Return a proof authorizing key from the configured spending key
    */
   async getProvingKey() {
     const provingKey = await sapling.getProofAuthorizingKey(this.#spendingKeyBuf);

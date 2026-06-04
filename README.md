@@ -1,8 +1,8 @@
 
 ![octez.js Logo](/img/octez.js.png)
 
-[![Node.js CI](https://github.com/trilitech/octez.js/workflows/Node.js%20CI/badge.svg)](https://github.com/trilitech/octez.js/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/trilitech/octez.js/branch/master/graph/badge.svg)](https://codecov.io/gh/trilitech/octez.js)
+[![Node.js CI](https://github.com/ecadlabs/taquito/workflows/Node.js%20CI/badge.svg)](https://github.com/ecadlabs/taquito/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/ecadlabs/taquito/branch/main/graph/badge.svg)](https://codecov.io/gh/ecadlabs/taquito)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3204/badge)](https://bestpractices.coreinfrastructure.org/projects/3204)
 [![npm version](https://badge.fury.io/js/%40tezos-x%2Foctez.js.svg)](https://badge.fury.io/js/%40tezos-x%2Foctez.js)
 
@@ -38,16 +38,19 @@ Do you wish to contribute to octez.js? See [Contributors Getting Started](#contr
 
 octez.js currently supports the following versions of Node.js®:
 
-| Version          | Supported? |
-| ---------------- | ---------- |
-| v16 LTS/Gallium  |    ❌      |
-| v18 LTS/Hydrogen |    ❌      |
-| v20 LTS/Iron     |    ⭐️      |
-| v22 LTS/Jod      |    ✅      |
+| Version      | Supported? |
+| ------------ | ---------- |
+| v24 LTS      | ✅         |
+| v22 LTS      | ✅         |
+| < v22        | ❌         |
 
-Other versions may work, but the above are officially supported. YMMV!
+The repository currently targets Node.js `>=22`, and CI runs on Node.js 22 and 24.
 
-For example, we found node v22.14.0 and above in a linux machine when `npm ci` / `npm install` may run into issue with `libusb.h: No such file or directory` which can be resolved by manually install these dependencies. `sudo apt install -y libusb-1.0-0-dev libudev-dev pkg-config`
+On some GNU/Linux systems, native dependencies used by Ledger-related packages may require additional system libraries. If `npm ci` or `npm install` fails with errors such as `libusb.h: No such file or directory`, install the relevant packages first, for example on Debian or Ubuntu:
+
+```bash
+sudo apt install -y libusb-1.0-0-dev libudev-dev pkg-config
+```
 
 ## Community Support Channels
 
@@ -58,31 +61,38 @@ We are active and enthusiastic participants of the following community channels:
 
 ## Project Organization
 
-octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of several npm packages that are [published to npmjs.org](https://www.npmjs.com/package/@tezos-x/octez.js) under the `@octez.js` scope. Each package has its own README, found in its respective directory within `packages/`.
+Taquito is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of npm packages published under the `@taquito` scope. The package catalog below is generated from package metadata so the npm links and descriptions stay in sync with the codebase. To refresh it after package changes, run `npm run sync:package-catalog`.
 
-| High-Level Packages                                | Responsibility                                                                                          |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| [@tezos-x/octez.js](packages/octez.js)               | A [Facade](https://en.wikipedia.org/wiki/Facade_pattern) to lower-level, package-specific functionality |
+<!-- package-catalog:start -->
+### Workspace Packages
 
-| Low-Level Packages                                               | Responsibility                                                                                        |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [@tezos-x/octez.js-local-forging](packages/octez.js-local-forging)         | Local serialization (“forging”) of Tezos operations as bytes                                          |
-| [@tezos-x/octez.js-michelson-encoder](packages/octez.js-michelson-encoder) | Creates JS abstractions of Smart Contracts                                                            |
-| [@tezos-x/octez.js-michel-codec](packages/octez.js-michel-codec)           | Converts Michelson between forms, expands macros, etc                                                 |
-| [@tezos-x/octez.js-remote-signer](packages/octez.js-remote-signer)         | Provides the facility to use a remote signer, such as https://signatory.io                            |
-| [@tezos-x/octez.js-rpc](packages/octez.js-rpc)                             | RPC client library, with a method for each RPC endpoint                                               |
-| [@tezos-x/octez.js-signer](packages/octez.js-signer)                       | Provides functionality to sign data using Tezos keys                                                  |
-| [@tezos-x/octez.js-utils](packages/octez.js-utils)                         | Encoding/decoding utilities                                                                           |
-| [@tezos-x/octez.js-tzip12](packages/octez.js-tzip12)                       | TZIP-12 support (retrieving NFT/token metadata)                                                       |
-| [@tezos-x/octez.js-tzip16](packages/octez.js-tzip16)                       | TZIP-16 support (retrieving contract metadata and executing off-chain views)                          |
-| [@tezos-x/octez.js-dapp-wallet](packages/octez.js-dapp-wallet)             | TZIP-10 implementation of a Wallet API                                                                |
-| [@tezos-x/octez.js-http-utils](packages/octez.js-http-utils)               | Configure and customize HTTP requests                                                                 |
-| [@tezos-x/octez.js-core](packages/octez.js-core)                           | Provides parent/core types, classes, and interfaces for octez.js packages or external uses             |
-| [@tezos-x/octez.js-sapling](packages/octez.js-sapling)                     | Functions to prepare and read sapling transactions                                                   |
-| [@tezos-x/octez.js-contracts-library](packages/octez.js-contracts-library) | Provides functionality to specify static data related to contracts                                    |
-| [@tezos-x/octez.js-ledger-signer](packages/octez.js-ledger-signer)         | Provides functionality for a Ledger signer provider                                                   |
-| [@tezos-x/octez.js-timelock](packages/octez.js-timelock)                   | Functions to create and open timelocks                                                                |
-| [@tezos-x/octez.js-wallet-connect](packages/octez.js-wallet-connect)       | Enables WalletConnect integration with the TezosToolkit’s wallet API                                  |
+| Package | npm | Source | Description |
+| --- | --- | --- | --- |
+| `@tezos-x/octez.js` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js) | [source](./packages/octez.js) | TypeScript SDK for building wallets, dapps, and tooling on Tezos. |
+| `@tezos-x/octez.js-contracts-library` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-contracts-library) | [source](./packages/octez.js-contracts-library) | Static Michelson scripts and entrypoints library for Taquito contract interactions. |
+| `@tezos-x/octez.js-core` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-core) | [source](./packages/octez.js-core) | Shared types, interfaces, and primitives for Taquito packages. |
+| `@tezos-x/octez.js-dapp-wallet` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-dapp-wallet) | [source](./packages/octez.js-dapp-wallet) | TZIP-10 Beacon wallet integration for Taquito dapps built on the Beacon SDK DAppClient. |
+| `@tezos-x/octez.js-http-utils` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-http-utils) | [source](./packages/octez.js-http-utils) | HTTP transport utilities for Taquito RPC clients with retry, timeout, and error classification. |
+| `@tezos-x/octez.js-ledger-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-ledger-signer) | [source](./packages/octez.js-ledger-signer) | Ledger hardware wallet signer integration for Taquito. |
+| `@tezos-x/octez.js-local-forging` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-local-forging) | [source](./packages/octez.js-local-forging) | Local Tezos operation forging for Taquito. |
+| `@tezos-x/octez.js-michel-codec` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-michel-codec) | [source](./packages/octez.js-michel-codec) | Michelson parser, validator, and formatter for Taquito. |
+| `@tezos-x/octez.js-michelson-encoder` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-michelson-encoder) | [source](./packages/octez.js-michelson-encoder) | Michelson encoding and decoding utilities for Taquito. |
+| `@tezos-x/octez.js-remote-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-remote-signer) | [source](./packages/octez.js-remote-signer) | Remote signer client for Taquito, designed to work with services such as Signatory. |
+| `@tezos-x/octez.js-rpc` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-rpc) | [source](./packages/octez.js-rpc) | TypeScript client and types for the Tezos RPC used by Taquito. |
+| `@tezos-x/octez.js-sapling` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling) | [source](./packages/octez.js-sapling) | Sapling transaction building and viewing support for Taquito. |
+| `@tezos-x/octez.js-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-signer) | [source](./packages/octez.js-signer) | Software signer implementations and signing utilities for Taquito. |
+| `@tezos-x/octez.js-timelock` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-timelock) | [source](./packages/octez.js-timelock) | Timelock cryptography support for Taquito and Tezos applications. |
+| `@tezos-x/octez.js-tzip12` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip12) | [source](./packages/octez.js-tzip12) | TZIP-12 token metadata support for Taquito. |
+| `@tezos-x/octez.js-tzip16` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip16) | [source](./packages/octez.js-tzip16) | TZIP-16 contract metadata support for Taquito. |
+| `@tezos-x/octez.js-utils` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-utils) | [source](./packages/octez.js-utils) | Encoding, crypto, and utility helpers for Taquito. |
+| `@tezos-x/octez.js-wallet-connect` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-wallet-connect) | [source](./packages/octez.js-wallet-connect) | WalletConnect integration for Taquito applications. |
+
+### Related Official Package
+
+| Package | npm | Source | Description | Notes |
+| --- | --- | --- | --- | --- |
+| `@tezos-x/octez.js-sapling-wasm` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling-wasm) | [source](https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm) | Sapling Wasm bindings for Taquito and compatible consumers. | Official Taquito package, published from the separate `ecadlabs/sapling-wasm` repository. |
+<!-- package-catalog:end -->
 
 ## API Documentation
 
@@ -94,11 +104,11 @@ octez.js supports the *current* and *next* (beta) protocol versions of Tezos.
 
 We use [Semantic Versioning](https://semver.org) with a twist: the *Major* version typically tracks the latest version of Tezos, while *Minor* and *Patch* follow standard SemVer rules.
 
-For example, if the Tezos protocol is at `004-...`, and `005-...` is in the on-chain amendment process, octez.js might be at `v4.0.0` for the current protocol and `v5.0.0-beta.1` for the upcoming protocol.
+For example, a stable Taquito release line might be `v24.x`, while the next protocol release is prepared as `v25.0.0-beta.1`.
 
 ### Release Timing
 
-When the next protocol proposal is likely to be promoted, and octez.js has been updated and tested against it, we release the next version (e.g., `v5.0.0-beta.1`) *before* the chain switches. This gives DApp developers time to update and test their projects.
+When the next protocol proposal is likely to be promoted, and Taquito has been updated and tested against it, we release the next version (e.g., `v25.0.0-beta.1`) *before* the chain switches. This gives DApp developers time to update and test their projects.
 
 During these “Major” version updates, the octez.js public API *may* undergo breaking changes. We do our best to document these in release notes.
 
@@ -106,7 +116,9 @@ All prior octez.js releases remain *backwards compatible* with historical chain 
 
 ## Releases
 
-Releases are published to npmjs.org and appear on the GitHub Releases page. All official releases are signed by the octez.js maintainers. If you find an unsigned release or one signed by an unrecognized party, [please let us know](https://github.com/trilitech/octez.js/issues) immediately.
+Releases are published to npmjs.org and appear on the GitHub Releases page.
+
+Official npm packages are published from the repository's GitHub Actions release workflow with npm provenance enabled. npm records signed provenance attestations for those publishes, which gives consumers a verifiable link between the published package, the source commit, and the build workflow used to produce it.
 
 ## Contributors Getting Started
 
@@ -122,19 +134,15 @@ Interested in contributing to octez.js? Wonderful! Read on to set up your enviro
 
 2. **Install or use a compatible version of Node.js** (see [Supported Versions](#supported-versions-of-node)), for example:
     ```bash
-    nvm use lts/iron
-    ```
-
-3. **Install Lerna globally** (used by our Nx-based build system):
-    ```bash
-    npm install --global lerna
+    nvm install
+    nvm use
     ```
 
 ### Building octez.js
 
 Once prerequisites are installed, run:
 ```bash
-npm clean-install
+npm ci
 npm run build
 ```
 If everything goes well, run the unit tests:
@@ -146,7 +154,7 @@ All tests should pass successfully.
 ### Build Gotchas
 
 - **Do not delete `node_modules/` manually** – this confuses the build system. Use `npm run clean` instead.
-- **Use `npm ci` (or `npm clean-install`) rather than `npm install`** to ensure a deterministic installation that respects `package-lock.json`. It’s also faster!
+- **Prefer `npm ci` rather than `npm install`** to ensure a deterministic installation that respects `package-lock.json`.
 
 ### Useful npm Scripts
 
@@ -169,29 +177,49 @@ After making your changes:
 ```bash
 npm run lint
 npm run test
-npm run commit
+git commit
 ```
 
-Use `npm run commit` for your final commit to automatically format it according to our conventions. A final lint/test cycle will run before the commit is applied.
+Use a conventional commit message for your final commit.
 
 ### Running the Website Locally
 
-The [octez.js website][4] is built with [Docusaurus][5]. To run it locally:
+The [Taquito website][4] is built with [Astro][5]. To run it locally:
 
-1. `npm clean-install`
-2. `npm -w @tezos-x/octez.js-website start`
+1. `npm ci`
+2. `npm -w @tezos-x/octez.js-website dev`
 
 ## Contributions / Reporting Issues
 
 ### Security Issues
 
-To report a security issue, please contact [contact@nomadic-labs.com](mailto:contact@nomadic-labs.com).
+Do not report security issues in public GitHub issues, discussions, or pull requests.
+
+Use GitHub private vulnerability reporting on the repository [Security page](https://github.com/ecadlabs/taquito/security), or email [security@ecadlabs.com](mailto:security@ecadlabs.com) if needed.
+
+See [SECURITY.md](SECURITY.md) for the current policy.
 
 ### Bugs or Feature Requests
 
 Use our [GitHub Issue Tracker](https://github.com/trilitech/octez.js/issues) to report bugs or request features.
 
 Before submitting a pull request, please ensure there’s an open issue describing your changes. Contributions require appropriate documentation and tests. Feel free to open a “work in progress” pull request for early feedback!
+
+---
+
+## Licensing
+
+This repository contains materials under two separate licenses:
+
+### Source Code — Apache License 2.0
+
+The Taquito source code (all directories and files in this repository **except** the `website/` directory) is licensed under the [Apache License, Version 2.0](LICENSE). You are free to use, modify, and distribute the source code in accordance with the terms of that license.
+
+### Website & Documentation — Proprietary
+
+The contents of the [`website/`](website/) directory — including all documentation, written content, tutorials, guides, images, graphics, logos, design assets, and website source code — are the **exclusive property of ECAD Labs Inc.** and are **NOT** licensed under Apache 2.0 or any other open-source license. All rights are reserved. See [`website/LICENSE`](website/LICENSE) for details.
+
+For permissions or licensing inquiries regarding the website and documentation, please contact [info@ecadlabs.com](mailto:info@ecadlabs.com).
 
 ---
 
@@ -209,6 +237,6 @@ Special thanks to these libraries, which have been excellent references for octe
 - [TezTech/eztz](https://github.com/TezTech/eztz)
 
 [discord]: https://discord.com/channels/934567382700146739/939205889901092874
-[stackexchange]: https://tezos.stackexchange.com/questions/tagged/octez.js
-[4]: https://octez.js.io
-[5]: https://docusaurus.io/
+[stackexchange]: https://tezos.stackexchange.com/questions/tagged/taquito
+[4]: https://taquito.io
+[5]: https://astro.build/

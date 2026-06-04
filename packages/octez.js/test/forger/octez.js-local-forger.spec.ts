@@ -3,7 +3,7 @@ import { Context, Protocols } from '../../src/octez';
 
 describe('octez.js local forger', () => {
   const mockRpcClient = {
-    getProtocols: jest.fn(),
+    getProtocols: vi.fn(),
   };
 
   beforeEach(() => {

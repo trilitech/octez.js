@@ -7,7 +7,7 @@ const pkg = require('./package.json');
 
 const libraryName = 'octez.js-dapp-wallet';
 
-export default {
+const mainConfig = {
   input: `src/${libraryName}.ts`,
   output: [
     {
@@ -16,9 +16,9 @@ export default {
       format: 'umd',
       sourcemap: true,
       globals: {
-        '@tezos-x/octez.connect-sdk': 'octezConnectSdk',
-        '@tezos-x/octez.connect-dapp': 'octezConnectDapp',
-        '@tezos-x/octez.js-core': 'octezCore',
+        '@ecadlabs/beacon-sdk': 'beacon',
+        '@tezos-x/octez.js-core': 'taquitoCore',
+        '@ecadlabs/beacon-dapp': 'beaconDapp',
         'typedarray-to-buffer': 'typedarrayToBuffer',
         '@tezos-x/octez.js': 'octezJs',
         '@tezos-x/octez.js-utils': 'octezUtils',
@@ -30,18 +30,40 @@ export default {
     include: 'src/**',
   },
   external: [
-    '@tezos-x/octez.connect-sdk',
-    '@tezos-x/octez.connect-dapp',
+    '@ecadlabs/beacon-sdk',
+    '@ecadlabs/beacon-dapp',
     '@tezos-x/octez.js-core',
     'typedarray-to-buffer',
     '@tezos-x/octez.js',
     '@tezos-x/octez.js-utils',
   ],
   plugins: [
-    // Allow json resolution
     json(),
-    // Compile TypeScript files
     typescript({ tsconfig: './tsconfig.prod.json', useTsconfigDeclarationDir: true }),
     nodePolyfills(),
   ],
 };
+
+const beaconTypesConfig = {
+  input: 'src/beacon-types.ts',
+  output: [
+    {
+      file: 'dist/beacon-types.umd.js',
+      name: 'taquitoBeaconTypes',
+      format: 'umd',
+      sourcemap: true,
+      globals: {
+        '@ecadlabs/beacon-types': 'beaconTypes',
+      },
+    },
+    { file: 'dist/beacon-types.es6.js', format: 'es', sourcemap: true },
+  ],
+  external: ['@ecadlabs/beacon-types'],
+  plugins: [
+    json(),
+    typescript({ tsconfig: './tsconfig.prod.json', useTsconfigDeclarationDir: true }),
+    nodePolyfills(),
+  ],
+};
+
+export default [mainConfig, beaconTypesConfig];

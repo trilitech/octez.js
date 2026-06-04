@@ -5,7 +5,7 @@ import { b58Encode, stringToBytes, PrefixV2 } from '@tezos-x/octez.js-utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodeCrypto = require('crypto');
 
-const provider = 'https://rpc.ghostnet.teztnets.com';
+const provider = 'https://shadownet.tezos.ecadinfra.com';
 
 async function createAddress() {
   const tezos = new TezosToolkit(provider)

@@ -1,4 +1,6 @@
-import { BigNumber } from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import {
   BakingRightsQueryArguments,
   BakingRightsResponse,
@@ -44,6 +46,8 @@ import {
   AllTicketBalances,
   PendingOperationsV2,
   PendingOperationsQueryArguments,
+  MempoolFilterQueryArguments,
+  MempoolFilterResponse,
   RPCSimulateOperationParam,
   AILaunchCycleResponse,
   AllDelegatesQueryArguments,
@@ -138,6 +142,7 @@ export interface RpcClientInterface {
   getAllTicketBalances(contract: string, options?: RPCOptions): Promise<AllTicketBalances>;
   getAdaptiveIssuanceLaunchCycle(options?: RPCOptions): Promise<AILaunchCycleResponse>;
   getPendingOperations(args: PendingOperationsQueryArguments): Promise<PendingOperationsV2>;
+  getMempoolFilter(args?: MempoolFilterQueryArguments): Promise<MempoolFilterResponse>;
   getActiveStakingParameters(
     delegate: string,
     options?: RPCOptions
@@ -200,5 +205,6 @@ export enum RPCMethodName {
   GET_ALL_TICKET_BALANCES = 'getAllTicketBalances',
   GET_ADAPTIVE_ISSUANCE_LAUNCH_CYCLE = 'getAdaptiveIssuanceLaunchCycle',
   GET_PENDING_OPERATIONS = 'getPendingOperations',
+  GET_MEMPOOL_FILTER = 'getMempoolFilter',
   GET_DESTINATION_INDEX = 'getDestinationIndex',
 }

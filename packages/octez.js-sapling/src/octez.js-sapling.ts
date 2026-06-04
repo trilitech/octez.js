@@ -3,7 +3,10 @@
  * @module @tezos-x/octez.js-sapling
  */
 
-import BigNumber from 'bignumber.js';
+import { Buffer } from 'buffer';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { MichelCodecPacker, Packer, TzReadProvider } from '@tezos-x/octez.js';
 import {
   b58DecodeAndCheckPrefix,
@@ -30,6 +33,8 @@ import { SaplingTransactionBuilder } from './sapling-tx-builder/sapling-transact
 import { DEFAULT_BOUND_DATA, DEFAULT_MEMO } from './constants';
 import { InMemoryProvingKey } from './sapling-keys/in-memory-proving-key';
 import { InvalidAddressError, InvalidKeyHashError } from '@tezos-x/octez.js-core';
+export { initSapling, preloadSaplingParams, SaplingParamsError } from './sapling-params-loader';
+export type { SaplingInitOptions, SaplingParamsSource } from './types';
 
 export { SaplingTransactionViewer } from './sapling-tx-viewer/sapling-transaction-viewer';
 export { InMemoryViewingKey } from './sapling-keys/in-memory-viewing-key';
@@ -37,7 +42,7 @@ export { InMemorySpendingKey } from './sapling-keys/in-memory-spending-key';
 export { InMemoryProvingKey } from './sapling-keys/in-memory-proving-key';
 
 /**
- * @description Class that surfaces all of the sapling capability allowing to read from a sapling state and prepare transactions
+ * Class that surfaces all of the sapling capability allowing to read from a sapling state and prepare transactions
  *
  * @param keys.saplingSigner Holds the sapling spending key
  * @param keys.saplingProver (Optional) Allows to generate the proofs with the proving key rather than the spending key
@@ -95,7 +100,7 @@ export class SaplingToolkit {
   }
 
   /**
-   * @description Get an instance of `SaplingTransactionViewer` which allows to retrieve and decrypt sapling transactions and calculate the unspent balance.
+   * Get an instance of `SaplingTransactionViewer` which allows to retrieve and decrypt sapling transactions and calculate the unspent balance.
    */
   async getSaplingTransactionViewer() {
     let saplingTransactionViewer: SaplingTransactionViewer;
@@ -113,7 +118,7 @@ export class SaplingToolkit {
   }
 
   /**
-   * @description Prepare a shielded transaction
+   * Prepare a shielded transaction
    * @param shieldedTxParams `to` is the payment address that will receive the shielded tokens (zet).
    * `amount` is the amount of shielded tokens in tez by default.
    * `mutez` needs to be set to true if the amount of shielded tokens is in mutez.
@@ -146,7 +151,7 @@ export class SaplingToolkit {
   }
 
   /**
-   * @description Prepare an unshielded transaction
+   * Prepare an unshielded transaction
    * @param unshieldedTxParams `to` is the Tezos address that will receive the unshielded tokens (tz1, tz2 or tz3).
    * `amount` is the amount of unshielded tokens in tez by default.
    * `mutez` needs to be set to true if the amount of unshielded tokens is in mutez.
@@ -183,7 +188,7 @@ export class SaplingToolkit {
   }
 
   /**
-   * @description Prepare a sapling transaction (zet to zet)
+   * Prepare a sapling transaction (zet to zet)
    * @param saplingTxParams `to` is the payment address that will receive the shielded tokens (zet).
    * `amount` is the amount of unshielded tokens in tez by default.
    * `mutez` needs to be set to true if the amount of unshielded tokens is in mutez.

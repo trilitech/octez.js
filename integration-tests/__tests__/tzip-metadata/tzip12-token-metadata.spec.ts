@@ -3,7 +3,9 @@ import { compose, MichelsonMap, ViewSimulationError } from '@tezos-x/octez.js';
 import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
 import { stringToBytes } from '@tezos-x/octez.js-utils';
 import { tzip12, Tzip12Module, TokenIdNotFound, InvalidTokenMetadata } from '@tezos-x/octez.js-tzip12';
-import BigNumber from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { fa2TokenFactory } from '../../data/fa2-token-factory';
 import { fa2ForTokenMetadataView } from '../../data/fa2-for-token-metadata-view';
 
@@ -13,9 +15,9 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 	let contractAddress2: string;
 
 	describe(`Test contract origination for a Fa2 contract and fetch metadata (token metadata are in the big map %token_metadata) through contract api using: ${rpc}`, () => {
-		beforeEach(async () => {
-			await setup();
-		});
+			beforeAll(async () => {
+				await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
+			});
 
 		it('Verify contract.originate for a Fa2 contract having metadata on HTTPS and token metadata inside a bigmap %token_metadata', async () => {
 			const LocalTez1 = await createAddress();
@@ -157,10 +159,10 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 		});
 	});
 
-	describe(`Test originating a Fa2 contract and fetch metadata (token metadata are obtained from a view %token_metadata) through contract api using: ${rpc}`, () => {
-		beforeEach(async () => {
-			await setup();
-		});
+		describe(`Test originating a Fa2 contract and fetch metadata (token metadata are obtained from a view %token_metadata) through contract api using: ${rpc}`, () => {
+			beforeAll(async () => {
+				await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
+			});
 
 		it('Verify contract.originate for a Fa2 contract having metadata on HTTPS and a view %token_metadata', async () => {
 			const LocalTez1 = await createAddress();

@@ -61,9 +61,9 @@ export * from './types';
 const TEZOS_PLACEHOLDER = 'tezos';
 
 /**
- * @description The `WalletConnect` class implements the `WalletProvider` interface, providing an alternative to `BeaconWallet`.
- * This package enables dapps built with octez.js to connect to wallets via the WalletConnect/Reown protocol.
- * @note Currently, a QR code is displayed to establish a connection with a wallet. As more Tezos wallets integrate with WalletConnect,
+ * The `WalletConnect` class implements the `WalletProvider` interface, providing an alternative to `BeaconWallet`.
+ * This package enables dapps built with Taquito to connect to wallets via the WalletConnect/Reown protocol.
+ \* @remarks Currently, a QR code is displayed to establish a connection with a wallet. As more Tezos wallets integrate with WalletConnect,
  * we plan showing a list of available wallets alongside the QR code.
  */
 export class WalletConnect implements WalletProvider {
@@ -79,20 +79,26 @@ export class WalletConnect implements WalletProvider {
 
     this.signClient.on('session_delete', ({ topic }) => {
       if (this.session?.topic === topic) {
-        this.session = undefined;
+        this.clearState();
       }
     });
 
     this.signClient.on('session_expire', ({ topic }) => {
       if (this.session?.topic === topic) {
-        this.session = undefined;
+        this.clearState();
       }
     });
 
     this.signClient.on('session_update', ({ params, topic }) => {
       if (this.session?.topic === topic) {
-        this.session.namespaces = params.namespaces;
-        // TODO determine if we need validation on the namespace here
+        this.activateSession(
+          {
+            ...this.session,
+            namespaces: params.namespaces,
+          },
+          undefined,
+          false
+        );
       }
     });
 
@@ -102,7 +108,7 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Initialize a WalletConnect provider
+   * Initialize a WalletConnect provider
    * (Initialize a WalletConnect client with persisted storage and a network connection)
    *
    * @example
@@ -130,12 +136,12 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Request permission for a new session and establish a connection.
+   * Request permission for a new session and establish a connection.
    *
    * @param connectParams.permissionScope The networks, methods, and events that will be granted permission
    * @param connectParams.pairingTopic Option to connect to an existing active pairing. If pairingTopic is defined, a prompt will appear in the corresponding wallet to accept or decline the session proposal. If no pairingTopic, a QR code modal will open in the dapp, allowing to connect to a wallet.
    * @param connectParams.registryUrl Optional registry of wallet deep links to show in the Modal
-   * @error ConnectionFailed is thrown if no connection can be established with a wallet
+   \* @throws ConnectionFailed is thrown if no connection can be established with a wallet
    */
   async requestPermissions(connectParams: {
     permissionScope: PermissionScopeParam;
@@ -143,12 +149,13 @@ export class WalletConnect implements WalletProvider {
     registryUrl?: string;
   }) {
     // TODO when Tezos wallets will officially support wallet connect, we need to provide a default value for registryUrl
+    let approvedSession: SessionTypes.Struct;
     try {
       const chains = connectParams.permissionScope.networks.map(
         (network) => `${TEZOS_PLACEHOLDER}:${network}`
       );
       const { uri, approval } = await this.signClient.connect({
-        requiredNamespaces: {
+        optionalNamespaces: {
           [TEZOS_PLACEHOLDER]: {
             chains,
             methods: connectParams.permissionScope.methods,
@@ -164,25 +171,24 @@ export class WalletConnect implements WalletProvider {
           chains,
         });
       }
-      this.session = await approval();
+      approvedSession = await approval();
     } catch (error) {
       throw new ConnectionFailed(error);
     } finally {
       this.walletConnectModal.closeModal();
     }
-    this.validateReceivedNamespace(connectParams.permissionScope, this.session.namespaces);
-    this.setDefaultAccountAndNetwork();
+    this.activateSession(approvedSession!, connectParams.permissionScope);
   }
 
   /**
-   * @description Access all existing active pairings
+   * Access all existing active pairings
    */
   getAvailablePairing(): PairingTypes.Struct[] {
     return this.signClient.pairing.getAll({ active: true });
   }
 
   /**
-   * @description Access all existing sessions
+   * Access all existing sessions
    * @return an array of strings which represent the session keys
    */
   getAllExistingSessionKeys() {
@@ -190,17 +196,16 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Configure the Client with an existing session.
+   * Configure the Client with an existing session.
    * The session is immediately restored without a prompt on the wallet to accept/decline it.
-   * @error InvalidSessionKey is thrown if the provided session key doesn't exist
+   \* @throws InvalidSessionKey is thrown if the provided session key doesn't exist
    */
   configureWithExistingSessionKey(key: string) {
     const sessions = this.getAllExistingSessionKeys();
     if (!sessions.includes(key)) {
       throw new InvalidSessionKey(key);
     }
-    this.session = this.signClient.session.get(key);
-    this.setDefaultAccountAndNetwork();
+    this.activateSession(this.signClient.session.get(key));
   }
 
   async disconnect() {
@@ -218,8 +223,8 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Once the session is establish, send Tezos operations to be approved, signed and inject by the wallet.
-   * @error MissingRequiredScope is thrown if permission to send operation was not granted
+   * Once the session is establish, send Tezos operations to be approved, signed and inject by the wallet.
+   \* @throws MissingRequiredScope is thrown if permission to send operation was not granted
    */
   async sendOperations(params: OperationParams[]) {
     const session = this.getSession();
@@ -244,8 +249,8 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Once the session is establish, send payload to be signed by the wallet.
-   * @error MissingRequiredScope is thrown if permission to sign payload was not granted
+   * Once the session is establish, send payload to be signed by the wallet.
+   \* @throws MissingRequiredScope is thrown if permission to sign payload was not granted
    */
   async sign(bytes: string, watermark?: Uint8Array): Promise<string> {
     const session = this.getSession();
@@ -275,18 +280,18 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Return all connected accounts from the active session
-   * @error NotConnected if no active session
+   * Return all connected accounts from the active session
+   \* @throws NotConnected if no active session
    */
   getAccounts() {
     return this.getTezosNamespace().accounts.map((account) => account.split(':')[2]);
   }
 
   /**
-   * @description Set the active account.
+   * Set the active account.
    * Must be called if there are multiple accounts in the session and every time the active account is switched
    * @param pkh public key hash of the selected account
-   * @error InvalidAccount thrown if the pkh is not part of the active accounts in the session
+   \* @throws InvalidAccount thrown if the pkh is not part of the active accounts in the session
    */
   setActiveAccount(pkh: string) {
     if (!this.getAccounts().includes(pkh)) {
@@ -296,8 +301,8 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Access the public key hash of the active account
-   * @error ActiveAccountUnspecified thrown when there are multiple Tezos account in the session and none is set as the active one
+   * Access the public key hash of the active account
+   \* @throws ActiveAccountUnspecified thrown when there are multiple Tezos account in the session and none is set as the active one
    */
   async getPKH() {
     if (!this.activeAccount) {
@@ -308,10 +313,10 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Access the public key of the active account
-   * @error ActiveAccountUnspecified thrown when there are multiple Tezos account in the session and none is set as the active one
-   * @error MissingRequiredScope is thrown if permission to get accounts was not granted
-   * @error PublicKeyRetrievalError is thrown if the public key is not found
+   * Access the public key of the active account
+   \* @throws ActiveAccountUnspecified thrown when there are multiple Tezos account in the session and none is set as the active one
+   \* @throws MissingRequiredScope is thrown if permission to get accounts was not granted
+   \* @throws PublicKeyRetrievalError is thrown if the public key is not found
    */
   async getPK() {
     const session = this.getSession();
@@ -337,18 +342,18 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Return all networks from the namespace of the active session
-   * @error NotConnected if no active session
+   * Return all networks from the namespace of the active session
+   \* @throws NotConnected if no active session
    */
   getNetworks() {
     return this.getPermittedNetwork();
   }
 
   /**
-   * @description Set the active network.
+   * Set the active network.
    * Must be called if there are multiple network in the session and every time the active network is switched
    * @param network selected network
-   * @error InvalidNetwork thrown if the network is not part of the active networks in the session
+   \* @throws InvalidNetwork thrown if the network is not part of the active networks in the session
    */
   setActiveNetwork(network: NetworkType) {
     if (!this.getNetworks().includes(network)) {
@@ -358,8 +363,8 @@ export class WalletConnect implements WalletProvider {
   }
 
   /**
-   * @description Access the active network
-   * @error ActiveNetworkUnspecified thorwn when there are multiple Tezos netwroks in the session and none is set as the active one
+   * Access the active network
+   \* @throws ActiveNetworkUnspecified thorwn when there are multiple Tezos netwroks in the session and none is set as the active one
    */
   getActiveNetwork() {
     if (!this.activeNetwork) {
@@ -369,14 +374,33 @@ export class WalletConnect implements WalletProvider {
     return this.activeNetwork;
   }
 
-  private setDefaultAccountAndNetwork() {
-    const activeAccount = this.getAccounts();
-    if (activeAccount.length === 1) {
-      this.activeAccount = activeAccount[0];
+  private activateSession(
+    session: SessionTypes.Struct,
+    permissionScope?: PermissionScopeParam,
+    resetActiveState = true
+  ) {
+    this.session = session;
+    if (permissionScope) {
+      this.validateReceivedNamespace(permissionScope, session.namespaces);
+    } else {
+      this.validateRestoredNamespace(session.namespaces);
     }
-    const activeNetwork = this.getNetworks();
-    if (activeNetwork.length === 1) {
-      this.activeNetwork = activeNetwork[0];
+    if (resetActiveState) {
+      this.activeAccount = undefined;
+      this.activeNetwork = undefined;
+    }
+    this.reconcileActiveAccountAndNetwork();
+  }
+
+  private reconcileActiveAccountAndNetwork() {
+    const accounts = this.getAccounts();
+    if (!this.activeAccount || !accounts.includes(this.activeAccount)) {
+      this.activeAccount = accounts.length === 1 ? accounts[0] : undefined;
+    }
+
+    const networks = this.getNetworks();
+    if (!this.activeNetwork || !networks.includes(this.activeNetwork)) {
+      this.activeNetwork = networks.length === 1 ? networks[0] : undefined;
     }
   }
 
@@ -442,6 +466,19 @@ export class WalletConnect implements WalletProvider {
     }
   }
 
+  private validateRestoredNamespace(receivedNamespaces: Record<string, SessionTypes.Namespace>) {
+    const tezosNamespace = receivedNamespaces[TEZOS_PLACEHOLDER];
+    if (!tezosNamespace) {
+      this.clearState();
+      throw new InvalidSession('Tezos not found in namespaces');
+    }
+
+    this.validateAccounts(
+      this.getChainsFromAccounts(tezosNamespace.accounts),
+      tezosNamespace.accounts
+    );
+  }
+
   private validateEvents(requiredEvents: string[], receivedEvents: string[]) {
     const missingEvents: string[] = [];
     requiredEvents.forEach((method) => {
@@ -469,7 +506,6 @@ export class WalletConnect implements WalletProvider {
         'incomplete'
       );
     }
-    const receivedChains: string[] = [];
     const invalidChains: string[] = [];
     const missingChains: string[] = [];
     const invalidChainsNamespace: string[] = [];
@@ -481,10 +517,6 @@ export class WalletConnect implements WalletProvider {
       }
       if (accountId[0] !== TEZOS_PLACEHOLDER) {
         invalidChainsNamespace.push(chain);
-      }
-      const network = accountId[1];
-      if (!receivedChains.includes(network)) {
-        receivedChains.push(network);
       }
     });
 
@@ -507,6 +539,7 @@ export class WalletConnect implements WalletProvider {
         invalidChainsNamespace
       );
     }
+    const receivedChains = this.getChainsFromAccounts(receivedAccounts);
     requiredNetwork.forEach((network) => {
       if (!receivedChains.includes(network)) {
         missingChains.push(network);
@@ -535,18 +568,6 @@ export class WalletConnect implements WalletProvider {
     }
   }
 
-  private getTezosRequiredNamespace(): {
-    chains?: string[];
-    methods: string[];
-    events: string[];
-  } {
-    if (TEZOS_PLACEHOLDER in this.getSession().requiredNamespaces) {
-      return this.getSession().requiredNamespaces[TEZOS_PLACEHOLDER];
-    } else {
-      throw new InvalidSession('Tezos not found in requiredNamespaces');
-    }
-  }
-
   private validateNetworkAndAccount(network: string, account: string) {
     if (!this.getTezosNamespace().accounts.includes(`${TEZOS_PLACEHOLDER}:${network}:${account}`)) {
       throw new InvalidNetworkOrAccount(network, account);
@@ -554,11 +575,15 @@ export class WalletConnect implements WalletProvider {
   }
 
   private getPermittedMethods() {
-    return this.getTezosRequiredNamespace().methods;
+    return this.getTezosNamespace().methods;
   }
 
   private getPermittedNetwork() {
-    return this.getTezosRequiredNamespace().chains!.map((chain) => chain.split(':')[1]);
+    return this.getChainsFromAccounts(this.getTezosNamespace().accounts);
+  }
+
+  private getChainsFromAccounts(accounts: string[]) {
+    return [...new Set(accounts.map((account) => account.split(':')[1]))];
   }
 
   private formatParameters(
@@ -683,9 +708,11 @@ export class WalletConnect implements WalletProvider {
     );
   }
 
-  async mapRegisterGlobalConstantParamsToWalletParams(params: () => Promise<WalletRegisterGlobalConstantParams>) {
+  async mapRegisterGlobalConstantParamsToWalletParams(
+    params: () => Promise<WalletRegisterGlobalConstantParams>
+  ) {
     const walletParams: WalletRegisterGlobalConstantParams = await params();
-  
+
     return this.removeDefaultLimits(
       walletParams,
       await createRegisterGlobalConstantOperation(this.formatParameters(walletParams))

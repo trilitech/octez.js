@@ -1,9 +1,9 @@
-import { PermissionScope } from '@tezos-x/octez.connect-dapp';
+import { PermissionScope } from '@ecadlabs/beacon-dapp';
 import { PermissionDeniedError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
- *  @description Error that indicates the Beacon wallet not being initialized
+ *  Error that indicates the Beacon wallet not being initialized
  */
 export class BeaconWalletNotInitialized extends PermissionDeniedError {
   constructor() {
@@ -16,7 +16,7 @@ export class BeaconWalletNotInitialized extends PermissionDeniedError {
 
 /**
  *  @category Error
- *  @description Error that indicates missing required permission scopes
+ *  Error that indicates missing required permission scopes
  */
 export class MissingRequiredScopes extends PermissionDeniedError {
   constructor(public readonly requiredScopes: PermissionScope[]) {

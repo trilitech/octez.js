@@ -1,6 +1,8 @@
 import { TestScheduler } from 'rxjs/testing';
+import { throwError } from 'rxjs';
 import { BlockResponse } from '@tezos-x/octez.js-rpc';
 import { Context } from '../../src/context';
+import { ConfirmationTimeoutError } from '../../src/errors';
 import { WalletOperation } from '../../src/wallet';
 import { blockResponse } from './data';
 
@@ -126,12 +128,12 @@ describe('WalletOperation', () => {
 
   describe('confirmation handles skipped blocks', () => {
     let mockRpcClient: {
-      getBlock: jest.Mock<any, any>;
+      getBlock: ReturnType<typeof vi.fn>;
     };
 
     beforeEach(() => {
       mockRpcClient = {
-        getBlock: jest.fn(),
+        getBlock: vi.fn(),
       };
     });
 
@@ -239,6 +241,19 @@ describe('WalletOperation', () => {
         expect(mockRpcClient.getBlock).toHaveBeenCalledWith({ block: '2' });
         expect(mockRpcClient.getBlock).toHaveBeenLastCalledWith({ block: '3' });
       });
+    });
+  });
+
+  describe('confirmation error handling', () => {
+    it('should reject when the head observable errors before the operation is included', async () => {
+      const timeoutError = new ConfirmationTimeoutError('Confirmation polling timed out');
+      const op = new WalletOperation(
+        'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
+        new Context('url'),
+        throwError(() => timeoutError)
+      );
+
+      await expect(op.confirmation()).rejects.toBe(timeoutError);
     });
   });
 
@@ -356,7 +371,7 @@ describe('WalletOperation', () => {
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
           {
             readProvider: {
-              getBlock: jest.fn().mockResolvedValue(createFakeBlock(1)),
+              getBlock: vi.fn().mockResolvedValue(createFakeBlock(1)),
             },
           } as any,
           blockObservable
@@ -379,7 +394,7 @@ describe('WalletOperation', () => {
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
           {
             readProvider: {
-              getBlock: jest.fn().mockResolvedValue(createFakeBlock(2)),
+              getBlock: vi.fn().mockResolvedValue(createFakeBlock(2)),
             },
           } as any,
           blockObservable

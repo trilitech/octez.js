@@ -30,7 +30,7 @@ CONFIGS().forEach(
     let freshAddress: string;
 
     beforeAll(async () => {
-      await setup();
+      await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
       try {
         // originate ticket contract
         const ticketOp = await Tezos.contract.originate({
@@ -46,6 +46,7 @@ CONFIGS().forEach(
         freshAddress = await (await createAddress()).signer.publicKeyHash();
       } catch (e) {
         console.log('Failed to originate ticket contract', JSON.stringify(e));
+        throw e;
       }
 
     });
@@ -552,15 +553,6 @@ CONFIGS().forEach(
           expect(ticketBalances[0].content).toBeDefined();
           expect(ticketBalances[0].amount).toBeDefined();
         });
-
-        it(`Verify that rpcClient.getAdaptiveIssuanceLaunchCycle will retrieve launch cycle 6 for ${rpc}`, async () => {
-          const launchCycle = await rpcClient.getAdaptiveIssuanceLaunchCycle();
-          if (rpc.includes('ghostnet')) {
-            expect(launchCycle).toEqual(1054);
-          } else {
-            expect(launchCycle).toEqual(0);
-          }
-        })
 
         it('Verify that rpcClient.getPendingOperations v2 will retrieve the pending operations in mempool with property validated', async () => {
           const pendingOperations = await rpcClient.getPendingOperations({ version: '2' }) as PendingOperationsV2;

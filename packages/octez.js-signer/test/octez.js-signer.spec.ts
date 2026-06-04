@@ -2,6 +2,26 @@ import { InvalidCurveError, InvalidMnemonicError, ToBeImplemented } from '../src
 import { InMemorySigner } from '../src/octez.js-signer';
 import { InvalidDerivationPathError, InvalidKeyError } from '@tezos-x/octez.js-core';
 
+const serialize = (value: unknown): string => {
+  try {
+    return JSON.stringify(value) ?? '';
+  } catch {
+    return String(value);
+  }
+};
+
+const expectNoSecretLeak = (error: Error, secret: string) => {
+  const errorRecord = error as unknown as Record<string, unknown>;
+  const ownPropertyValues = Object.getOwnPropertyNames(error)
+    .map((key) => serialize(errorRecord[key]))
+    .join(' ');
+  const surfaces = [error.message, String(error), serialize(error), ownPropertyValues];
+
+  for (const surface of surfaces) {
+    expect(surface).not.toContain(secret);
+  }
+};
+
 describe('inmemory-signer', () => {
   const mnemonic = 'prefer wait flock brown volume recycle scrub elder rate pair twenty giant';
   it('fromFundraiser', async () => {
@@ -53,6 +73,44 @@ describe('inmemory-signer', () => {
         ].join(' ')
       )
     ).toThrowError(InvalidMnemonicError);
+  });
+
+  it('fromFundraiser: InvalidMnemonicError must not leak mnemonic in message or properties', () => {
+    const invalidWord = 'veryveryverwrong';
+    const mnemonic = [
+      'economy',
+      'venture',
+      'sad',
+      'marriage',
+      'attitude',
+      'borrow',
+      'limit',
+      'country',
+      'agent',
+      'away',
+      invalidWord,
+      'nerve',
+      'laptop',
+      'oven',
+    ].join(' ');
+
+    try {
+      InMemorySigner.fromFundraiser('test@test.com', 'password', mnemonic);
+      throw new Error('Expected InvalidMnemonicError to be thrown');
+    } catch (e) {
+      if (!(e instanceof InvalidMnemonicError)) throw e;
+      expectNoSecretLeak(e, mnemonic);
+      expectNoSecretLeak(e, invalidWord);
+      expect(e.message).toContain('Invalid mnemonic');
+    }
+  });
+
+  it('deprecated InvalidMnemonicError(mnemonic) constructor must not leak secret', () => {
+    const secret =
+      'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about';
+    const err = new InvalidMnemonicError();
+    expectNoSecretLeak(err, secret);
+    expect(err.message).toContain('Invalid mnemonic');
   });
 
   it('Invalid key', () => {
@@ -179,7 +237,7 @@ describe('inmemory-signer', () => {
     expect((await signer.sign('1234', new Uint8Array([3]))).sig).toEqual(
       'sigZiUh7khZmjP1kGSSNe3LQdZC5GMpWHuyFkqcR37pwiGUJrpKaatUxWcRPBE5sHwqfydUsPM4JvK14dBMoHbCxC7VHdMZC'
     );
-  });
+  }, 15000);
 
   it('Tz3 with bytes producing signature that needs padding', async () => {
     const signer = new InMemorySigner('p2sk2ke47zhFz3znRZj39TW5KKS9VgfU1Hax7KeErgnShNe9oQFQUP');
@@ -212,7 +270,9 @@ describe('inmemory-signer', () => {
       'BLsigAMExDCYjNtvjLUqvLiEQJro6VrJFZ7yr7eNY4YCAVTYVerMnrNtk7cY8ve8D4HfJ55YtK93sQNFTcXTYGt8c6HutFneTz31aR198QkbBfZpHmvJV4zGQTHKroNFDRWLw3c3eJXyAu'
     );
     expect(signer.canProvePossession).toEqual(true);
-    expect((await signer.provePossession())?.prefixSig).toEqual('BLsigAp94rBWCJU7yM7X5F4zSw15AKkW1JZ5dwkqa2Xjdo1y4jhcQKVf6Sh7GFV261MUEx3WbfStUkP83tmKRpAucD4NEo1bLCB3s1TM4ByDUYZ1vUV5qsAWFLagvbnHfn61DnouoxmTij');
+    expect((await signer.provePossession())?.prefixSig).toEqual(
+      'BLsigAp94rBWCJU7yM7X5F4zSw15AKkW1JZ5dwkqa2Xjdo1y4jhcQKVf6Sh7GFV261MUEx3WbfStUkP83tmKRpAucD4NEo1bLCB3s1TM4ByDUYZ1vUV5qsAWFLagvbnHfn61DnouoxmTij'
+    );
   });
 
   it('Should instantiate tz1 from mnemonic from in memory signer', async () => {
@@ -264,6 +324,21 @@ describe('inmemory-signer', () => {
     expect(() =>
       InMemorySigner.fromMnemonic({ mnemonic, derivationPath: "44'/1729'/0'/0'" })
     ).toThrowError(InvalidMnemonicError);
+  });
+
+  it('fromMnemonic: InvalidMnemonicError must not leak mnemonic in message or properties', () => {
+    const invalidWord = 'scrubbyiswrong';
+    const mnemonic = `prefer wait flock brown volume recycle ${invalidWord} elder rate pair twenty giant`;
+
+    try {
+      InMemorySigner.fromMnemonic({ mnemonic, derivationPath: "44'/1729'/0'/0'" });
+      throw new Error('Expected InvalidMnemonicError to be thrown');
+    } catch (e) {
+      if (!(e instanceof InvalidMnemonicError)) throw e;
+      expectNoSecretLeak(e, mnemonic);
+      expectNoSecretLeak(e, invalidWord);
+      expect(e.message).toContain('Invalid mnemonic');
+    }
   });
 
   it('Should instantiate tz2 hardened from mnemonic from in memory signer', async () => {

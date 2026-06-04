@@ -1,13 +1,18 @@
 import { SaplingTransactionDeprecatedTokenSchema } from '../schema/types';
+import { buf2hex } from '@tezos-x/octez.js-utils';
 import { SemanticEncoding, Token, TokenFactory, TokenValidationError } from './token';
 
 /**
  *  @category Error
- *  @description Error that indicates a failure happening when parsing encoding/executing a Sapling Transaction Deprecated
+ *  Error that indicates a failure happening when parsing encoding/executing a Sapling Transaction Deprecated
  */
 export class SaplingTransactionDeprecatedValidationError extends TokenValidationError {
   name = 'SaplingTransactionDeprecatedValidationError';
-  constructor(public value: any, public token: SaplingTransactionDeprecatedToken, message: string) {
+  constructor(
+    public value: any,
+    public token: SaplingTransactionDeprecatedToken,
+    message: string
+  ) {
     super(value, token, message);
   }
 }
@@ -53,7 +58,7 @@ export class SaplingTransactionDeprecatedToken extends Token {
   }
 
   private convertUint8ArrayToHexString(val: Uint8Array | string) {
-    return val.constructor === Uint8Array ? Buffer.from(val).toString('hex') : val;
+    return val.constructor === Uint8Array ? buf2hex(val) : val;
   }
 
   Encode(args: any[]): any {

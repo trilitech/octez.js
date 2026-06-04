@@ -3,7 +3,9 @@ import { CONFIGS } from '../../config';
 import { InMemorySpendingKey, SaplingToolkit, InMemoryProvingKey } from '@tezos-x/octez.js-sapling';
 import BigNumber from 'bignumber.js';
 import { singleSaplingStateContractJProtocol } from '../../data/single_sapling_state_contract_jakarta_michelson';
-import * as bip39 from 'bip39';
+import * as bip39 from '@scure/bip39';
+import { wordlist } from '@scure/bip39/wordlists/english.js';
+import { sequentialTestSuite } from '../../sequential-test';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;
@@ -17,9 +19,10 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
   const memoSize = 8;
 
   describe(`Test producing proofs with a proving key rather than a spending key: ${rpc}`, () => {
+    const step = sequentialTestSuite();
 
     beforeAll(async () => {
-      await setup();
+      await setup({ minBalanceMutez: 8_000_000, preferFreshKey: true });
 
       // Deploy the sapling contract
       const saplingContractOrigination = await Tezos.contract.originate({
@@ -30,7 +33,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       saplingContract = await saplingContractOrigination.contract();
 
       // Generate a spending key and an InMemorySpendingKey instance for Bob using a mnemonic
-      const mnemonic: string = bip39.generateMnemonic();
+      const mnemonic: string = bip39.generateMnemonic(wordlist);
       bobInmemorySpendingKey = await InMemorySpendingKey.fromMnemonic(mnemonic);
 
       // Instantiate an InMemorySpendingKey from a spending key for Alice
@@ -39,7 +42,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     });
 
-    it('Verify that Alice can shield tokens', async () => {
+    step('Verify that Alice can shield tokens', async () => {
 
       const amountToAlice = 3;
       const aliceSaplingToolkit = new SaplingToolkit(
@@ -68,7 +71,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     });
 
-    it("Verify that Alice's balance in the sapling pool updated after the shielded tx", async () => {
+    step("Verify that Alice's balance in the sapling pool updated after the shielded tx", async () => {
       const aliceSaplingToolkit = new SaplingToolkit(
         { saplingSigner: aliceInMemorySpendingKey, saplingProver: aliceInMemoryProvingKey },
         { contractAddress: saplingContract.address, memoSize },
@@ -94,7 +97,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       })
     });
 
-    it('Verify that Alice can do a shielded transaction to Bob', async () => {
+    step('Verify that Alice can do a shielded transaction to Bob', async () => {
       const amountToBob = 2;
       // Bob needs to give a payment address (zet) to Alice
       const bobInMemoryViewingKey = await bobInmemorySpendingKey.getSaplingViewingKeyProvider();
@@ -121,7 +124,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     });
 
-    it("Verify that Alice's balance in the sapling pool updated after the sapling tx", async () => {
+    step("Verify that Alice's balance in the sapling pool updated after the sapling tx", async () => {
       const aliceSaplingToolkit = new SaplingToolkit(
         { saplingSigner: aliceInMemorySpendingKey, saplingProver: aliceInMemoryProvingKey },
         { contractAddress: saplingContract.address, memoSize },
@@ -185,7 +188,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       })
     });
 
-    it('Verify that Alice can unshield tokens', async () => {
+    step('Verify that Alice can unshield tokens', async () => {
 
       const amount = 1;
       const aliceSaplingToolkit = new SaplingToolkit(
@@ -213,7 +216,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     });
 
-    it("Verify that Alice's balance in the sapling pool updated after the unshielded tx", async () => {
+    step("Verify that Alice's balance in the sapling pool updated after the unshielded tx", async () => {
       const aliceSaplingToolkit = new SaplingToolkit(
         { saplingSigner: aliceInMemorySpendingKey, saplingProver: aliceInMemoryProvingKey },
         { contractAddress: saplingContract.address, memoSize },

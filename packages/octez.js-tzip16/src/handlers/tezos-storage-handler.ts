@@ -29,10 +29,12 @@ export class TezosStorageHandler implements Handler {
     if (!parsedTezosStorageUri) {
       throw new InvalidUriError(`tezos-storage:${location}`);
     }
-    const script = await context.readProvider.getScript(
-      parsedTezosStorageUri.contractAddress || contractAbstraction.address,
-      'head'
-    );
+    const block = contractAbstraction.readBlock;
+    const targetAddress = parsedTezosStorageUri.contractAddress || contractAbstraction.address;
+    const script =
+      !parsedTezosStorageUri.contractAddress && block !== 'head'
+        ? contractAbstraction.script
+        : await context.readProvider.getScript(targetAddress, block);
     const bigMapId = Schema.fromRPCResponse({ script }).FindFirstInTopLevelPair<BigMapId>(
       script.storage,
       typeOfValueToFind
@@ -44,7 +46,8 @@ export class TezosStorageHandler implements Handler {
     const bytes = await context.contract.getBigMapKeyByID<string>(
       bigMapId.int.toString(),
       parsedTezosStorageUri.path,
-      new Schema(typeOfValueToFind)
+      new Schema(typeOfValueToFind),
+      block
     );
 
     if (!bytes) {
@@ -62,7 +65,7 @@ export class TezosStorageHandler implements Handler {
   }
 
   /**
-   * @description Extract the smart contract address, the network and the path pointing to the metadata from the uri
+   * Extract the smart contract address, the network and the path pointing to the metadata from the uri
    * @returns an object which contains the properties allowing to find where the metadata are located or it returns undefined if the uri is not valid
    * @param tezosStorageURI URI (without the tezos-storage prefix)
    */

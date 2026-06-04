@@ -1,7 +1,7 @@
 import { OpKind } from '@tezos-x/octez.js-rpc';
 
 /**
- * @description FailingNoopOperation interface that contains information about a signed failing_noop operation
+ * FailingNoopOperation interface that contains information about a signed failing_noop operation
  */
 export interface FailingNoopOperation {
   signedContent: {

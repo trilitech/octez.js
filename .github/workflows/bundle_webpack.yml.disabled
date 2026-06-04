@@ -2,27 +2,33 @@ name: Bundle Webpack
 
 on:
   pull_request:
+    paths-ignore:
+      - 'website/**'
   push:
     branches:
-      - master
+      - main
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/master' || github.run_number }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/main' || github.run_number }}
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+permissions:
+  contents: read
 
 jobs:
   bundle-webpack:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+        uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: lts/Iron
+          node-version: 24
+          cache: npm
       - run: npm ci
       - run: npm run build
       - run: npm -w packages/octez.js-local-forging run build-webpack
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: octez.js-local-forging-vanilla
           path: |
@@ -30,7 +36,7 @@ jobs:
             packages/octez.js-local-forging/dist/octez_js_local_forging.js.map
 
       - run: npm -w packages/octez.js-dapp-wallet run build-webpack
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: octez.js-dapp-wallet-vanilla
           path: |

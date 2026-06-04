@@ -1,7 +1,9 @@
 import { defaultConfigConfirmation } from '../../src/context';
-import { OriginationOperation, ForgedBytes } from '@tezos-x/octez.js';
+import { OriginationOperation } from '../../src/operations/origination-operation';
+import { ForgedBytes } from '../../src/operations/types';
 import { OperationContentsAndResult } from '@tezos-x/octez.js-rpc';
 import { OriginationOperationBuilder, RevealOperationBuilder } from '../helpers';
+import { OriginationOperationError } from '../../src/operations/errors';
 import { PollingSubscribeProvider } from '../../src/subscribe/polling-subcribe-provider';
 
 describe('Origination operation', () => {
@@ -70,13 +72,14 @@ describe('Origination operation', () => {
     fakeContext = {
       stream: new PollingSubscribeProvider(fakeContext),
       rpc: {
-        getBlock: jest.fn(),
+        getBlock: vi.fn(),
       },
       config: { ...defaultConfigConfirmation },
-      getConfirmationPollingInterval: jest.fn(),
+      getConfirmationPollingInterval: vi.fn(),
     };
 
     fakeContext.rpc.getBlock.mockResolvedValue({
+      hash: 'BLJjnzaPtSsxykZ9pLTFLSfsKuiN3z7SjSPDPWwbE4Q68u5EpBw',
       operations: [[{ hash: 'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj' }], [], [], []],
       header: {
         level: 200,
@@ -146,7 +149,7 @@ describe('Origination operation', () => {
   describe('Contract', () => {
     it('should return proper confirmation head', async () => {
       const fakeContractProvider: any = {
-        at: jest.fn(),
+        at: vi.fn(),
       };
 
       fakeContractProvider.at.mockResolvedValue('contract');
@@ -164,7 +167,7 @@ describe('Origination operation', () => {
 
     it('should create a contract given a successful result', async () => {
       const fakeContractProvider: any = {
-        at: jest.fn(),
+        at: vi.fn(),
       };
 
       fakeContractProvider.at.mockResolvedValue('contract');
@@ -178,15 +181,64 @@ describe('Origination operation', () => {
       );
       const contract = await op.contract();
       expect(contract).toBe('contract');
-      expect(fakeContractProvider.at).toHaveBeenCalledWith('KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD');
+      expect(fakeContractProvider.at).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        undefined,
+        'BLJjnzaPtSsxykZ9pLTFLSfsKuiN3z7SjSPDPWwbE4Q68u5EpBw'
+      );
+    });
+
+    it('should resolve the originated contract using the inclusion block hash for bootstrap', async () => {
+      const fakeContractProvider: any = {
+        at: vi.fn(),
+      };
+
+      fakeContractProvider.at.mockResolvedValue('contract');
+
+      const op = new OriginationOperation(
+        'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
+        {} as any,
+        fakeForgedBytes,
+        successfulResult,
+        fakeContext,
+        fakeContractProvider
+      );
+
+      await expect(op.contract()).resolves.toBe('contract');
+      expect(fakeContractProvider.at).toHaveBeenCalledTimes(1);
+      expect(fakeContractProvider.at).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        undefined,
+        'BLJjnzaPtSsxykZ9pLTFLSfsKuiN3z7SjSPDPWwbE4Q68u5EpBw'
+      );
+    });
+
+    it('should throw if confirmation completes without an inclusion level', async () => {
+      const fakeContractProvider: any = {
+        at: vi.fn(),
+      };
+
+      const op = new OriginationOperation(
+        'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
+        {} as any,
+        fakeForgedBytes,
+        successfulResult,
+        fakeContext,
+        fakeContractProvider
+      );
+      vi.spyOn(op, 'confirmation').mockResolvedValue(200);
+
+      await expect(op.contract()).rejects.toEqual(
+        new OriginationOperationError('Confirmation completed but includedInBlock was not set')
+      );
     });
 
     it('should throw an error if no contract is available', async () => {
       const fakeContractProvider: any = {
-        at: jest.fn(),
+        atExactBlock: vi.fn(),
       };
 
-      fakeContractProvider.at.mockResolvedValue('contract');
+      fakeContractProvider.atExactBlock.mockResolvedValue('contract');
       const op = new OriginationOperation(
         'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
         {} as any,
@@ -196,8 +248,10 @@ describe('Origination operation', () => {
         fakeContractProvider
       );
 
-      await expect(op.contract()).rejects.toEqual(
-        new Error('No contract was originated in this operation')
+      await expect(op.contract()).rejects.toBeInstanceOf(OriginationOperationError);
+      await expect(op.contract()).rejects.toHaveProperty(
+        'message',
+        'No contract was originated in this operation'
       );
     });
   });

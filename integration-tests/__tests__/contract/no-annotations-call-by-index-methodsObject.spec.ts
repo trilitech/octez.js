@@ -1,5 +1,5 @@
 import { FieldNumberingStrategy } from "@tezos-x/octez.js-michelson-encoder";
-import { CONFIGS } from "../../config";
+import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from "../../config";
 import { noAnnotCode, noAnnotInit } from "../../data/token_without_annotation";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
@@ -9,7 +9,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
      *  in case of a contract having no annotation in its code. */
 
     beforeEach(async () => {
-      await setup()
+      await setup({ preferFreshKey: true, minBalanceMutez: 2_000_000 })
     })
 
     // Constants to replace annotations
@@ -21,7 +21,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     // Actual tests
 
-    const ACCOUNT2_ADDRESS = 'tz1ZfrERcALBwmAqwonRXYVQBDT9BjNjBHJu'
+    const ACCOUNT2_ADDRESS = TEST_FUNDS_RECOVERY_ADDRESS
     
     // Runs the entire tests for a given fieldNumberingStrategy
     const testContract = (strategy: FieldNumberingStrategy, innerObjectStartingIndex: number) => {

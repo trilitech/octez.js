@@ -1,4 +1,4 @@
-import { CONFIGS } from "../../config";
+import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from "../../config";
 import { noAnnotCode, noAnnotInit } from "../../data/token_without_annotation";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
@@ -6,7 +6,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
   describe(`Test call to an entrypoint with no annotations calling methods by index through contract api using: ${rpc}`, () => {
 
     beforeEach(async () => {
-      await setup()
+      await setup({ preferFreshKey: true, minBalanceMutez: 2_000_000 })
     })
     it('Verify contract.originate for a contract without annotation and call entry points', async () => {
       // Constants to replace annotations
@@ -19,7 +19,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       // Actual tests
 
       const ACCOUNT1_ADDRESS = await Tezos.signer.publicKeyHash()
-      const ACCOUNT2_ADDRESS = 'tz1ZfrERcALBwmAqwonRXYVQBDT9BjNjBHJu'
+      const ACCOUNT2_ADDRESS = TEST_FUNDS_RECOVERY_ADDRESS
 
       // Originate a contract with a known state
       const op = await Tezos.contract.originate({

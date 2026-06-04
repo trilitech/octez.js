@@ -1,0 +1,204 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version (e.g. 24.3.0-beta.0, 24.3.0-rc.0, 24.3.0)
+        required: true
+        type: string
+      prerelease:
+        description: Publish as a prerelease on the next dist-tag
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      # Required for npm trusted publishing. Official Taquito npm releases do not use
+      # a long-lived CI npm token secret.
+      id-token: write
+      pull-requests: write
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Resolve release mode
+        run: |
+          set -euo pipefail
+          version_is_prerelease=false
+          if [[ "${VERSION}" == *-* ]]; then
+            version_is_prerelease=true
+          fi
+
+          if [[ "${{ inputs.prerelease }}" == "true" && "${version_is_prerelease}" != "true" ]]; then
+            echo "prerelease=true requires a prerelease version string" >&2
+            exit 1
+          fi
+
+          if [[ "${{ inputs.prerelease }}" != "true" && "${version_is_prerelease}" == "true" ]]; then
+            echo "prerelease=false is incompatible with a prerelease version string" >&2
+            exit 1
+          fi
+
+          if [[ "${version_is_prerelease}" == "true" ]]; then
+            echo "DIST_TAG=next" >> "$GITHUB_ENV"
+          else
+            echo "DIST_TAG=latest" >> "$GITHUB_ENV"
+          fi
+
+      - name: Set release version
+        run: node scripts/sync-workspace-deps.js "${VERSION}"
+
+      - name: Verify Sapling release handoff
+        run: |
+          set -euo pipefail
+          sapling_wasm_version=$(node -p "require('./packages/octez.js-sapling/package.json').dependencies['@tezos-x/octez.js-sapling-wasm']")
+          if [ "${sapling_wasm_version}" = "0.1.1" ]; then
+            echo "@tezos-x/octez.js-sapling still depends on @tezos-x/octez.js-sapling-wasm@0.1.1. Publish sapling-wasm 0.2.0+ and bump packages/octez.js-sapling/package.json before release publication." >&2
+            exit 1
+          fi
+
+      - name: Install stamped dependency graph
+        run: npm ci
+
+      - name: Version stamp
+        run: npm run version-stamp
+
+      - name: Build
+        run: npm run build
+
+      - name: Build release artifacts
+        run: npm run -w @tezos-x/octez.js build:release
+
+      - name: Validate release helper scripts
+        run: npm run test:scripts
+
+      - name: Validate built ESM imports
+        run: npm run test:dist:esm-imports
+
+      - name: Test
+        run: npm test
+
+      - name: Publish prerelease packages
+        if: ${{ inputs.prerelease }}
+        # npm publication relies on the GitHub Actions <-> npm trusted publishing
+        # connection plus provenance, not on a repo-held npm automation token.
+        run: npm publish --workspaces --tag "${DIST_TAG}" --provenance --access public
+
+      - name: Publish stable packages
+        if: ${{ !inputs.prerelease }}
+        # npm publication relies on the GitHub Actions <-> npm trusted publishing
+        # connection plus provenance, not on a repo-held npm automation token.
+        run: npm publish --workspaces --tag "${DIST_TAG}" --provenance --access public
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRERELEASE: ${{ inputs.prerelease }}
+          TARGET_SHA: ${{ github.sha }}
+        run: |
+          prerelease_flag=""
+          if [ "${PRERELEASE}" = "true" ]; then
+            prerelease_flag="--prerelease"
+          fi
+
+          gh release create "v${VERSION}" \
+            --target "${TARGET_SHA}" \
+            --title "v${VERSION}" \
+            --generate-notes \
+            ${prerelease_flag}
+
+      - name: Sync website release metadata
+        if: ${{ !inputs.prerelease }}
+        run: node scripts/sync-website-release.js "${VERSION}"
+
+      - name: Sync root lockfile metadata
+        if: ${{ !inputs.prerelease }}
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Sync website lockfile metadata
+        if: ${{ !inputs.prerelease }}
+        run: npm install --package-lock-only --ignore-scripts
+        working-directory: website
+
+      - name: Snapshot website docs for stable release
+        if: ${{ !inputs.prerelease }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -d "src/content/docs/${VERSION}" ]; then
+            npm run docs:version -- "${VERSION}"
+          fi
+        working-directory: website
+
+      - name: Open release sync PR
+        if: ${{ !inputs.prerelease }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          branch="release-sync/v${VERSION}"
+          pr_body_file="$(mktemp)"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "${branch}"
+          git add \
+            package.json \
+            package-lock.json \
+            example/package.json \
+            integration-tests/package.json \
+            packages/*/package.json \
+            packages/*/src/version.ts \
+            packages/octez.js-michel-codec/pack-test-tool/package.json \
+            packages/taquito/README.md \
+            website/package.json \
+            website/package-lock.json \
+            website/src/config/versions.mjs \
+            website/src/content/docs
+
+          if git diff --cached --quiet; then
+            echo "No release sync changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore: sync repo after v${VERSION} release"
+          git push --force-with-lease --set-upstream origin "${branch}"
+
+          existing_pr="$(gh pr list --base main --head "${branch}" --json number --jq '.[0].number')"
+          if [ -n "${existing_pr}" ]; then
+            echo "PR #${existing_pr} already exists for ${branch}."
+            exit 0
+          fi
+
+          cat > "${pr_body_file}" <<EOF
+          Syncs repository metadata after publishing Taquito v${VERSION}.
+
+          - updates workspace package versions and generated version stamps
+          - updates website Taquito dependencies and lockfile
+          - snapshots docs/next into docs/${VERSION}
+          - updates website default docs version
+          EOF
+
+          gh pr create \
+            --base main \
+            --head "${branch}" \
+            --title "chore: sync repo after v${VERSION} release" \
+            --body-file "${pr_body_file}"

@@ -1,4 +1,6 @@
-import BigNumber from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { OpKind } from './opkind';
 
 export type BalanceResponse = BigNumber;
@@ -2753,6 +2755,19 @@ export interface PendingOperationsQueryArguments {
   validationPass?: '0' | '1' | '2' | '3' | 0 | 1 | 2 | 3;
   source?: string;
   operationHash?: string;
+}
+
+export type MempoolFilterQueryArguments = {
+  include_default?: boolean;
+};
+
+export type RpcRatio = [string | number, string | number];
+
+export interface MempoolFilterResponse {
+  minimal_fees?: string | number;
+  minimal_nanotez_per_gas_unit?: RpcRatio;
+  minimal_nanotez_per_byte?: RpcRatio;
+  [key: string]: unknown;
 }
 
 type FailedProcessedOperation = Pick<

@@ -3,10 +3,13 @@ import {
   OperationContentsAndResultOrigination,
   OperationContentsOrigination,
 } from '@tezos-x/octez.js-rpc';
-import { BigNumber } from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { Context } from '../context';
 import { DefaultContractType } from '../contract/contract';
 import { RpcContractProvider } from '../contract/rpc-contract-provider';
+import { isBlockHashIdentifier } from '../read-provider/interface';
 import { OriginationOperationError } from './errors';
 import { Operation } from './operations';
 import {
@@ -18,16 +21,16 @@ import {
 } from './types';
 
 /**
- * @description Origination operation provide utility function to fetch newly originated contract
+ * Origination operation provide utility function to fetch newly originated contract
  *
- * @warn Currently support only one origination per operation
+ * @remarks Currently support only one origination per operation
  */
 export class OriginationOperation<TContract extends DefaultContractType = DefaultContractType>
   extends Operation
   implements GasConsumingOperation, StorageConsumingOperation, FeeConsumingOperation
 {
   /**
-   * @description Contract address of the newly originated contract
+   * Contract address of the newly originated contract
    */
   public readonly contractAddress?: string;
 
@@ -103,8 +106,8 @@ export class OriginationOperation<TContract extends DefaultContractType = Defaul
   }
 
   /**
-   * @description Provide the contract abstract of the newly originated contract
-   * @throws {@link OriginationOperationError}
+   * Provide the contract abstract of the newly originated contract
+   * @throws OriginationOperationError
    */
   async contract(confirmations?: number, timeout?: number) {
     if (!this.contractAddress) {
@@ -112,6 +115,19 @@ export class OriginationOperation<TContract extends DefaultContractType = Defaul
     }
 
     await this.confirmation(confirmations, timeout);
-    return this.contractProvider.at<TContract>(this.contractAddress);
+    if (!Number.isFinite(this.includedInBlock)) {
+      throw new OriginationOperationError('Confirmation completed but includedInBlock was not set');
+    }
+
+    const inclusionBlock = await this.getInclusionBlock();
+    if (!isBlockHashIdentifier(inclusionBlock.hash)) {
+      throw new OriginationOperationError('Confirmation completed but includedInBlock was not set');
+    }
+
+    return this.contractProvider.at<TContract>(
+      this.contractAddress,
+      undefined,
+      inclusionBlock.hash
+    );
   }
 }

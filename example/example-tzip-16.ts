@@ -4,7 +4,7 @@ import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
 async function example() {
   try {
 
-    const tezos = new TezosToolkit('https://rpc.ghostnet.teztnets.com');
+    const tezos = new TezosToolkit('https://shadownet.tezos.ecadinfra.com');
     tezos.addExtension(new Tzip16Module());
     const contract = await tezos.contract.at("KT1JZVozQHLZN7TaACnX6NGBxUkhNjn6tmTB", tzip16)
     const metadata = await contract.tzip16().getMetadata();

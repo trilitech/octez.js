@@ -3,7 +3,9 @@ import {
   OperationContentsAndResultTransaction,
   OperationContentsTransaction,
 } from '@tezos-x/octez.js-rpc';
-import BigNumber from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { Context } from '../context';
 import { flattenErrors, flattenOperationResult, MergedOperationResult } from './errors';
 import { Operation } from './operations';
@@ -15,9 +17,9 @@ import {
 } from './types';
 
 /**
- * @description Transaction operation provides utility functions to fetch a newly issued transaction
+ * Transaction operation provides utility functions to fetch a newly issued transaction
  *
- * @warn Currently supports one transaction per operation
+ * @remarks Currently supports one transaction per operation
  */
 export class TransactionOperation
   extends Operation

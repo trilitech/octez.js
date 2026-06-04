@@ -1,9 +1,11 @@
 import { TaquitoError } from '@tezos-x/octez.js-core';
-import BigNumber from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 
 /**
  *  @category Error
- *  @description Error that indicates the metadata not being found on the contract
+ *  Error that indicates the metadata not being found on the contract
  */
 export class TokenMetadataNotFound extends TaquitoError {
   constructor(public readonly address: string) {
@@ -15,7 +17,7 @@ export class TokenMetadataNotFound extends TaquitoError {
 
 /**
  *  @category Error
- *  @description Error that indicates the token ID not being found
+ *  Error that indicates the token ID not being found
  */
 export class TokenIdNotFound extends TaquitoError {
   constructor(public readonly tokenId: BigNumber) {
@@ -26,7 +28,7 @@ export class TokenIdNotFound extends TaquitoError {
 
 /**
  *  @category Error
- *  @description Error that indicates that the token metadata is invalid (not compliant with the TZIP-12 standard)
+ *  Error that indicates that the token metadata is invalid (not compliant with the TZIP-12 standard)
  */
 export class InvalidTokenMetadata extends TaquitoError {
   constructor(public readonly invalidMetadata: any) {

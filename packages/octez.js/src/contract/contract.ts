@@ -5,13 +5,9 @@ import {
   RpcClientInterface,
   ScriptResponse,
 } from '@tezos-x/octez.js-rpc';
-import {
-  validateChain,
-  validateContractAddress,
-  ValidationResult,
-} from '@tezos-x/octez.js-utils';
+import { validateChain, validateContractAddress, ValidationResult } from '@tezos-x/octez.js-utils';
 import { ChainIds } from '../constants';
-import { TzReadProvider } from '../read-provider/interface';
+import { BlockIdentifier, TzReadProvider } from '../read-provider/interface';
 import type { Wallet } from '../wallet/wallet';
 import { ContractMethodFactory } from './contract-methods/contract-method-factory';
 import { ContractMethodObject } from './contract-methods/contract-method-object-param';
@@ -20,11 +16,12 @@ import { InvalidParameterError } from './errors';
 import { ContractProvider, StorageProvider } from './interface';
 import { InvalidChainIdError, DeprecationError } from '@tezos-x/octez.js-core';
 import { DEFAULT_SMART_CONTRACT_METHOD_NAME } from './constants';
+import { smartContractAbstractionSemantic } from './semantic';
 
 export { DEFAULT_SMART_CONTRACT_METHOD_NAME };
 
 /**
- * @description Utility class to retrieve data from a smart contract's storage without incurring fees via a contract's view method
+ * Utility class to retrieve data from a smart contract's storage without incurring fees via a contract's view method
  */
 export class ContractView {
   constructor(
@@ -35,7 +32,7 @@ export class ContractView {
     private args: any[],
     private rpc: RpcClientInterface,
     private readProvider: TzReadProvider
-  ) { }
+  ) {}
 
   async read(chainId?: ChainIds) {
     const chainIdValidation = validateChain(chainId ?? '');
@@ -99,7 +96,7 @@ export type DefaultContractType = ContractAbstraction<ContractProvider>;
 export type DefaultWalletType = ContractAbstraction<Wallet>;
 
 /**
- * @description Smart contract abstraction
+ * Smart contract abstraction
  */
 export class ContractAbstraction<
   T extends ContractProvider | Wallet,
@@ -110,19 +107,19 @@ export class ContractAbstraction<
 > {
   private contractMethodFactory: ContractMethodFactory<T>;
   /**
-   * @description Contains methods that are implemented by the target Tezos Smart Contract, and offers the user to call the Smart Contract methods as if they were native TS/JS methods.
+   * Contains methods that are implemented by the target Tezos Smart Contract, and offers the user to call the Smart Contract methods as if they were native TS/JS methods.
    * `methodsObject` serves the exact same purpose as the `methods` member. The difference is that it allows passing the parameter in an object format when calling the smart contract method (instead of the flattened representation)
    * NB: if the contract contains annotation it will include named properties; if not it will be indexed by a number.
    *
    */
   public methodsObject: TMethodsObject = {} as TMethodsObject;
   /**
-   * @description Contains lamda views (tzip4) that are implemented by the target Tezos Smart Contract, and offers the user to call the lambda views as if they were native TS/JS methods.
+   * Contains lamda views (tzip4) that are implemented by the target Tezos Smart Contract, and offers the user to call the lambda views as if they were native TS/JS methods.
    * NB: These are the view defined in the tzip4 standard, not the views introduced by the Hangzhou protocol.
    */
   public views: TViews = {} as TViews;
   /**
-   * @description Contains on-chain views that are defined by the target Tezos Smart Contract, and offers the user to simulate the views execution as if they were native TS/JS methods.
+   * Contains on-chain views that are defined by the target Tezos Smart Contract, and offers the user to simulate the views execution as if they were native TS/JS methods.
    * NB: the expected format for the parameter when calling a smart contract view is the object format (same format as for the storage) and not the flattened representation.
    *
    */
@@ -141,7 +138,8 @@ export class ContractAbstraction<
     private storageProvider: StorageProvider,
     public readonly entrypoints: EntrypointsResponse,
     private rpc: RpcClientInterface,
-    private readProvider: TzReadProvider
+    private readProvider: TzReadProvider,
+    public readonly readBlock: BlockIdentifier = 'head'
   ) {
     this.contractMethodFactory = new ContractMethodFactory(provider, address);
     this.schema = Schema.fromRPCResponse({ script: this.script });
@@ -208,9 +206,10 @@ export class ContractAbstraction<
       // Deal with methods with no annotations which were not discovered by the RPC endpoint
       // Methods with no annotations are discovered using parameter schema
       const generatedSchema = parameterSchema.generateSchema();
-      const schemaKeys = generatedSchema.schema && typeof generatedSchema.schema === 'object'
-        ? Object.keys(generatedSchema.schema)
-        : [];
+      const schemaKeys =
+        generatedSchema.schema && typeof generatedSchema.schema === 'object'
+          ? Object.keys(generatedSchema.schema)
+          : [];
       const anonymousMethods = schemaKeys.filter(
         (key) => Object.keys(entrypoints).indexOf(key) === -1
       );
@@ -265,9 +264,16 @@ export class ContractAbstraction<
   }
 
   /**
-   * @description Return a friendly representation of the smart contract storage
+   * Return a friendly representation of the smart contract storage
    */
-  public storage<T extends TStorage = TStorage>() {
-    return this.storageProvider.getStorage<T>(this.address, this.schema);
+  public async storage<T extends TStorage = TStorage>() {
+    if (this.readBlock !== 'head') {
+      return this.schema.Execute(
+        this.script.storage,
+        smartContractAbstractionSemantic(this.storageProvider, this.readBlock)
+      ) as T;
+    }
+
+    return this.storageProvider.getStorage<T>(this.address, this.schema, this.readBlock);
   }
 }
