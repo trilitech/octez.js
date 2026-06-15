@@ -47,5 +47,5 @@
     }
   },
   "customCss": "./typedoc-custom.css",
-  "favicon": "./website/public/favicon.svg"
+  "favicon": "./website/public/favicon.ico"
 }
