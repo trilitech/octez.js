@@ -68,9 +68,10 @@ Taquito is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of npm
 
 | Package | npm | Source | Description |
 | --- | --- | --- | --- |
-| `@tezos-x/octez.js-dapp-wallet` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-dapp-wallet) | [source](./packages/octez.js-dapp-wallet) | TZIP-10 Beacon wallet integration for Taquito dapps built on the Beacon SDK DAppClient. |
+| `@tezos-x/octez.js` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js) | [source](./packages/octez.js) | TypeScript SDK for building wallets, dapps, and tooling on Tezos. |
 | `@tezos-x/octez.js-contracts-library` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-contracts-library) | [source](./packages/octez.js-contracts-library) | Static Michelson scripts and entrypoints library for Taquito contract interactions. |
 | `@tezos-x/octez.js-core` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-core) | [source](./packages/octez.js-core) | Shared types, interfaces, and primitives for Taquito packages. |
+| `@tezos-x/octez.js-dapp-wallet` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-dapp-wallet) | [source](./packages/octez.js-dapp-wallet) | TZIP-10 Beacon wallet integration for Taquito dapps built on the Octez Connect DAppClient. |
 | `@tezos-x/octez.js-http-utils` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-http-utils) | [source](./packages/octez.js-http-utils) | HTTP transport utilities for Taquito RPC clients with retry, timeout, and error classification. |
 | `@tezos-x/octez.js-ledger-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-ledger-signer) | [source](./packages/octez.js-ledger-signer) | Ledger hardware wallet signer integration for Taquito. |
 | `@tezos-x/octez.js-local-forging` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-local-forging) | [source](./packages/octez.js-local-forging) | Local Tezos operation forging for Taquito. |
@@ -80,7 +81,6 @@ Taquito is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of npm
 | `@tezos-x/octez.js-rpc` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-rpc) | [source](./packages/octez.js-rpc) | TypeScript client and types for the Tezos RPC used by Taquito. |
 | `@tezos-x/octez.js-sapling` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling) | [source](./packages/octez.js-sapling) | Sapling transaction building and viewing support for Taquito. |
 | `@tezos-x/octez.js-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-signer) | [source](./packages/octez.js-signer) | Software signer implementations and signing utilities for Taquito. |
-| `@tezos-x/octez.js` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js) | [source](./packages/taquito) | TypeScript SDK for building wallets, dapps, and tooling on Tezos. |
 | `@tezos-x/octez.js-timelock` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-timelock) | [source](./packages/octez.js-timelock) | Timelock cryptography support for Taquito and Tezos applications. |
 | `@tezos-x/octez.js-tzip12` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip12) | [source](./packages/octez.js-tzip12) | TZIP-12 token metadata support for Taquito. |
 | `@tezos-x/octez.js-tzip16` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip16) | [source](./packages/octez.js-tzip16) | TZIP-16 contract metadata support for Taquito. |
@@ -91,7 +91,7 @@ Taquito is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of npm
 
 | Package | npm | Source | Description | Notes |
 | --- | --- | --- | --- | --- |
-| `@tezos-x/octez.js-sapling-wasm` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling-wasm) | [source](https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm) | Sapling Wasm bindings for Taquito and compatible consumers. | Official Taquito package, published from the separate `ecadlabs/sapling-wasm` repository. |
+| `@taquito/sapling-wasm` | [npm](https://www.npmjs.com/package/@taquito/sapling-wasm) | [source](https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm) | Sapling Wasm bindings for Taquito and compatible consumers. | Official Taquito package, published from the separate `ecadlabs/sapling-wasm` repository. |
 <!-- package-catalog:end -->
 
 ## API Documentation
