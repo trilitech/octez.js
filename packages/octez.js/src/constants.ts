@@ -4,6 +4,10 @@ const REVEAL_GAS_LIMIT = {
   TZ2: 157,
   TZ3: 447,
   TZ4: 3252,
+  // PROVISIONAL fallback for tz5 (ML-DSA-44, U025). ML-DSA verification + the 1312-byte
+  // public key make reveals heavier than tz4; this is an estimate to avoid throwing when
+  // the dynamic node estimate is unavailable. CALIBRATE against a live U025 node.
+  TZ5: 5000,
 };
 // value is based on octez-client reveal operation fee of each address type in Tallinn Protocol
 const REVEAL_FEE = {
@@ -11,6 +15,8 @@ const REVEAL_FEE = {
   TZ2: 277,
   TZ3: 306,
   TZ4: 736,
+  // PROVISIONAL fallback for tz5 (ML-DSA-44, U025) — see REVEAL_GAS_LIMIT.TZ5 note. CALIBRATE.
+  TZ5: 1500,
 };
 // value is based on octez-client reveal operation storageLimit of all address type in Tallinn Protocol
 export const REVEAL_STORAGE_LIMIT = 0;
@@ -46,6 +52,7 @@ export enum Protocols {
   PsRiotuma = 'PsRiotumaAMotcRoDWW1bysEhQy2n1M5fy8JgRp8jjRfHGmfeA7',
   PtSeouLou = 'PtSeouLouXkxhg39oWzjxDWaCydNfR3RxCUrNe4Q9Ro8BTehcbh',
   PtTALLiNt = 'PtTALLiNtPec7mE7yY4m3k26J8Qukef3E3ehzhfXgFZKGtDdAXu',
+  PsUshuai = 'PsUshuai9QapM5TGj1JpuVGkdxz5GykdnEvS6Rh8SUVrARvZLCY',
   ProtoALpha = 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK',
 }
 
@@ -70,7 +77,7 @@ export const protocols = {
   '022': [Protocols.PsRiotuma],
   '023': [Protocols.PtSeouLou],
   '024': [Protocols.PtTALLiNt],
-  '025': [Protocols.ProtoALpha],
+  '025': [Protocols.PsUshuai],
 };
 
 export enum ChainIds {
@@ -112,6 +119,8 @@ const getRevealGasLimitInternal = (address: string) => {
       return REVEAL_GAS_LIMIT.TZ3;
     case 'tz4':
       return REVEAL_GAS_LIMIT.TZ4;
+    case 'tz5':
+      return REVEAL_GAS_LIMIT.TZ5;
     default:
       throw new Error(`Cannot estimate reveal gas limit for ${address}`);
   }
@@ -130,6 +139,8 @@ export const getRevealFeeInternal = (address: string) => {
       return REVEAL_FEE.TZ3;
     case 'tz4':
       return REVEAL_FEE.TZ4 * 1.7;
+    case 'tz5':
+      return REVEAL_FEE.TZ5;
     default:
       throw new Error(`Cannot estimate reveal fee for ${address}`);
   }
