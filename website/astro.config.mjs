@@ -8,7 +8,7 @@ import { remarkRelativeLinks } from './src/utils/remark-relative-links.mjs';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { dirname } from 'node:path';
+import { dirname, resolve as resolvePath } from 'node:path';
 import tailwindcss from "@tailwindcss/vite";
 
 const require = createRequire(import.meta.url);
@@ -20,9 +20,14 @@ const fetchPolyfillPath = fileURLToPath(
 );
 
 // Resolve shim paths to absolute ESM paths for monorepo compatibility.
-// require.resolve follows npm-workspace hoisting; a hardcoded
-// ./node_modules/... only works when deps aren't hoisted to the repo root.
-const nodePolyfillsDir = dirname(require.resolve('vite-plugin-node-polyfills/package.json'));
+// Hardcoded ./node_modules/... only works when deps aren't hoisted to the
+// repo root, so derive the package root from a known exported subpath.
+// require.resolve returns the CJS entry (./dist/index.cjs); strip two
+// segments to reach the package root, then point at the ESM shim files.
+const nodePolyfillsDir = resolvePath(
+  dirname(require.resolve('vite-plugin-node-polyfills/shims/buffer')),
+  '..', '..', '..'
+);
 const shimPaths = {
   'vite-plugin-node-polyfills/shims/buffer': `${nodePolyfillsDir}/shims/buffer/dist/index.js`,
   'vite-plugin-node-polyfills/shims/global': `${nodePolyfillsDir}/shims/global/dist/index.js`,
