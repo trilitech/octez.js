@@ -1,6 +1,8 @@
 import camelCase from 'lodash.camelcase';
 import typescript from 'rollup-plugin-typescript2';
-import json from 'rollup-plugin-json';
+import json from '@rollup/plugin-json';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 const pkg = require('./package.json');
 
@@ -14,18 +16,16 @@ export default {
       name: camelCase(libraryName), 
       format: 'umd', 
       sourcemap: true, 
-      globals: { 
+      globals: {
         "bignumber.js": "BigNumber",
-        "@tezos-x/octez.js": "octezJs",
+        "@tezos-x/octez.js": "octez.js",
         "@tezos-x/octez.js-utils": "utils",
         "@tezos-x/octez.js-core": "core",
-        "@airgap/sapling-wasm": "sapling",
+        "@tezos-x/octez.js-sapling-wasm": "sapling",
         "blakejs": "blake",
         "@stablelib/nacl": "nacl",
         "@stablelib/random": "random",
-        "bip39": "bip39",
         "typedarray-to-buffer": "toBuffer",
-        "pbkdf2": "pbkdf2"
       }
     },
     { file: pkg.module, format: 'es', sourcemap: true },
@@ -34,14 +34,11 @@ export default {
   external: [
     'typedarray-to-buffer',
     'blakejs',
-    '../saplingOutputParams',
-    '../saplingSpendParams',
     '@tezos-x/octez.js-core',
     '@tezos-x/octez.js-utils',
     'bignumber.js',
-    '@airgap/sapling-wasm',
+    '@tezos-x/octez.js-sapling-wasm',
     '@stablelib/nacl',
-    'pbkdf2',
     'bip39',
     '@stablelib/random',
     '@tezos-x/octez.js'
@@ -52,6 +49,9 @@ export default {
   plugins: [
     // Allow json resolution
     json(),
+    // Resolve node_modules (needed for @scure/bip39)
+    resolve({ preferBuiltins: false }),
+    commonjs(),
     // Compile TypeScript files
     typescript({ tsconfig: './tsconfig.prod.json', useTsconfigDeclarationDir: true }),
   ],

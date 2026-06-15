@@ -1,4 +1,4 @@
-import { CONFIGS } from "../../config";
+import { clearRpcCache, CONFIGS } from "../../config";
 import { booleanCode } from "../../data/boolean_parameter";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
@@ -6,7 +6,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
   describe(`Test contract origination with set bool prop on init and via call through contract api using: ${rpc}`, () => {
 
     beforeEach(async () => {
-      await setup()
+      await setup({ preferFreshKey: true, minBalanceMutez: 2_000_000 })
     })
     it('Verify contract.originate for a contract with bool storage init to true and then sets to false', async () => {
       const op = await Tezos.contract.originate({
@@ -30,6 +30,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       expect(op.hash).toBeDefined();
       expect(op.includedInBlock).toBeLessThan(Number.POSITIVE_INFINITY)
 
+      clearRpcCache(Tezos);
       expect(await contract.storage()).toBeFalsy();
     });
   });

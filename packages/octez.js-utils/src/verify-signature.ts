@@ -1,5 +1,5 @@
-import { verify as verifyEd25519 } from '@stablelib/ed25519';
-import { hash as blake2b } from '@stablelib/blake2b';
+import { ed25519 } from '@noble/curves/ed25519';
+import { blake2b } from '@noble/hashes/blake2.js';
 import {
   b58DecodeAndCheckPrefix,
   buf2hex,
@@ -23,14 +23,14 @@ export const BLS12_381_DST = 'BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_POP_';
 export const POP_DST = 'BLS_POP_BLS12381G2_XMD:SHA-256_SSWU_RO_POP_';
 
 /**
- * @description Verify signature of a payload
+ * Verify signature of a payload
  * @param message The forged message including the magic byte (11 for block, 12 for preattestation, 13 for attestation, 3 for generic, 5 for the PACK format of michelson) in string or Uint8Array
  * @param publicKey The public key to verify the signature against
  * @param signature The signature to verify
  * @param watermark Optional if not included in the message
  * @param pop Optional if verifying proof of possession signature
  * @returns A boolean indicating if the signature matches
- * @throws {@link InvalidPublicKeyError} | {@link InvalidSignatureError} | {@link InvalidMessageError}
+ * @throws InvalidPublicKeyError | InvalidSignatureError | InvalidMessageError
  * @example
  * ```
  * const message = '03d0c10e3ed11d7c6e3357f6ef335bab9e8f2bd54d0ce20c482e241191a6e4b8ce6c01be917311d9ac46959750e405d57e268e2ed9e174a80794fbd504e12a4a000141eb3781afed2f69679ff2bbe1c5375950b0e40d00ff000000005e05050505050507070100000024747a32526773486e74516b72794670707352466261313652546656503539684b72654a4d07070100000024747a315a6672455263414c42776d4171776f6e525859565142445439426a4e6a42484a750001';
@@ -105,16 +105,16 @@ export function verifySignature(
 }
 
 function verifyEdSignature(sig: Uint8Array, msg: Uint8Array, publicKey: Uint8Array): boolean {
-  const hash = blake2b(msg, 32);
+  const hash = blake2b(msg, { dkLen: 32 });
   try {
-    return verifyEd25519(publicKey, hash, sig);
+    return ed25519.verify(sig, hash, publicKey);
   } catch {
     return false;
   }
 }
 
 function verifySpSignature(sig: Uint8Array, msg: Uint8Array, publicKey: Uint8Array): boolean {
-  const hash = blake2b(msg, 32);
+  const hash = blake2b(msg, { dkLen: 32 });
   try {
     return secp256k1.verify(sig, hash, publicKey);
   } catch {
@@ -123,7 +123,7 @@ function verifySpSignature(sig: Uint8Array, msg: Uint8Array, publicKey: Uint8Arr
 }
 
 function verifyP2Signature(sig: Uint8Array, msg: Uint8Array, publicKey: Uint8Array): boolean {
-  const hash = blake2b(msg, 32);
+  const hash = blake2b(msg, { dkLen: 32 });
   try {
     return p256.verify(sig, hash, publicKey);
   } catch {

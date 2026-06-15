@@ -1,0 +1,51 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "out": "website/dist/typedoc",
+  "readme": "packages/taquito/README.md",
+  "entryPoints": [
+    "./packages/taquito/src/taquito.ts",
+    "./packages/octez.js-dapp-wallet/src/octez.js-dapp-wallet.ts",
+    "./packages/octez.js-core/src/taquito-core.ts",
+    "./packages/octez.js-http-utils/src/taquito-http-utils.ts",
+    "./packages/octez.js-ledger-signer/src/taquito-ledger-signer.ts",
+    "./packages/octez.js-local-forging/src/taquito-local-forging.ts",
+    "./packages/octez.js-michelson-encoder/src/taquito-michelson-encoder.ts",
+    "./packages/octez.js-remote-signer/src/taquito-remote-signer.ts",
+    "./packages/octez.js-rpc/src/taquito-rpc.ts",
+    "./packages/octez.js-signer/src/taquito-signer.ts",
+    "./packages/octez.js-tzip12/src/taquito-tzip12.ts",
+    "./packages/octez.js-tzip16/src/taquito-tzip16.ts",
+    "./packages/octez.js-utils/src/taquito-utils.ts",
+    "./packages/octez.js-contracts-library/src/taquito-contracts-library.ts",
+    "./packages/octez.js-sapling/src/octez.js-sapling.ts",
+    "./packages/octez.js-michel-codec/src/octez.js-michel-codec.ts",
+    "./packages/octez.js-wallet-connect/src/taquito-wallet-connect.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/data/**",
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/rollup*.ts",
+    "**/test/**",
+    "/coverage/**"
+  ],
+  "name": "Taquito TypeDocs",
+  "navigationLinks": {
+    "taquito.io": "https://taquito.io"
+  },
+  "excludePrivate": true,
+  "externalSymbolLinkMappings": {
+    "@tezos-x/octez.js-signer": {
+      "ToBeImplemented": "https://taquito.io",
+      "InvalidCurveError": "https://taquito.io",
+      "InvalidSeedLengthError": "https://taquito.io"
+    },
+    "@tezos-x/octez.js-core": {
+      "InvalidSignatureError": "https://taquito.io",
+      "InvalidMessageError": "https://taquito.io"
+    }
+  },
+  "customCss": "./typedoc-custom.css",
+  "favicon": "./website/public/favicon.svg"
+}

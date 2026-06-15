@@ -4,7 +4,9 @@ import {
   OperationContentsReveal,
 } from '@tezos-x/octez.js-rpc';
 import { ProhibitedActionError } from '@tezos-x/octez.js-core';
-import { BigNumber } from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { Context } from '../context';
 import { flattenErrors, flattenOperationResult } from './errors';
 import { Operation } from './operations';
@@ -16,7 +18,7 @@ import {
 } from './types';
 
 /**
- * @description Reveal operation provides utility functions to fetch a newly issued revelation
+ * Reveal operation provides utility functions to fetch a newly issued revelation
  */
 export class RevealOperation
   extends Operation

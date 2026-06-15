@@ -10,8 +10,9 @@ import {
 import toBuffer from 'typedarray-to-buffer';
 import { EdKey, EdPublicKey } from './ed-key';
 import { ECKey, ECPublicKey } from './ec-key';
-import pbkdf2 from 'pbkdf2';
-import * as Bip39 from 'bip39';
+import * as bip39 from '@scure/bip39';
+import { wordlist } from '@scure/bip39/wordlists/english.js';
+import { pbkdf2 } from '@noble/hashes/pbkdf2.js';
 import { Curves, generateSecretKey } from './helpers';
 import { InvalidMnemonicError, InvalidPassphraseError } from './errors';
 import {
@@ -23,6 +24,7 @@ import {
 } from '@tezos-x/octez.js-core';
 import { SigningKey, isPOP, PublicKey } from './key-interface';
 import { BLSKey, BLSPublicKey } from './bls-key';
+import { sha512 } from '@noble/hashes/sha2.js';
 
 export interface FromMnemonicParams {
   mnemonic: string;
@@ -43,19 +45,19 @@ type KeyPrefix =
   | PrefixV2.BLS12_381SecretKey;
 
 /**
- * @description A local implementation of the signer. Will represent a Tezos account and be able to produce signature in its behalf
+ * A local implementation of the signer. Will represent a Tezos account and be able to produce signature in its behalf
  *
- * @warn If running in production and dealing with tokens that have real value, it is strongly recommended to use a HSM backed signer so that private key material is not stored in memory or on disk
- * @throws {@link InvalidMnemonicError}
+ * @remarks If running in production and dealing with tokens that have real value, it is strongly recommended to use a HSM backed signer so that private key material is not stored in memory or on disk
+ * @throws InvalidMnemonicError
  */
 export class InMemorySigner implements Signer {
   #key!: SigningKey;
 
   static fromFundraiser(email: string, password: string, mnemonic: string) {
-    if (!Bip39.validateMnemonic(mnemonic)) {
-      throw new InvalidMnemonicError(mnemonic);
+    if (!bip39.validateMnemonic(mnemonic, wordlist)) {
+      throw new InvalidMnemonicError();
     }
-    const seed = Bip39.mnemonicToSeedSync(mnemonic, `${email}${password}`);
+    const seed = bip39.mnemonicToSeedSync(mnemonic, `${email}${password}`);
     const key = b58Encode(seed.subarray(0, 32), PrefixV2.Ed25519Seed);
     return new InMemorySigner(key);
   }
@@ -66,13 +68,9 @@ export class InMemorySigner implements Signer {
 
   /**
    *
-   * @description Instantiation of an InMemorySigner instance from a mnemonic
-   * @param mnemonic 12-24 word mnemonic
-   * @param password password used to encrypt the mnemonic to seed value
-   * @param derivationPath default 44'/1729'/0'/0' (44'/1729' mandatory)
-   * @param curve currently only supported for tz1, tz2, tz3 addresses. soon bip25519
+   * Instantiation of an InMemorySigner instance from a mnemonic
    * @returns InMemorySigner
-   * @throws {@link InvalidMnemonicError}
+   * @throws InvalidMnemonicError
    */
   static fromMnemonic({
     mnemonic,
@@ -81,11 +79,11 @@ export class InMemorySigner implements Signer {
     curve = 'ed25519',
   }: FromMnemonicParams) {
     // check if curve is defined if not default tz1
-    if (!Bip39.validateMnemonic(mnemonic)) {
+    if (!bip39.validateMnemonic(mnemonic, wordlist)) {
       // avoiding exposing mnemonic again in case of mistake making invalid
-      throw new InvalidMnemonicError(mnemonic);
+      throw new InvalidMnemonicError();
     }
-    const seed = Bip39.mnemonicToSeedSync(mnemonic, password);
+    const seed = bip39.mnemonicToSeedSync(mnemonic, password);
 
     const sk = generateSecretKey(seed, derivationPath, curve);
 
@@ -95,7 +93,7 @@ export class InMemorySigner implements Signer {
    *
    * @param key Encoded private key
    * @param passphrase Passphrase to decrypt the private key if it is encrypted
-   * @throws {@link InvalidKeyError}
+   * @throws InvalidKeyError
    *
    */
   constructor(key: string, passphrase?: string) {
@@ -135,7 +133,7 @@ export class InMemorySigner implements Signer {
       decrypt = (data: Uint8Array) => {
         const salt = toBuffer(data.slice(0, 8));
         const encryptedSk = data.slice(8);
-        const encryptionKey = pbkdf2.pbkdf2Sync(passphrase, salt, 32768, 32, 'sha512');
+        const encryptionKey = pbkdf2(sha512, passphrase, salt, { c: 32768, dkLen: 32 });
 
         // Zero nonce is safe here: Tezos encrypted key format uses a fresh random salt per
         // encryption, producing a unique PBKDF2-derived key each time. The (key, nonce) pair
@@ -176,7 +174,7 @@ export class InMemorySigner implements Signer {
 
   /**
    *
-   * @param bytes Bytes to sign
+   * @param message Bytes to sign
    * @param watermark Watermark to append to the bytes
    */
   async sign(message: string | Uint8Array, watermark?: Uint8Array): Promise<SignResult> {
@@ -254,4 +252,3 @@ export function publicKeyFromString(src: string): PublicKey {
       return new BLSPublicKey(keyData);
   }
 }
-

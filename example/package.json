@@ -1,7 +1,7 @@
 {
   "name": "@tezos-x/octez.js-example",
   "private": true,
-  "version": "1.0.0",
+  "version": "24.3.0",
   "scripts": {
     "example": "node -r ts-node/register --preserve-symlinks example-node.ts",
     "example:activation": "node -r ts-node/register --preserve-symlinks example-activate.ts",
@@ -41,17 +41,18 @@
   },
   "dependencies": {
     "@ledgerhq/hw-transport-node-hid": "^6.29.16",
-    "@tezos-x/octez.js-ledger-signer": "*",
-    "@tezos-x/octez.js-local-forging": "*",
-    "@tezos-x/octez.js-michel-codec": "*",
-    "@tezos-x/octez.js-michelson-encoder": "*",
-    "@tezos-x/octez.js-rpc": "*",
-    "@tezos-x/octez.js-sapling": "*",
-    "@tezos-x/octez.js-signer": "*",
-    "@tezos-x/octez.js": "*",
-    "@tezos-x/octez.js-tzip16": "*",
-    "@tezos-x/octez.js-utils": "*",
-    "bignumber.js": "^9.1.2"
+    "@tezos-x/octez.js-ledger-signer": "^24.3.0",
+    "@tezos-x/octez.js-local-forging": "^24.3.0",
+    "@tezos-x/octez.js-michel-codec": "^24.3.0",
+    "@tezos-x/octez.js-michelson-encoder": "^24.3.0",
+    "@tezos-x/octez.js-rpc": "^24.3.0",
+    "@tezos-x/octez.js-sapling": "^24.3.0",
+    "@tezos-x/octez.js-signer": "^24.3.0",
+    "@tezos-x/octez.js": "^24.3.0",
+    "@tezos-x/octez.js-tzip16": "^24.3.0",
+    "@tezos-x/octez.js-utils": "^24.3.0",
+    "bignumber.js": "^9.1.2",
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@types/node-hid": "^1.3.4",

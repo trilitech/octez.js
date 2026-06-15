@@ -1,19 +1,32 @@
-import * as sapling from '@airgap/sapling-wasm';
-import { randomBytes } from '@stablelib/random';
+import { Buffer } from 'buffer';
+import * as sapling from './sapling-wasm';
 import { ParametersOutputProof } from './types';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const saplingOutputParams = require('../saplingOutputParams');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const saplingSpendParams = require('../saplingSpendParams');
+import { preloadSaplingParams } from './sapling-params-loader';
+
+type RandomValueSource = {
+  getRandomValues<T extends ArrayBufferView | null>(array: T): T;
+};
+
+const getRandomValueSource = (): RandomValueSource => {
+  const crypto = globalThis.crypto as RandomValueSource | undefined;
+
+  if (!crypto?.getRandomValues) {
+    throw new Error('Sapling randomness requires globalThis.crypto.getRandomValues');
+  }
+
+  return crypto;
+};
 
 export class SaplingWrapper {
   async withProvingContext<T>(action: (context: number) => Promise<T>) {
-    await this.initSaplingParameters();
+    await preloadSaplingParams();
     return sapling.withProvingContext(action);
   }
 
   getRandomBytes(length: number) {
-    return randomBytes(length);
+    const bytes = new Uint8Array(length);
+    getRandomValueSource().getRandomValues(bytes);
+    return bytes;
   }
 
   async randR() {
@@ -64,9 +77,6 @@ export class SaplingWrapper {
   }
 
   async initSaplingParameters() {
-    const spendParams = Buffer.from(saplingSpendParams.saplingSpendParams, 'base64');
-    const outputParams = Buffer.from(saplingOutputParams.saplingOutputParams, 'base64');
-
-    return sapling.initParameters(spendParams, outputParams);
+    return preloadSaplingParams();
   }
 }

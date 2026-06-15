@@ -5,8 +5,8 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
     const Tezos = lib;
 
     describe(`Test contract origination with UNPAIR through contract api using: ${rpc}`, () => {
-        beforeEach(async () => {
-            await setup();
+        beforeAll(async () => {
+            await setup({ preferFreshKey: true, minBalanceMutez: 2_000_000 });
         });
 
         test('Verify contract.originate for a contract having UNPAIR with code and init in Michelson', async () => {

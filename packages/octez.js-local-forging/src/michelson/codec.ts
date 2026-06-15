@@ -1,4 +1,4 @@
-import { BigNumber } from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 import { Decoder } from '../decoder';
 import { Uint8ArrayConsumer } from '../uint8array-consumer';
 import { Encoder } from '../encoder';
@@ -99,7 +99,7 @@ export const extractRequiredLen = (value: Uint8ArrayConsumer, bytesLength = 4) =
 };
 
 /**
- * @description parse bytes into multiple items of an array
+ * parse bytes into multiple items of an array
  * @param value Uint8ArrayConsumer class of forged segment to parse
  * @param bytesLength default 4 bytes for length of variable bytes
  * @returns array of Uint8Array values for each array item

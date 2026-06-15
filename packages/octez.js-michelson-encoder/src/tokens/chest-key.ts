@@ -1,13 +1,18 @@
 import { BaseTokenSchema } from '../schema/types';
+import { buf2hex } from '@tezos-x/octez.js-utils';
 import { SemanticEncoding, Token, TokenFactory, TokenValidationError } from './token';
 
 /**
  *  @category Error
- *  @description Error that indicates a failure happening when parsing encoding/executing a Chest Key
+ *  Error that indicates a failure happening when parsing encoding/executing a Chest Key
  */
 export class ChestKeyValidationError extends TokenValidationError {
   name = 'ChestKeyValidationError';
-  constructor(public value: any, public token: ChestKeyToken, message: string) {
+  constructor(
+    public value: any,
+    public token: ChestKeyToken,
+    message: string
+  ) {
     super(value, token, message);
   }
 }
@@ -33,7 +38,7 @@ export class ChestKeyToken extends Token {
   }
 
   private convertUint8ArrayToHexString(val: any) {
-    return val.constructor === Uint8Array ? Buffer.from(val).toString('hex') : val;
+    return val.constructor === Uint8Array ? buf2hex(val) : val;
   }
 
   /**

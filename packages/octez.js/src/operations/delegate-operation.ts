@@ -3,7 +3,9 @@ import {
   OperationContentsAndResultDelegation,
   OperationContentsDelegation,
 } from '@tezos-x/octez.js-rpc';
-import { BigNumber } from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { Context } from '../context';
 import { Operation } from './operations';
 import {
@@ -14,9 +16,9 @@ import {
 } from './types';
 
 /**
- * @description Delegation operation provide utility function to fetch newly issued delegation
+ * Delegation operation provide utility function to fetch newly issued delegation
  *
- * @warn Currently support only one delegation per operation
+ * @remarks Currently support only one delegation per operation
  */
 export class DelegateOperation
   extends Operation

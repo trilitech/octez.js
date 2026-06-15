@@ -1,5 +1,8 @@
-import * as sapling from '@airgap/sapling-wasm';
-import BigNumber from 'bignumber.js';
+import { Buffer } from 'buffer';
+import * as sapling from '../sapling-wasm';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { hex2buf, mergebuf } from '@tezos-x/octez.js-utils';
 import { CommitmentsAndCiphertexts, SaplingDiffResponse } from '@tezos-x/octez.js-rpc';
 import blake from 'blakejs';
@@ -12,7 +15,7 @@ import { SaplingTransactionViewerError } from '../errors';
 import { TzReadProvider } from '@tezos-x/octez.js';
 
 /**
- * @description Allows to retrieve and decrypt sapling transactions using on a viewing key
+ * Allows to retrieve and decrypt sapling transactions using on a viewing key
  *
  * @param inMemoryViewingKey Holds the sapling viewing key
  * @param saplingContractId Address of the sapling contract or sapling id if the smart contract contains multiple sapling states
@@ -34,7 +37,7 @@ export class SaplingTransactionViewer {
   }
 
   /**
-   * @description Retrieve the unspent balance associated with the configured viewing key and sapling state
+   * Retrieve the unspent balance associated with the configured viewing key and sapling state
    *
    * @returns the balance in mutez represented as a BigNumber
    *
@@ -62,7 +65,7 @@ export class SaplingTransactionViewer {
   }
 
   /**
-   * @description Retrieve all the incoming and outgoing transactions associated with the configured viewing key.
+   * Retrieve all the incoming and outgoing transactions associated with the configured viewing key.
    * The response properties are in Uint8Array format; use the getIncomingAndOutgoingTransactions method for readable properties
    *
    */
@@ -101,7 +104,7 @@ export class SaplingTransactionViewer {
   }
 
   /**
-   * @description Retrieve all the incoming and outgoing decoded transactions associated with the configured viewing key
+   * Retrieve all the incoming and outgoing decoded transactions associated with the configured viewing key
    *
    */
   async getIncomingAndOutgoingTransactions(): Promise<SaplingIncomingAndOutgoingTransaction> {

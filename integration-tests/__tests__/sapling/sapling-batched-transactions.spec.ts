@@ -3,7 +3,9 @@ import { CONFIGS } from '../../config';
 import { InMemorySpendingKey, InMemoryViewingKey, SaplingToolkit, SaplingTransactionViewer } from '@tezos-x/octez.js-sapling';
 import BigNumber from 'bignumber.js';
 import { singleSaplingStateContractJProtocol } from '../../data/single_sapling_state_contract_jakarta_michelson';
-import * as bip39 from 'bip39';
+import * as bip39 from '@scure/bip39';
+import { wordlist } from '@scure/bip39/wordlists/english.js';
+import { sequentialTestSuite } from '../../sequential-test';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;
@@ -34,9 +36,10 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
   const memoSize = 4;
 
   describe(`Sapling transactions: ${rpc}`, () => {
+    const step = sequentialTestSuite();
 
     beforeAll(async () => {
-      await setup();
+      await setup({ minBalanceMutez: 10_000_000, preferFreshKey: true });
 
       const saplingContractOrigination = await Tezos.contract.originate({
         code: singleSaplingStateContractJProtocol(4),
@@ -45,14 +48,14 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       await saplingContractOrigination.confirmation();
       saplingContract = await saplingContractOrigination.contract();
 
-      const mnemonic1: string = bip39.generateMnemonic();
+      const mnemonic1: string = bip39.generateMnemonic(wordlist);
       inMemorySpendingKey1 = await InMemorySpendingKey.fromMnemonic(mnemonic1);
       inMemoryViewingKey1 = await inMemorySpendingKey1.getSaplingViewingKeyProvider();
       saplingToolkit1 = new SaplingToolkit({ saplingSigner: inMemorySpendingKey1 }, { contractAddress: saplingContract.address, memoSize }, new RpcReadAdapter(Tezos.rpc));
       txViewer1 = await saplingToolkit1.getSaplingTransactionViewer();
       paymentAddress1Index0 = (await inMemoryViewingKey1.getAddress(0)).address;
 
-      const mnemonic2: string = bip39.generateMnemonic();
+      const mnemonic2: string = bip39.generateMnemonic(wordlist);
       inMemorySpendingKey2 = await InMemorySpendingKey.fromMnemonic(mnemonic2);
       inMemoryViewingKey2 = await inMemorySpendingKey2.getSaplingViewingKeyProvider();
       saplingToolkit2 = new SaplingToolkit({ saplingSigner: inMemorySpendingKey2 }, { contractAddress: saplingContract.address, memoSize }, new RpcReadAdapter(Tezos.rpc));
@@ -71,7 +74,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     });
 
-    it('Prepare and inject 3 batched shielded transactions', async () => {
+    step('Prepare and inject 3 batched shielded transactions', async () => {
 
       const shieldedTx = await saplingToolkit1.prepareShieldedTransaction([{
         to: paymentAddress1Index0,
@@ -98,7 +101,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     });
 
-    it('Verify balances after the shielded tx', async () => {
+    step('Verify balances after the shielded tx', async () => {
       const balance1 = await txViewer1.getBalance();
       const inputs1 = await txViewer1.getIncomingAndOutgoingTransactions();
 
@@ -148,7 +151,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       })
     });
 
-    it('Prepare and inject batched sapling transactions', async () => {
+    step('Prepare and inject batched sapling transactions', async () => {
 
       const tx = await saplingToolkit1.prepareSaplingTransaction([{
         to: paymentAddress2Index0,
@@ -196,7 +199,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     });
 
-    it('Verify balances after the sapling transactions', async () => {
+    step('Verify balances after the sapling transactions', async () => {
       const balance1 = await txViewer1.getBalance();
       const inputs1 = await txViewer1.getIncomingAndOutgoingTransactions();
 

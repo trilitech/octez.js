@@ -19,8 +19,7 @@ export default {
         'fast-json-stable-stringify': 'stringify',
         '@tezos-x/octez.js-core': 'octezCore',
         'bignumber.js': 'BigNumber',
-        '@tezos-x/octez.js-utils': 'octezUtils',
-        elliptic: 'elliptic',
+        '@tezos-x/octez.js-utils': 'taquitoUtils',
       },
     },
     { file: pkg.module, format: 'es', sourcemap: true },
@@ -32,7 +31,6 @@ export default {
     '@tezos-x/octez.js-rpc',
     'bignumber.js',
     '@tezos-x/octez.js-utils',
-    'elliptic',
   ],
   watch: {
     include: 'src/**',

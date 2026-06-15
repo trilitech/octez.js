@@ -8,7 +8,7 @@
 
 ## General Information
 
-The `HttpBackend` class contains a `createRequest` method which accepts options to be passed for the HTTP request (url, method, timeout, json, query, headers, mimeType). This method will help users interact with the RPC with a more familiar HTTP format.
+The `HttpBackend` class contains a `createRequest` method which accepts options to be passed for the HTTP request (url, method, timeout, json, query, headers). This method will help users interact with the RPC with a more familiar HTTP format.
 
 Parameters for `createRequest`:
 
@@ -17,8 +17,7 @@ Parameters for `createRequest`:
 `timeout`(number): request timeout 
 `json`(boolean): Parse response into JSON when set to `true`; defaults to `true`
 `query`(object): Query that we would like to pass as an HTTP request
-`headers`(object): HTTP request header 
-`mimeType`(string): Sets the MIME type of the request; see [MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
+`headers`(object): HTTP request header
 
 
 ## Install
@@ -36,15 +35,24 @@ const httpBackend = new HttpBackend();
 const response = httpBackend.createRequest<string>({
     url: `/chains/${chain}/blocks/${block}/context/contracts/${address}/script`,
     method: 'GET',
-    mimeType: "text; charset=utf-8",
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
     json: false
 });
 
 ```
 
 ## Additional Info
+Taquito uses the built-in `globalThis.fetch` (requires Node.js >= 22 or a browser environment).
 
-See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing, and versioning.
+For diagnostics, you can emit request timing logs with:
+
+`TAQUITO_HTTP_TRACE=true`
+
+Optionally adjust the slow-request threshold (milliseconds):
+
+`TAQUITO_HTTP_TRACE_SLOW_MS=1500`
+
+See the top-level https://github.com/ecadlabs/taquito file for details on reporting issues, contributing, and versioning.
 
 
 ## Disclaimer

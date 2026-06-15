@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "es6",
+    "target": "es2020",
     "module": "es2020",
     "lib": [
       "es2020",
@@ -10,7 +10,6 @@
     "strict": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "useUnknownInCatchVariables": false,
     "noImplicitAny": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
@@ -19,7 +18,6 @@
     "emitDecoratorMetadata": true,
     "jsx": "react",
     "baseUrl": "packages",
-    "downlevelIteration": true,
     "paths": {
       "@tezos-x/octez.js-core": [
         "octez.js-core/src/octez.js-core.ts"
@@ -40,7 +38,7 @@
         "octez.js-local-forging/src/octez.js-local-forging.ts"
       ],
       "@tezos-x/octez.js-michel-codec": [
-        "octez.js-michelson-encoder/src/octez.js-michel-codec.ts"
+        "octez.js-michel-codec/src/octez.js-michel-codec.ts"
       ],
       "@tezos-x/octez.js-michelson-encoder": [
         "octez.js-michelson-encoder/src/octez.js-michelson-encoder.ts"
@@ -52,7 +50,7 @@
         "octez.js-rpc/src/octez.js-rpc.ts"
       ],
       "@tezos-x/octez.js-sapling": [
-        "octez.js-sapling/octez.js-sapling.ts"
+        "octez.js-sapling/src/octez.js-sapling.ts"
       ],
       "@tezos-x/octez.js-signer": [
         "octez.js-signer/src/octez.js-signer.ts"

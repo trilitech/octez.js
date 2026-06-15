@@ -5,17 +5,21 @@ on:
     branches:
       - '**weekly**'
 
+permissions:
+  contents: read
+
 jobs:
   integration-tests-weeklynet:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: lts/Iron
+          node-version: 24
+          cache: npm
       - run: npm ci
       - run: npm run build
       - if: always()
         id: integration-tests-weeklynet
-        run: npm -w integration-tests run test:weeklynet-secret-key
+        run: npm -w integration-tests run test:weeklynet-secret-key -- --exclude='**/sapling/**' --exclude='**/ledger/**'

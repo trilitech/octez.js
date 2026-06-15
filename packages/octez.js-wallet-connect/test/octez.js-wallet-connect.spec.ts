@@ -1,3 +1,4 @@
+import { expectTypeOf, vi, type Mock } from 'vitest';
 import { OpKind } from '@tezos-x/octez.js';
 import {
   NetworkType,
@@ -9,11 +10,11 @@ import {
 } from '../src/octez.js-wallet-connect';
 import { existingPairings, fakeCode, sessionExample, sessionMultipleChains } from './data';
 
-jest.mock('@walletconnect/modal', () => {
+vi.mock('@walletconnect/modal', () => {
   return {
     WalletConnectModal: {
-      openModal: jest.fn(),
-      closeModal: jest.fn(),
+      openModal: vi.fn(),
+      closeModal: vi.fn(),
     },
   };
 });
@@ -24,30 +25,30 @@ describe('Wallet connect tests', () => {
   let sessionUpdatedEvent: (eventParams: { topic: string; params: any }) => void;
   let walletConnect: WalletConnect;
   let mockModalClient: {
-    openModal: jest.Mock<any, any>;
-    closeModal: jest.Mock<any, any>;
+    openModal: Mock;
+    closeModal: Mock;
   };
   let mockSignClient: {
     on: any;
-    connect: jest.Mock<any, any>;
+    connect: Mock;
     pairing: {
-      getAll: jest.Mock<any, any>;
+      getAll: Mock;
     };
     session: {
       keys: string[];
-      get: jest.Mock<any, any>;
+      get: Mock;
     };
-    disconnect: jest.Mock<any, any>;
+    disconnect: Mock;
     peer: {
       metadata: any;
     };
-    request: jest.Mock<any, any>;
+    request: Mock;
   };
 
   beforeEach(() => {
     mockModalClient = {
-      openModal: jest.fn(),
-      closeModal: jest.fn(),
+      openModal: vi.fn(),
+      closeModal: vi.fn(),
     };
     mockSignClient = {
       on: (eventName: string, eventFct: any) => {
@@ -59,19 +60,19 @@ describe('Wallet connect tests', () => {
           sessionUpdatedEvent = eventFct;
         }
       },
-      connect: jest.fn(),
+      connect: vi.fn(),
       pairing: {
-        getAll: jest.fn(),
+        getAll: vi.fn(),
       },
       session: {
         keys: [sessionExample.topic, sessionMultipleChains.topic],
-        get: jest.fn(),
+        get: vi.fn(),
       },
-      disconnect: jest.fn(),
+      disconnect: vi.fn(),
       peer: {
         metadata: sessionExample.peer.metadata,
       },
-      request: jest.fn(),
+      request: vi.fn(),
     };
     mockSignClient.connect.mockReturnValue({ approval: async () => sessionExample });
     walletConnect = new WalletConnect(mockSignClient as any, mockModalClient as any);
@@ -92,7 +93,7 @@ describe('Wallet connect tests', () => {
     });
 
     expect(mockSignClient.connect).toHaveBeenCalledWith({
-      requiredNamespaces: {
+      optionalNamespaces: {
         tezos: {
           chains: ['tezos:shadownet'],
           methods: ['tezos_send'],
@@ -114,7 +115,7 @@ describe('Wallet connect tests', () => {
     ).rejects.toThrow('Unable to connect');
   });
 
-  it('should throw an error if tezos is not part of the requiredNamespace', async () => {
+  it('should ignore requiredNamespaces when the granted namespace is valid', async () => {
     mockSignClient.connect.mockReturnValue({
       approval: async () => {
         return {
@@ -130,14 +131,14 @@ describe('Wallet connect tests', () => {
       },
     });
 
-    await expect(
-      walletConnect.requestPermissions({
-        permissionScope: {
-          methods: [PermissionScopeMethods.TEZOS_SEND],
-          networks: [NetworkType.SHADOWNET],
-        },
-      })
-    ).rejects.toThrow('Tezos not found in requiredNamespaces');
+    await walletConnect.requestPermissions({
+      permissionScope: {
+        methods: [PermissionScopeMethods.TEZOS_SEND],
+        networks: [NetworkType.SHADOWNET],
+      },
+    });
+
+    expect(walletConnect.isActiveSession()).toBeTruthy();
   });
 
   describe('test pairing', () => {
@@ -183,6 +184,44 @@ describe('Wallet connect tests', () => {
 
       expect(mockSignClient.session.get).toHaveBeenCalledWith(sessionMultipleChains.topic);
       expect(walletConnect.getSession().topic).toEqual(sessionMultipleChains.topic);
+    });
+
+    it('should support the synchronous consumer restore flow', () => {
+      expectTypeOf(walletConnect.getAllExistingSessionKeys()).toEqualTypeOf<string[]>();
+
+      mockSignClient.session.get.mockReturnValue(sessionMultipleChains);
+
+      const existingSessionKey = walletConnect.getAllExistingSessionKeys()[0];
+
+      if (!existingSessionKey) {
+        throw new Error('Expected an existing session key in the test fixture');
+      }
+
+      expectTypeOf(
+        walletConnect.configureWithExistingSessionKey(existingSessionKey)
+      ).toEqualTypeOf<void>();
+      walletConnect.configureWithExistingSessionKey(existingSessionKey);
+
+      expect(mockSignClient.session.get).toHaveBeenCalledWith(existingSessionKey);
+      expect(walletConnect.getSession().topic).toEqual(sessionMultipleChains.topic);
+    });
+
+    it('should reject an existing session with no tezos namespace', async () => {
+      mockSignClient.session.get.mockReturnValue({
+        ...sessionExample,
+        namespaces: {
+          unknown: {
+            accounts: ['unknown:shadownet:tz2AJ8DYxeRSUWr8zS5DcFfJYzTSNYzALxSh'],
+            methods: [PermissionScopeMethods.TEZOS_SEND],
+            events: [],
+          },
+        },
+      });
+
+      expect(() =>
+        walletConnect.configureWithExistingSessionKey(sessionMultipleChains.topic)
+      ).toThrow('Tezos not found in namespaces');
+      expect(walletConnect.isActiveSession()).toBeFalsy();
     });
 
     it('should throw an error if the session key does not exist', async () => {
@@ -656,7 +695,7 @@ describe('Wallet connect tests', () => {
       });
 
       expect(mockSignClient.connect).toHaveBeenCalledWith({
-        requiredNamespaces: {
+        optionalNamespaces: {
           tezos: {
             chains: ['tezos:shadownet'],
             methods: ['tezos_send'],
@@ -690,7 +729,7 @@ describe('Wallet connect tests', () => {
       });
 
       expect(mockSignClient.connect).toHaveBeenCalledWith({
-        requiredNamespaces: {
+        optionalNamespaces: {
           tezos: {
             chains: ['tezos:shadownet'],
             methods: ['tezos_send'],
@@ -758,7 +797,7 @@ describe('Wallet connect tests', () => {
       });
 
       expect(mockSignClient.connect).toHaveBeenCalledWith({
-        requiredNamespaces: {
+        optionalNamespaces: {
           tezos: {
             chains: ['tezos:shadownet'],
             methods: ['tezos_send'],
@@ -1312,18 +1351,53 @@ describe('Wallet connect tests', () => {
       expect(walletConnect.isActiveSession()).toBeTruthy();
       sessionDeletedEvent({ topic: sessionExample.topic });
       expect(walletConnect.isActiveSession()).toBeFalsy();
+      await expect(walletConnect.getPKH()).rejects.toThrow('Not connected, no active session');
+      expect(() => walletConnect.getActiveNetwork()).toThrow('Not connected, no active session');
     });
 
     it('should delete session when session_expire event is received', async () => {
       expect(walletConnect.isActiveSession()).toBeTruthy();
       sessionExpiredEvent({ topic: sessionExample.topic });
       expect(walletConnect.isActiveSession()).toBeFalsy();
+      await expect(walletConnect.getPKH()).rejects.toThrow('Not connected, no active session');
+      expect(() => walletConnect.getActiveNetwork()).toThrow('Not connected, no active session');
     });
 
-    it('should update session when session_update event is received', async () => {
+    it('should reconcile session when session_update event is received', async () => {
       expect(walletConnect.getSession().namespaces).toEqual(sessionExample.namespaces);
       sessionUpdatedEvent({ topic: sessionExample.topic, params: sessionMultipleChains });
       expect(walletConnect.getSession().namespaces).toEqual(sessionMultipleChains.namespaces);
+      expect(await walletConnect.getPKH()).toEqual('tz2AJ8DYxeRSUWr8zS5DcFfJYzTSNYzALxSh');
+      expect(walletConnect.getActiveNetwork()).toEqual(NetworkType.SHADOWNET);
+    });
+
+    it('should preserve active selections that remain valid after a session update', async () => {
+      walletConnect.setActiveAccount('tz2AJ8DYxeRSUWr8zS5DcFfJYzTSNYzALxSh');
+      walletConnect.setActiveNetwork(NetworkType.SHADOWNET);
+
+      sessionUpdatedEvent({ topic: sessionExample.topic, params: sessionMultipleChains });
+
+      expect(await walletConnect.getPKH()).toEqual('tz2AJ8DYxeRSUWr8zS5DcFfJYzTSNYzALxSh');
+      expect(walletConnect.getActiveNetwork()).toEqual(NetworkType.SHADOWNET);
+    });
+
+    it('should clear the session when a session update removes the tezos namespace', async () => {
+      expect(() =>
+        sessionUpdatedEvent({
+          topic: sessionExample.topic,
+          params: {
+            namespaces: {
+              unknown: {
+                accounts: ['unknown:shadownet:tz2AJ8DYxeRSUWr8zS5DcFfJYzTSNYzALxSh'],
+                methods: [PermissionScopeMethods.TEZOS_SEND],
+                events: [],
+              },
+            },
+          },
+        })
+      ).toThrow('Tezos not found in namespaces');
+
+      expect(walletConnect.isActiveSession()).toBeFalsy();
     });
   });
 });

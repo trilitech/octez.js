@@ -25,6 +25,7 @@ import { OpKind, ParamsWithKind, TransferTicketParams } from '../../src/operatio
 import { NoopParser } from '../../src/octez';
 import { OperationBatch } from '../../src/batch/rpc-batch-provider';
 import { PvmKind } from '@tezos-x/octez.js-rpc';
+import { HttpResponseError, STATUS_CODE } from '@tezos-x/octez.js-http-utils';
 
 /**
  * RPCContractProvider test
@@ -32,128 +33,134 @@ import { PvmKind } from '@tezos-x/octez.js-rpc';
 describe('RpcContractProvider test', () => {
   let rpcContractProvider: RpcContractProvider;
   let mockRpcClient: {
-    getScript: jest.Mock<any, any>;
-    getStorage: jest.Mock<any, any>;
-    getBigMapExpr: jest.Mock<any, any>;
-    getBlockHeader: jest.Mock<any, any>;
-    getEntrypoints: jest.Mock<any, any>;
-    getManagerKey: jest.Mock<any, any>;
-    getBlock: jest.Mock<any, any>;
-    getContract: jest.Mock<any, any>;
-    getBlockMetadata: jest.Mock<any, any>;
-    injectOperation: jest.Mock<any, any>;
-    packData: jest.Mock<any, any>;
-    preapplyOperations: jest.Mock<any, any>;
-    getChainId: jest.Mock<any, any>;
-    getSaplingDiffById: jest.Mock<any, any>;
-    getProtocols: jest.Mock<any, any>;
-    getCurrentPeriod: jest.Mock<any, any>;
-    getConstants: jest.Mock<any, any>;
+    getScript: ReturnType<typeof vi.fn>;
+    getStorage: ReturnType<typeof vi.fn>;
+    getBigMapExpr: ReturnType<typeof vi.fn>;
+    getBlockHeader: ReturnType<typeof vi.fn>;
+    getEntrypoints: ReturnType<typeof vi.fn>;
+    getManagerKey: ReturnType<typeof vi.fn>;
+    getBlock: ReturnType<typeof vi.fn>;
+    getContract: ReturnType<typeof vi.fn>;
+    getBlockMetadata: ReturnType<typeof vi.fn>;
+    injectOperation: ReturnType<typeof vi.fn>;
+    packData: ReturnType<typeof vi.fn>;
+    preapplyOperations: ReturnType<typeof vi.fn>;
+    getChainId: ReturnType<typeof vi.fn>;
+    getSaplingDiffById: ReturnType<typeof vi.fn>;
+    getProtocols: ReturnType<typeof vi.fn>;
+    getCurrentPeriod: ReturnType<typeof vi.fn>;
+    getConstants: ReturnType<typeof vi.fn>;
+    deleteAllCachedData: ReturnType<typeof vi.fn>;
   };
 
   let mockReadProvider: {
-    getBlockHash: jest.Mock<any, any>;
-    getNextProtocol: jest.Mock<any, any>;
-    getCounter: jest.Mock<any, any>;
-    getProtocolConstants: jest.Mock<any, any>;
-    getBalance: jest.Mock<any, any>;
-    getSpendable: jest.Mock<any, any>;
-    isAccountRevealed: jest.Mock<any, any>;
-    getChainId: jest.Mock<any, any>;
+    getBlockHash: ReturnType<typeof vi.fn>;
+    getNextProtocol: ReturnType<typeof vi.fn>;
+    getCounter: ReturnType<typeof vi.fn>;
+    getProtocolConstants: ReturnType<typeof vi.fn>;
+    getScript: ReturnType<typeof vi.fn>;
+    getEntrypoints: ReturnType<typeof vi.fn>;
+    getBalance: ReturnType<typeof vi.fn>;
+    getSpendable: ReturnType<typeof vi.fn>;
+    isAccountRevealed: ReturnType<typeof vi.fn>;
+    getChainId: ReturnType<typeof vi.fn>;
   };
 
   let mockSigner: {
-    publicKeyHash: jest.Mock<any, any>;
-    publicKey: jest.Mock<any, any>;
-    sign: jest.Mock<any, any>;
+    publicKeyHash: ReturnType<typeof vi.fn>;
+    publicKey: ReturnType<typeof vi.fn>;
+    sign: ReturnType<typeof vi.fn>;
   };
 
   let mockForger: {
-    forge: jest.Mock<any, any>;
+    forge: ReturnType<typeof vi.fn>;
   };
 
   let mockEstimate: {
-    originate: jest.Mock<any, any>;
-    transfer: jest.Mock<any, any>;
-    setDelegate: jest.Mock<any, any>;
-    registerDelegate: jest.Mock<any, any>;
-    batch: jest.Mock<any, any>;
-    reveal: jest.Mock<any, any>;
-    registerGlobalConstant: jest.Mock<any, any>;
-    transferTicket: jest.Mock<any, any>;
-    increasePaidStorage: jest.Mock<any, any>;
-    updateConsensusKey: jest.Mock<any, any>;
-    updateCompanionKey: jest.Mock<any, any>;
-    smartRollupAddMessages: jest.Mock<any, any>;
-    contractCall: jest.Mock<any, any>;
-    smartRollupOriginate: jest.Mock<any, any>;
-    smartRollupExecuteOutboxMessage: jest.Mock<any, any>;
-    stake: jest.Mock<any, any>;
-    unstake: jest.Mock<any, any>;
-    finalizeUnstake: jest.Mock<any, any>;
+    originate: ReturnType<typeof vi.fn>;
+    transfer: ReturnType<typeof vi.fn>;
+    setDelegate: ReturnType<typeof vi.fn>;
+    registerDelegate: ReturnType<typeof vi.fn>;
+    batch: ReturnType<typeof vi.fn>;
+    reveal: ReturnType<typeof vi.fn>;
+    registerGlobalConstant: ReturnType<typeof vi.fn>;
+    transferTicket: ReturnType<typeof vi.fn>;
+    increasePaidStorage: ReturnType<typeof vi.fn>;
+    updateConsensusKey: ReturnType<typeof vi.fn>;
+    updateCompanionKey: ReturnType<typeof vi.fn>;
+    smartRollupAddMessages: ReturnType<typeof vi.fn>;
+    contractCall: ReturnType<typeof vi.fn>;
+    smartRollupOriginate: ReturnType<typeof vi.fn>;
+    smartRollupExecuteOutboxMessage: ReturnType<typeof vi.fn>;
+    stake: ReturnType<typeof vi.fn>;
+    unstake: ReturnType<typeof vi.fn>;
+    finalizeUnstake: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
     mockRpcClient = {
-      getBigMapExpr: jest.fn(),
-      getEntrypoints: jest.fn(),
-      getBlock: jest.fn(),
-      getScript: jest.fn(),
-      getManagerKey: jest.fn(),
-      getStorage: jest.fn(),
-      getBlockHeader: jest.fn(),
-      getBlockMetadata: jest.fn(),
-      getContract: jest.fn(),
-      injectOperation: jest.fn(),
-      packData: jest.fn(),
-      preapplyOperations: jest.fn(),
-      getChainId: jest.fn(),
-      getSaplingDiffById: jest.fn(),
-      getProtocols: jest.fn(),
-      getCurrentPeriod: jest.fn(),
-      getConstants: jest.fn(),
+      getBigMapExpr: vi.fn(),
+      getEntrypoints: vi.fn(),
+      getBlock: vi.fn(),
+      getScript: vi.fn(),
+      getManagerKey: vi.fn(),
+      getStorage: vi.fn(),
+      getBlockHeader: vi.fn(),
+      getBlockMetadata: vi.fn(),
+      getContract: vi.fn(),
+      injectOperation: vi.fn(),
+      packData: vi.fn(),
+      preapplyOperations: vi.fn(),
+      getChainId: vi.fn(),
+      getSaplingDiffById: vi.fn(),
+      getProtocols: vi.fn(),
+      getCurrentPeriod: vi.fn(),
+      getConstants: vi.fn(),
+      deleteAllCachedData: vi.fn(),
     };
 
     mockForger = {
-      forge: jest.fn(),
+      forge: vi.fn(),
     };
 
     mockReadProvider = {
-      getBlockHash: jest.fn(),
-      getNextProtocol: jest.fn(),
-      getCounter: jest.fn(),
-      getProtocolConstants: jest.fn(),
-      getBalance: jest.fn(),
-      getSpendable: jest.fn(),
-      isAccountRevealed: jest.fn(),
-      getChainId: jest.fn(),
+      getBlockHash: vi.fn(),
+      getNextProtocol: vi.fn(),
+      getCounter: vi.fn(),
+      getProtocolConstants: vi.fn(),
+      getScript: vi.fn(),
+      getEntrypoints: vi.fn(),
+      getBalance: vi.fn(),
+      getSpendable: vi.fn(),
+      isAccountRevealed: vi.fn(),
+      getChainId: vi.fn(),
     };
 
     mockSigner = {
-      publicKeyHash: jest.fn(),
-      publicKey: jest.fn(),
-      sign: jest.fn(),
+      publicKeyHash: vi.fn(),
+      publicKey: vi.fn(),
+      sign: vi.fn(),
     };
 
     mockEstimate = {
-      originate: jest.fn(),
-      transfer: jest.fn(),
-      registerDelegate: jest.fn(),
-      setDelegate: jest.fn(),
-      batch: jest.fn(),
-      reveal: jest.fn(),
-      registerGlobalConstant: jest.fn(),
-      transferTicket: jest.fn(),
-      increasePaidStorage: jest.fn(),
-      updateConsensusKey: jest.fn(),
-      updateCompanionKey: jest.fn(),
-      smartRollupAddMessages: jest.fn(),
-      contractCall: jest.fn(),
-      smartRollupOriginate: jest.fn(),
-      smartRollupExecuteOutboxMessage: jest.fn(),
-      stake: jest.fn(),
-      unstake: jest.fn(),
-      finalizeUnstake: jest.fn(),
+      originate: vi.fn(),
+      transfer: vi.fn(),
+      registerDelegate: vi.fn(),
+      setDelegate: vi.fn(),
+      batch: vi.fn(),
+      reveal: vi.fn(),
+      registerGlobalConstant: vi.fn(),
+      transferTicket: vi.fn(),
+      increasePaidStorage: vi.fn(),
+      updateConsensusKey: vi.fn(),
+      updateCompanionKey: vi.fn(),
+      smartRollupAddMessages: vi.fn(),
+      contractCall: vi.fn(),
+      smartRollupOriginate: vi.fn(),
+      smartRollupExecuteOutboxMessage: vi.fn(),
+      stake: vi.fn(),
+      unstake: vi.fn(),
+      finalizeUnstake: vi.fn(),
     };
 
     // Required for operations confirmation polling
@@ -213,11 +220,17 @@ describe('RpcContractProvider test', () => {
       minimal_block_delay: new BigNumber('30'),
       time_between_blocks: [new BigNumber('60'), new BigNumber('40')],
     });
+    mockReadProvider.getScript.mockResolvedValue({
+      code: [{ prim: 'parameter', args: [{ prim: 'unit' }] }, sample],
+      storage: sampleStorage,
+    });
+    mockReadProvider.getEntrypoints.mockResolvedValue({ entrypoints: {} });
     mockReadProvider.getBalance.mockResolvedValue(new BigNumber('10000000000'));
     mockReadProvider.getNextProtocol.mockResolvedValue('test_proto');
     mockReadProvider.getBlockHash.mockResolvedValue('test');
 
     mockRpcClient.getChainId.mockResolvedValue('chain-id');
+    mockRpcClient.getEntrypoints.mockResolvedValue({ entrypoints: {} });
     const estimateReveal = new Estimate(1000000, 0, 64, 250);
     mockEstimate.reveal.mockResolvedValue(estimateReveal);
 
@@ -362,6 +375,139 @@ describe('RpcContractProvider test', () => {
     });
   });
 
+  describe('at', () => {
+    it('should read entrypoints from the read provider by default', async () => {
+      await rpcContractProvider.at('KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD');
+
+      expect(mockReadProvider.getScript).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        'head'
+      );
+      expect(mockReadProvider.getEntrypoints).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD'
+      );
+      expect(mockRpcClient.getEntrypoints).not.toHaveBeenCalled();
+    });
+
+    it('should read script and entrypoints from the requested block', async () => {
+      await rpcContractProvider.at('KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD', undefined, 200);
+
+      expect(mockReadProvider.getScript).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        200
+      );
+      expect(mockRpcClient.getEntrypoints).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        { block: '200' }
+      );
+    });
+
+    it('should retry at head when the inclusion block temporarily returns 404', async () => {
+      mockReadProvider.getScript.mockRejectedValueOnce(
+        new HttpResponseError('fail', STATUS_CODE.NOT_FOUND, 'err', 'test', 'https://test.com')
+      );
+
+      const contract = await rpcContractProvider.at(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        undefined,
+        200
+      );
+
+      expect(mockReadProvider.getScript).toHaveBeenNthCalledWith(
+        1,
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        200
+      );
+      expect(mockReadProvider.getScript).toHaveBeenNthCalledWith(
+        2,
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        'head'
+      );
+      expect(mockReadProvider.getEntrypoints).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD'
+      );
+      expect(contract.readBlock).toEqual('head');
+    });
+
+    it('should use an exact block for bootstrap reads without pinning later reads to it', async () => {
+      const contract = await rpcContractProvider.at(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        undefined,
+        'BKjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD0000000000000'
+      );
+
+      expect(mockReadProvider.getScript).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        'BKjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD0000000000000'
+      );
+      expect(mockRpcClient.getEntrypoints).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        { block: 'BKjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD0000000000000' }
+      );
+      expect(contract.readBlock).toEqual('head');
+    });
+
+    it('should read script and entrypoints from the exact block hash without head fallback', async () => {
+      const contract = await rpcContractProvider.atExactBlock(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        undefined,
+        'BKjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD0000000000000'
+      );
+
+      expect(mockReadProvider.getScript).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        'BKjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD0000000000000'
+      );
+      expect(mockRpcClient.getEntrypoints).toHaveBeenCalledWith(
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        { block: 'BKjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD0000000000000' }
+      );
+      expect(mockReadProvider.getEntrypoints).not.toHaveBeenCalled();
+      expect(contract.readBlock).toEqual('BKjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD0000000000000');
+    });
+
+    it('should keep retrying at head while the contract index catches up', async () => {
+      mockReadProvider.getScript
+        .mockRejectedValueOnce(
+          new HttpResponseError('fail', STATUS_CODE.NOT_FOUND, 'err', 'test', 'https://test.com')
+        )
+        .mockRejectedValueOnce(
+          new HttpResponseError('fail', STATUS_CODE.NOT_FOUND, 'err', 'test', 'https://test.com')
+        )
+        .mockRejectedValueOnce(
+          new HttpResponseError('fail', STATUS_CODE.NOT_FOUND, 'err', 'test', 'https://test.com')
+        )
+        .mockResolvedValueOnce({
+          code: [{ prim: 'parameter', args: [{ prim: 'unit' }] }, sample],
+          storage: sampleStorage,
+        });
+
+      await rpcContractProvider.at('KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD', undefined, 200);
+
+      expect(mockReadProvider.getScript).toHaveBeenNthCalledWith(
+        1,
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        200
+      );
+      expect(mockReadProvider.getScript).toHaveBeenNthCalledWith(
+        2,
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        'head'
+      );
+      expect(mockReadProvider.getScript).toHaveBeenNthCalledWith(
+        3,
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        'head'
+      );
+      expect(mockReadProvider.getScript).toHaveBeenNthCalledWith(
+        4,
+        'KT1KjGmnNQ6iXWr8VHGM8n8b8EQXHc6eRsPD',
+        'head'
+      );
+      expect(mockReadProvider.getEntrypoints).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('transfer', () => {
     it('should produce a reveal and transaction operation', async () => {
       const result = await rpcContractProvider.transfer({
@@ -425,6 +571,54 @@ describe('RpcContractProvider test', () => {
         },
         opbytes: 'test',
       });
+    });
+
+    it('should retry preapply with RPC expected counters when validation is ahead of the contract index', async () => {
+      mockForger.forge
+        .mockResolvedValueOnce('forged-initial')
+        .mockResolvedValueOnce('forged-retry');
+      mockSigner.sign.mockImplementation(async (opbytes: string) => ({
+        sbytes: `signed:${opbytes}`,
+        prefixSig: `sig:${opbytes}`,
+      }));
+      mockRpcClient.preapplyOperations
+        .mockRejectedValueOnce(
+          new HttpResponseError(
+            'Http error response: (500) counter_in_the_past',
+            500 as any,
+            'Internal Server Error',
+            JSON.stringify([
+              {
+                kind: 'branch',
+                id: 'proto.024-PtTALLiN.contract.counter_in_the_past',
+                contract: 'tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM',
+                expected: '4',
+                found: '1',
+              },
+            ]),
+            'http://example.test/chains/main/blocks/head/helpers/preapply/operations'
+          )
+        )
+        .mockResolvedValueOnce([]);
+
+      const result = await rpcContractProvider.transfer({
+        to: 'tz1QZ6KY7d3BuZDT1d19dUxoQrtFPN2QJ3hn',
+        amount: 2,
+        fee: 10000,
+        gasLimit: 10600,
+        storageLimit: 300,
+      });
+
+      expect(mockRpcClient.preapplyOperations).toHaveBeenCalledTimes(2);
+      expect(mockRpcClient.preapplyOperations.mock.calls[0][0][0].contents[0].counter).toEqual('1');
+      expect(mockRpcClient.preapplyOperations.mock.calls[0][0][0].contents[1].counter).toEqual('2');
+      expect(mockRpcClient.preapplyOperations.mock.calls[1][0][0].contents[0].counter).toEqual('4');
+      expect(mockRpcClient.preapplyOperations.mock.calls[1][0][0].contents[1].counter).toEqual('5');
+      expect(mockRpcClient.injectOperation).toHaveBeenCalledWith('signed:forged-retry');
+      expect(result.raw.opbytes).toEqual('signed:forged-retry');
+      expect(result.raw.opOb.signature).toEqual('sig:forged-retry');
+      expect(result.raw.opOb.contents[0].counter).toEqual('4');
+      expect(result.raw.opOb.contents[1].counter).toEqual('5');
     });
 
     it('should omit reveal operation if manager is defined (BABY)', async () => {
@@ -591,6 +785,85 @@ describe('RpcContractProvider test', () => {
         id: 'proto.005-PsBabyM1.gas_exhausted.operation',
         message: '(temporary) proto.005-PsBabyM1.gas_exhausted.operation',
       });
+    });
+
+    it('should retry preapply with RPC expected counters when counter_in_the_past is returned', async () => {
+      const params = {
+        to: 'tz1QZ6KY7d3BuZDT1d19dUxoQrtFPN2QJ3hn',
+        amount: 2,
+        fee: 10000,
+        gasLimit: 10600,
+        storageLimit: 300,
+      };
+      mockRpcClient.getContract.mockResolvedValue({ counter: 0 });
+      mockRpcClient.getBlockHeader.mockResolvedValue({ hash: 'test' });
+      mockRpcClient.getManagerKey.mockResolvedValue('test');
+      mockRpcClient.getBlockMetadata.mockResolvedValue({ next_protocol: 'test_proto' });
+      mockSigner.sign
+        .mockResolvedValueOnce({ sbytes: 'test-signed-1', prefixSig: 'test_sig_1' })
+        .mockResolvedValueOnce({ sbytes: 'test-signed-2', prefixSig: 'test_sig_2' });
+      mockSigner.publicKey.mockResolvedValue('test_pub_key');
+      mockSigner.publicKeyHash.mockResolvedValue('tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM');
+      mockForger.forge.mockResolvedValueOnce('test').mockResolvedValueOnce('test-reforged');
+      mockRpcClient.preapplyOperations
+        .mockRejectedValueOnce(
+          new HttpResponseError(
+            'Http error response: (500) counter_in_the_past',
+            500 as any,
+            'Internal Server Error',
+            JSON.stringify([
+              {
+                kind: 'branch',
+                id: 'proto.024-PtTALLiN.contract.counter_in_the_past',
+                contract: 'tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM',
+                expected: '5',
+                found: '1',
+              },
+            ]),
+            'http://example.test/chains/main/blocks/head/helpers/preapply/operations'
+          )
+        )
+        .mockResolvedValueOnce([]);
+      mockRpcClient.injectOperation.mockResolvedValue(
+        'oo6JPEAy8VuMRGaFuMmLNFFGdJgiaKfnmT1CpHJfKP3Ye5ZahiP'
+      );
+      mockReadProvider.isAccountRevealed.mockResolvedValue(true);
+
+      await rpcContractProvider.transfer(params);
+
+      expect(mockRpcClient.preapplyOperations).toHaveBeenCalledTimes(2);
+      expect(mockSigner.sign).toHaveBeenCalledTimes(2);
+
+      const firstCallContents = mockRpcClient.preapplyOperations.mock.calls[0][0][0].contents;
+      const secondCallContents = mockRpcClient.preapplyOperations.mock.calls[1][0][0].contents;
+
+      expect(firstCallContents[0].counter).toEqual('1');
+      expect(secondCallContents[0].counter).toEqual('5');
+      expect(mockRpcClient.injectOperation).toHaveBeenCalledWith('test-signed-2');
+    });
+
+    it('should clear cached head reads after a successful injection', async () => {
+      const params = {
+        to: 'tz1QZ6KY7d3BuZDT1d19dUxoQrtFPN2QJ3hn',
+        amount: 2,
+        fee: 10000,
+        gasLimit: 10600,
+        storageLimit: 300,
+      };
+      mockRpcClient.getContract.mockResolvedValue({ counter: 0 });
+      mockRpcClient.getBlockHeader.mockResolvedValue({ hash: 'test' });
+      mockRpcClient.preapplyOperations.mockResolvedValue([]);
+      mockRpcClient.getManagerKey.mockResolvedValue('test');
+      mockRpcClient.getBlockMetadata.mockResolvedValue({ next_protocol: 'test_proto' });
+      mockSigner.sign.mockResolvedValue({ sbytes: 'test-signed', prefixSig: 'test_sig' });
+      mockSigner.publicKey.mockResolvedValue('test_pub_key');
+      mockSigner.publicKeyHash.mockResolvedValue('tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM');
+      mockReadProvider.isAccountRevealed.mockResolvedValue(true);
+
+      await rpcContractProvider.transfer(params);
+
+      expect(mockRpcClient.deleteAllCachedData).toHaveBeenCalledTimes(1);
+      expect(mockRpcClient.injectOperation).toHaveBeenCalledWith('test-signed');
     });
 
     it('should omit reveal operation if manager is defined', async () => {

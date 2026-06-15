@@ -4,7 +4,9 @@ import {
   RPCSimulateOperationParam,
   OperationContentsAndResultWithFee,
 } from '@tezos-x/octez.js-rpc';
-import BigNumber from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 import { flattenErrors, flattenOperationResult, TezosOperationError } from '../operations/errors';
 import {
   DelegateParams,
@@ -27,7 +29,13 @@ import {
   UnstakeParams,
   FinalizeUnstakeParams,
 } from '../operations/types';
-import { Estimate, EstimateProperties } from './estimate';
+import {
+  Estimate,
+  EstimateProperties,
+  FeeParams,
+  DEFAULT_FEE_PARAMS,
+  feeParamsFromMempoolFilter,
+} from './estimate';
 import { EstimationProvider } from '../estimate/estimate-provider-interface';
 import {
   b58DecodeAndCheckPrefix,
@@ -55,6 +63,14 @@ import {
 const STUB_SIGNATURE =
   'edsigtkpiSSschcaCt9pUVrpNPf7TTcgvgDEDD6NCEHMy8NNQJCGnMfLZzYoQj74yLjo9wx6MPVV29CvVzgi7qEcEUok3k7AuMg';
 
+/**
+ * Estimates gas, storage, and fees by simulating operations against the node RPC.
+ *
+ * On Tezos L1, Taquito historically matched estimation with built-in fee defaults because the
+ * fee-per-byte and fee-per-gas terms were usually close to those values. Tezos X / Tezlink keeps
+ * the same fee formula shape, but those terms are surfaced through `mempool/filter` and may be
+ * significantly higher or dynamic, so this provider reads them from RPC before computing fees.
+ */
 export class RPCEstimateProvider extends Provider implements EstimationProvider {
   private readonly REVEAL_LENGTH = 324; // injecting size tz1=320, tz2=322, tz3=322
   private readonly REVEAL_LENGTH_TZ4 = 622; // injecting size tz4=620
@@ -131,6 +147,19 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
     op: PreparedOperation,
     constants: Pick<ConstantsResponse, 'cost_per_byte' | 'origination_size'>
   ) {
+    let feeParams: FeeParams = DEFAULT_FEE_PARAMS;
+    try {
+      // Tezos X / Tezlink nodes expose the current fee acceptance thresholds through
+      // `mempool/filter`. On L1 these values are usually close to Taquito's historical
+      // defaults, but on Tezos X the byte fee is higher and the gas-price component is
+      // dynamic, so hardcoded L1 constants can underprice operations.
+      feeParams = feeParamsFromMempoolFilter(
+        await this.rpc.getMempoolFilter({ include_default: true })
+      );
+    } catch {
+      // Fall back to L1 defaults when the endpoint is missing or unavailable.
+    }
+
     const {
       opbytes,
       opOb: { branch, contents },
@@ -140,7 +169,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
       chain_id: await this.context.readProvider.getChainId(),
     };
 
-    const { opResponse } = await this.simulate(operation);
+    const { opResponse } = await this.simulate(operation, op);
     const { cost_per_byte, origination_size } = constants;
     const errors = [...flattenErrors(opResponse, 'backtracked'), ...flattenErrors(opResponse)];
 
@@ -172,23 +201,26 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
         revealSize = this.REVEAL_LENGTH / 2;
         eachOpSize = (opbytes.length / 2 + sigSize[PrefixV2.Ed25519Signature]) / numberOfOps;
       }
-      return this.getEstimationPropertiesFromOperationContent(
-        x,
-        // diff between estimated and injecting OP_SIZE is 124-126, we added buffer to use 130
-        x.kind === 'reveal' ? revealSize : eachOpSize,
-        cost_per_byte,
-        origination_size ?? 257 // protocol constants
-      );
+      return {
+        ...this.getEstimationPropertiesFromOperationContent(
+          x,
+          // diff between estimated and injecting OP_SIZE is 124-126, we added buffer to use 130
+          x.kind === 'reveal' ? revealSize : eachOpSize,
+          cost_per_byte,
+          origination_size ?? 257 // protocol constants
+        ),
+        feeParams,
+      };
     });
   }
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an origination operation
+   * Estimate gasLimit, storageLimit and fees for an origination operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
-   * @param OriginationOperation Originate operation parameter
+   * @param params Originate operation parameter
    */
   async originate(params: OriginateParams) {
     const preparedOperation = await this.prepare.originate(params);
@@ -210,7 +242,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
   }
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an transfer operation
+   * Estimate gasLimit, storageLimit and fees for an transfer operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
@@ -251,7 +283,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an stake pseudo-operation
+   * Estimate gasLimit, storageLimit and fees for an stake pseudo-operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
@@ -296,7 +328,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an Unstake pseudo-operation
+   * Estimate gasLimit, storageLimit and fees for an Unstake pseudo-operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
@@ -341,7 +373,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an finalize_unstake pseudo-operation
+   * Estimate gasLimit, storageLimit and fees for an finalize_unstake pseudo-operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
@@ -387,7 +419,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for a transferTicket operation
+   * Estimate gasLimit, storageLimit and fees for a transferTicket operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
@@ -426,11 +458,9 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for a delegate operation
+   * Estimate gasLimit, storageLimit and fees for a delegate operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
-   *
-   * @param Estimate
    */
   async setDelegate({ fee, gasLimit, storageLimit, ...rest }: DelegateParams) {
     const sourceValidation = validateAddress(rest.source ?? '');
@@ -466,7 +496,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for a each operation in the batch
+   * Estimate gasLimit, storageLimit and fees for a each operation in the batch
    *
    * @returns An array of Estimate objects. If a reveal operation is needed, the first element of the array is the Estimate for the reveal operation.
    */
@@ -481,11 +511,9 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for a delegate operation
+   * Estimate gasLimit, storageLimit and fees for a delegate operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
-   *
-   * @param Estimate
    */
   async registerDelegate(
     { fee, storageLimit, gasLimit, ...rest }: RegisterDelegateParams,
@@ -516,10 +544,10 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees to reveal the current account
+   * Estimate gasLimit, storageLimit and fees to reveal the current account
    * @returns An estimation of gasLimit, storageLimit and fees for the operation or undefined if the account is already revealed
    *
-   * @param Estimate
+   * @param params Reveal operation parameter
    */
   async reveal(params?: RevealParams) {
     const { publicKeyHash, publicKey } = await this.getKeys();
@@ -555,7 +583,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an registerGlobalConstant operation
+   * Estimate gasLimit, storageLimit and fees for an registerGlobalConstant operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
@@ -591,7 +619,7 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit, and fees for an increasePaidStorage operation
+   * Estimate gasLimit, storageLimit, and fees for an increasePaidStorage operation
    *
    * @returns An estimation of gasLimit, storageLimit, and fees for the operation
    *
@@ -625,9 +653,9 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an Update Consensus Key operation
+   * Estimate gasLimit, storageLimit and fees for an Update Consensus Key operation
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
-   * @param Estimate
+   * @param params UpdateConsensusKey operation parameter
    */
   async updateConsensusKey(params: UpdateConsensusKeyParams) {
     const [, pkPrefix] = b58DecodeAndCheckPrefix(params.pk, publicKeyPrefixes);
@@ -660,9 +688,9 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an Update Companion Key operation
+   * Estimate gasLimit, storageLimit and fees for an Update Companion Key operation
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
-   * @param Estimate
+   * @param params UpdateCompanionKey operation parameter
    */
   async updateCompanionKey(params: UpdateCompanionKeyParams) {
     const [, pkPrefix] = b58DecodeAndCheckPrefix(params.pk, publicKeyPrefixes);
@@ -690,11 +718,11 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for a smart_rollup_add_messages operation
+   * Estimate gasLimit, storageLimit and fees for a smart_rollup_add_messages operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
-   * @param Estimate
+   * @param params SmartRollupAddMessages operation parameter
    */
   async smartRollupAddMessages(params: SmartRollupAddMessagesParams) {
     const protocolConstants = await this.context.readProvider.getProtocolConstants('head');
@@ -715,11 +743,11 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
   }
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for an Smart Rollup Originate operation
+   * Estimate gasLimit, storageLimit and fees for an Smart Rollup Originate operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
-   * @param SmartRollupOriginateParams
+   * @param params SmartRollupOriginate operation parameter
    */
   async smartRollupOriginate(params: SmartRollupOriginateParams) {
     const protocolConstants = await this.context.readProvider.getProtocolConstants('head');
@@ -740,11 +768,11 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for a smart_rollup_execute_outbox_message operation
+   * Estimate gasLimit, storageLimit and fees for a smart_rollup_execute_outbox_message operation
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the operation
    *
-   * @param Estimate
+   * @param params SmartRollupExecuteOutboxMessage operation parameter
    */
   async smartRollupExecuteOutboxMessage(params: SmartRollupExecuteOutboxMessageParams) {
     const protocolConstants = await this.context.readProvider.getProtocolConstants('head');
@@ -760,11 +788,11 @@ export class RPCEstimateProvider extends Provider implements EstimationProvider 
 
   /**
    *
-   * @description Estimate gasLimit, storageLimit and fees for contract call
+   * Estimate gasLimit, storageLimit and fees for contract call
    *
    * @returns An estimation of gasLimit, storageLimit and fees for the contract call
    *
-   * @param Estimate
+   * @param contractMethod ContractMethodObject for the contract call
    */
   async contractCall(contractMethod: ContractMethodObject<ContractProvider>) {
     const protocolConstants = await this.context.readProvider.getProtocolConstants('head');

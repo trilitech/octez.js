@@ -1,5 +1,6 @@
 import { CONFIGS } from "../../config";
-import { tzip16, Tzip16Module, BigMapContractMetadataNotFoundError } from '@tezos-x/octez.js-tzip16';
+import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
+import { expectMetadataLookupToRejectWithoutMetadata } from './non-compliant-metadata';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;
@@ -8,7 +9,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
   describe(`Test contract origination of a Tzip16 non-complaint contract through wallet api using: ${rpc}`, () => {
 
     beforeEach(async () => {
-      await setup()
+      await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 })
     })
     it('Verify contract.originate for a simple contract having no metadata and then try to fetch metadata', async () => {
 
@@ -33,11 +34,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       const contractAddress = (await op.contract()).address;
 
       const contract = await Tezos.wallet.at(contractAddress, tzip16);
-      try {
-        await contract.tzip16().getMetadata();
-      } catch (ex) {
-        expect(ex).toBeInstanceOf(BigMapContractMetadataNotFoundError);
-      }
+      await expectMetadataLookupToRejectWithoutMetadata(() => contract.tzip16().getMetadata());
     });
   });
 })

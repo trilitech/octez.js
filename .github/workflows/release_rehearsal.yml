@@ -1,0 +1,93 @@
+name: Release Rehearsal
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Rehearsal version (e.g. 24.3.0-beta.0)
+        required: true
+        type: string
+      prerelease:
+        description: Rehearse prerelease publishing on the next dist-tag
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  rehearse:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      VERSION: ${{ inputs.version }}
+      npm_config_cache: /tmp/taquito-npm-cache
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Resolve release mode
+        run: |
+          set -euo pipefail
+          version_is_prerelease=false
+          if [[ "${VERSION}" == *-* ]]; then
+            version_is_prerelease=true
+          fi
+
+          if [[ "${{ inputs.prerelease }}" == "true" && "${version_is_prerelease}" != "true" ]]; then
+            echo "prerelease=true requires a prerelease version string" >&2
+            exit 1
+          fi
+
+          if [[ "${{ inputs.prerelease }}" != "true" && "${version_is_prerelease}" == "true" ]]; then
+            echo "prerelease=false is incompatible with a prerelease version string" >&2
+            exit 1
+          fi
+
+          if [[ "${version_is_prerelease}" == "true" ]]; then
+            echo "DIST_TAG=next" >> "$GITHUB_ENV"
+          else
+            echo "DIST_TAG=latest" >> "$GITHUB_ENV"
+          fi
+
+      - name: Set rehearsal version
+        run: node scripts/sync-workspace-deps.js "${VERSION}"
+
+      - name: Verify Sapling release handoff
+        run: |
+          set -euo pipefail
+          sapling_wasm_version=$(node -p "require('./packages/octez.js-sapling/package.json').dependencies['@tezos-x/octez.js-sapling-wasm']")
+          if [ "${sapling_wasm_version}" = "0.1.1" ]; then
+            echo "@tezos-x/octez.js-sapling still depends on @tezos-x/octez.js-sapling-wasm@0.1.1. Publish sapling-wasm 0.2.0+ and bump packages/octez.js-sapling/package.json before release rehearsal." >&2
+            exit 1
+          fi
+
+      - name: Install stamped dependency graph
+        run: npm ci
+
+      - name: Version stamp
+        run: npm run version-stamp
+
+      - name: Build
+        run: npm run build
+
+      - name: Build release artifacts
+        run: npm run -w @tezos-x/octez.js build:release
+
+      - name: Validate release helper scripts
+        run: npm run test:scripts
+
+      - name: Validate built ESM imports
+        run: npm run test:dist:esm-imports
+
+      - name: Test
+        run: npm test
+
+      - name: Rehearse workspace publish
+        run: npm publish --workspaces --dry-run --tag "${DIST_TAG}" --access public

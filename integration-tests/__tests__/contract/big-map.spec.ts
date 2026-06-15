@@ -3,7 +3,9 @@ import { storageContract } from '../../data/storage-contract';
 import { MichelsonMap, BigMapAbstraction, MichelCodecPacker } from '@tezos-x/octez.js';
 import { tokenBigmapCode } from '../../data/token_bigmap';
 import { tokenCode, tokenInit } from '../../data/tokens';
-import BigNumber from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 
 CONFIGS().forEach(({ lib, rpc, setup, knownBigMapContract }) => {
   const Tezos = lib;
@@ -12,8 +14,8 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBigMapContract }) => {
     /** The purpose of the test is to make sure that the keys in the map are properly ordered by octez.js before injection of the operation,
     *   If the keys are not ordered, the node will reject the operation. */
 
-    beforeEach(async () => {
-      await setup()
+    beforeAll(async () => {
+      await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 })
     })
 
     it('Verify contract.originate with initialized Map with variants of data', async () => {

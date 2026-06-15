@@ -43,7 +43,9 @@ export class Tzip16ContractAbstraction {
 
   private async findMetadataBigMap(): Promise<BigMapAbstraction> {
     const metadataBigMapId = this.constractAbstraction.schema.FindFirstInTopLevelPair<BigMapId>(
-      await this.context.readProvider.getStorage(this.constractAbstraction.address, 'head'),
+      this.constractAbstraction.readBlock === 'head'
+        ? await this.context.readProvider.getStorage(this.constractAbstraction.address, 'head')
+        : this.constractAbstraction.script.storage,
       metadataBigMapType
     );
 
@@ -54,7 +56,8 @@ export class Tzip16ContractAbstraction {
     return new BigMapAbstraction(
       new BigNumber(metadataBigMapId['int']),
       new Schema(metadataBigMapType),
-      this.context.contract
+      this.context.contract,
+      this.constractAbstraction.readBlock
     );
   }
 
@@ -68,7 +71,7 @@ export class Tzip16ContractAbstraction {
   }
 
   /**
-   * @description Return an object containing the metadata, the uri, an optional integrity check result and an optional sha256 hash
+   * Return an object containing the metadata, the uri, an optional integrity check result and an optional sha256 hash
    */
   async getMetadata() {
     if (!this._metadataProvider) {

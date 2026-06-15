@@ -1,4 +1,6 @@
-import BigNumber from 'bignumber.js';
+import BigNumberJs from 'bignumber.js';
+type BigNumber = InstanceType<typeof BigNumberJs>;
+const BigNumber = BigNumberJs;
 
 export interface SaplingIncomingAndOutgoingTransaction {
   incoming: SaplingIncomingTransaction[];
@@ -161,6 +163,39 @@ export interface SaplingContractDetails {
   contractAddress: string;
   saplingId?: string;
   memoSize: number;
+}
+
+export type SaplingParamsSource =
+  | {
+      source?: 'taquito' | 'zcash';
+      spendParamsUrl?: never;
+      outputParamsUrl?: never;
+      spendParamsSha256?: never;
+      outputParamsSha256?: never;
+      spendParamsPath?: never;
+      outputParamsPath?: never;
+    }
+  | {
+      source?: never;
+      spendParamsUrl: string;
+      outputParamsUrl: string;
+      spendParamsSha256: string;
+      outputParamsSha256: string;
+      spendParamsPath?: never;
+      outputParamsPath?: never;
+    }
+  | {
+      source?: never;
+      spendParamsPath: string;
+      outputParamsPath: string;
+      spendParamsSha256?: string;
+      outputParamsSha256?: string;
+      spendParamsUrl?: never;
+      outputParamsUrl?: never;
+    };
+
+export interface SaplingInitOptions {
+  params?: SaplingParamsSource;
 }
 
 export interface SaplingStateTree {

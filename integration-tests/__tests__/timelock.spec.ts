@@ -1,22 +1,24 @@
 import { CONFIGS } from "../config";
-import { Chest, Timelock, ChestKey } from '../../packages/octez.js-timelock/src/octez.js-timelock';
+import { Chest, Timelock, ChestKey } from '@tezos-x/octez.js-timelock';
 import { buf2hex } from '@tezos-x/octez.js-utils';
 import * as crypto from 'crypto';
+import { sequentialTestSuite } from '../sequential-test';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;
   let contractAddress: string;
   let chestBytes: Uint8Array;
   let keyBytes: Uint8Array;
-  
+
   describe(`Timelock test ${rpc}`, () => {
+    const step = sequentialTestSuite();
 
     const contractCode = `parameter (pair (chest %chest) (chest_key %key));
     storage (option bytes);
     code { CAR ; PUSH nat 10000 ; DUP 2 ; CAR ; DIG 2 ; CDR ; OPEN_CHEST ; NIL operation ; PAIR }`;
 
-    beforeEach(async () => {
-      await setup(true);
+    beforeAll(async () => {
+      await setup({ preferFreshKey: true, minBalanceMutez: 2_000_000 });
 
       const contract = await Tezos.contract.originate({
         code: contractCode,
@@ -27,7 +29,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       contractAddress = contract.contractAddress!;
     });
 
-    it('should be able to create a new chest and key', async () => {
+    step('should be able to create a new chest and key', async () => {
       const time = 5000;
 
       const payload = new Uint8Array(64);
@@ -53,14 +55,14 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       expect(op.status).toEqual('applied');
     });
 
-    it('should be able to create chest and key from existing timelock, and open it', async () => {
+    step('should be able to create chest and key from existing timelock, and open it', async () => {
       const time = 10000;
       const payload = new TextEncoder().encode('I choose rock');
 
       const precomputedTimelock = Timelock.precompute(time);
       const { chest, key } = Chest.fromTimelock(payload, time, precomputedTimelock);
 
-      //chest and key value will be used in the next test
+      // chest and key value will be used in the next step
       chestBytes = chest.encode();
       keyBytes = key.encode();
 
@@ -68,7 +70,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       expect(keyBytes).toBeDefined();
     });
 
-    it('should be able to open chest with a key', async () => {
+    step('should be able to open chest with a key', async () => {
       const time = 10000;
       const [chest] = Chest.fromArray(chestBytes);
       const [chestKey] = ChestKey.fromArray(keyBytes);

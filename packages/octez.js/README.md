@@ -9,7 +9,8 @@
 ## CDN Bundle
 
 ```html
-<script src="https://unpkg.com/@tezos-x/octez.js@0.9.0/dist/octez.js.min.js"></script>
+<script src="https://unpkg.com/@tezos-x/octez.js@24.3.0/dist/taquito.min.js"
+crossorigin="anonymous" integrity="sha384-IxvP0ECHi5oqLyz94wF85pU9+ktcsL1HHtA42MITxZsGbsUMEu/g+0Vkjj5vqiMR"></script>
 ```
 
 ## General Information

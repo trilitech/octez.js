@@ -1,4 +1,4 @@
-import { CONFIGS } from '../../config';
+import { CONFIGS, TAQUITO_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
 import { managerCode } from '../../data/manager_code';
 import { DefaultContractType, MANAGER_LAMBDA, OriginationOperation } from '@tezos-x/octez.js';
 
@@ -9,7 +9,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, knownContract }) => {
   let contract: DefaultContractType;
   describe(`Test TZ Manager through contract api: ${rpc}`, () => {
     beforeAll(async () => {
-      await setup();
+      await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
 
       op = await Tezos.contract.originate({
         balance: "1",
@@ -24,7 +24,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, knownContract }) => {
     it('should be able to transfer from implicit to originated contracts', async () => {
       // Transfer from implicit account (tz1) to contract (kt1_alice)
       // A regular transfer operation is made. No smart contract calls required for this scenario.
-      const op = await Tezos.contract.transfer({ to: contract.address, amount: 1 });
+      const op = await Tezos.contract.transfer({ to: contract.address, amount: TAQUITO_MUTEZ, mutez: true });
       await op.confirmation();
       expect(op.status).toEqual('applied');
     });
@@ -33,7 +33,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, knownContract }) => {
       // Transfer from contract (kt1_alice) to implicit account (tz1)
       // We pass a lambda function to the kt1_alice contracts `do` entrypoint. The lambda code causes the contract to transfer
       // the specified number (50) of mutez to the target address.
-      const op = await contract.methodsObject.do(MANAGER_LAMBDA.transferImplicit('tz1eY5Aqa1kXDFoiebL28emyXFoneAoVg1zh', 5)).send({ amount: 0 });
+      const op = await contract.methodsObject.do(MANAGER_LAMBDA.transferImplicit(TEST_FUNDS_RECOVERY_ADDRESS, 5)).send({ amount: 0 });
       await op.confirmation();
       expect(op.status).toEqual('applied');
     });
@@ -65,7 +65,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, knownContract }) => {
 
     it('should throw an error when trying to transfer amount higher than balance', async () => {
       try {
-        const op = await contract.methodsObject.do(MANAGER_LAMBDA.transferImplicit('tz1eY5Aqa1kXDFoiebL28emyXFoneAoVg1zh', 50 * 1000000)).send({ amount: 0 });
+        const op = await contract.methodsObject.do(MANAGER_LAMBDA.transferImplicit(TEST_FUNDS_RECOVERY_ADDRESS, 50 * 1000000)).send({ amount: 0 });
         await op.confirmation();
       } catch (ex: any) {
         expect(ex.message).toContain('tez.subtraction_underflow')

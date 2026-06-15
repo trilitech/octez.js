@@ -2,7 +2,7 @@ import { TezosToolkitConfigError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
- *  @description Error that indicates no signer has been configured in the TezosToolkit instance
+ *  Error that indicates no signer has been configured in the TezosToolkit instance
  */
 export class UnconfiguredSignerError extends TezosToolkitConfigError {
   constructor() {

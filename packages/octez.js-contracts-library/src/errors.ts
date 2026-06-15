@@ -2,7 +2,7 @@ import { ParameterValidationError } from '@tezos-x/octez.js-core';
 import { ScriptedContracts } from '@tezos-x/octez.js-rpc';
 /**
  *  @category Error
- *  @description Error that indicates invalid script format being useed or passed
+ *  Error that indicates invalid script format being useed or passed
  */
 export class InvalidScriptFormatError extends ParameterValidationError {
   constructor(

@@ -2,6 +2,7 @@ import { TezosToolkit } from '../../src/octez';
 import { ContractAbstraction } from '../../src/contract/contract';
 import { Wallet } from '../../src/wallet/wallet';
 import { script } from '../contract/data-lambda-view-class';
+import { HttpResponseError, STATUS_CODE } from '@tezos-x/octez.js-http-utils';
 
 class ContractAbstractionTest {
   constructor(private abs: ContractAbstraction<Wallet>) {}
@@ -25,9 +26,9 @@ describe('Contract abstraction composer test', () => {
 
   beforeEach(() => {
     mockRpcClient = {
-      getContract: jest.fn(),
-      getEntrypoints: jest.fn(),
-      getChainId: jest.fn(),
+      getContract: vi.fn(),
+      getEntrypoints: vi.fn(),
+      getChainId: vi.fn(),
     };
 
     mockRpcClient.getContract.mockResolvedValue({ script });
@@ -47,5 +48,49 @@ describe('Contract abstraction composer test', () => {
       composeContractAbstractionTest
     );
     expect(result.constractAbstractionTest().helloWorld()).toEqual('Hello World!');
+  });
+
+  it('should retry at head when a block-pinned wallet read temporarily returns 404', async () => {
+    mockRpcClient.getContract
+      .mockRejectedValueOnce(
+        new HttpResponseError('fail', STATUS_CODE.NOT_FOUND, 'err', 'test', 'https://test.com')
+      )
+      .mockResolvedValueOnce({ script });
+
+    await toolkit.wallet.at('KT1Fe71jyjrxFg9ZrYqtvaX7uQjcLo7svE4D', undefined, 200);
+
+    expect(mockRpcClient.getContract).toHaveBeenNthCalledWith(
+      1,
+      'KT1Fe71jyjrxFg9ZrYqtvaX7uQjcLo7svE4D',
+      {
+        block: '200',
+      }
+    );
+    expect(mockRpcClient.getContract).toHaveBeenNthCalledWith(
+      2,
+      'KT1Fe71jyjrxFg9ZrYqtvaX7uQjcLo7svE4D',
+      { block: 'head' }
+    );
+    expect(mockRpcClient.getEntrypoints).toHaveBeenCalledWith(
+      'KT1Fe71jyjrxFg9ZrYqtvaX7uQjcLo7svE4D'
+    );
+  });
+
+  it('should read the contract from the exact block hash without consulting head entrypoints', async () => {
+    await toolkit.wallet.atExactBlock(
+      'KT1Fe71jyjrxFg9ZrYqtvaX7uQjcLo7svE4D',
+      undefined,
+      'BLockHash200'
+    );
+
+    expect(mockRpcClient.getContract).toHaveBeenCalledWith('KT1Fe71jyjrxFg9ZrYqtvaX7uQjcLo7svE4D', {
+      block: 'BLockHash200',
+    });
+    expect(mockRpcClient.getEntrypoints).toHaveBeenCalledWith(
+      'KT1Fe71jyjrxFg9ZrYqtvaX7uQjcLo7svE4D',
+      {
+        block: 'BLockHash200',
+      }
+    );
   });
 });

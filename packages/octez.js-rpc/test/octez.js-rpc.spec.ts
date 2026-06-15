@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { OpKind, RpcClient } from '../src/octez.js-rpc';
+import { vi, type Mock } from 'vitest';
+import { OpKind, RpcClient } from '../src/taquito-rpc';
 import BigNumber from 'bignumber.js';
 import {
   LazyStorageDiffBigMap,
@@ -76,14 +77,14 @@ import {
 describe('RpcClient test', () => {
   let client: RpcClient;
   let httpBackend: {
-    createRequest: jest.Mock<any, any>;
+    createRequest: Mock;
   };
 
   const contractAddress = 'KT1Fe71jyjrxFg9ZrYqtvaX7uQjcLo7svE4D';
 
   beforeEach(() => {
     httpBackend = {
-      createRequest: jest.fn(),
+      createRequest: vi.fn(),
     };
     client = new RpcClient('root', 'test', httpBackend as any);
   });
@@ -3813,10 +3814,8 @@ describe('RpcClient test', () => {
       const url = 'https://mainnet.tezos.ecadinfra.com/';
       const rpcUrlMainnet = new RpcClient(url).getRpcUrl();
       expect(rpcUrlMainnet).toEqual('https://mainnet.tezos.ecadinfra.com/');
-      const rpcUrlGhostnet = new RpcClient('https://rpc.ghostnet.teztnets.com').getRpcUrl();
-      expect(rpcUrlGhostnet).toEqual('https://rpc.ghostnet.teztnets.com');
-      const rpcUrlShadownet = new RpcClient('https://rpc.shadownet.teztnets.com').getRpcUrl();
-      expect(rpcUrlShadownet).toEqual('https://rpc.shadownet.teztnets.com');
+      const rpcUrlShadownet = new RpcClient('https://shadownet.tezos.ecadinfra.com').getRpcUrl();
+      expect(rpcUrlShadownet).toEqual('https://shadownet.tezos.ecadinfra.com');
     });
   });
 
@@ -4429,6 +4428,26 @@ describe('RpcClient test', () => {
       });
 
       expect(response).toBeNull();
+    });
+  });
+
+  describe('getMempoolFilter', () => {
+    it('should query the correct url with include_default', async () => {
+      const mockedResponse = {
+        minimal_fees: '100',
+        minimal_nanotez_per_gas_unit: ['100', '1'],
+        minimal_nanotez_per_byte: ['1000', '1'],
+      };
+      httpBackend.createRequest.mockReturnValue(Promise.resolve(mockedResponse));
+
+      const response = await client.getMempoolFilter({ include_default: true });
+
+      expect(httpBackend.createRequest.mock.calls[0][0]).toEqual({
+        method: 'GET',
+        query: { include_default: true },
+        url: 'root/chains/test/mempool/filter',
+      });
+      expect(response).toEqual(mockedResponse);
     });
   });
 });

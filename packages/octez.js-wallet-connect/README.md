@@ -12,6 +12,7 @@ _Documentation can be found [here](https://octez.js.io/docs/walletconnect)_
 
 `@tezos-x/octez.js-wallet-connect` is an npm package that provides developers a way to connect a dapp built with octez.js to a wallet giving the freedom to the users of the dapp to choose the wallet via the WalletConnect/Reown protocol. The `WalletConnect` class implements the `WalletProvider` interface, providing an alternative to `BeaconWallet` (which uses [octez.connect](https://www.npmjs.com/package/@tezos-x/octez.connect)).
 Note: Currently, a QR code is displayed to establish a connection with a wallet. As more Tezos wallets integrate with WalletConnect, we plan showing a list of available wallets alongside the QR code.
+Note: The current QR pairing flow still relies on the legacy WalletConnect modal package. We plan to replace that modal integration in a future release.
 
 ## Install
 
@@ -27,7 +28,11 @@ Create a wallet instance with defined option parameters and set the wallet provi
 
 ```ts
 import { TezosToolkit } from '@tezos-x/octez.js';
-import { WalletConnect, NetworkType, PermissionScopeMethods } from '@tezos-x/octez.js-wallet-connect';
+import {
+  NetworkType,
+  PermissionScopeMethods,
+  WalletConnect,
+} from '@tezos-x/octez.js-wallet-connect';
 
 const wallet = await WalletConnect.init({
   projectId: "YOUR_PROJECT_ID", // can get YOUR_PROJECT_ID from [Reown Cloud](https://cloud.reown.com)
@@ -41,7 +46,7 @@ const wallet = await WalletConnect.init({
 
 await wallet.requestPermissions({
     permissionScope: {
-        networks: [NetworkType.GHOSTNET],
+        networks: [NetworkType.SHADOWNET],
         events: [],
         methods: [
             PermissionScopeMethods.TEZOS_SEND,
@@ -54,6 +59,18 @@ await wallet.requestPermissions({
 const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
 Tezos.setWalletProvider(wallet);
 ```
+
+Existing sessions can be restored with `configureWithExistingSessionKey()`. Restored sessions are validated before activation, so invalid or stale non-Tezos session data may be rejected during restore.
+
+```ts
+const existingSessionKey = wallet.getAllExistingSessionKeys()[0];
+
+if (existingSessionKey) {
+  wallet.configureWithExistingSessionKey(existingSessionKey);
+}
+```
+
+Both session restore helpers are synchronous.
 
 ## Additional Info
 

@@ -1,13 +1,18 @@
 import { BaseTokenSchema } from '../schema/types';
+import { buf2hex } from '@tezos-x/octez.js-utils';
 import { SemanticEncoding, Token, TokenFactory, TokenValidationError } from './token';
 
 /**
  *  @category Error
- *  @description Error that indicates a failure happening when parsing encoding/executing a BLS12-381 curve G2
+ *  Error that indicates a failure happening when parsing encoding/executing a BLS12-381 curve G2
  */
 export class Bls12381g2ValidationError extends TokenValidationError {
   name = 'Bls12381g2ValidationError';
-  constructor(public value: any, public token: Bls12381g2Token, message: string) {
+  constructor(
+    public value: any,
+    public token: Bls12381g2Token,
+    message: string
+  ) {
     super(value, token, message);
   }
 }
@@ -35,7 +40,7 @@ export class Bls12381g2Token extends Token {
   }
 
   private convertUint8ArrayToHexString(val: any) {
-    return val.constructor === Uint8Array ? Buffer.from(val).toString('hex') : val;
+    return val.constructor === Uint8Array ? buf2hex(val) : val;
   }
 
   /**

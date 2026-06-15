@@ -1,3 +1,4 @@
+import { vi, type Mock } from 'vitest';
 import { Handler, MetadataProvider } from '../src/metadata-provider';
 import { InvalidContractMetadataError, InvalidUriError } from '../src/errors';
 
@@ -7,24 +8,24 @@ describe('Metadata provider test', () => {
   const mockContractAbstraction: any = {};
   const mockContext: any = {};
   let mockHttpHandler: {
-    getMetadata: jest.Mock<any, any>;
+    getMetadata: Mock;
   };
   let mockTezosStorageHandler: {
-    getMetadata: jest.Mock<any, any>;
+    getMetadata: Mock;
   };
   let mockIpfsHttpHandler: {
-    getMetadata: jest.Mock<any, any>;
+    getMetadata: Mock;
   };
 
   beforeEach(() => {
     mockHttpHandler = {
-      getMetadata: jest.fn(),
+      getMetadata: vi.fn(),
     };
     mockTezosStorageHandler = {
-      getMetadata: jest.fn(),
+      getMetadata: vi.fn(),
     };
     mockIpfsHttpHandler = {
-      getMetadata: jest.fn(),
+      getMetadata: vi.fn(),
     };
     handlers = new Map<string, Handler>([
       ['http', mockHttpHandler],
@@ -213,5 +214,11 @@ describe('Metadata provider test', () => {
     });
 
     expect(metadataProvider['extractProtocolInfo']('hello/world')).toBeUndefined();
+  });
+
+  it('Should reject crafted invalid URIs without matching a protocol', () => {
+    const craftedUri = `sha256://0x${'sha256://0xa'.repeat(4000)}`;
+
+    expect(metadataProvider['extractProtocolInfo'](craftedUri)).toBeUndefined();
   });
 });

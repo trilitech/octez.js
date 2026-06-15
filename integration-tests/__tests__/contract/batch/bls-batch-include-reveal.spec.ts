@@ -1,5 +1,5 @@
 import { OpKind } from '@tezos-x/octez.js';
-import { CONFIGS, SignerType } from '../../../config';
+import { CONFIGS, SignerType, TEST_FUNDS_RECOVERY_ADDRESS } from '../../../config';
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { PrefixV2 } from '@tezos-x/octez.js-utils';
 
@@ -9,13 +9,14 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, signerConfig, createAddress })
 
   describe(`Test estimate.batch includes an estimation for a tz4 reveal operation when needed using: ${rpc}`, () => {
     beforeEach(async () => {
-      await setup();
+      await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
       try {
         Bls = await createAddress(PrefixV2.BLS12_381SecretKey)
         let transferOp = await Tezos.contract.transfer({ to: await Bls.signer.publicKeyHash(), amount: 2 })
         await transferOp.confirmation()
       } catch (e) {
         console.log('beforeAll transferOp error', e)
+        throw e;
       }
     });
 
@@ -24,7 +25,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, signerConfig, createAddress })
         const batchOpEstimate = await Bls.estimate
           .batch([
             { kind: OpKind.DELEGATION, source: await Bls.signer.publicKeyHash(), delegate: knownBaker },
-            { kind: OpKind.TRANSACTION, to: 'tz1ZfrERcALBwmAqwonRXYVQBDT9BjNjBHJu', amount: 0.02 },
+            { kind: OpKind.TRANSACTION, to: TEST_FUNDS_RECOVERY_ADDRESS, amount: 0.02 },
           ])
         expect(batchOpEstimate.length).toEqual(3);
       } catch (ex: any) {
@@ -47,7 +48,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, signerConfig, createAddress })
         const batchOpEstimate = await Bls.estimate
           .batch([
             { kind: OpKind.DELEGATION, source: await Bls.signer.publicKeyHash(), delegate: knownBaker },
-            { kind: OpKind.TRANSACTION, to: 'tz1ZfrERcALBwmAqwonRXYVQBDT9BjNjBHJu', amount: 0.02 },
+            { kind: OpKind.TRANSACTION, to: TEST_FUNDS_RECOVERY_ADDRESS, amount: 0.02 },
           ])
 
         expect(batchOpEstimate.length).toEqual(2);

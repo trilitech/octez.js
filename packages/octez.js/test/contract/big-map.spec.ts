@@ -8,16 +8,16 @@ import { BigMapAbstraction } from '../../src/contract/big-map';
  */
 describe('BigMapAbstraction test', () => {
   let rpcContractProvider: {
-    getBigMapKeysByID: jest.Mock<any, any>;
-    getStorage: jest.Mock<any, any>;
-    getBigMapKeyByID: jest.Mock<any, any>;
+    getBigMapKeysByID: ReturnType<typeof vi.fn>;
+    getStorage: ReturnType<typeof vi.fn>;
+    getBigMapKeyByID: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
     rpcContractProvider = {
-      getBigMapKeysByID: jest.fn(),
-      getStorage: jest.fn(),
-      getBigMapKeyByID: jest.fn(),
+      getBigMapKeysByID: vi.fn(),
+      getStorage: vi.fn(),
+      getBigMapKeyByID: vi.fn(),
     };
   });
 
@@ -126,6 +126,28 @@ describe('BigMapAbstraction test', () => {
       const bigMap = new BigMapAbstraction(new BigNumber('1'), schema, rpcContractProvider as any);
       expect(await bigMap.get('23', 123456)).toEqual('test');
       expect(rpcContractProvider.getBigMapKeyByID).toHaveBeenCalledWith('1', '23', schema, 123456);
+    });
+
+    it('uses the pinned read block when no block is provided', async () => {
+      rpcContractProvider.getBigMapKeyByID.mockResolvedValue('test');
+      const schema = new Schema({
+        prim: 'big_map',
+        args: [{ prim: 'int' }, { prim: 'string' }],
+      });
+      const bigMap = new BigMapAbstraction(
+        new BigNumber('1'),
+        schema,
+        rpcContractProvider as any,
+        'BLockHash200'
+      );
+
+      expect(await bigMap.get('23')).toEqual('test');
+      expect(rpcContractProvider.getBigMapKeyByID).toHaveBeenCalledWith(
+        '1',
+        '23',
+        schema,
+        'BLockHash200'
+      );
     });
 
     it('includes type argument when calling the get method', async () => {

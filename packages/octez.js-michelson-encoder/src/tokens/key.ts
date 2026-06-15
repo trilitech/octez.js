@@ -11,7 +11,7 @@ import { publicKeyFromString } from '@tezos-x/octez.js-signer';
 
 /**
  *  @category Error
- *  @description Error that indicates a failure happening when parsing encoding/executing a Key
+ *  Error that indicates a failure happening when parsing encoding/executing a Key
  */
 export class KeyValidationError extends TokenValidationError {
   name = 'KeyValidationError';

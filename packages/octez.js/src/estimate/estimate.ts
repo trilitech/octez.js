@@ -1,6 +1,60 @@
-const MINIMAL_FEE_MUTEZ = 100;
-const MINIMAL_FEE_PER_BYTE_MUTEZ = 1;
-const MINIMAL_FEE_PER_GAS_MUTEZ = 0.1;
+import { MempoolFilterResponse, RpcRatio } from '@tezos-x/octez.js-rpc';
+
+export interface FeeParams {
+  minimalFeeMutez: number;
+  feePerGasMutez: number;
+  feePerByteMutez: number;
+}
+
+export const DEFAULT_FEE_PARAMS: FeeParams = {
+  minimalFeeMutez: 100,
+  feePerGasMutez: 0.1,
+  feePerByteMutez: 1,
+};
+
+const parseRatio = (value: RpcRatio | undefined): number | undefined => {
+  if (!Array.isArray(value) || value.length < 2) {
+    return;
+  }
+
+  const numerator = Number(value[0]);
+  const denominator = Number(value[1]);
+
+  if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || denominator === 0) {
+    return;
+  }
+
+  return numerator / denominator;
+};
+
+export const feeParamsFromMempoolFilter = (
+  response?: Pick<
+    MempoolFilterResponse,
+    'minimal_fees' | 'minimal_nanotez_per_gas_unit' | 'minimal_nanotez_per_byte'
+  >
+): FeeParams => {
+  // L1 historically behaves like Taquito's long-standing defaults. Tezos X keeps the
+  // same fee formula shape, but these mempool values become material and may change
+  // over time, so estimation must read them from RPC instead of hardcoding them.
+  const minimalFeeMutez = Number(response?.minimal_fees);
+  const feePerGasNanotez = parseRatio(response?.minimal_nanotez_per_gas_unit);
+  const feePerByteNanotez = parseRatio(response?.minimal_nanotez_per_byte);
+
+  return {
+    minimalFeeMutez: Number.isFinite(minimalFeeMutez)
+      ? minimalFeeMutez
+      : DEFAULT_FEE_PARAMS.minimalFeeMutez,
+    feePerGasMutez:
+      // `mempool/filter` returns nanotez ratios, while `Estimate` works in mutez.
+      typeof feePerGasNanotez === 'number'
+        ? feePerGasNanotez / 1000
+        : DEFAULT_FEE_PARAMS.feePerGasMutez,
+    feePerByteMutez:
+      typeof feePerByteNanotez === 'number'
+        ? feePerByteNanotez / 1000
+        : DEFAULT_FEE_PARAMS.feePerByteMutez,
+  };
+};
 
 export interface EstimateProperties {
   milligasLimit: number;
@@ -8,6 +62,7 @@ export interface EstimateProperties {
   opSize: number;
   minimalFeePerStorageByteMutez: number;
   baseFeeMutez?: number;
+  feeParams?: FeeParams;
 }
 
 /**
@@ -44,8 +99,14 @@ export interface EstimateProperties {
  *   est.suggestedFeeMutez, est.totalCost, est.usingBaseFeeMutez)
  *
  * ```
+ *
+ * Fee estimation keeps the same overall formula shape on Tezos L1 and on Tezos X / Tezlink:
+ * a fixed minimal fee plus byte and gas-price components. The important difference is that on
+ * Tezos X the byte fee and gas-price terms exposed by `mempool/filter` are material and may
+ * change over time, while on L1 they have historically been close to Taquito's long-standing
+ * defaults. `Estimate` therefore accepts fee parameters computed by the estimator instead of
+ * assuming L1 values internally.
  */
-
 export class Estimate {
   constructor(
     private readonly _milligasLimit: number | string,
@@ -53,27 +114,28 @@ export class Estimate {
     public readonly opSize: number | string,
     private readonly minimalFeePerStorageByteMutez: number | string,
     /**
-     * @description Base fee in mutez (1 mutez = 1e10−6 tez)
+     * Base fee in mutez (1 mutez = 1e10−6 tez)
      */
-    private readonly baseFeeMutez: number | string = MINIMAL_FEE_MUTEZ
+    private readonly baseFeeMutez: number | string = DEFAULT_FEE_PARAMS.minimalFeeMutez,
+    private readonly feeParams: FeeParams = DEFAULT_FEE_PARAMS
   ) {}
 
   /**
-   * @description The number of Mutez that will be burned for the storage of the [operation](https://tezos.gitlab.io/user/glossary.html#operations). (Storage + Allocation fees)
+   * The number of Mutez that will be burned for the storage of the [operation](https://tezos.gitlab.io/user/glossary.html#operations). (Storage + Allocation fees)
    */
   get burnFeeMutez() {
     return this.roundUp(Number(this.storageLimit) * Number(this.minimalFeePerStorageByteMutez));
   }
 
   /**
-   * @description  The limit on the amount of storage an [operation](https://tezos.gitlab.io/user/glossary.html#operations) can use with 20 buffer.
+   *  The limit on the amount of storage an [operation](https://tezos.gitlab.io/user/glossary.html#operations) can use with 20 buffer.
    */
   get storageLimit() {
     return Math.max(Number(this._storageLimit), 0);
   }
 
   /**
-   * @description The limit on the amount of [gas](https://tezos.gitlab.io/user/glossary.html#gas) a given operation can consume with 100 buffer depends on the operation.
+   * The limit on the amount of [gas](https://tezos.gitlab.io/user/glossary.html#gas) a given operation can consume with 100 buffer depends on the operation.
    */
   get gasLimit() {
     return this.roundUp(Number(this._milligasLimit) / 1000);
@@ -81,7 +143,8 @@ export class Estimate {
 
   private get operationFeeMutez() {
     return (
-      this.gasLimit * MINIMAL_FEE_PER_GAS_MUTEZ + Number(this.opSize) * MINIMAL_FEE_PER_BYTE_MUTEZ
+      this.gasLimit * this.feeParams.feePerGasMutez +
+      Number(this.opSize) * this.feeParams.feePerByteMutez
     );
   }
 
@@ -90,37 +153,38 @@ export class Estimate {
   }
 
   /**
-   * @description Minimum fees for the [operation](https://tezos.gitlab.io/user/glossary.html#operations) according to [baker](https://tezos.gitlab.io/user/glossary.html#baker) defaults.
+   * Minimum fees for the [operation](https://tezos.gitlab.io/user/glossary.html#operations) according to [baker](https://tezos.gitlab.io/user/glossary.html#baker) defaults.
    */
   get minimalFeeMutez() {
-    return this.roundUp(this.operationFeeMutez + MINIMAL_FEE_MUTEZ);
+    return this.roundUp(this.operationFeeMutez + this.feeParams.minimalFeeMutez);
   }
 
   /**
-   * @description The suggested fee for the operation which includes minimal fees and a small buffer.
+   * The suggested fee for the operation which includes minimal fees and a small buffer.
    */
   get suggestedFeeMutez() {
-    return this.roundUp(this.operationFeeMutez + MINIMAL_FEE_MUTEZ * 1.2);
+    return this.roundUp(this.operationFeeMutez + this.feeParams.minimalFeeMutez * 1.2);
   }
 
   /**
-   * @description Fees according to your specified base fee will ensure that at least minimum fees are used.
+   * Fees according to your specified base fee will ensure that at least minimum fees are used.
    */
   get usingBaseFeeMutez() {
     return (
-      Math.max(Number(this.baseFeeMutez), MINIMAL_FEE_MUTEZ) + this.roundUp(this.operationFeeMutez)
+      Math.max(Number(this.baseFeeMutez), this.feeParams.minimalFeeMutez) +
+      this.roundUp(this.operationFeeMutez)
     );
   }
 
   /**
-   * @description The sum of `minimalFeeMutez` + `burnFeeMutez`.
+   * The sum of `minimalFeeMutez` + `burnFeeMutez`.
    */
   get totalCost() {
     return this.minimalFeeMutez + this.burnFeeMutez;
   }
 
   /**
-   * @description Since Delphinet, consumed gas is provided in milligas for more precision.
+   * Since Delphinet, consumed gas is provided in milligas for more precision.
    * This function returns an estimation of the gas that operation will consume in milligas.
    */
   get consumedMilligas() {
@@ -133,6 +197,7 @@ export class Estimate {
     let opSize = 0;
     let minimalFeePerStorageByteMutez = 0;
     let baseFeeMutez: number | undefined;
+    const feeParams = estimateProperties[0]?.feeParams;
 
     estimateProperties.forEach((estimate) => {
       milligasLimit += estimate.milligasLimit;
@@ -151,7 +216,8 @@ export class Estimate {
       storageLimit,
       opSize,
       minimalFeePerStorageByteMutez,
-      baseFeeMutez
+      baseFeeMutez,
+      feeParams
     );
   }
 
@@ -163,7 +229,8 @@ export class Estimate {
           x.storageLimit,
           x.opSize,
           x.minimalFeePerStorageByteMutez,
-          x.baseFeeMutez
+          x.baseFeeMutez,
+          x.feeParams
         )
     );
   }
