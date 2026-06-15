@@ -59,7 +59,7 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-sapling-wasm": "0.2.0",
+    "@taquito/sapling-wasm": "0.2.0",
     "@scure/bip39": "^2.0.1",
     "@noble/hashes": "^2.0.1",
     "@stablelib/nacl": "^1.0.4",
