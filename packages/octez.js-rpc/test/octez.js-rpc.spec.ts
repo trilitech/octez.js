@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { vi, type Mock } from 'vitest';
-import { OpKind, RpcClient } from '../src/taquito-rpc';
+import { OpKind, RpcClient } from '../src/octez.js-rpc';
 import BigNumber from 'bignumber.js';
 import {
   LazyStorageDiffBigMap,

@@ -1,5 +1,5 @@
 import { vi, type Mock } from 'vitest';
-import { LedgerSigner, DerivationType, HDPathTemplate } from '../src/taquito-ledger-signer';
+import { LedgerSigner, DerivationType, HDPathTemplate } from '../src/octez.js-ledger-signer';
 import { transformPathToBuffer } from '../src/utils';
 
 /**

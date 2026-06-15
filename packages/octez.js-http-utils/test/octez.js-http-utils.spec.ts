@@ -4,7 +4,7 @@ import {
   HttpRequestFailed,
   HttpResponseError,
   HttpTimeoutError,
-} from '../src/taquito-http-utils';
+} from '../src/octez.js-http-utils';
 
 const mockFetch = vi.fn();
 const originalFetch = globalThis.fetch;

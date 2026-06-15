@@ -9,7 +9,7 @@ import BigNumber from 'bignumber.js';
 import { ParameterSchema } from '../src/schema/parameter';
 import { MichelsonMap } from '../src/michelson-map';
 import { normalizeMichelsonValue } from './utils';
-import { Token } from '../src/taquito-michelson-encoder';
+import { Token } from '../src/octez.js-michelson-encoder';
 describe('Exchange contract test', () => {
   it('Test storage schema', () => {
     const schema = new Schema(storageDexter);

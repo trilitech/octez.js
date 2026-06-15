@@ -4,7 +4,7 @@
  */
 
 import { Buffer } from 'buffer';
-import { DerivationType } from './taquito-ledger-signer';
+import { DerivationType } from './octez.js-ledger-signer';
 
 const MAX_CHUNK_SIZE = 230;
 

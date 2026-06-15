@@ -4,7 +4,7 @@ import { ParameterSchema } from '../src/schema/parameter';
 import { Schema } from '../src/schema/storage';
 import { MichelsonMap } from '../src/michelson-map';
 import { normalizeMichelsonValue } from './utils';
-import { Token } from '../src/taquito-michelson-encoder';
+import { Token } from '../src/octez.js-michelson-encoder';
 
 describe('Schema test', () => {
   it('Should extract schema properly', () => {
