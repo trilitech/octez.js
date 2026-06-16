@@ -15,7 +15,6 @@ import { RpcClient, RpcClientCache } from '@tezos-x/octez.js-rpc';
 import { AsyncPrefetchBuffer } from './async-prefetch-buffer';
 import { KnownContracts } from './known-contracts';
 import { knownContractsShadownet } from './known-contracts-shadownet';
-import { knownContractsTallinnnet } from './known-contracts-tallinnnet';
 import { knownContractsWeeklynet } from './known-contracts-weeklynet';
 import { knownContractsTezlinkshadownet } from './known-contracts-tezlinkshadownet';
 
@@ -78,7 +77,7 @@ const forgers: ForgerType[] = [ForgerType.COMPOSITE];
 
 // user running integration test can pass environment variable TEZOS_NETWORK_TYPE=sandbox to specify which network to run against
 export enum NetworkType {
-  TESTNET, // corresponds shadownet, tallinnnet and weeklynet etc.
+  TESTNET, // corresponds shadownet, weeklynet etc.
   SANDBOX, // corresponds to flextesa local chain
 }
 
@@ -420,7 +419,7 @@ const defaultConfig = ({
 const shadownetEphemeral: Config = defaultConfig({
   networkName: 'SHADOWNET',
   protocol: Protocols.PtTALLiNt,
-  defaultRpc: 'http://ecad-tezos-shadownet-rolling-1.i.ecadinfra.com/',
+  defaultRpc: 'https://tezos-shadownet.octez.io/',
   knownContracts: knownContractsShadownet,
   signerConfig: defaultEphemeralConfig('shadownet'),
 });
@@ -428,19 +427,6 @@ const shadownetEphemeral: Config = defaultConfig({
 const shadownetSecretKey: Config = {
   ...shadownetEphemeral,
   signerConfig: defaultSecretKey,
-};
-
-const tallinnnetEphemeral: Config = defaultConfig({
-  networkName: 'TALLINNNET',
-  protocol: Protocols.PtTALLiNt,
-  defaultRpc: 'http://ecad-tezos-tallinnnet-rolling-1.i.ecadinfra.com/',
-  knownContracts: knownContractsTallinnnet,
-  signerConfig: defaultEphemeralConfig('tallinnnet'),
-});
-
-const tallinnnetSecretKey: Config = {
-  ...tallinnnetEphemeral,
-  ...{ signerConfig: defaultSecretKey, rpc: 'https://rpc.tallinnnet.teztnets.com' },
 };
 
 const weeklynetSecretKey: Config = defaultConfig({
@@ -475,15 +461,12 @@ const providers: Config[] = [];
 if (process.env['RUN_WITH_SECRET_KEY']) {
   providers.push(
     shadownetSecretKey,
-    tallinnnetSecretKey,
     weeklynetSecretKey,
     tezlinkshadownetSecretKey,
     ushuaianetSecretKey
   );
 } else if (process.env['RUN_SHADOWNET_WITH_SECRET_KEY']) {
   providers.push(shadownetSecretKey);
-} else if (process.env['RUN_TALLINNNET_WITH_SECRET_KEY']) {
-  providers.push(tallinnnetSecretKey);
 } else if (process.env['RUN_WEEKLYNET_WITH_SECRET_KEY']) {
   providers.push(weeklynetSecretKey);
 } else if (process.env['RUN_TEZLINKSHADOWNET_WITH_SECRET_KEY']) {
@@ -492,10 +475,8 @@ if (process.env['RUN_WITH_SECRET_KEY']) {
   providers.push(ushuaianetSecretKey);
 } else if (process.env['SHADOWNET']) {
   providers.push(shadownetEphemeral);
-} else if (process.env['TALLINNNET']) {
-  providers.push(tallinnnetEphemeral);
 } else {
-  providers.push(shadownetEphemeral, tallinnnetEphemeral);
+  providers.push(shadownetEphemeral);
 }
 
 const setupForger = (Tezos: TezosToolkit, forger: ForgerType): void => {

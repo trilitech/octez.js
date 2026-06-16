@@ -109,7 +109,6 @@ jobs:
     name: integration-tests-shadownet
     needs:
       - integration-tests-change-filter
-      - integration-tests-keygen-preflight
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -118,45 +117,31 @@ jobs:
     concurrency:
       group: shadownet-itest-testnet-shard-${{ matrix.shard }}
       cancel-in-progress: false
+    # SECRET_KEY (from repo secrets) drives the fixed-signer code path in
+    # integration-tests/config.ts via RUN_SHADOWNET_WITH_SECRET_KEY, so tests
+    # don't depend on ECAD keygen infra. Without it the job will not have a
+    # signer and the test step will fail loudly.
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      RUN_SHADOWNET_WITH_SECRET_KEY: ${{ secrets.SECRET_KEY != '' && 'true' || '' }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Skip when SECRET_KEY is absent
+        if: ${{ env.SECRET_KEY == '' }}
+        run: |
+          echo "::notice::SECRET_KEY repo secret not set; skipping shadownet shard ${{ matrix.shard }}. Add SECRET_KEY (a sps...-prefixed funded tz1/tz2 secret key on tezos-shadownet.octez.io) to enable."
+      - if: ${{ env.SECRET_KEY != '' }}
+        uses: actions/checkout@v6
+      - if: ${{ env.SECRET_KEY != '' }}
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
-      - run: npm ci
-      - run: npm run build
-      - if: ${{ !github.event.pull_request.head.repo.fork }}
-        name: Tailscale
-        # Pinned to SHA to prevent supply-chain attacks via mutable tags.
-        # Verify before bumping: https://github.com/tailscale/github-action/releases
-        uses: tailscale/github-action@306e68a486fd2350f2bfc3b19fcd143891a4a2d8 # v4.1.2
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-          tags: tag:github-runner
-          ping: ecad-tezos-shadownet-rolling-1.i.ecadinfra.com
-      - name: Probe keygen before shadownet tests
-        shell: bash
-        run: |
-          set -euo pipefail
-          keygen_url='http://keygen-direct.ecadinfra.com/v2/shadownet'
-          payload='{"require_unrevealed":false,"key_prefixes":["tz1"],"max_selection_attempts":5,"min_balance_mutez":5000000}'
-          echo "### Keygen probe before shadownet tests" >> "$GITHUB_STEP_SUMMARY"
-          for i in 1 2 3 4 5; do
-            line="$(
-              curl -sS -o /dev/null \
-                -X POST \
-                -H 'Content-Type: application/json' \
-                -H 'Authorization: Bearer taquito-example' \
-                -d "$payload" \
-                -w "probe=${i} code=%{http_code} ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n" \
-                "$keygen_url"
-            )"
-            echo "$line"
-            echo "- $line" >> "$GITHUB_STEP_SUMMARY"
-          done
-      - id: run-tests
+      - if: ${{ env.SECRET_KEY != '' }}
+        run: npm ci
+      - if: ${{ env.SECRET_KEY != '' }}
+        run: npm run build
+      - if: ${{ env.SECRET_KEY != '' }}
+        id: run-tests
         shell: bash
         run: |
           set -euo pipefail
@@ -195,29 +180,8 @@ jobs:
           TAQUITO_ITEST_DIAGNOSTICS: 'true'
           TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
           TAQUITO_FRESH_KEY_PREFETCH: '4'
-      - name: Probe keygen after shadownet tests
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          keygen_url='http://keygen-direct.ecadinfra.com/v2/shadownet'
-          payload='{"require_unrevealed":false,"key_prefixes":["tz1"],"max_selection_attempts":5,"min_balance_mutez":5000000}'
-          echo "### Keygen probe after shadownet tests" >> "$GITHUB_STEP_SUMMARY"
-          for i in 1 2 3 4 5; do
-            line="$(
-              curl -sS -o /dev/null \
-                -X POST \
-                -H 'Content-Type: application/json' \
-                -H 'Authorization: Bearer taquito-example' \
-                -d "$payload" \
-                -w "probe=${i} code=%{http_code} ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n" \
-                "$keygen_url"
-            )"
-            echo "$line"
-            echo "- $line" >> "$GITHUB_STEP_SUMMARY"
-          done
       - name: Upload timing artifact
-        if: always()
+        if: ${{ always() && env.SECRET_KEY != '' }}
         uses: actions/upload-artifact@v7
         with:
           name: itest-timing-shadownet-${{ matrix.shard }}
@@ -230,50 +194,31 @@ jobs:
     name: integration-tests-shadownet-sapling
     needs:
       - integration-tests-change-filter
-      - integration-tests-keygen-preflight
     runs-on: ubuntu-latest
     concurrency:
       group: shadownet-itest-sapling
       cancel-in-progress: false
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      RUN_SHADOWNET_WITH_SECRET_KEY: ${{ secrets.SECRET_KEY != '' && 'true' || '' }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Skip when SECRET_KEY is absent
+        if: ${{ env.SECRET_KEY == '' }}
+        run: |
+          echo "::notice::SECRET_KEY repo secret not set; skipping shadownet-sapling tests. Add SECRET_KEY (a sps...-prefixed funded tz1/tz2 secret key on tezos-shadownet.octez.io) to enable."
+      - if: ${{ env.SECRET_KEY != '' }}
+        uses: actions/checkout@v6
+      - if: ${{ env.SECRET_KEY != '' }}
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
-      - run: npm ci
-      - run: npm run build
-      - if: ${{ !github.event.pull_request.head.repo.fork }}
-        name: Tailscale
-        # Pinned to SHA to prevent supply-chain attacks via mutable tags.
-        # Verify before bumping: https://github.com/tailscale/github-action/releases
-        uses: tailscale/github-action@306e68a486fd2350f2bfc3b19fcd143891a4a2d8 # v4.1.2
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-          tags: tag:github-runner
-          ping: ecad-tezos-shadownet-rolling-1.i.ecadinfra.com
-      - name: Probe keygen before sapling tests
-        shell: bash
-        run: |
-          set -euo pipefail
-          keygen_url='http://keygen-direct.ecadinfra.com/v2/shadownet'
-          payload='{"require_unrevealed":false,"key_prefixes":["tz1"],"max_selection_attempts":5,"min_balance_mutez":5000000}'
-          echo "### Keygen probe before sapling tests" >> "$GITHUB_STEP_SUMMARY"
-          for i in 1 2 3 4 5; do
-            line="$(
-              curl -sS -o /dev/null \
-                -X POST \
-                -H 'Content-Type: application/json' \
-                -H 'Authorization: Bearer taquito-example' \
-                -d "$payload" \
-                -w "probe=${i} code=%{http_code} ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n" \
-                "$keygen_url"
-            )"
-            echo "$line"
-            echo "- $line" >> "$GITHUB_STEP_SUMMARY"
-          done
-      - id: run-tests
+      - if: ${{ env.SECRET_KEY != '' }}
+        run: npm ci
+      - if: ${{ env.SECRET_KEY != '' }}
+        run: npm run build
+      - if: ${{ env.SECRET_KEY != '' }}
+        id: run-tests
         shell: bash
         run: |
           set -euo pipefail
@@ -307,29 +252,8 @@ jobs:
           TAQUITO_ITEST_DIAGNOSTICS: 'true'
           TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
           TAQUITO_FRESH_KEY_PREFETCH: '4'
-      - name: Probe keygen after sapling tests
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          keygen_url='http://keygen-direct.ecadinfra.com/v2/shadownet'
-          payload='{"require_unrevealed":false,"key_prefixes":["tz1"],"max_selection_attempts":5,"min_balance_mutez":5000000}'
-          echo "### Keygen probe after sapling tests" >> "$GITHUB_STEP_SUMMARY"
-          for i in 1 2 3 4 5; do
-            line="$(
-              curl -sS -o /dev/null \
-                -X POST \
-                -H 'Content-Type: application/json' \
-                -H 'Authorization: Bearer taquito-example' \
-                -d "$payload" \
-                -w "probe=${i} code=%{http_code} ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n" \
-                "$keygen_url"
-            )"
-            echo "$line"
-            echo "- $line" >> "$GITHUB_STEP_SUMMARY"
-          done
       - name: Upload timing artifact
-        if: always()
+        if: ${{ always() && env.SECRET_KEY != '' }}
         uses: actions/upload-artifact@v7
         with:
           name: itest-timing-sapling
