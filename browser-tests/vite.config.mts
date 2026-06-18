@@ -14,7 +14,11 @@ const taquitoAliases = Object.fromEntries(
     .filter((packageJsonPath) => {
       try {
         const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
-        return typeof pkg.name === 'string' && pkg.name.startsWith('@tezos-x/octez.js-') && typeof pkg.module === 'string';
+        return (
+          typeof pkg.name === 'string' &&
+          (pkg.name === '@tezos-x/octez.js' || pkg.name.startsWith('@tezos-x/octez.js-')) &&
+          typeof pkg.module === 'string'
+        );
       } catch {
         return false;
       }
