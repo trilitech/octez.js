@@ -6,7 +6,7 @@ describe('HttpBackend request', () => {
     try {
       await http.createRequest<string>({
         method: 'GET',
-        url: 'https://mainnet.tezos.ecadinfra.com/chains/main/blocks/head/helpers/baking_rights',
+        url: 'https://rpc.tzkt.io/mainnet/chains/main/blocks/head/helpers/baking_rights',
         query: {
           level: 0
         }
@@ -16,7 +16,7 @@ describe('HttpBackend request', () => {
       expect(err).toBeInstanceOf(HttpResponseError);
       const httpErr = err as HttpResponseError;
       expect(httpErr.status).toEqual(404);
-      expect(httpErr.url).toEqual('https://mainnet.tezos.ecadinfra.com/chains/main/blocks/head/helpers/baking_rights?level=0');
+      expect(httpErr.url).toEqual('https://rpc.tzkt.io/mainnet/chains/main/blocks/head/helpers/baking_rights?level=0');
       expect(httpErr.message).toContain('Not Found');
     }
   });

@@ -9,6 +9,7 @@
     "test:shadownet": "SHADOWNET=true vitest run",
     "test:shadownet:shard": "SHADOWNET=true vitest run --passWithNoTests",
     "test:shadownet-secret-key": "RUN_SHADOWNET_WITH_SECRET_KEY=true vitest run",
+    "test:shadownet-secret-key:shard": "RUN_SHADOWNET_WITH_SECRET_KEY=true vitest run --passWithNoTests",
     "test:weeklynet-secret-key": "RUN_WEEKLYNET_WITH_SECRET_KEY=true vitest run",
     "test:tezlinkshadownet-secret-key": "RUN_TEZLINKSHADOWNET_WITH_SECRET_KEY=true vitest run",
     "originate-known-contracts": "node -r ts-node/register originate-known-contracts.ts",

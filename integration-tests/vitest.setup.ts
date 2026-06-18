@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { initSapling } from '@tezos-x/octez.js-sapling';
 
 // BigNumber instances created in different module contexts (e.g. inside
 // @tezos-x/octez.js-sapling vs. the test file) have different constructors, so
@@ -19,3 +20,11 @@ expect.addEqualityTesters([
     return undefined;
   },
 ]);
+
+// If the CI job pre-downloaded the sapling params to disk, wire them up so
+// tests use local files instead of downloading 48 MB mid-step.
+const spendPath = process.env['SAPLING_SPEND_PARAMS_PATH'];
+const outputPath = process.env['SAPLING_OUTPUT_PARAMS_PATH'];
+if (spendPath && outputPath) {
+  void initSapling({ params: { spendParamsPath: spendPath, outputParamsPath: outputPath } });
+}
