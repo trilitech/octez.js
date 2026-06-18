@@ -4,6 +4,36 @@ description: Release notes for octez.js and archive of Taquito releases prior to
 layout: ../layouts/MarkdownLayout.astro
 ---
 
+# octez.js v1.1.0
+
+Synced with Taquito v24.3.0, bringing the Taquito v24.1–v24.3 changes into octez.js. The API stays compatible; most items are dependency/runtime updates, with a few breaking changes noted below.
+
+### Breaking changes
+
+- **Node.js >=22 is now required** for development and server-side use. `node-fetch` has been dropped in favour of the native `globalThis.fetch`. Bundled browser apps are unaffected.
+- **`NetworkType` enum trimmed.** Fifteen long-retired protocol testnets were removed (`DELPHINET`, `EDONET`, `FLORENCENET`, `GRANADANET`, `HANGZHOUNET`, `ITHACANET`, `JAKARTANET`, `KATHMANDUNET`, `LIMANET`, `MUMBAINET`, `NAIROBINET`, `OXFORDNET`, `PARISNET`, `QUEBECNET`, `RIONET`). `GHOSTNET` and `SEOULNET` are now deprecated aliases — migrate to `SHADOWNET` and `TALLINNNET`.
+- **`bignumber.js` upgraded to v10.** Transparent for most consumers; if you annotate `BigNumber` in your own type signatures, add a direct `bignumber.js@^10` dependency.
+- **TypeScript upgraded to 5.9.3**, with the compilation target moved to `es2020`.
+
+### `@tezos-x/octez.js-sapling` overhaul
+
+- No more install-time (`postinstall`) network fetch. Proving parameters are now **lazy-loaded at runtime** via `initSapling()` and **SHA-256 verified** before use, served from a first-party mirror by default.
+- Viewing-only flows (key derivation, balances, history) need no initialization; call `preloadSaplingParams()` to warm the cache and hide first-use latency.
+- The wasm dependency moved to `@taquito/sapling-wasm@0.2.0`. Four source modes are supported: first-party mirror (default), `zcash`, custom remote URLs with SHA-256 digests, and local filesystem paths for Node.js/CI.
+
+### Estimation & RPC
+
+- **Gas/fee estimation now matches `octez-client`/protocol semantics** on mainnet-like networks (reserves reveal gas, divides remaining block gas correctly). Estimated values may shift, especially for mixed batches and unrevealed accounts — revalidate any brittle assertions.
+- **RPC read consistency finalized:** `atExactBlock(...)` keeps exact historical pinning, while `at(..., block)` and `op.contract()` bootstrap from the block then track head, preserving existing contract semantics.
+
+### Wallet integration
+
+- **Fixes wallet connections that could freeze on page load** — relay health-check timeouts, automatic recovery from stale/decommissioned servers, and proper errors instead of hung promises.
+- Beacon SDK types (`NetworkType`, `BeaconEvent`, …) are re-exported from `@tezos-x/octez.js-dapp-wallet`, so you no longer need to depend on the Beacon SDK packages directly.
+- `@tezos-x/octez.js-wallet-connect`: `getAllExistingSessionKeys()` and `configureWithExistingSessionKey()` are now synchronous in the type surface (runtime `await` still works).
+
+---
+
 # octez.js v1.0.0
 
 ### Dependencies
