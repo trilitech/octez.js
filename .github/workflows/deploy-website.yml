@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      # TEMP: deploy this branch to staging on push (revert before merging)
+      - octez-js-replay-v2-licence
   workflow_dispatch:
     inputs:
       environment:
