@@ -63,15 +63,6 @@ jobs:
       - run: google-chrome --version
       - run: npm run test:browser:packages
 
-  integration-tests-keygen-preflight:
-    needs: integration-tests-change-filter
-    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Keygen preflight
-        run: bash .github/scripts/check-keygen-health.sh
-
   lint-and-test:
     name: build-lint-docs-unit
     runs-on: ubuntu-latest
@@ -108,17 +99,17 @@ jobs:
 
   integration-tests-testnet:
     if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
-    name: integration-tests-shadownet
+    name: integration-tests-shadownet-shard-${{ matrix.shard }}
     needs:
       - integration-tests-change-filter
-      - integration-tests-keygen-preflight
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         shard: [1, 2, 3, 4]
+    runs-on: ubuntu-latest
     concurrency:
-      group: shadownet-itest-testnet-shard-${{ matrix.shard }}
+      # each shard has its own funded key; shard 1 shares key 1 with the sapling job.
+      group: shadownet-key-${{ matrix.shard }}
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v6
@@ -128,36 +119,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - if: ${{ !github.event.pull_request.head.repo.fork }}
-        name: Tailscale
-        # Pinned to SHA to prevent supply-chain attacks via mutable tags.
-        # Verify before bumping: https://github.com/tailscale/github-action/releases
-        uses: tailscale/github-action@306e68a486fd2350f2bfc3b19fcd143891a4a2d8 # v4.1.2
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-          tags: tag:github-runner
-          ping: ecad-tezos-shadownet-rolling-1.i.ecadinfra.com
-      - name: Probe keygen before shadownet tests
-        shell: bash
-        run: |
-          set -euo pipefail
-          keygen_url='http://keygen-direct.ecadinfra.com/v2/shadownet'
-          payload='{"require_unrevealed":false,"key_prefixes":["tz1"],"max_selection_attempts":5,"min_balance_mutez":5000000}'
-          echo "### Keygen probe before shadownet tests" >> "$GITHUB_STEP_SUMMARY"
-          for i in 1 2 3 4 5; do
-            line="$(
-              curl -sS -o /dev/null \
-                -X POST \
-                -H 'Content-Type: application/json' \
-                -H 'Authorization: Bearer octez.js-example' \
-                -d "$payload" \
-                -w "probe=${i} code=%{http_code} ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n" \
-                "$keygen_url"
-            )"
-            echo "$line"
-            echo "- $line" >> "$GITHUB_STEP_SUMMARY"
-          done
       - id: run-tests
         shell: bash
         run: |
@@ -166,8 +127,8 @@ jobs:
           start_iso="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
           set +e
-          npm -w integration-tests run test:shadownet:shard -- \
-            --shard=$SHARD_INDEX/$SHARD_TOTAL \
+          npm -w integration-tests run test:shadownet-secret-key:shard -- \
+            --shard=${{ matrix.shard }}/4 \
             --exclude='**/sapling/**' \
             --exclude='**/ledger/**'
           test_exit_code="$?"
@@ -178,46 +139,24 @@ jobs:
           elapsed_seconds="$((end_epoch - start_epoch))"
 
           mkdir -p ci-metrics
-          cat > "ci-metrics/itest-shadownet-${SHARD_INDEX}.json" <<EOF
-          {"suite":"shadownet","shard":"${SHARD_INDEX}/${SHARD_TOTAL}","status":"$([ "$test_exit_code" -eq 0 ] && echo pass || echo fail)","exit_code":$test_exit_code,"elapsed_seconds":$elapsed_seconds,"started_at":"$start_iso","completed_at":"$end_iso","run_id":"${RUN_ID}","run_attempt":"${RUN_ATTEMPT}","sha":"${COMMIT_SHA}"}
+          cat > "ci-metrics/itest-shadownet-${SHARD}.json" <<EOF
+          {"suite":"shadownet","shard":${SHARD},"status":"$([ "$test_exit_code" -eq 0 ] && echo pass || echo fail)","exit_code":$test_exit_code,"elapsed_seconds":$elapsed_seconds,"started_at":"$start_iso","completed_at":"$end_iso","run_id":"${RUN_ID}","run_attempt":"${RUN_ATTEMPT}","sha":"${COMMIT_SHA}"}
           EOF
 
-          echo "### Integration timing: shadownet shard ${SHARD_INDEX}/${SHARD_TOTAL}" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Integration timing: shadownet shard ${SHARD}" >> "$GITHUB_STEP_SUMMARY"
           echo "- status: $([ "$test_exit_code" -eq 0 ] && echo pass || echo fail)" >> "$GITHUB_STEP_SUMMARY"
           echo "- exit_code: $test_exit_code" >> "$GITHUB_STEP_SUMMARY"
           echo "- elapsed_seconds: $elapsed_seconds" >> "$GITHUB_STEP_SUMMARY"
 
           exit "$test_exit_code"
         env:
-          SHARD_INDEX: ${{ matrix.shard }}
-          SHARD_TOTAL: '4'
+          SECRET_KEY: ${{ matrix.shard == 1 && secrets.SHADOWNET_SECRET_KEY_1 || matrix.shard == 2 && secrets.SHADOWNET_SECRET_KEY_2 || matrix.shard == 3 && secrets.SHADOWNET_SECRET_KEY_3 || secrets.SHADOWNET_SECRET_KEY_4 }}
+          SHARD: ${{ matrix.shard }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
           COMMIT_SHA: ${{ github.sha }}
           TAQUITO_ITEST_DIAGNOSTICS: 'true'
           TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
-          TAQUITO_FRESH_KEY_PREFETCH: '4'
-      - name: Probe keygen after shadownet tests
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          keygen_url='http://keygen-direct.ecadinfra.com/v2/shadownet'
-          payload='{"require_unrevealed":false,"key_prefixes":["tz1"],"max_selection_attempts":5,"min_balance_mutez":5000000}'
-          echo "### Keygen probe after shadownet tests" >> "$GITHUB_STEP_SUMMARY"
-          for i in 1 2 3 4 5; do
-            line="$(
-              curl -sS -o /dev/null \
-                -X POST \
-                -H 'Content-Type: application/json' \
-                -H 'Authorization: Bearer octez.js-example' \
-                -d "$payload" \
-                -w "probe=${i} code=%{http_code} ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n" \
-                "$keygen_url"
-            )"
-            echo "$line"
-            echo "- $line" >> "$GITHUB_STEP_SUMMARY"
-          done
       - name: Upload timing artifact
         if: always()
         uses: actions/upload-artifact@v7
@@ -232,10 +171,10 @@ jobs:
     name: integration-tests-shadownet-sapling
     needs:
       - integration-tests-change-filter
-      - integration-tests-keygen-preflight
     runs-on: ubuntu-latest
     concurrency:
-      group: shadownet-itest-sapling
+      # shares key 1 with shadownet shard 1; same group serializes them.
+      group: shadownet-key-1
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v6
@@ -245,36 +184,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - if: ${{ !github.event.pull_request.head.repo.fork }}
-        name: Tailscale
-        # Pinned to SHA to prevent supply-chain attacks via mutable tags.
-        # Verify before bumping: https://github.com/tailscale/github-action/releases
-        uses: tailscale/github-action@306e68a486fd2350f2bfc3b19fcd143891a4a2d8 # v4.1.2
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-          tags: tag:github-runner
-          ping: ecad-tezos-shadownet-rolling-1.i.ecadinfra.com
-      - name: Probe keygen before sapling tests
-        shell: bash
+      - name: Pre-download sapling params
         run: |
-          set -euo pipefail
-          keygen_url='http://keygen-direct.ecadinfra.com/v2/shadownet'
-          payload='{"require_unrevealed":false,"key_prefixes":["tz1"],"max_selection_attempts":5,"min_balance_mutez":5000000}'
-          echo "### Keygen probe before sapling tests" >> "$GITHUB_STEP_SUMMARY"
-          for i in 1 2 3 4 5; do
-            line="$(
-              curl -sS -o /dev/null \
-                -X POST \
-                -H 'Content-Type: application/json' \
-                -H 'Authorization: Bearer octez.js-example' \
-                -d "$payload" \
-                -w "probe=${i} code=%{http_code} ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n" \
-                "$keygen_url"
-            )"
-            echo "$line"
-            echo "- $line" >> "$GITHUB_STEP_SUMMARY"
-          done
+          mkdir -p /tmp/sapling-params
+          curl -fSL --retry 3 \
+            https://sapling.taquito.io/params/groth16-mainnet-1/spend.params \
+            -o /tmp/sapling-params/spend.params
+          curl -fSL --retry 3 \
+            https://sapling.taquito.io/params/groth16-mainnet-1/output.params \
+            -o /tmp/sapling-params/output.params
       - id: run-tests
         shell: bash
         run: |
@@ -283,7 +201,7 @@ jobs:
           start_iso="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
           set +e
-          npm -w integration-tests run test:shadownet -- sapling
+          npm -w integration-tests run test:shadownet-secret-key -- sapling
           test_exit_code="$?"
           set -e
 
@@ -293,7 +211,7 @@ jobs:
 
           mkdir -p ci-metrics
           cat > "ci-metrics/itest-sapling.json" <<EOF
-          {"suite":"sapling","shard":"1/1","status":"$([ "$test_exit_code" -eq 0 ] && echo pass || echo fail)","exit_code":$test_exit_code,"elapsed_seconds":$elapsed_seconds,"started_at":"$start_iso","completed_at":"$end_iso","run_id":"${RUN_ID}","run_attempt":"${RUN_ATTEMPT}","sha":"${COMMIT_SHA}"}
+          {"suite":"sapling","status":"$([ "$test_exit_code" -eq 0 ] && echo pass || echo fail)","exit_code":$test_exit_code,"elapsed_seconds":$elapsed_seconds,"started_at":"$start_iso","completed_at":"$end_iso","run_id":"${RUN_ID}","run_attempt":"${RUN_ATTEMPT}","sha":"${COMMIT_SHA}"}
           EOF
 
           echo "### Integration timing: sapling" >> "$GITHUB_STEP_SUMMARY"
@@ -303,33 +221,14 @@ jobs:
 
           exit "$test_exit_code"
         env:
+          SECRET_KEY: ${{ secrets.SHADOWNET_SECRET_KEY_1 }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
           COMMIT_SHA: ${{ github.sha }}
           TAQUITO_ITEST_DIAGNOSTICS: 'true'
           TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
-          TAQUITO_FRESH_KEY_PREFETCH: '4'
-      - name: Probe keygen after sapling tests
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          keygen_url='http://keygen-direct.ecadinfra.com/v2/shadownet'
-          payload='{"require_unrevealed":false,"key_prefixes":["tz1"],"max_selection_attempts":5,"min_balance_mutez":5000000}'
-          echo "### Keygen probe after sapling tests" >> "$GITHUB_STEP_SUMMARY"
-          for i in 1 2 3 4 5; do
-            line="$(
-              curl -sS -o /dev/null \
-                -X POST \
-                -H 'Content-Type: application/json' \
-                -H 'Authorization: Bearer octez.js-example' \
-                -d "$payload" \
-                -w "probe=${i} code=%{http_code} ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n" \
-                "$keygen_url"
-            )"
-            echo "$line"
-            echo "- $line" >> "$GITHUB_STEP_SUMMARY"
-          done
+          SAPLING_SPEND_PARAMS_PATH: /tmp/sapling-params/spend.params
+          SAPLING_OUTPUT_PARAMS_PATH: /tmp/sapling-params/output.params
       - name: Upload timing artifact
         if: always()
         uses: actions/upload-artifact@v7

@@ -11,7 +11,12 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker }) => {
   const Tezos = lib;
 
   describe(`Focused estimation gas allocation scenarios using: ${rpc}`, () => {
-    it('estimates a simple transfer for an unrevealed signer when manager gas limits are equal', async () => {
+    // TEMP: requires a keygen service that dispenses fresh unrevealed tz1 accounts on demand.
+    // In secret-key mode the shared SECRET_KEY is already revealed, so getManagerKey() never
+    // returns null and these tests always fail.  Re-enable once the keygen Cloudflare Worker
+    // described in docs/keygen-requirements.md (or equivalent) is deployed and
+    // TAQUITO_KEYGEN_URL / TAQUITO_KEYGEN_TOKEN are wired into CI.
+    it.skip('estimates a simple transfer for an unrevealed signer when manager gas limits are equal', async () => {
       if (!(await hasEqualManagerGasLimits(Tezos))) {
         return;
       }
@@ -35,7 +40,8 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker }) => {
       expect(estimate.storageLimit).toBeGreaterThanOrEqual(0);
     });
 
-    it('estimates a simple origination for an unrevealed signer when manager gas limits are equal', async () => {
+    // TEMP: same reason as the transfer test above — needs keygen service. Re-enable together.
+    it.skip('estimates a simple origination for an unrevealed signer when manager gas limits are equal', async () => {
       if (!(await hasEqualManagerGasLimits(Tezos))) {
         return;
       }
@@ -94,7 +100,8 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker }) => {
       expect(estimates[1].gasLimit).toBeGreaterThan(0);
     });
 
-    it('estimates a mixed batch with reveal reservation when one operation already has an explicit gas limit', async () => {
+    // TEMP: same reason as the transfer test above — needs keygen service. Re-enable together.
+    it.skip('estimates a mixed batch with reveal reservation when one operation already has an explicit gas limit', async () => {
       if (!(await hasEqualManagerGasLimits(Tezos))) {
         return;
       }
