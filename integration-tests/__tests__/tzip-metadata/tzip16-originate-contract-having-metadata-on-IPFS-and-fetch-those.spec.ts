@@ -58,30 +58,30 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
             expect(metadata.integrityCheckResult).toBeUndefined();
             expect(metadata.sha256Hash).toBeUndefined();
             expect(metadata.metadata).toEqual({
-                name: 'octez.js test with valid metadata',
+                name: 'Taquito test with valid metadata',
                 description:
-                    'This is metadata test for octez.js integration tests with the Ligo Taco shop contract modified to include metadata in storage',
+                    'This is metadata test for Taquito integration tests with the Ligo Taco shop contract modified to include metadata in storage',
                 version: '7.1.0-beta.0',
                 license: {
                     name: 'MIT',
                     details: 'The MIT License'
                 },
-                homepage: 'https://github.com/trilitech/octez.js',
+                homepage: 'https://github.com/ecadlabs/taquito',
                 source: {
                     tools: ['Ligo', 'https://ide.ligolang.org/p/-uS469slzUlSm1zwNqHl1A'],
                     location: 'https://ligolang.org/docs/tutorials/get-started/tezos-taco-shop-payout'
                 }
             });
 
-            expect(await (await contract.tzip16()).metadataName()).toEqual('octez.js test with valid metadata');
-            expect(await (await contract.tzip16()).metadataDescription()).toEqual('This is metadata test for octez.js integration tests with the Ligo Taco shop contract modified to include metadata in storage');
+            expect(await (await contract.tzip16()).metadataName()).toEqual('Taquito test with valid metadata');
+            expect(await (await contract.tzip16()).metadataDescription()).toEqual('This is metadata test for Taquito integration tests with the Ligo Taco shop contract modified to include metadata in storage');
             expect(await (await contract.tzip16()).metadataVersion()).toEqual('7.1.0-beta.0');
             expect(await (await contract.tzip16()).metadataLicense()).toEqual({
                 name: 'MIT',
                 details: 'The MIT License'
             });
             expect(await (await contract.tzip16()).metadataAuthors()).toBeUndefined();
-            expect(await (await contract.tzip16()).metadataHomepage()).toEqual('https://github.com/trilitech/octez.js');
+            expect(await (await contract.tzip16()).metadataHomepage()).toEqual('https://github.com/ecadlabs/taquito');
             expect(await (await contract.tzip16()).metadataSource()).toEqual({
                 tools: ['Ligo', 'https://ide.ligolang.org/p/-uS469slzUlSm1zwNqHl1A'],
                 location: 'https://ligolang.org/docs/tutorials/get-started/tezos-taco-shop-payout'

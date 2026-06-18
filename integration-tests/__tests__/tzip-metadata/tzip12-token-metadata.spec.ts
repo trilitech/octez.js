@@ -117,7 +117,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 			expect(metadata.integrityCheckResult).toBeUndefined();
 			expect(metadata.sha256Hash).toBeUndefined();
 			expect(metadata.metadata).toEqual({
-				name: 'Test octez.js FA2 token Factory',
+				name: 'Test Taquito FA2 token Factory',
 				description:
 					'This is a test to retrieve tokens metadata when they are located in the storage of the contract in the big map %token_metadata',
 				source: {
@@ -261,7 +261,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 			expect(tokenMetadata0).toEqual({
 				token_id: BigNumber(0),
 				decimals: 3,
-				name: 'octez.js test URI',
+				name: 'Taquito test URI',
 				symbol: 'XTZ2'
 			});
 
