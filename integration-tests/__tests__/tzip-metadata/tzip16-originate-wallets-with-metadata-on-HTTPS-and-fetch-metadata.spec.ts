@@ -101,14 +101,14 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
                 expect(metadata.integrityCheckResult).toBeUndefined();
                 expect(metadata.sha256Hash).toBeUndefined();
                 expect(metadata.metadata).toEqual({
-                    "name": "octez.js test with valid metadata containing emoji 😀 🤩",
-                    "description": "👋 This is metadata test for octez.js integration tests 🧐 with the Ligo Taco shop contract modified to include metadata URI in the storage",
+                    "name": "Taquito test with valid metadata containing emoji 😀 🤩",
+                    "description": "👋 This is metadata test for Taquito integration tests 🧐 with the Ligo Taco shop contract modified to include metadata URI in the storage",
                     "version": "7.1.0-beta.0",
                     "license": {
                         "name": "MIT",
                         "details": "The MIT License"
                     },
-                    "homepage": "https://github.com/trilitech/octez.js",
+                    "homepage": "https://github.com/ecadlabs/taquito",
                     "source": {
                         "tools": [
                             "Ligo",
@@ -118,15 +118,15 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
                     }
                 });
 
-                expect(await (await contract.tzip16()).metadataName()).toBe('octez.js test with valid metadata containing emoji 😀 🤩')
-                expect(await (await contract.tzip16()).metadataDescription()).toBe('👋 This is metadata test for octez.js integration tests 🧐 with the Ligo Taco shop contract modified to include metadata URI in the storage')
+                expect(await (await contract.tzip16()).metadataName()).toBe('Taquito test with valid metadata containing emoji 😀 🤩')
+                expect(await (await contract.tzip16()).metadataDescription()).toBe('👋 This is metadata test for Taquito integration tests 🧐 with the Ligo Taco shop contract modified to include metadata URI in the storage')
                 expect(await (await contract.tzip16()).metadataVersion()).toBe('7.1.0-beta.0')
                 expect(await (await contract.tzip16()).metadataLicense()).toEqual({
                     "name": "MIT",
                     "details": "The MIT License"
                 })
                 expect(await (await contract.tzip16()).metadataAuthors()).toBeUndefined()
-                expect(await (await contract.tzip16()).metadataHomepage()).toBe('https://github.com/trilitech/octez.js')
+                expect(await (await contract.tzip16()).metadataHomepage()).toBe('https://github.com/ecadlabs/taquito')
                 expect(await (await contract.tzip16()).metadataSource()).toEqual({
                     "tools": [
                         "Ligo",

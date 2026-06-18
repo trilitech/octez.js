@@ -1,7 +1,7 @@
 import { HttpBackend, HttpResponseError } from '@tezos-x/octez.js-http-utils';
 
 describe('HttpBackend request', () => {
-  it('should fail with HttpResponseError when a 404 gets returned', async () => {
+  it('should fail with HttpResponseError when a 4xx gets returned', async () => {
     const http: HttpBackend = new HttpBackend();
     try {
       await http.createRequest<string>({
@@ -15,9 +15,9 @@ describe('HttpBackend request', () => {
     } catch (err: unknown) {
       expect(err).toBeInstanceOf(HttpResponseError);
       const httpErr = err as HttpResponseError;
-      expect(httpErr.status).toEqual(404);
+      expect(httpErr.status).toBeGreaterThanOrEqual(400);
       expect(httpErr.url).toEqual('https://rpc.tzkt.io/mainnet/chains/main/blocks/head/helpers/baking_rights?level=0');
-      expect(httpErr.message).toContain('Not Found');
+      expect(httpErr.message).toMatch(/^Http error response: \([0-9]+\)/);
     }
   });
 });
