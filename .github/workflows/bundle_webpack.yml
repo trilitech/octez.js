@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - octez-js-replay-v2-licence
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/master' || github.run_number }}
