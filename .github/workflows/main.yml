@@ -13,6 +13,7 @@ concurrency:
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 permissions:
+  actions: read
   contents: read
 
 jobs:
@@ -238,30 +239,41 @@ jobs:
 
   rpc-health-monitor:
     if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
-    name: rpc-health-monitor-shadownet
+    name: rpc-health-monitor-${{ matrix.network.name }}
     needs:
       - integration-tests-change-filter
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        network:
+          - name: shadownet
+            rpc_url: https://rpc.shadownet.teztnets.com
+          - name: ushuaianet
+            rpc_url: https://rpc.ushuaianet.teztnets.com
     # Diagnostics only: this never gates a merge, it just records an RPC weather
     # report over the test window so failures can be correlated with node health.
     continue-on-error: true
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v6
-      - name: Poll shadownet RPC health
+      - name: Poll ${{ matrix.network.name }} RPC health
         env:
-          RPC_URL: https://rpc.shadownet.teztnets.com
+          RPC_URL: ${{ matrix.network.rpc_url }}
           POLL_INTERVAL_SECONDS: '15'
           POLL_MAX_DURATION_SECONDS: '1860'
+          POLL_STOP_WHEN_RUN_JOBS_COMPLETE: 'true'
+          GITHUB_TOKEN: ${{ github.token }}
         run: bash .github/scripts/poll-rpc-health.sh
       - name: Upload RPC health timeline
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: rpc-health-shadownet
+          name: rpc-health-${{ matrix.network.name }}
           path: ci-metrics/rpc-health.jsonl
           if-no-files-found: warn
           retention-days: 30
+
 
   integration-tests-timing-summary:
     needs:
