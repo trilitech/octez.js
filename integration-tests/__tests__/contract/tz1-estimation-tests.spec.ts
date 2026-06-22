@@ -7,6 +7,7 @@ import { managerCode } from '../../data/manager_code';
 import { InvalidAmountError } from '@tezos-x/octez.js-core';
 import { PrefixV2 } from '@tezos-x/octez.js-utils';
 import { waitForContractAt } from './contract-test-helpers';
+import { expectEstimate } from './estimation-test-helpers';
 
 CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
   const Tezos = lib;
@@ -99,14 +100,34 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
     it('Verify .estimate.transfer for internal transfer to allocated implicit', async () => {
       const tx = contract.methodsObject.do(MANAGER_LAMBDA.transferImplicit(knownBaker, 5)).toTransferParams();
       const estimate = await Tz1.estimate.transfer(tx);
-      expect(estimate.gasLimit).toEqual(3458);
-      expect(estimate.storageLimit).toEqual(0);
-      expect(estimate.suggestedFeeMutez).toEqual(597);
-      expect(estimate.burnFeeMutez).toEqual(0);
-      expect(estimate.minimalFeeMutez).toEqual(577);
-      expect(estimate.totalCost).toEqual(577);
-      expect(estimate.usingBaseFeeMutez).toEqual(577);
-      expect(estimate.consumedMilligas).toEqual(3457645);
+      expectEstimate(estimate, rpc, {
+        gasLimit: 3458,
+        storageLimit: 0,
+        suggestedFeeMutez: 597,
+        burnFeeMutez: 0,
+        minimalFeeMutez: 577,
+        totalCost: 577,
+        usingBaseFeeMutez: 577,
+        consumedMilligas: 3457645,
+      }, {
+        gasLimit: 3458,
+        storageLimit: 0,
+        suggestedFeeMutez: 595,
+        burnFeeMutez: 0,
+        minimalFeeMutez: 575,
+        totalCost: 575,
+        usingBaseFeeMutez: 575,
+        consumedMilligas: 3457129,
+      }, {
+        gasLimit: 3458,
+        storageLimit: 0,
+        suggestedFeeMutez: 595,
+        burnFeeMutez: 0,
+        minimalFeeMutez: 575,
+        totalCost: 575,
+        usingBaseFeeMutez: 575,
+        consumedMilligas: 3457258,
+      });
     });
 
     it('Verify .estimate.transfer for multiple internal transfers to unallocated account', async () => {
@@ -116,40 +137,100 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
         50)
       ).toTransferParams();
       const estimate = await Tz1.estimate.transfer(tx);
-      expect(estimate.gasLimit).toEqual(5573);
-      expect(estimate.storageLimit).toEqual(534);
-      expect(estimate.suggestedFeeMutez).toEqual(868);
-      expect(estimate.burnFeeMutez).toEqual(133500);
-      expect(estimate.minimalFeeMutez).toEqual(848);
-      expect(estimate.totalCost).toEqual(134348);
-      expect(estimate.usingBaseFeeMutez).toEqual(848);
-      expect(estimate.consumedMilligas).toEqual(5572174);
+      expectEstimate(estimate, rpc, {
+        gasLimit: 5573,
+        storageLimit: 534,
+        suggestedFeeMutez: 868,
+        burnFeeMutez: 133500,
+        minimalFeeMutez: 848,
+        totalCost: 134348,
+        usingBaseFeeMutez: 848,
+        consumedMilligas: 5572174,
+      }, {
+        gasLimit: 5572,
+        storageLimit: 534,
+        suggestedFeeMutez: 866,
+        burnFeeMutez: 133500,
+        minimalFeeMutez: 846,
+        totalCost: 134346,
+        usingBaseFeeMutez: 846,
+        consumedMilligas: 5571658,
+      }, {
+        gasLimit: 5572,
+        storageLimit: 534,
+        suggestedFeeMutez: 866,
+        burnFeeMutez: 133500,
+        minimalFeeMutez: 846,
+        totalCost: 134346,
+        usingBaseFeeMutez: 846,
+        consumedMilligas: 5571787,
+      });
     });
 
     it('Verify .estimate.transfer for internal origination', async () => {
       const tx = contract.methodsObject.do(originate()).toTransferParams();
       const estimate = await Tz1.estimate.transfer(tx);
-      expect(estimate.gasLimit).toEqual(1869);
-      expect(estimate.storageLimit).toEqual(337);
-      expect(estimate.suggestedFeeMutez).toEqual(444);
-      expect(estimate.burnFeeMutez).toEqual(84250);
-      expect(estimate.minimalFeeMutez).toEqual(424);
-      expect(estimate.totalCost).toEqual(84674);
-      expect(estimate.usingBaseFeeMutez).toEqual(424);
-      expect(estimate.consumedMilligas).toEqual(1868269);
+      expectEstimate(estimate, rpc, {
+        gasLimit: 1869,
+        storageLimit: 337,
+        suggestedFeeMutez: 444,
+        burnFeeMutez: 84250,
+        minimalFeeMutez: 424,
+        totalCost: 84674,
+        usingBaseFeeMutez: 424,
+        consumedMilligas: 1868269,
+      }, {
+        gasLimit: 1868,
+        storageLimit: 337,
+        suggestedFeeMutez: 442,
+        burnFeeMutez: 84250,
+        minimalFeeMutez: 422,
+        totalCost: 84672,
+        usingBaseFeeMutez: 422,
+        consumedMilligas: 1867753,
+      }, {
+        gasLimit: 1868,
+        storageLimit: 337,
+        suggestedFeeMutez: 442,
+        burnFeeMutez: 84250,
+        minimalFeeMutez: 422,
+        totalCost: 84672,
+        usingBaseFeeMutez: 422,
+        consumedMilligas: 1867882,
+      });
     });
 
     it('Verify .estimate.transfer for multiple internal originations', async () => {
       const tx = contract.methodsObject.do(originate2()).toTransferParams();
       const estimate = await Tz1.estimate.transfer(tx);
-      expect(estimate.gasLimit).toEqual(2394);
-      expect(estimate.storageLimit).toEqual(654);
-      expect(estimate.suggestedFeeMutez).toEqual(562);
-      expect(estimate.burnFeeMutez).toEqual(163500);
-      expect(estimate.minimalFeeMutez).toEqual(542);
-      expect(estimate.totalCost).toEqual(164042);
-      expect(estimate.usingBaseFeeMutez).toEqual(542);
-      expect(estimate.consumedMilligas).toEqual(2393422);
+      expectEstimate(estimate, rpc, {
+        gasLimit: 2394,
+        storageLimit: 654,
+        suggestedFeeMutez: 562,
+        burnFeeMutez: 163500,
+        minimalFeeMutez: 542,
+        totalCost: 164042,
+        usingBaseFeeMutez: 542,
+        consumedMilligas: 2393422,
+      }, {
+        gasLimit: 2393,
+        storageLimit: 654,
+        suggestedFeeMutez: 560,
+        burnFeeMutez: 163500,
+        minimalFeeMutez: 540,
+        totalCost: 164040,
+        usingBaseFeeMutez: 540,
+        consumedMilligas: 2392906,
+      }, {
+        gasLimit: 2394,
+        storageLimit: 654,
+        suggestedFeeMutez: 560,
+        burnFeeMutez: 163500,
+        minimalFeeMutez: 540,
+        totalCost: 164040,
+        usingBaseFeeMutez: 540,
+        consumedMilligas: 2393035,
+      });
       // Do the actual operation
       const op2 = await contract.methodsObject.do(originate2()).send();
       await op2.confirmation();
