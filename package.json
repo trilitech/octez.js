@@ -33,7 +33,8 @@
     "packages/*",
     "packages/octez.js-michel-codec/pack-test-tool",
     "example",
-    "integration-tests"
+    "integration-tests",
+    "website"
   ],
   "scripts": {
     "build": "nx run-many --target=build --exclude=@tezos-x/octez.js-website",
