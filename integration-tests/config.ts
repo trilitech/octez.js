@@ -12,6 +12,7 @@ import { HttpBackend } from '@tezos-x/octez.js-http-utils';
 import { b58Encode, PrefixV2 } from '@tezos-x/octez.js-utils';
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 import { RpcClient, RpcClientCache } from '@tezos-x/octez.js-rpc';
+import * as nodeCrypto from 'crypto';
 import { AsyncPrefetchBuffer } from './async-prefetch-buffer';
 import { KnownContracts } from './known-contracts';
 import { knownContractsShadownet } from './known-contracts-shadownet';
@@ -19,7 +20,6 @@ import { knownContractsTallinnnet } from './known-contracts-tallinnnet';
 import { knownContractsWeeklynet } from './known-contracts-weeklynet';
 import { knownContractsTezlinkshadownet } from './known-contracts-tezlinkshadownet';
 
-const nodeCrypto = require('crypto');
 const integrationDiagnosticsEnabled = /^(1|true)$/i.test(
   process.env['TAQUITO_ITEST_DIAGNOSTICS'] ?? ''
 );
@@ -665,6 +665,40 @@ export const clearRpcCache = (Tezos: TezosToolkit) => {
   }
 };
 
+export const waitForRpcState = async <T>(
+  Tezos: TezosToolkit,
+  read: () => Promise<T>,
+  predicate: (value: T) => boolean,
+  options?: {
+    timeoutMs?: number;
+    intervalMs?: number;
+    description?: string;
+  }
+) => {
+  const timeoutMs = options?.timeoutMs ?? 15_000;
+  const intervalMs = options?.intervalMs ?? 500;
+  const description = options?.description ?? 'RPC state';
+  const deadline = Date.now() + timeoutMs;
+  let lastError: unknown;
+
+  while (Date.now() <= deadline) {
+    clearRpcCache(Tezos);
+    try {
+      const value = await read();
+      if (predicate(value)) {
+        return value;
+      }
+    } catch (error) {
+      lastError = error;
+    }
+
+    await sleep(intervalMs);
+  }
+
+  const details = lastError ? ` Last error: ${toErrorMessage(lastError)}` : '';
+  throw new Error(`Timed out waiting for ${description}.${details}`);
+};
+
 export const CONFIGS = () => {
   return forgers.reduce((prev, forger: ForgerType) => {
     const configs = providers.map(
@@ -780,6 +814,7 @@ export const CONFIGS = () => {
               networkName,
               rpc,
             });
+            clearRpcCache(tezos);
 
             return tezos;
           },

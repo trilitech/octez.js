@@ -1,5 +1,5 @@
 import { Estimate } from '@tezos-x/octez.js';
-import { CONFIGS } from '../../config';
+import { CONFIGS, waitForRpcState } from '../../config';
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;
 
@@ -18,6 +18,12 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
       await op.confirmation();
       contractAddress = op.contractAddress;
+      await waitForRpcState(
+        Tezos,
+        () => Tezos.rpc.getContract(contractAddress!),
+        () => true,
+        { description: `contract ${contractAddress}` }
+      );
 
     });
 
