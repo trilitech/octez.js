@@ -29,7 +29,7 @@ export * from './interface';
 export { VERSION } from './version';
 export { ProtocolsHash } from './protocols';
 
-const PROTOCOL_CURRENT = ProtocolsHash.PsUshuai9;
+const PROTOCOL_CURRENT = ProtocolsHash.PsUshuai;
 
 export function getCodec(codec: CODEC, _proto: ProtocolsHash) {
   return {
