@@ -483,7 +483,7 @@ CONFIGS().forEach(({ lib, rpc, networkType }) => {
       });
     });
 
-    ushuaianet(`should successfully fetch U025 constants for Ushuainet
+    ushuaianet(`should successfully fetch U025 constants for Ushuaianet
       using ${rpc}`, async () => {
       Tezos.setRpcProvider(rpc);
       const constants: ConstantsResponseProto025 = await Tezos.rpc.getConstants();

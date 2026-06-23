@@ -188,15 +188,7 @@ describe('Tests for Entrypoint functions and for encode and decoder error messag
     expect(() =>
       publicKeyDecoder(
         Uint8ArrayConsumer.fromHexString(
-          '045c8244b8de7d57795962c1bfc855d0813f8c61eddf3795f804ccdea3e4c82ae9'
-        )
-      )
-    ).toThrow(InvalidPublicKeyError);
-
-    expect(() =>
-      publicKeyDecoder(
-        Uint8ArrayConsumer.fromHexString(
-          '045c8244b8de7d57795962c1bfc855d0813f8c61eddf3795f804ccdea3e4c82ae9'
+          '055c8244b8de7d57795962c1bfc855d0813f8c61eddf3795f804ccdea3e4c82ae9'
         )
       )
     ).toThrow(InvalidPublicKeyError);
