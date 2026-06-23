@@ -32,17 +32,21 @@ jobs:
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libusb-1.0-0-dev libudev-dev
 
-      # The website is a standalone Astro project (not a workspace); it builds
-      # against published @taquito/* packages and has its own package-lock.json.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build packages
+        run: npm run build
+
       - name: Build website (staging)
         if: github.event.inputs.environment != 'production'
-        run: cd website && npm ci && npm run build
+        run: npm run build -w website
         env:
           SITE_URL: https://next-octez-js.tzstaging.com
 
       - name: Build website (production)
         if: github.event.inputs.environment == 'production'
-        run: cd website && npm ci && npm run build
+        run: npm run build -w website
         env:
           SITE_URL: https://octez-js.tezos.com
 
