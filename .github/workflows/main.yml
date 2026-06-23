@@ -236,6 +236,33 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
+  rpc-health-monitor:
+    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    name: rpc-health-monitor-shadownet
+    needs:
+      - integration-tests-change-filter
+    runs-on: ubuntu-latest
+    # Diagnostics only: this never gates a merge, it just records an RPC weather
+    # report over the test window so failures can be correlated with node health.
+    continue-on-error: true
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - name: Poll shadownet RPC health
+        env:
+          RPC_URL: https://rpc.shadownet.teztnets.com
+          POLL_INTERVAL_SECONDS: '15'
+          POLL_MAX_DURATION_SECONDS: '1860'
+        run: bash .github/scripts/poll-rpc-health.sh
+      - name: Upload RPC health timeline
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: rpc-health-shadownet
+          path: ci-metrics/rpc-health.jsonl
+          if-no-files-found: warn
+          retention-days: 30
+
   integration-tests-timing-summary:
     needs:
       - integration-tests-change-filter
