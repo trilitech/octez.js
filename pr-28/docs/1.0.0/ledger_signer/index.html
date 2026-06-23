@@ -22,7 +22,7 @@ You need to have the <a href="https://support.ledger.com/hc/en-us/articles/36001
 <p>See the following link for a reference and migration guide: <a href="https://github.com/LedgerHQ/ledgerjs/blob/master/docs/migrate_webusb.md">https://github.com/LedgerHQ/ledgerjs/blob/master/docs/migrate_webusb.md</a>.
 :::</p>
 <p>You can pass an instance of the transport of your choice to your Ledger Signer as follows:</p>
-<div class="tabs-container" data-tabs-id="tabs-8i6jk61zj" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="webApp" type="button" data-astro-cid-xlvzfuxv> Web application </button><button class="tab-button " data-tab="nodeApp" type="button" data-astro-cid-xlvzfuxv> Node application </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="webApp" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">import TransportWebHID from &quot;@ledgerhq/hw-transport-webhid&quot;;
+<div class="tabs-container" data-tabs-id="tabs-m3k3dcoaj" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="webApp" type="button" data-astro-cid-xlvzfuxv> Web application </button><button class="tab-button " data-tab="nodeApp" type="button" data-astro-cid-xlvzfuxv> Node application </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="webApp" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">import TransportWebHID from &quot;@ledgerhq/hw-transport-webhid&quot;;
 import { LedgerSigner } from &#39;@tezos-x/octez.js-ledger-signer&#39;;
 
 const transport = await TransportWebHID.create();
@@ -69,7 +69,7 @@ const publicKey = await Tezos.signer.publicKey();
 const publicKeyHash = await Tezos.signer.publicKeyHash();
 </code></pre>
 <p>You are all set to sign operation with your Ledger device. You can use your configured ledger signer with both the Contract API or the Wallet API as usual. If you try the following example, you will be asked on your Ledger device to confirm the transaction before sending it.</p>
-<div class="tabs-container" data-tabs-id="tabs-i9tx6z5i9" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const amount = 0.5;
+<div class="tabs-container" data-tabs-id="tabs-l7o7qcdn3" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const amount = 0.5;
 const address = &#39;tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3xY&#39;;
 
 console.log(`Transfering ${amount} ꜩ to ${address}...`);
