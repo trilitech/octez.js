@@ -64,6 +64,8 @@ export enum PrefixV2 {
   GenericAggregateSignature = 'asig',
   BLS12_381Signature = 'BLsig',
   BLS12_381PublicKey = 'BLpk',
+  MLDSA44PublicKeyHash = 'tz5',
+  MLDSA44PublicKey = 'mdpk',
   SlotHeader = 'sh',
 }
 
@@ -131,6 +133,8 @@ export const prefixV2: { [key in PrefixV2]: Uint8Array } = {
   [PrefixV2.GenericAggregateSignature]: new Uint8Array([2, 75, 234, 101]),
   [PrefixV2.BLS12_381Signature]: new Uint8Array([40, 171, 64, 207]),
   [PrefixV2.BLS12_381PublicKey]: new Uint8Array([6, 149, 135, 204]),
+  [PrefixV2.MLDSA44PublicKeyHash]: new Uint8Array([6, 161, 169]),
+  [PrefixV2.MLDSA44PublicKey]: new Uint8Array([13, 7, 237, 67]),
   [PrefixV2.SlotHeader]: new Uint8Array([2, 116, 180]),
 };
 
@@ -198,5 +202,7 @@ export const payloadLength: { [key in PrefixV2]: number } = {
   [PrefixV2.GenericAggregateSignature]: 96,
   [PrefixV2.BLS12_381Signature]: 96,
   [PrefixV2.BLS12_381PublicKey]: 48,
+  [PrefixV2.MLDSA44PublicKeyHash]: 20,
+  [PrefixV2.MLDSA44PublicKey]: 1312,
   [PrefixV2.SlotHeader]: 48,
 };

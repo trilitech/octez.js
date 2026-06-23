@@ -452,7 +452,7 @@ const tallinnnetSecretKey: Config = {
 
 const ushuaianetEphemeral: Config = defaultConfig({
   networkName: 'USHUAIANET',
-  protocol: Protocols.PsUshuai9,
+  protocol: Protocols.PsUshuai,
   defaultRpc: 'https://rpc.ushuaianet.teztnets.com',
   knownContracts: knownContractsUshuaianet,
   signerConfig: defaultEphemeralConfig('ushuaianet'),
