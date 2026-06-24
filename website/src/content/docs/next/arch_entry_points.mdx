@@ -1,0 +1,60 @@
+---
+title: "Architecture: Packages & Entry Points"
+---
+
+octez.js is a monorepo published as a family of scoped npm packages under `@tezos-x`. Each
+package owns one concern and can be installed on its own, while the umbrella `@tezos-x/octez.js`
+package re-exports the pieces most applications need. This page maps those entry points.
+
+## The umbrella package
+
+`@tezos-x/octez.js` is the entry point for application code. It exposes `TezosToolkit`,
+`Context`, the operation classes, the contract and wallet API surfaces, and re-exports common
+helpers from the lower-level packages. Most projects depend on this package alone and reach for
+the others only when they need a specific capability.
+
+## Package map
+
+| Package | Responsibility |
+| --- | --- |
+| `@tezos-x/octez.js` | Umbrella package: `TezosToolkit`, operations, contract & wallet APIs |
+| `@tezos-x/octez.js-core` | Shared interfaces and base types used across packages |
+| `@tezos-x/octez.js-rpc` | `RpcClient` and the typed node RPC surface |
+| `@tezos-x/octez.js-local-forging` | Local operation forging |
+| `@tezos-x/octez.js-michelson-encoder` | JavaScript ↔ Micheline value encoding (`Schema`, `Token`) |
+| `@tezos-x/octez.js-michel-codec` | Micheline parser, emitter and binary (un)packing |
+| `@tezos-x/octez.js-signer` | `InMemorySigner` and signing helpers |
+| `@tezos-x/octez.js-remote-signer` | Signing through a remote HTTP signer |
+| `@tezos-x/octez.js-ledger-signer` | Signing on a Ledger hardware device |
+| `@tezos-x/octez.js-dapp-wallet` | Wallet provider for dApps |
+| `@tezos-x/octez.js-wallet-connect` | WalletConnect-based wallet provider |
+| `@tezos-x/octez.js-http-utils` | Pluggable HTTP backend used by the RPC client |
+| `@tezos-x/octez.js-utils` | Validation, encoding and formatting helpers |
+| `@tezos-x/octez.js-contracts-library` | Caching of contract scripts and entrypoints |
+| `@tezos-x/octez.js-tzip12` | TZIP-12 (FA2) token-metadata extension |
+| `@tezos-x/octez.js-tzip16` | TZIP-16 contract-metadata extension |
+| `@tezos-x/octez.js-sapling` | Sapling shielded-transaction support |
+| `@tezos-x/octez.js-timelock` | Timelock encryption helpers |
+
+## How the layers depend on one another
+
+The packages form a layered stack:
+
+- **Encoding layer** — `octez.js-michel-codec` (text/binary Micheline) sits at the bottom;
+  `octez.js-michelson-encoder` builds the JS ↔ Micheline value mapping on top of it.
+- **Network layer** — `octez.js-rpc` uses `octez.js-http-utils` for transport and exposes the
+  typed RPC surface.
+- **Orchestration layer** — `octez.js` composes the encoding and network layers through the
+  `Context` and presents the contract, wallet and operation APIs.
+- **Pluggable extensions** — signers (`-signer`, `-remote-signer`, `-ledger-signer`), wallet
+  providers (`-dapp-wallet`, `-wallet-connect`) and metadata extensions (`-tzip12`, `-tzip16`)
+  plug into the orchestration layer through the provider interfaces described in
+  [Architecture: Framework & Context](/docs/next/arch_framework).
+
+## Choosing what to install
+
+Install `@tezos-x/octez.js` for general use. Add a signer package when you need to send
+operations, a wallet package when you build a dApp, and the metadata or Sapling packages only
+when those features are required. Because each package has a single responsibility, a bundler can
+tree-shake the parts you do not import — see the [Package Bundle](/docs/next/package_bundle)
+guide.

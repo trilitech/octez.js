@@ -1,0 +1,76 @@
+---
+title: "Architecture: Framework & Context"
+---
+
+octez.js is organised around a small dependency-injection container called `Context` and a set
+of provider interfaces. This page explains that framework and how the pieces are connected.
+
+## The `Context` container
+
+`Context` (in the `@tezos-x/octez.js` package) holds every service the library needs to do its
+work and makes them available to one another. When you build a `TezosToolkit`, it constructs a
+`Context`, installs the default providers, and hands that same `Context` to each high-level
+service it creates.
+
+Because all services share one `Context`, replacing a provider through a `set…Provider` call is
+immediately visible everywhere: the estimator, the contract provider and the operation layer all
+read the current `signer`, `forger` or `rpc` from the `Context` rather than holding their own
+copies.
+
+The `Context` carries, among others:
+
+- `rpc` — the RPC client used for all network reads and submissions.
+- `signer` — the signing implementation.
+- `forger` — serialises operations to their binary form.
+- `injector` — submits signed operations to the node.
+- `walletProvider` — backs the wallet API.
+- `packer` — packs Michelson data.
+- `parser` — parses Micheline.
+- `readProvider` — reads chain state (balances, counters, constants).
+- `globalConstantsProvider` — resolves registered global constants.
+- `stream` — provides block/operation subscriptions.
+
+It also owns shared configuration such as the confirmation polling timeout and the default
+number of confirmations to wait for.
+
+## Provider interfaces
+
+Each concern is defined as an interface so that implementations are interchangeable. The
+recurring interfaces are:
+
+- `Signer` — produces signatures and exposes the public key / key hash.
+- `Forger` — turns operation contents into bytes (locally or via a remote service).
+- `Injector` — injects signed bytes and returns an operation hash.
+- `RpcClientInterface` — the full surface of node RPC calls.
+- `TzReadProvider` — a narrower read-only view of chain state.
+- `Packer` — packs data to bytes (`PACK`).
+- `SubscribeProvider` — streams new blocks and matching operations.
+- `WalletProvider` — the backend for the wallet API.
+
+Defaults are supplied for all of them, so a freshly constructed toolkit works out of the box for
+read operations; you only need to install a `Signer` (or `WalletProvider`) to send operations.
+
+## How a request flows through the framework
+
+A high-level call such as `Tezos.contract.transfer(...)` does not perform network or crypto work
+directly. Instead it walks through the providers held by the `Context`:
+
+1. The contract/operation layer builds the operation contents and asks the **estimator** to fill
+   in fees, gas and storage.
+2. The **forger** serialises the contents to bytes.
+3. The **signer** signs those bytes.
+4. The **injector** submits the signed operation through the **rpc** client.
+5. An operation handle subscribes to the **stream** provider to await confirmation.
+
+Every one of those steps is a provider read from the `Context`, which is what makes each step
+independently replaceable.
+
+## Why dependency injection
+
+This framework keeps the library loosely coupled. Tests can inject a fake RPC and signer;
+production code can inject a Ledger signer and a remote forger; a dApp can inject a wallet
+provider — all without changing the code that orchestrates operations. The orchestration logic
+depends only on the interfaces, never on concrete implementations.
+
+See [Architecture: Operations](/docs/1.0.0/arch_operations) for the operation lifecycle and
+[Architecture: runCode & RPC](/docs/1.0.0/arch_runcode_rpc) for how estimation talks to the node.
