@@ -106,10 +106,8 @@ jobs:
       matrix:
         shard: [1, 2, 3, 4]
     runs-on: ubuntu-latest
-    concurrency:
-      # each shard has its own funded key; shard 1 shares key 1 with the sapling job.
-      group: shadownet-key-${{ matrix.shard }}
-      cancel-in-progress: false
+    # No per-key concurrency group: the keygen API issues a fresh funded key per
+    # worker, so shards no longer contend over a shared secret key.
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -126,7 +124,7 @@ jobs:
           start_iso="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
           set +e
-          npm -w integration-tests run test:shadownet-secret-key:shard -- \
+          npm -w integration-tests run test:shadownet:shard -- \
             --shard=${{ matrix.shard }}/4 \
             --exclude='**/sapling/**' \
             --exclude='**/ledger/**'
@@ -149,7 +147,12 @@ jobs:
 
           exit "$test_exit_code"
         env:
-          SECRET_KEY: ${{ matrix.shard == 1 && secrets.SHADOWNET_SECRET_KEY_1 || matrix.shard == 2 && secrets.SHADOWNET_SECRET_KEY_2 || matrix.shard == 3 && secrets.SHADOWNET_SECRET_KEY_3 || secrets.SHADOWNET_SECRET_KEY_4 }}
+          # Interim: run against ecadinfra's keygen. When TAQUITO_KEYGEN_URL_SHADOWNET
+          # is unset, config.ts falls back to keygen-direct.ecadinfra.com on GitHub
+          # Actions. Set that repo variable to the self-hosted keygen URL to switch.
+          TAQUITO_KEYGEN_URL: ${{ vars.TAQUITO_KEYGEN_URL_SHADOWNET }}
+          TAQUITO_FRESH_KEY_PREFETCH: '4'
+          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '30000'
           SHARD: ${{ matrix.shard }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
