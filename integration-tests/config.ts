@@ -286,11 +286,17 @@ const keygenBaseUrl = (process.env['TAQUITO_KEYGEN_URL'] || defaultKeygenBaseUrl
   ''
 );
 
+// Bearer token the Keygen API authorizes the request by (the account name).
+// Overridable so a deployment that registers a different account (e.g.
+// ecadinfra still knows the legacy `taquito-example`) can be targeted without
+// a code change.
+const keygenToken = process.env['TAQUITO_KEYGEN_TOKEN'] || 'octez.js-example';
+
 const defaultEphemeralConfig = (networkPath: string): EphemeralConfig => ({
   type: SignerType.EPHEMERAL_KEY as SignerType.EPHEMERAL_KEY,
   keygenBaseUrl,
   networkPath,
-  requestHeaders: { Authorization: 'Bearer octez.js-example' },
+  requestHeaders: { Authorization: `Bearer ${keygenToken}` },
 });
 
 const sharedKeygenHttpClient = new HttpBackend();

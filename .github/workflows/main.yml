@@ -151,6 +151,9 @@ jobs:
           # is unset, config.ts falls back to keygen-direct.ecadinfra.com on GitHub
           # Actions. Set that repo variable to the self-hosted keygen URL to switch.
           TAQUITO_KEYGEN_URL: ${{ vars.TAQUITO_KEYGEN_URL_SHADOWNET }}
+          # ecadinfra authorizes the legacy `taquito-example` account; the new
+          # `octez.js-example` (config.ts default) isn't registered there yet.
+          TAQUITO_KEYGEN_TOKEN: ${{ vars.TAQUITO_KEYGEN_TOKEN || 'taquito-example' }}
           TAQUITO_FRESH_KEY_PREFETCH: '4'
           TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '30000'
           SHARD: ${{ matrix.shard }}
