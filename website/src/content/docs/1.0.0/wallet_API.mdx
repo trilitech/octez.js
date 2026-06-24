@@ -56,6 +56,17 @@ First, the `BeaconWallet` class must be imported:
 import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 ```
 
+:::info Importing Beacon types
+You do not need a separate Beacon SDK dependency for the common configuration types.
+`@tezos-x/octez.js-dapp-wallet` re-exports `NetworkType`, `PermissionScope`, `SigningType` and
+`Regions` from its `./types` entry point, so you can keep all wallet imports on a single,
+version-aligned package:
+
+```js
+import { NetworkType, PermissionScope, SigningType } from '@tezos-x/octez.js-dapp-wallet/types';
+```
+:::
+
 Then, you can start initializing the wallet:
 
 ```js
