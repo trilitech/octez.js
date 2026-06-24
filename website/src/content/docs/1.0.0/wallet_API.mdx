@@ -124,6 +124,36 @@ try {
 }
 ```
 
+### Disconnecting the wallet
+
+The `BeaconWallet` exposes two different ways to end or change the current connection, and they
+are not interchangeable. Choosing the right one avoids leaving stale session state behind.
+
+- **`disconnect()` — full logout.** This is the recommended way to end a user session. It notifies
+  the connected wallet peers, clears the active account, and tears down the active Beacon
+  transports. After calling it, the same `BeaconWallet` instance can be reused to reconnect through
+  a new permission request.
+
+  ```js
+  await wallet.disconnect();
+  ```
+
+- **`clearActiveAccount()` — switch accounts within a session.** This only removes the active
+  account reference from local storage. It does **not** clear the rest of the Beacon state (such as
+  the cached relay node or peer data), so the session itself stays alive. Use it when you want the
+  user to pick a different account without a full logout.
+
+  ```js
+  await wallet.clearActiveAccount();
+  ```
+
+:::note
+Call `wallet.disconnect()` rather than reaching for the underlying Beacon client's
+`clearActiveAccount()` to log out: the latter bypasses octez.js's wallet lifecycle and can leave
+the session only partially torn down. Use `disconnect()` for logout and `clearActiveAccount()` only
+for account switching.
+:::
+
 ### Subscribing to events
 
 While your dApp is connected to the wallet, different events can happen on the wallet side. A reactive dApp can subscribe to these events and update the UI to create a good user experience.
