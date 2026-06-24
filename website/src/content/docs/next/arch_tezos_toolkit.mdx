@@ -1,0 +1,88 @@
+---
+title: "Architecture: The TezosToolkit"
+---
+
+This page describes how the `TezosToolkit` is put together internally. It is aimed at
+contributors and at developers who want to understand or customise the moving parts of
+octez.js rather than at first-time users. For a task-oriented introduction, start with the
+[Quick Start](/docs/next/quick_start).
+
+## The toolkit as a facade
+
+`TezosToolkit` (exported from `@tezos-x/octez.js`) is the single entry point most applications
+interact with. It does very little work itself: its job is to assemble and expose a set of
+collaborating services, and to give them a shared configuration. In design-pattern terms it is
+a *facade* over a dependency-injection container.
+
+```js
+import { TezosToolkit } from '@tezos-x/octez.js';
+
+const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
+```
+
+The constructor accepts either an RPC URL (a `RpcClient` is created for you) or any object
+implementing `RpcClientInterface`. Internally the toolkit creates a `Context` (see
+[Architecture: Framework & Context](/docs/next/arch_framework)) and wires the default service
+implementations into it.
+
+## What the toolkit exposes
+
+The toolkit surfaces its services as properties. The most commonly used are:
+
+- `tz` — account-level reads and operations (balance, delegate, reveal) via a `TzProvider`.
+- `contract` — the contract-API surface (`ContractProvider`) for originating and calling
+  contracts with a node-signed key.
+- `wallet` — the wallet-API surface for the same actions routed through a connected wallet.
+- `estimate` — fee, gas and storage estimation (`EstimationProvider`).
+- `batch` — grouping several operations into a single injection.
+- `rpc` — the underlying `RpcClient`.
+- `stream` — block/operation subscriptions.
+
+The `contract` and `wallet` properties expose deliberately similar APIs over two different
+execution paths. The contract API signs operations locally with a configured `Signer`; the
+wallet API delegates signing and injection to an external wallet through a `WalletProvider`.
+Choosing between them is an application decision, not a difference in capability — see the
+[Wallet API](/docs/next/wallet_API) documentation.
+
+## Configuring providers
+
+Every replaceable part of the toolkit has a `set…Provider` method. Each method follows the same
+contract: if you pass an implementation it is used; if you pass nothing a sensible default is
+installed; in both cases the shared `Context` is updated so that every other service sees the
+change.
+
+```js
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+
+const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
+
+// Swap in a signer; everything that signs now uses it.
+Tezos.setSignerProvider(await InMemorySigner.fromSecretKey('edsk...'));
+```
+
+The main configuration points are:
+
+| Method | Replaces | Default behaviour |
+| --- | --- | --- |
+| `setRpcProvider` | network transport | the `RpcClient` built from the constructor URL |
+| `setSignerProvider` | signing | a no-op signer that cannot sign |
+| `setForgerProvider` | local/remote forging | the local forger |
+| `setWalletProvider` | wallet API backend | the legacy in-process wallet |
+| `setStreamProvider` | subscriptions | polling-based subscription |
+| `setPackerProvider` | data packing | packing via the node |
+| `setReadProvider` | chain reads | reads via the RPC |
+| `setParserProvider` | Micheline parsing | the Michel-codec parser |
+| `setGlobalConstantsProvider` | global constant resolution | a no-op provider |
+
+`setProvider` is a convenience that accepts several of these at once.
+
+## Why it is built this way
+
+Keeping the toolkit thin and pushing behaviour into pluggable providers means an application can
+replace any single concern — sign on a Ledger, forge remotely, read through a cache, or talk to
+a mock RPC in tests — without the rest of the library needing to know. The toolkit's only
+responsibilities are assembly and exposing a stable public surface.
+
+Continue with [Architecture: Framework & Context](/docs/next/arch_framework) to see how the
+`Context` ties these providers together.

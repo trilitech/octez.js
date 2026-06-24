@@ -1,0 +1,86 @@
+---
+title: "Architecture: Michelson Encoding"
+---
+
+Contracts on Tezos speak Michelson; applications speak JavaScript. Two packages bridge that gap,
+at two different levels. This page explains how they are layered and how a value travels between
+the two worlds. For usage-level guides see [Michelson Encoder](/docs/next/michelson_encoder) and
+[Michel Codec](/docs/next/michel_codec).
+
+## Two layers
+
+- **`@tezos-x/octez.js-michel-codec`** is the low-level layer. It deals with *Micheline* — the
+  concrete syntax of Michelson — as text, as JSON, and as binary. It parses, validates, emits and
+  packs Micheline but does not know anything about your application's data shapes.
+- **`@tezos-x/octez.js-michelson-encoder`** is the higher-level layer. It maps Micheline
+  *types* onto JavaScript values, so you can read contract storage as a plain object and pass
+  entrypoint arguments as ordinary JavaScript.
+
+The encoder produces Micheline JSON; the codec turns that Micheline into the binary or text forms
+the node and forger require.
+
+## The codec layer
+
+The Micheline AST has four leaf/expression shapes — primitives (`{ prim, args, annots }`),
+string, integer and bytes literals, and lists. The codec exposes:
+
+- a `Parser` that reads Micheline text or JSON into the AST, optionally expanding macros and
+  global constants;
+- `emitMicheline`, which renders the AST back to text in a chosen formatting mode;
+- binary (un)packing — `packDataBytes` / `unpackData` — which convert between the AST and the
+  protocol's compact binary encoding using a fixed table of Michelson primitive opcodes;
+- validators and a type-checker that assert an expression is well-formed Michelson.
+
+```js
+import { Parser, packDataBytes, emitMicheline } from '@tezos-x/octez.js-michel-codec';
+
+const parser = new Parser();
+const expr = parser.parseMichelineExpression('(Pair 1 "hello")');
+const packed = packDataBytes(expr, { prim: 'pair', args: [{ prim: 'int' }, { prim: 'string' }] });
+```
+
+## The encoder layer
+
+The encoder represents a Michelson type as a tree of `Token` objects. Each Michelson type
+(`nat`, `string`, `pair`, `or`, `list`, `map`, `big_map`, …) has a `Token` subclass, and composite
+types nest their children, mirroring the type's structure as a tree.
+
+`Token` subclasses implement a small set of methods used to move data across the boundary:
+
+- *encode* — convert a JavaScript value into Micheline JSON;
+- *execute/decode* — convert Micheline JSON back into a JavaScript value;
+- *schema generation* — describe the expected JavaScript shape for a type.
+
+On top of `Token`, the `Schema` and `ParameterSchema` classes wrap a whole storage or entrypoint
+type. They hold the root `Token` and drive the recursive encode/decode over it; `Schema` can also
+be built directly from an RPC `getScript` response.
+
+```js
+import { Schema } from '@tezos-x/octez.js-michelson-encoder';
+
+const storageType = { prim: 'pair', args: [{ prim: 'nat' }, { prim: 'string' }] };
+const schema = new Schema(storageType);
+const js = schema.Execute({ prim: 'Pair', args: [{ int: '42' }, { string: 'hi' }] });
+// → { 0: BigNumber(42), 1: 'hi' }  (shape depends on annotations / field numbering)
+```
+
+## How a contract call uses both layers
+
+When you call `contract.methods.transfer(...).send()`:
+
+1. The contract abstraction has already built a `ParameterSchema` from the contract's parameter
+   type (loaded from the node's `getScript`).
+2. The encoder's `Token` tree converts your JavaScript arguments into Micheline JSON for the
+   chosen entrypoint.
+3. That Micheline becomes part of the operation contents, which the codec layer and forger turn
+   into bytes during the [operation lifecycle](/docs/next/arch_operations).
+
+Reading storage runs the same path in reverse: the node returns Micheline, the codec parses it,
+and the encoder decodes it into JavaScript.
+
+## Field numbering
+
+How Pair fields are surfaced in JavaScript (positional keys versus named record fields) is
+governed by a field-numbering strategy on the encoder. The default changed in a past major
+release; the [Michelson Encoder](/docs/next/michelson_encoder) guide explains the available
+strategies and how to opt into the previous behaviour.

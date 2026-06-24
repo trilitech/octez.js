@@ -17,6 +17,17 @@ export const sidebarConfig = [
     ],
   },
   {
+    name: "Architecture",
+    items: [
+      "arch_tezos_toolkit",
+      "arch_framework",
+      "arch_entry_points",
+      "arch_operations",
+      "arch_michelson_encoder",
+      "arch_runcode_rpc",
+    ],
+  },
+  {
     name: "octez.js Providers",
     items: ["prepare", "estimate"],
   },

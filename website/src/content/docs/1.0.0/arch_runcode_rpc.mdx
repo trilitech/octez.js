@@ -1,0 +1,72 @@
+---
+title: "Architecture: runCode & RPC"
+---
+
+All communication with a Tezos node goes through the RPC layer. This page describes that layer
+and the simulation endpoints that estimation and on-chain views rely on. For the package-level
+guide see [RPC Package](/docs/1.0.0/rpc_package).
+
+## The RPC client
+
+`RpcClient`, from `@tezos-x/octez.js-rpc`, is a typed wrapper over the node's JSON-RPC API. It is
+constructed with a node URL and a chain identifier (defaulting to `main`), and it delegates the
+actual HTTP work to a pluggable `HttpBackend` from `@tezos-x/octez.js-http-utils`. Every method
+builds the appropriate URL path and request body, performs the call, and returns a typed result.
+
+`RpcClient` implements `RpcClientInterface`, so it can be substituted — for example with a mock in
+tests, or wrapped by `RpcClientCache` to memoise responses and reduce load on the node.
+
+```js
+import { RpcClient } from '@tezos-x/octez.js-rpc';
+
+const client = new RpcClient('https://YOUR_PREFERRED_RPC_URL');
+const balance = await client.getBalance('tz1...');
+```
+
+The methods fall into a few groups:
+
+- **Reads** — `getBalance`, `getDelegate`, `getStorage`, `getScript`, `getEntrypoints`,
+  `getBigMapExpr`, `getConstants`, and the block accessors (`getBlock`, `getBlockHeader`,
+  `getBlockMetadata`).
+- **Forging / injection** — `forgeOperations`, `injectOperation`.
+- **Simulation** — `runOperation`, `simulateOperation`, `runCode`, `runScriptView`,
+  `preapplyOperations`, `packData`.
+- **Governance** — proposals, ballots and voting-period queries.
+
+## Simulation: the basis of estimation
+
+octez.js never guesses fees, gas or storage. Before an operation is signed, the
+[estimator](/docs/1.0.0/estimate) sends the operation to the node in *simulation* mode, which
+executes it without including it in a block and reports the resources it would consume.
+
+Two endpoints back this:
+
+- `runOperation` executes a single operation against the current context.
+- `simulateOperation` performs the same simulation while accounting for additional context (such
+  as the block's remaining gas), giving more accurate feedback and clearer errors.
+
+From the returned `consumed_gas` and storage figures, octez.js derives gas and storage limits and
+computes the fee using the protocol constants fetched via `getConstants`. The
+[operation lifecycle](/docs/1.0.0/arch_operations) then forges, signs and injects the operation
+with those values filled in.
+
+## `runCode` and on-chain views
+
+The node can also execute Michelson without any operation being injected:
+
+- `runCode` runs an arbitrary Michelson script against supplied input and storage and returns the
+  resulting storage and emitted operations. It is the mechanism behind
+  [lambda views](/docs/1.0.0/lambda_view) — read-only computations expressed as Michelson lambdas.
+- `runScriptView` executes a contract's declared on-chain view and returns its result. This powers
+  the [on-chain views](/docs/1.0.0/on_chain_views) API.
+
+Both take and return Micheline, which the [Michelson encoding layer](/docs/1.0.0/arch_michelson_encoder)
+converts to and from JavaScript values.
+
+## Injection and confirmation
+
+Sending an operation ends at the RPC layer: `injectOperation` submits the signed bytes and returns
+the operation hash. The operation handle then polls the chain (via the block accessors and the
+subscription provider) until the hash appears in a block, completing the lifecycle. Reads,
+simulation and injection therefore all funnel through the same `RpcClient`, which is the single
+seam where octez.js meets the network.
