@@ -1,10 +1,10 @@
 {
   "providers": [
     {
-      "id": "ecadinfra",
-      "name": "ECAD Infra",
-      "website": "https://www.ecadinfra.com/",
-      "status_page": "https://tezos.status.ecadinfra.com"
+      "id": "trilitech",
+      "name": "Trilitech",
+      "website": "https://www.trili.tech/",
+      "status_page": ""
     },
     {
       "id": "smartpy",
@@ -28,23 +28,23 @@
   "rpc_endpoints": [
     {
       "net": "mainnet",
-      "url": "https://mainnet.tezos.ecadinfra.com",
-      "provider": "ecadinfra"
+      "url": "https://tezos-mainnet.octez.io",
+      "provider": "trilitech"
     },
     {
       "net": "ghostnet",
-      "url": "https://ghostnet.tezos.ecadinfra.com",
-      "provider": "ecadinfra"
+      "url": "https://tezos-ghostnet.octez.io",
+      "provider": "trilitech"
     },
     {
       "net": "shadownet",
-      "url": "https://shadownet.tezos.ecadinfra.com",
-      "provider": "ecadinfra"
+      "url": "https://tezos-shadownet.octez.io",
+      "provider": "trilitech"
     },
     {
       "net": "tallinnnet",
-      "url": "https://tallinnnet.tezos.ecadinfra.com",
-      "provider": "ecadinfra"
+      "url": "https://tezos-tallinnnet.octez.io",
+      "provider": "trilitech"
     },
     {
       "net": "mainnet",
