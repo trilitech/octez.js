@@ -219,6 +219,9 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           TAQUITO_ITEST_DIAGNOSTICS: 'true'
           TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
+      - name: Keygen container logs
+        if: always()
+        run: docker logs "${{ job.services.keygen.id }}" 2>&1 | tail -300 || true
       - name: Upload timing artifact
         if: always()
         uses: actions/upload-artifact@v7
