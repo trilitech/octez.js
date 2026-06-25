@@ -5,8 +5,10 @@ The `octez.js/integration-tests` directory contains the integration test suite f
 
 The tests may also be run using Flextesa. This is useful for testing new features not in current test nets and for testing features around governance that benefit from shortened block processing times. As well Flextesa tests offer a secondary confirmation of the test net results.
 
-Internally octez.js is tested with tests running in parallel. This is achieved using an application that generates new keys and funds them as needed per test.
+Internally octez.js is tested with tests running in parallel. This is achieved using an application (a "keygen") that generates new keys and funds them as needed per test.
 The application is not publicly available. External users, therefore, must run the octez.js Integration Tests in sequence, one test at a time.
+
+For how the suite, the fresh-key acquisition, the prefetch buffer, the keygen service and the CI topology fit together, see [KEYGEN.md](./KEYGEN.md).
 
 ## Running Integration Tests Against a Tezos Testnet
 
