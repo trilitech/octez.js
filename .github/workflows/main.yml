@@ -113,12 +113,12 @@ jobs:
       - name: Top up keygen master accounts
         env:
           PKHS: tz1Lhwc4sYVNnE6nbaEARZH2CSxL866UqdtF,tz1iSJyGQhn6oTUvc9JHE2y4skG2BVB3uq2w,tz1Xj1voZkomub9QbCiG2aGPCrrx4NUhc9d8,tz1QhoXceXuKHmy3u9Ab7U1NdSsXynMVi5Rp
-          # The keygen reclaims each key's leftover back to the master (~240s TTL),
-          # so a master only needs a working buffer (~one TTL of in-flight keys),
-          # not a full run's worth. TARGET must exceed that buffer; kept modest so
-          # the first (empty-master) top-up completes on the best-effort faucet job.
-          MIN_BALANCE_TEZ: '300'
-          TARGET_TEZ: '600'
+          # Reclaim is disabled (it raced running tests), so a master must cover a
+          # whole run's drain: the heaviest shard funds ~72 keys at up to ~10 tez
+          # (~720 tez). MIN must exceed that so a master not topped this run still
+          # covers it; TARGET adds headroom.
+          MIN_BALANCE_TEZ: '800'
+          TARGET_TEZ: '1000'
           RPC_URL: https://rpc.shadownet.teztnets.com
           FAUCET_URL: https://faucet.shadownet.teztnets.com
         run: node .github/scripts/topup-keygen-masters.mjs
@@ -156,6 +156,9 @@ jobs:
           MASTER_KEY: ${{ secrets[format('KEYGEN_MASTER_KEY_{0}', matrix.shard)] }}
           DEFAULT_FUND_TEZ: '10'
           FUND_HEADROOM_TEZ: '1'
+          # Reclaim disabled: its TTL sweep raced still-running tests (emptied a
+          # key mid-test -> balance_too_low). The auto top-up covers the drain.
+          RECLAIM_ENABLED: 'false'
         ports:
           - 3000:3000
     steps:
