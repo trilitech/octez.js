@@ -112,6 +112,9 @@ jobs:
     services:
       keygen:
         image: ghcr.io/trilitech/octezjs-keygen:latest
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PULL_TOKEN }}
         env:
           KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
           ALLOWED_NETWORKS: shadownet
@@ -200,6 +203,9 @@ jobs:
     services:
       keygen:
         image: ghcr.io/trilitech/octezjs-keygen:latest
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PULL_TOKEN }}
         env:
           KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
           ALLOWED_NETWORKS: tallinnnet
