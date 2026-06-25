@@ -536,6 +536,7 @@ const setupSignerWithFreshKey = async (
     : freshKeyPrefetch;
   const freshKeyPool = getFreshKeyPool(signerConfig, options);
   for (let attempt = 1; attempt <= options.maxAttempts; attempt++) {
+    try {
     const {
       value: { keyResponse, keyRequestDurationMs },
       waitMs: keyAcquireWaitMs,
@@ -621,6 +622,24 @@ const setupSignerWithFreshKey = async (
       prefetchedReadyLeadMs: readyLeadMs,
       prefetchBufferSize: actualPrefetchBufferSize,
     });
+    } catch (err) {
+      // Transient keygen failures (faucet 500 / request timeout) are retryable:
+      // record the reason and fall through to the inter-attempt delay instead of
+      // aborting setup, so a later attempt (after a block / once the faucet
+      // recovers) can succeed.
+      const failReason = `keygen_error:${toErrorMessage(err)}`;
+      reasons.push(`attempt_${attempt}:${failReason}`);
+      console.warn(
+        `[keygen] attempt ${attempt}/${options.maxAttempts} keygen request failed: ${toErrorMessage(err)}`
+      );
+      diagnosticsLog({
+        stage: 'fresh-key-retry',
+        keyUrl: v2FreshKeyUrl,
+        attempt,
+        maxAttempts: options.maxAttempts,
+        reason: failReason,
+      });
+    }
 
     if (attempt < options.maxAttempts && options.retryDelayMs > 0) {
       await sleep(options.retryDelayMs);

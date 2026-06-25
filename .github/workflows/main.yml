@@ -173,8 +173,14 @@ jobs:
         env:
           TAQUITO_KEYGEN_URL: http://localhost:3000
           TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
-          TAQUITO_FRESH_KEY_PREFETCH: '4'
-          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '30000'
+          # The keygen funds on-demand via the faucet, so a fresh key isn't baked
+          # the instant it's returned. Wait ~a block between balance re-checks and
+          # allow enough attempts to span a couple of blocks; raise the per-request
+          # timeout above faucet PoW latency; lower prefetch to ease faucet load.
+          TAQUITO_FRESH_KEY_RETRY_MS: '12000'
+          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '8'
+          TAQUITO_FRESH_KEY_PREFETCH: '2'
+          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '60000'
           SHARD: ${{ matrix.shard }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
