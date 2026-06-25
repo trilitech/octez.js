@@ -113,7 +113,11 @@ jobs:
       - name: Top up keygen master accounts
         env:
           PKHS: tz1Lhwc4sYVNnE6nbaEARZH2CSxL866UqdtF,tz1iSJyGQhn6oTUvc9JHE2y4skG2BVB3uq2w,tz1Xj1voZkomub9QbCiG2aGPCrrx4NUhc9d8,tz1QhoXceXuKHmy3u9Ab7U1NdSsXynMVi5Rp
-          MIN_BALANCE_TEZ: '200'
+          # The keygen reclaims each key's leftover back to the master (~240s TTL),
+          # so a master only needs a working buffer (~one TTL of in-flight keys),
+          # not a full run's worth. TARGET must exceed that buffer; kept modest so
+          # the first (empty-master) top-up completes on the best-effort faucet job.
+          MIN_BALANCE_TEZ: '300'
           TARGET_TEZ: '600'
           RPC_URL: https://rpc.shadownet.teztnets.com
           FAUCET_URL: https://faucet.shadownet.teztnets.com
