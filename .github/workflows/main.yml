@@ -96,11 +96,35 @@ jobs:
           CI: true
           RUN_INTEGRATION: true
 
+  # Pre-flight: keep the per-shard keygen master accounts funded. Checks each
+  # master's on-chain balance and tops up from the faucet only when below the
+  # threshold (fast no-op otherwise). Funds by address, so only the public pkhs
+  # are needed here. Best-effort: a faucet/RPC blip won't fail this job.
+  keygen-master-topup:
+    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    needs:
+      - integration-tests-change-filter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Top up keygen master accounts
+        env:
+          PKHS: tz1Lhwc4sYVNnE6nbaEARZH2CSxL866UqdtF,tz1iSJyGQhn6oTUvc9JHE2y4skG2BVB3uq2w,tz1Xj1voZkomub9QbCiG2aGPCrrx4NUhc9d8,tz1QhoXceXuKHmy3u9Ab7U1NdSsXynMVi5Rp
+          MIN_BALANCE_TEZ: '200'
+          TARGET_TEZ: '600'
+          RPC_URL: https://rpc.shadownet.teztnets.com
+          FAUCET_URL: https://faucet.shadownet.teztnets.com
+        run: node .github/scripts/topup-keygen-masters.mjs
+
   integration-tests-testnet:
     if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
     name: integration-tests-shadownet-shard-${{ matrix.shard }}
     needs:
       - integration-tests-change-filter
+      - keygen-master-topup
     strategy:
       fail-fast: false
       matrix:
