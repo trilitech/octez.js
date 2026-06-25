@@ -106,9 +106,15 @@ jobs:
       matrix:
         shard: [1, 2, 3, 4]
     runs-on: ubuntu-latest
-    # Stateless keygen runs as a service container alongside the job (reachable on
+    # Keygen runs as a service container alongside the job (reachable on
     # localhost:3000). Each worker gets a fresh funded key, so no shared secret key
     # and no per-key concurrency group are needed.
+    #
+    # Funding: each shard's keygen funds from its OWN master account
+    # (KEYGEN_MASTER_KEY_<shard>) over RPC, instead of the public faucet. One
+    # account per shard keeps the master counters independent across the 4 parallel
+    # keygen processes (a single shared key would collide). The keygen serializes
+    # injections per process and waits for confirmation, so returned keys are baked.
     services:
       keygen:
         image: ghcr.io/trilitech/octezjs-keygen:latest
@@ -118,8 +124,10 @@ jobs:
         env:
           KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
           ALLOWED_NETWORKS: shadownet
-          FAUCET_URL: https://faucet.shadownet.teztnets.com
+          RPC_URL: https://rpc.shadownet.teztnets.com
+          MASTER_KEY: ${{ secrets[format('KEYGEN_MASTER_KEY_{0}', matrix.shard)] }}
           DEFAULT_FUND_TEZ: '10'
+          FUND_HEADROOM_TEZ: '1'
         ports:
           - 3000:3000
     steps:
@@ -173,10 +181,10 @@ jobs:
         env:
           TAQUITO_KEYGEN_URL: http://localhost:3000
           TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
-          # The keygen funds on-demand via the faucet, so a fresh key isn't baked
-          # the instant it's returned. Wait ~a block between balance re-checks and
-          # allow enough attempts to span a couple of blocks; raise the per-request
-          # timeout above faucet PoW latency; lower prefetch to ease faucet load.
+          # The keygen funds from a master account and waits for confirmation, so
+          # returned keys are baked. These retries/timeout remain as a safety net
+          # for transient RPC blips; the per-request timeout covers the time the
+          # keygen spends waiting for the funding op to confirm.
           TAQUITO_FRESH_KEY_RETRY_MS: '12000'
           TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '8'
           TAQUITO_FRESH_KEY_PREFETCH: '2'
