@@ -8,7 +8,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownContract, knownBaker, createAddress }
     const Tezos = lib;
 
     beforeAll(async () => {
-        await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
+        await setup({ preferFreshKey: true, minBalanceMutez: 15_000_000 });
     });
 
     describe(`Test wallet.batch using: ${rpc}`, () => {

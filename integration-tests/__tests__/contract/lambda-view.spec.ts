@@ -10,7 +10,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
   describe(`Test contract with lambda view trough contract api using: ${rpc}`, () => {
     beforeAll(async () => {
-      await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
+      await setup({ preferFreshKey: true, minBalanceMutez: 15_000_000 });
     });
 
     test('Verify contract.originate for FA1.2 contract and then fetch data from view entrypoints', async () => {
