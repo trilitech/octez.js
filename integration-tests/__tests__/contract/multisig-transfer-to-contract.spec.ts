@@ -10,7 +10,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
       await setup({
         preferFreshKey: true,
         requireUnrevealed: true,
-        minBalanceMutez: 5_000_000,
+        minBalanceMutez: 15_000_000,
       })
     })
     test('test manager transfers scenarios', async () => {
