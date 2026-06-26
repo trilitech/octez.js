@@ -17,7 +17,7 @@
 <blockquote>
 <p>Note: To run the <code>Wallet API</code> examples, you can install a wallet extension to your browser. For example, the Beacon Extension can be download <a href="https://www.walletbeacon.io/">here</a>.</p>
 </blockquote>
-<div class="tabs-container" data-tabs-id="tabs-8nafnpkdi" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <p>This requires a signer to be configured, ie:</p><pre><code>import { importKey } from &#39;@tezos-x/octez.js-signer&#39;;
+<div class="tabs-container" data-tabs-id="tabs-shbpzcswp" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <p>This requires a signer to be configured, ie:</p><pre><code>import { importKey } from &#39;@tezos-x/octez.js-signer&#39;;
 import { TezosToolkit } from &#39;@tezos-x/octez.js&#39;;
 const Tezos = new TezosToolkit(&#39;https://rpc.ghostnet.teztnets.com&#39;);
 importKey(Tezos, &quot;p2sk2obfVMEuPUnadAConLWk7Tf4Dt3n4svSgJwrgpamRqJXvaYcg1&quot;)
@@ -48,7 +48,7 @@ Tezos.setWalletProvider(wallet);
 <pre><code>(Pair 0 (Pair 1 { &quot;edpkuLxx9PQD8fZ45eUzrK3BhfDZJHhBuK4Zi49DcEGANwd2rpX82t&quot; }))
 </code></pre>
 <p>As you can see, the property names are discarded. The order of your properties is crucial!</p>
-<div class="tabs-container" data-tabs-id="tabs-at1jdn4dw" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// const genericMultisigJSONfile = require('./generic.json')
+<div class="tabs-container" data-tabs-id="tabs-wr01se8xv" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// const genericMultisigJSONfile = require('./generic.json')
 // generic.json is referring to Michelson source code in JSON representation
 
 try {
@@ -135,7 +135,7 @@ Run Code
 </button> <div class="output mt-2" hidden> <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre> </div> </div> </live-code-runner>  </div>  </div> </div>  
 <h3 id="b-initializing-storage-using-a-plain-michelson-expression-for-initial-storage">b. Initializing storage using a plain Michelson Expression for initial storage</h3>
 <p>When using the Michelson expression for initial storage, we need to use the <code>init</code> parameter instead of the <code>storage</code> object.</p>
-<div class="tabs-container" data-tabs-id="tabs-ef2vz08ri" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// const genericMultisigJSONfile = require('./generic.json')
+<div class="tabs-container" data-tabs-id="tabs-4108eqad0" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// const genericMultisigJSONfile = require('./generic.json')
 // generic.json is referring to Michelson source code in JSON representation
 
 try {
@@ -205,7 +205,7 @@ try {
 Run Code
 </button> <div class="output mt-2" hidden> <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre> </div> </div> </live-code-runner>  </div>  </div> </div>  
 <h3 id="c-initializing-storage-using-a-json-encoded-michelson-expression-for-initial-storage">c. Initializing storage using a JSON encoded Michelson Expression for initial storage</h3>
-<div class="tabs-container" data-tabs-id="tabs-uue0oc54q" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// const genericMultisigJSONfile = require('./generic.json')
+<div class="tabs-container" data-tabs-id="tabs-x91ss3zt0" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// const genericMultisigJSONfile = require('./generic.json')
 // generic.json is referring to Michelson source code in JSON representation
 
 try {
