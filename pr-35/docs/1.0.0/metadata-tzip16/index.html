@@ -17,7 +17,7 @@ latest version
 <ol>
 <li><strong>We first need to create an instance of <code>Tzip16Module</code> and add it as an extension to our <code>TezosToolkit</code></strong></li>
 </ol>
-<div class="tabs-container" data-tabs-id="tabs-7xmcku8w7" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="defaultMetadataProvider" type="button" data-astro-cid-xlvzfuxv> Using the default Metadata Provider </button><button class="tab-button " data-tab="customMetadataProvider" type="button" data-astro-cid-xlvzfuxv> Using a custom Metadata Provider </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="defaultMetadataProvider" class="tab-item" data-astro-cid-r7gez2uh> <p>The constructor of the <code>Tzip16Module</code> takes an optional <code>MetadataProvider</code> as a parameter. When none is passed, the default <code>MetadataProvider</code> of octez.js is instantiated and the default handlers (<code>HttpHandler</code>, <code>IpfsHandler</code>, and <code>TezosStorageHandler</code>) are used.</p><pre><code class="language-js">import { TezosToolkit } from &#39;@tezos-x/octez.js&#39;;
+<div class="tabs-container" data-tabs-id="tabs-vkvi8h0yn" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="defaultMetadataProvider" type="button" data-astro-cid-xlvzfuxv> Using the default Metadata Provider </button><button class="tab-button " data-tab="customMetadataProvider" type="button" data-astro-cid-xlvzfuxv> Using a custom Metadata Provider </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="defaultMetadataProvider" class="tab-item" data-astro-cid-r7gez2uh> <p>The constructor of the <code>Tzip16Module</code> takes an optional <code>MetadataProvider</code> as a parameter. When none is passed, the default <code>MetadataProvider</code> of octez.js is instantiated and the default handlers (<code>HttpHandler</code>, <code>IpfsHandler</code>, and <code>TezosStorageHandler</code>) are used.</p><pre><code class="language-js">import { TezosToolkit } from &#39;@tezos-x/octez.js&#39;;
 import { Tzip16Module, tzip16 } from &#39;@tezos-x/octez.js-tzip16&#39;;
 
 const Tezos = new TezosToolkit(&#39;rpcUrl&#39;);
@@ -54,7 +54,7 @@ const views = await contract.tzip16().metadataViews();
 <p>The <code>getMetadata</code> method returns an object which contains the URI, the metadata in JSON format, an optional SHA256 hash of the metadata and an optional integrity check result.</p>
 <p>A sequence diagram can be found <a href="./tzip16-sequence-diagram#get-the-metadata">here</a>.</p>
 <h4 id="tezos-storage-example">Tezos-storage example</h4>
-<div class="tabs-container" data-tabs-id="tabs-yp50j3oo6" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
+<div class="tabs-container" data-tabs-id="tabs-1wzto7jqb" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
 // import { Tzip16Module, tzip16 } from &#34;@tezos-x/octez.js-tzip16&#34;;
 // const Tezos = new TezosToolkit('rpc_url');
 
@@ -120,7 +120,7 @@ Tezos<span class="token punctuation">.</span><span class="token function">addExt
 Run Code
 </button> <div class="output mt-2" hidden> <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre> </div> </div> </live-code-runner>  </div>  </div> </div>  
 <h4 id="https-example">HTTPS example</h4>
-<div class="tabs-container" data-tabs-id="tabs-tul8kuxfl" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
+<div class="tabs-container" data-tabs-id="tabs-7sx3ec4mq" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
 // import { Tzip16Module, tzip16 } from &#34;@tezos-x/octez.js-tzip16&#34;;
 // const Tezos = new TezosToolkit('rpc_url');
 
@@ -186,7 +186,7 @@ Tezos<span class="token punctuation">.</span><span class="token function">addExt
 Run Code
 </button> <div class="output mt-2" hidden> <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre> </div> </div> </live-code-runner>  </div>  </div> </div>  
 <h4 id="example-having-a-sha256-hash">Example having a SHA256 hash:</h4>
-<div class="tabs-container" data-tabs-id="tabs-4563alonl" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
+<div class="tabs-container" data-tabs-id="tabs-3crwkq07v" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
 // import { Tzip16Module, tzip16 } from &#34;@tezos-x/octez.js-tzip16&#34;;
 // const Tezos = new TezosToolkit('rpc_url');
 
@@ -252,7 +252,7 @@ Tezos<span class="token punctuation">.</span><span class="token function">addExt
 Run Code
 </button> <div class="output mt-2" hidden> <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre> </div> </div> </live-code-runner>  </div>  </div> </div>  
 <h4 id="ipfs-example">IPFS example</h4>
-<div class="tabs-container" data-tabs-id="tabs-tuo2p33d7" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
+<div class="tabs-container" data-tabs-id="tabs-k1o5tmzpb" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
 // import { Tzip16Module, tzip16 } from &#34;@tezos-x/octez.js-tzip16&#34;;
 // const Tezos = new TezosToolkit('rpc_url');
 
@@ -344,7 +344,7 @@ Run Code
 ]
 </code></pre>
 <p>Try to run the view:</p>
-<div class="tabs-container" data-tabs-id="tabs-mh5v1l9rr" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
+<div class="tabs-container" data-tabs-id="tabs-zlhk9kb6t" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
 // import { Tzip16Module, tzip16, bytesToString } from &#34;@tezos-x/octez.js-tzip16&#34;;
 // const Tezos = new TezosToolkit('rpc_url');
 
@@ -423,7 +423,7 @@ Run Code
 </button> <div class="output mt-2" hidden> <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre> </div> </div> </live-code-runner>  </div>  </div> </div>  
 <p>In the next example, we will run a view named <code>multiply-the-nat-in-storage</code> that can be found in the metadata of the contract <code>KT19rDkTYg1355Wp1XM5Q23CxuLgRnA3SiGq</code>. When we inspect those metadata, we can see that this view takes a <code>nat</code> has a parameter, has a returnType of <code>nat</code> and has the following instructions: <code>DUP, CDR, CAR, SWAP, CAR, MUL</code>.</p>
 <p>Try to run the view:</p>
-<div class="tabs-container" data-tabs-id="tabs-6zy3rvc6s" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
+<div class="tabs-container" data-tabs-id="tabs-h2s31sw06" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit } from '@tezos-x/octez.js';
 // import { Tzip16Module, tzip16 } from &#34;@tezos-x/octez.js-tzip16&#34;;
 // const Tezos = new TezosToolkit('rpc_url');
 
@@ -506,7 +506,7 @@ Run Code
 </button> <div class="output mt-2" hidden> <pre class="output-content m-0 p-3 bg-background-tertiary border border-border rounded font-mono text-sm text-red-500 whitespace-pre-wrap"></pre> </div> </div> </live-code-runner>  </div>  </div> </div>  
 <h2 id="execute-a-custom-view">Execute a custom view</h2>
 <p>In the next example we execute the view <code>multiply-the-nat-in-storage</code> in a custom way:</p>
-<div class="tabs-container" data-tabs-id="tabs-fztd26syu" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
+<div class="tabs-container" data-tabs-id="tabs-dvx5xgm63" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="// import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
 // import { MichelsonStorageView } from &#34;@tezos-x/octez.js-tzip16&#34;;
 // const Tezos = new TezosToolkit('rpc_url');
 
