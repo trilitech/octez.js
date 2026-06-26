@@ -120,6 +120,12 @@ const isRetriableRequest = (method: string, url: string) => {
   );
 };
 
+// Transient gateway/proxy errors: the node is briefly unreachable behind its
+// reverse proxy (e.g. nginx 502/503/504), not a deterministic application error
+// like a 4xx or a protocol 500. Safe to retry for idempotent/retriable requests.
+const isTransientServerError = (status: number) =>
+  status === 502 || status === 503 || status === 504;
+
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /** Options for {@link HttpBackend.createRequest}. */
@@ -249,6 +255,29 @@ export class HttpBackend {
         // Handle responses with status code >= 400
         if (response.status >= 400) {
           const errorData = await response.text();
+          // Retry transient gateway errors (502/503/504) for retriable requests,
+          // instead of failing the caller on a momentary node/proxy blip.
+          if (
+            attempt < httpRetryCount &&
+            isTransientServerError(response.status) &&
+            isRetriableRequest(methodValue, urlWithQuery)
+          ) {
+            const exponential = httpRetryBaseMs * Math.pow(2, attempt);
+            const jitter = Math.floor(Math.random() * httpRetryBaseMs);
+            const retryDelayMs = exponential + jitter;
+            traceHttp({
+              stage: 'request-retry',
+              method: methodValue,
+              url: normalizeTraceUrl(urlWithQuery),
+              status: response.status,
+              elapsedMs: Date.now() - requestStartedAt,
+              attempt: attempt + 1,
+              maxAttempts: httpRetryCount + 1,
+              retryDelayMs,
+            });
+            await sleep(retryDelayMs);
+            continue;
+          }
           traceHttp({
             stage: 'response-error',
             method: methodValue,
