@@ -140,6 +140,9 @@ interface KeygenV2KeyRequest {
 interface KeygenV2FreshKeyResponse {
   secret_key: string;
   pkh: string;
+  // Address of the keygen's funding account, if it funds from a master account.
+  // Lets the harness return a key's leftover balance here in teardown.
+  funder_pkh?: string | null;
 }
 
 interface FreshKeyCandidate {
@@ -302,6 +305,67 @@ const defaultEphemeralConfig = (networkPath: string): EphemeralConfig => ({
 
 const sharedKeygenHttpClient = new HttpBackend();
 const freshKeyPools = new Map<string, AsyncPrefetchBuffer<FreshKeyCandidate>>();
+
+// --- Harness-side reclaim ----------------------------------------------------
+// Return each used fresh key's leftover balance to the keygen's funder account.
+// Done in test teardown (afterAll, via vitest.setup), i.e. AFTER the test is
+// finished with the key — so, unlike a keygen-side TTL sweep, it never races a
+// running test. Best-effort: failures are swallowed and never fail a test.
+const reclaimEnabled = process.env['TAQUITO_KEYGEN_RECLAIM'] !== 'false';
+interface ReclaimEntry {
+  secretKey: string;
+  pkh: string;
+  funderPkh: string;
+  rpcUrl: string;
+}
+const reclaimQueue: ReclaimEntry[] = [];
+
+const registerKeyForReclaim = (entry: {
+  secretKey: string;
+  pkh: string;
+  funderPkh?: string | null;
+  rpcUrl: string;
+}) => {
+  if (reclaimEnabled && entry.funderPkh && entry.secretKey) {
+    reclaimQueue.push({
+      secretKey: entry.secretKey,
+      pkh: entry.pkh,
+      funderPkh: entry.funderPkh,
+      rpcUrl: entry.rpcUrl,
+    });
+  }
+};
+
+// Sweep all keys acquired since the last call back to their funder. Called from
+// the global afterAll in vitest.setup.ts, so it runs once the test file's tests
+// have completed and the keys are idle.
+export const reclaimFreshKeys = async (): Promise<void> => {
+  const entries = reclaimQueue.splice(0);
+  await Promise.all(
+    entries.map(async ({ secretKey, pkh, funderPkh, rpcUrl }) => {
+      try {
+        const t = new TezosToolkit(rpcUrl);
+        t.setSignerProvider(new InMemorySigner(secretKey));
+        t.setProvider({ forger: t.getFactory(RpcForger)() });
+        const balanceMutez = (await t.tz.getBalance(pkh)).toNumber();
+        const reserveMutez = 5000; // cover transfer fee (+ reveal if unrevealed)
+        const amountMutez = balanceMutez - reserveMutez;
+        if (amountMutez <= 0) return;
+        const op = await t.contract.transfer({
+          to: funderPkh,
+          amount: amountMutez,
+          mutez: true,
+          fee: 1500,
+          gasLimit: 3000,
+          storageLimit: 0, // funder is already allocated
+        });
+        await op.confirmation(1);
+      } catch {
+        // best-effort: a failed sweep just forfeits that key's leftover
+      }
+    })
+  );
+};
 
 const getKeygenEndpoints = ({ keygenBaseUrl, networkPath }: EphemeralConfig) => ({
   v2FreshKeyUrl: `${keygenBaseUrl}/v2/${networkPath}`,
@@ -588,6 +652,12 @@ const setupSignerWithFreshKey = async (
         { signerMode: 'fresh', keyUrl: v2FreshKeyUrl, pkhHint: state.pkh },
         state
       );
+      registerKeyForReclaim({
+        secretKey: keyResponse.secret_key,
+        pkh: state.pkh,
+        funderPkh: keyResponse.funder_pkh,
+        rpcUrl: Tezos.rpc.getRpcUrl(),
+      });
       return;
     }
 
