@@ -353,6 +353,58 @@ describe('HttpBackend', () => {
         expect(result).toEqual({ block: 'head' });
       });
 
+      it('retries GET on transient 502 gateway error', async () => {
+        mockFetch
+          .mockResolvedValueOnce(
+            mockResponse({ status: 502, statusText: 'Bad Gateway', body: 'bad gateway' })
+          )
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { ok: true } }));
+        const result = await drainRetries(
+          backend.createRequest({ url: 'https://rpc.example.com/' })
+        );
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(result).toEqual({ ok: true });
+      });
+
+      it('retries POST forge/operations on transient 503', async () => {
+        mockFetch
+          .mockResolvedValueOnce(
+            mockResponse({ status: 503, statusText: 'Service Unavailable', body: '' })
+          )
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { forged: 'abc' } }));
+        const result = await drainRetries(
+          backend.createRequest({
+            url: 'https://rpc.example.com/chains/main/blocks/head/helpers/forge/operations',
+            method: 'POST',
+          })
+        );
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(result).toEqual({ forged: 'abc' });
+      });
+
+      it('does not retry a deterministic 500 on a retriable request', async () => {
+        mockFetch.mockResolvedValue(
+          mockResponse({ status: 500, statusText: 'Internal Server Error', body: 'boom' })
+        );
+        await expect(
+          backend.createRequest({
+            url: 'https://rpc.example.com/chains/main/blocks/head/helpers/forge/operations',
+            method: 'POST',
+          })
+        ).rejects.toThrow(HttpResponseError);
+        expect(mockFetch).toHaveBeenCalledTimes(1);
+      });
+
+      it('does not retry 502 on a non-retriable POST path', async () => {
+        mockFetch.mockResolvedValue(
+          mockResponse({ status: 502, statusText: 'Bad Gateway', body: 'bad gateway' })
+        );
+        await expect(
+          backend.createRequest({ url: 'https://rpc.example.com/some/random/endpoint', method: 'POST' })
+        ).rejects.toThrow(HttpResponseError);
+        expect(mockFetch).toHaveBeenCalledTimes(1);
+      });
+
       it('does not retry HttpResponseError even if body contains transport-like text', async () => {
         // RPC returns 500 with body text that matches transport error patterns
         mockFetch.mockResolvedValue(
