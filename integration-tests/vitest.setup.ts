@@ -1,5 +1,14 @@
+import { afterAll } from 'vitest';
 import BigNumber from 'bignumber.js';
 import { initSapling } from '@tezos-x/octez.js-sapling';
+import { reclaimFreshKeys } from './config';
+
+// After each test file completes, return its fresh keys' leftover balances to
+// the keygen funder (race-free: the file's tests are done with the keys).
+// Best-effort — never fails the run.
+afterAll(async () => {
+  await reclaimFreshKeys();
+});
 
 // BigNumber instances created in different module contexts (e.g. inside
 // @tezos-x/octez.js-sapling vs. the test file) have different constructors, so
