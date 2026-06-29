@@ -253,21 +253,32 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v6
+        with:
+          # Pull the sapling .params binaries tracked by git-lfs
+          # (packages/octez.js-sapling/params/*.params) instead of
+          # downloading them from sapling.taquito.io at run time.
+          lfs: true
       - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Pre-download sapling params
+      - name: Verify sapling params (git-lfs)
         run: |
-          mkdir -p /tmp/sapling-params
-          curl -fSL --retry 3 \
-            https://sapling.taquito.io/params/groth16-mainnet-1/spend.params \
-            -o /tmp/sapling-params/spend.params
-          curl -fSL --retry 3 \
-            https://sapling.taquito.io/params/groth16-mainnet-1/output.params \
-            -o /tmp/sapling-params/output.params
+          set -euo pipefail
+          params_dir="packages/octez.js-sapling/params"
+          manifest="packages/octez.js-sapling/src/sapling-params-manifest.json"
+          for f in spend output; do
+            if grep -qa '^version https://git-lfs' "$params_dir/$f.params"; then
+              echo "::error::$f.params is still a git-lfs pointer — checkout did not fetch LFS objects (the job needs 'lfs: true')." >&2
+              exit 1
+            fi
+          done
+          spend_sha="$(node -p "require('./$manifest').spendParams.sha256")"
+          output_sha="$(node -p "require('./$manifest').outputParams.sha256")"
+          echo "${spend_sha}  ${params_dir}/spend.params"   | sha256sum -c -
+          echo "${output_sha}  ${params_dir}/output.params" | sha256sum -c -
       - id: run-tests
         shell: bash
         run: |
@@ -303,8 +314,8 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           TAQUITO_ITEST_DIAGNOSTICS: 'true'
           TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
-          SAPLING_SPEND_PARAMS_PATH: /tmp/sapling-params/spend.params
-          SAPLING_OUTPUT_PARAMS_PATH: /tmp/sapling-params/output.params
+          SAPLING_SPEND_PARAMS_PATH: ${{ github.workspace }}/packages/octez.js-sapling/params/spend.params
+          SAPLING_OUTPUT_PARAMS_PATH: ${{ github.workspace }}/packages/octez.js-sapling/params/output.params
       - name: Upload timing artifact
         if: always()
         uses: actions/upload-artifact@v7
