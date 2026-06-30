@@ -1,27 +1,57 @@
-<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/pr-17/favicon.svg"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v5.17.1"><meta name="base-url" content="/pr-17/"><title>octez.js Documentation</title><meta name="description" content="Documentation - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><link rel="canonical" href="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog"><!-- Prevent indexing of old/next versions --><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog"><meta property="og:title" content="octez.js Documentation"><meta property="og:description" content="Documentation - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><meta property="og:site_name" content="octez.js"><meta property="og:image" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:url" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog"><meta name="twitter:title" content="octez.js Documentation"><meta name="twitter:description" content="Documentation - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><meta name="twitter:image" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/og-image.png"><!-- Structured Data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"octez.js Documentation","description":"Documentation - Learn how to use octez.js, a TypeScript library for Tezos blockchain development.","url":"https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog","publisher":{"@type":"Organization","name":"Nomadic Labs","url":"https://nomadic-labs.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog"},"isPartOf":{"@type":"WebSite","name":"octez.js Documentation","url":"https://effective-chainsaw-r6861q1.pages.github.io/"}}</script><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><!-- Theme initialization (prevents flash) --><script>
-      (function() {
-        const theme = localStorage.getItem('theme') ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
-    </script><!-- Load octez.js --><script type="module">document.querySelectorAll(".markdown-body pre").forEach(t=>{const r=document.createElement("button");r.className="copy-button",r.textContent="Copy",r.setAttribute("aria-label","Copy code to clipboard"),r.addEventListener("click",async()=>{const e=t.querySelector("code")?.textContent||t.textContent||"";try{await navigator.clipboard.writeText(e)}catch(o){console.error("Failed to copy code:",o),r.textContent="Failed to copy",setTimeout(()=>{r.textContent="Copy"},2e3)}}),t.appendChild(r)});const l=document.querySelectorAll(".markdown-body h1, .markdown-body h2, .markdown-body h3"),c=document.getElementById("sidebar-nav");if(l.length>0&&c){l.forEach(e=>{const o=document.createElement("a"),n=document.createElement("li");e.tagName==="H1"?(n.className="mb-2",o.className="block py-1 px-2 text-text-secondary no-underline text-base border-l-2 border-transparent hover:text-primary hover:border-primary transition-all"):e.tagName==="H2"?(n.className="mb-1 ml-4",o.className="block py-1 px-2 text-text-tertiary no-underline text-sm border-l-2 border-transparent hover:text-primary hover:border-primary transition-all"):e.tagName==="H3"&&(n.className="mb-1 ml-6",o.className="block py-1 px-2 text-text-tertiary no-underline text-sm border-l-2 border-transparent hover:text-primary hover:border-primary transition-all"),o.href=`#${e.id}`,o.textContent=e.textContent||"",o.addEventListener("click",a=>{a.preventDefault(),e.scrollIntoView({behavior:"smooth"}),history.pushState(null,"",`#${e.id}`)}),n.appendChild(o),c.appendChild(n)});const t=document.getElementById("sidebar-content"),r=document.getElementById("sidebar-line");if(t&&r){const e=()=>{r.style.height=`${t.offsetHeight}px`};e(),new ResizeObserver(e).observe(t)}}const s=document.querySelectorAll(".markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6");s.forEach((t,r)=>{if(!t.id){const o=t.textContent||"";t.id=o.toLowerCase().replace(/[^a-z0-9\s-]/g,"").replace(/\s+/g,"-").trim()||`heading-${r}`}const e=document.createElement("a");e.href=`#${t.id}`,e.className="header-anchor",e.textContent="#",e.setAttribute("aria-label","Copy link to section"),e.addEventListener("click",async o=>{o.preventDefault();const n=`${window.location.origin}${window.location.pathname}#${t.id}`;try{await navigator.clipboard.writeText(n),t.scrollIntoView({behavior:"smooth"}),history.pushState(null,"",`#${t.id}`)}catch(a){console.error("Failed to copy link:",a)}}),t.appendChild(e)});</script><!-- Load Prism for syntax highlighting --><script type="module" src="/pr-17/_astro/MarkdownLayout.astro_astro_type_script_index_1_lang.CBGUddAE.js"></script><link rel="stylesheet" href="/pr-17/_astro/index.D36Id_6H.css">
-<link rel="stylesheet" href="/pr-17/_astro/changelog.BTviCLAj.css">
-<style>.tabs-container[data-astro-cid-xlvzfuxv]{margin:2rem 0}.tabs-buttons[data-astro-cid-xlvzfuxv]{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}.tab-button[data-astro-cid-xlvzfuxv]{padding:.5rem 1.5rem;border:none;border-radius:9999px;background-color:transparent;color:#6b7280;font-size:1rem;font-weight:500;cursor:pointer;transition:all .2s ease}.tab-button[data-astro-cid-xlvzfuxv]:hover{color:#374151}.tab-button[data-astro-cid-xlvzfuxv].active{background-color:#f4dcc4;color:#1f2937}.tabs-content[data-astro-cid-xlvzfuxv]{position:relative}
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/pr-17/favicon.ico"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v5.18.2"><meta name="base-url" content="/pr-17/"><title>octez.js Documentation</title><meta name="description" content="Documentation - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><link rel="canonical" href="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog"><!-- Prevent indexing of old/next versions --><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog"><meta property="og:title" content="octez.js Documentation"><meta property="og:description" content="Documentation - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><meta property="og:site_name" content="octez.js"><meta property="og:image" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:url" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog"><meta name="twitter:title" content="octez.js Documentation"><meta name="twitter:description" content="Documentation - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><meta name="twitter:image" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-17/og-image.png"><!-- Structured Data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"octez.js Documentation","description":"Documentation - Learn how to use octez.js, a TypeScript library for Tezos blockchain development.","url":"https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog","publisher":{"@type":"Organization","name":"Nomadic Labs","url":"https://nomadic-labs.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://effective-chainsaw-r6861q1.pages.github.io/pr-17/changelog"},"isPartOf":{"@type":"WebSite","name":"octez.js Documentation","url":"https://effective-chainsaw-r6861q1.pages.github.io/"}}</script><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><!-- Theme initialization --><script>
+      document.documentElement.setAttribute('data-theme', 'light');
+    </script><!-- Load octez.js --><script type="module">document.querySelectorAll(".markdown-body pre").forEach(t=>{const e=document.createElement("button");e.className="copy-button",e.textContent="Copy",e.setAttribute("aria-label","Copy code to clipboard"),e.addEventListener("click",async()=>{const o=t.querySelector("code")?.textContent||t.textContent||"";try{await navigator.clipboard.writeText(o)}catch(a){console.error("Failed to copy code:",a),e.textContent="Failed to copy",setTimeout(()=>{e.textContent="Copy"},2e3)}}),t.appendChild(e)});const n=document.querySelectorAll(".markdown-body h1, .markdown-body h2, .markdown-body h3"),c=document.getElementById("sidebar-nav");n.length>0&&c&&n.forEach(t=>{const e=document.createElement("a"),o=document.createElement("li");t.tagName==="H1"?(o.className="mb-1",e.className="toc-link toc-link-h1"):t.tagName==="H2"?(o.className="mb-0.5",e.className="toc-link toc-link-h2"):t.tagName==="H3"&&(o.className="mb-0.5 ml-3",e.className="toc-link toc-link-h3"),e.href=`#${t.id}`,e.textContent=t.textContent||"",e.addEventListener("click",a=>{a.preventDefault(),t.scrollIntoView({behavior:"smooth"}),history.pushState(null,"",`#${t.id}`)}),o.appendChild(e),c.appendChild(o)});const d=document.querySelectorAll(".markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6");d.forEach((t,e)=>{if(!t.id){const a=t.textContent||"";t.id=a.toLowerCase().replace(/[^a-z0-9\s-]/g,"").replace(/\s+/g,"-").trim()||`heading-${e}`}const o=document.createElement("a");o.href=`#${t.id}`,o.className="header-anchor",o.textContent="#",o.setAttribute("aria-label","Copy link to section"),o.addEventListener("click",async a=>{a.preventDefault();const r=`${window.location.origin}${window.location.pathname}#${t.id}`;try{await navigator.clipboard.writeText(r),t.scrollIntoView({behavior:"smooth"}),history.pushState(null,"",`#${t.id}`)}catch(l){console.error("Failed to copy link:",l)}}),t.appendChild(o)});</script><!-- Load Prism for syntax highlighting --><script type="module" src="/pr-17/_astro/MarkdownLayout.astro_astro_type_script_index_1_lang.CBGUddAE.js"></script><link rel="stylesheet" href="/pr-17/_astro/index.BMpBL8Sy.css">
+<link rel="stylesheet" href="/pr-17/_astro/changelog.GS8Cczfw.css">
+<style>.tabs-container[data-astro-cid-xlvzfuxv]{margin:2rem 0}.tabs-buttons[data-astro-cid-xlvzfuxv]{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}.tab-button[data-astro-cid-xlvzfuxv]{padding:.5rem 1.5rem;border:none;border-radius:9999px;background-color:transparent;color:#6b7280;font-size:1rem;font-weight:500;cursor:pointer;transition:all .2s ease}.tab-button[data-astro-cid-xlvzfuxv]:hover{color:#374151}.tab-button[data-astro-cid-xlvzfuxv].active{background-color:#0000000d;color:#1f2937}.tabs-content[data-astro-cid-xlvzfuxv]{position:relative}
 code[class*=language-],pre[class*=language-]{color:#000;background:none;text-shadow:0 1px white;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]::-moz-selection,pre[class*=language-] ::-moz-selection,code[class*=language-]::-moz-selection,code[class*=language-] ::-moz-selection{text-shadow:none;background:#b3d4fc}pre[class*=language-]::selection,pre[class*=language-] ::selection,code[class*=language-]::selection,code[class*=language-] ::selection{text-shadow:none;background:#b3d4fc}@media print{code[class*=language-],pre[class*=language-]{text-shadow:none}}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#f5f2f0}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.comment,.token.prolog,.token.doctype,.token.cdata{color:#708090}.token.punctuation{color:#999}.token.namespace{opacity:.7}.token.property,.token.tag,.token.boolean,.token.number,.token.constant,.token.symbol,.token.deleted{color:#905}.token.selector,.token.attr-name,.token.string,.token.char,.token.builtin,.token.inserted{color:#690}.token.operator,.token.entity,.token.url,.language-css .token.string,.style .token.string{color:#9a6e3a;background:#ffffff80}.token.atrule,.token.attr-value,.token.keyword{color:#07a}.token.function,.token.class-name{color:#dd4a68}.token.regex,.token.important,.token.variable{color:#e90}.token.important,.token.bold{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}
 .tab-item[data-astro-cid-r7gez2uh]{display:none}
-</style></head> <body class="flex flex-col min-h-screen bg-background-primary text-text-primary"> <header class="bg-background-primary border-b border-border px-4 md:px-14 sticky top-0 z-100 shadow-sm transition-transform duration-300 ease-in-out" id="main-header" data-astro-cid-3ef6ksr2> <div class="mx-2 md:mx-8 flex justify-between items-center py-2" data-astro-cid-3ef6ksr2> <a href="/pr-17/" class="logo no-underline flex items-center gap-2" aria-label="octez.js home" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/octez-logo-light.-Ons0Gwx.png" alt="octez.js" class="h-20 w-auto logo-light object-contain" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/octez-logo-dark.B9DlBCM3.png" alt="octez.js" class="h-20 w-auto logo-dark object-contain" data-astro-cid-3ef6ksr2> </a> <!-- Desktop Navigation --> <nav class="hidden lg:flex items-center gap-8" data-astro-cid-3ef6ksr2> <!-- Search Button --> <button id="desktop-search-btn" class="flex items-center gap-2 bg-background-secondary px-4 py-1.5 rounded-full hover:bg-background-tertiary transition-colors border border-border text-text-tertiary text-sm" aria-label="Search documentation" data-astro-cid-3ef6ksr2> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" data-astro-cid-3ef6ksr2></path> </svg> <span data-astro-cid-3ef6ksr2>Search</span> <kbd class="hidden xl:inline-block ml-2 px-1.5 py-0.5 text-xs font-semibold text-text-muted bg-background-tertiary rounded" data-astro-cid-3ef6ksr2>⌘K</kbd> </button> <!-- Version Dropdown --> <div class="relative" id="version-dropdown-container" data-astro-cid-3ef6ksr2> <button id="version-dropdown-btn" class="font-medium flex items-center gap-1.5 hover:text-primary transition-colors nav-link" aria-expanded="false" aria-haspopup="true" data-astro-cid-3ef6ksr2> <span id="version-display" data-astro-cid-3ef6ksr2>0.9.0</span> <svg class="w-4 h-4 transition-transform duration-200" id="version-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" data-astro-cid-3ef6ksr2></path> </svg> </button> <div id="version-dropdown-menu" class="absolute top-full left-0 mt-2 py-2 bg-background-secondary rounded-lg shadow-lg border border-border min-w-32 opacity-0 invisible transition-all duration-200 z-50" data-astro-cid-3ef6ksr2> <a href="/pr-17/docs/0.9.0/quick_start" class="block px-4 py-2 text-sm hover:bg-accent-light transition-colors text-accent font-medium bg-accent-light" data-astro-cid-3ef6ksr2> 0.9.0 </a><a href="/pr-17/docs/next/quick_start" class="block px-4 py-2 text-sm hover:bg-accent-light transition-colors text-text-secondary" data-astro-cid-3ef6ksr2> next </a> </div> </div> <a href="/pr-17/changelog" class="font-medium nav-link" data-astro-cid-3ef6ksr2>Release Notes</a> <a href="/pr-17/docs/0.9.0/quick_start" class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3 py-1.5 rounded-full" data-astro-cid-3ef6ksr2>Get Started</a> <!-- Socials --> <div class="flex items-center gap-6" data-astro-cid-3ef6ksr2> <a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors social-icon" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/x.DDkM7Rcg.svg" alt="X" class="inline-block size-6 align-middle mr-1" data-astro-cid-3ef6ksr2> </a> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors social-icon" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/github.CttcLjjd.svg" alt="GitHub" class="inline-block size-7 align-middle mr-1" data-astro-cid-3ef6ksr2> </a> <!-- Theme Toggle --> <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" data-astro-cid-3ef6ksr2> <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" data-astro-cid-3ef6ksr2></path> </svg> <svg id="moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" data-astro-cid-3ef6ksr2></path> </svg> </button> </div> </nav> <!-- Hamburger Button --> <button id="hamburger-btn" class="lg:hidden flex flex-col gap-1.5 p-2 focus:outline-none" aria-label="Toggle menu" aria-expanded="false" data-astro-cid-3ef6ksr2> <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-transform duration-300" data-astro-cid-3ef6ksr2></span> <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-opacity duration-300" data-astro-cid-3ef6ksr2></span> <span class="hamburger-line block w-6 h-0.5 bg-text-primary transition-transform duration-300" data-astro-cid-3ef6ksr2></span> </button> </div> <!-- Mobile Navigation --> <nav id="mobile-menu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0" data-astro-cid-3ef6ksr2> <div class="flex flex-col gap-4 pb-4 px-2" data-astro-cid-3ef6ksr2> <!-- Search Button --> <button id="mobile-search-btn" class="w-full bg-background-secondary px-4 py-2 rounded-full text-center hover:bg-background-tertiary transition-colors border border-border text-text-tertiary text-sm flex items-center justify-center gap-2" aria-label="Search documentation" data-astro-cid-3ef6ksr2> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" data-astro-cid-3ef6ksr2></path> </svg> <span data-astro-cid-3ef6ksr2>Search</span> </button> <!-- Mobile Version Dropdown --> <div class="relative" id="mobile-version-dropdown-container" data-astro-cid-3ef6ksr2> <button id="mobile-version-dropdown-btn" class="w-full font-medium py-2 px-4 hover:bg-accent-light rounded-lg transition-colors flex items-center justify-between" aria-expanded="false" aria-haspopup="true" data-astro-cid-3ef6ksr2> <span data-astro-cid-3ef6ksr2>Version: <span id="mobile-version-display" data-astro-cid-3ef6ksr2>0.9.0</span></span> <svg class="w-4 h-4 transition-transform duration-200" id="mobile-version-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" data-astro-cid-3ef6ksr2></path> </svg> </button> <div id="mobile-version-dropdown-menu" class="overflow-hidden transition-all duration-200 max-h-0 bg-background-tertiary rounded-lg mt-1" data-astro-cid-3ef6ksr2> <a href="/pr-17/docs/0.9.0/quick_start" class="block px-6 py-2 text-sm hover:bg-accent-light transition-colors text-accent font-medium bg-accent-light" data-astro-cid-3ef6ksr2> 0.9.0 </a><a href="/pr-17/docs/next/quick_start" class="block px-6 py-2 text-sm hover:bg-accent-light transition-colors text-text-secondary" data-astro-cid-3ef6ksr2> next </a> </div> </div> <a href="/pr-17/changelog" class="font-medium py-2 px-4 hover:bg-accent-light rounded-lg transition-colors" data-astro-cid-3ef6ksr2>Release Notes</a> <a href="/pr-17/docs/0.9.0/quick_start" class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-4 py-2 rounded-full text-center" data-astro-cid-3ef6ksr2>Get Started</a> <!-- Socials --> <div class="flex items-center justify-center gap-6 pt-2" data-astro-cid-3ef6ksr2> <a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" class="text-text-secondary hover:text-accent transition-colors" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/x.DDkM7Rcg.svg" alt="X" class="inline-block size-7 align-middle" data-astro-cid-3ef6ksr2> </a> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="text-text-secondary hover:text-accent transition-colors" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/github.CttcLjjd.svg" alt="GitHub" class="inline-block size-7 align-middle" data-astro-cid-3ef6ksr2> </a> <!-- Mobile Theme Toggle --> <button id="mobile-theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" data-astro-cid-3ef6ksr2> <svg class="sun-icon w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" data-astro-cid-3ef6ksr2></path> </svg> <svg class="moon-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" data-astro-cid-3ef6ksr2></path> </svg> </button> </div> </div> </nav> </header> <div id="search-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/50 backdrop-blur-sm" data-version="0.9.0"> <div class="w-full max-w-2xl mx-4 bg-background-primary rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"> <div class="flex items-center gap-3 px-4 py-3 border-b border-border"> <svg class="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <input id="search-input" type="text" placeholder="Search documentation..." class="flex-1 outline-none text-lg bg-transparent text-text-primary placeholder:text-text-muted" autocomplete="off"> <kbd class="hidden sm:block px-2 py-1 text-xs font-semibold text-text-tertiary bg-background-tertiary rounded">ESC</kbd> </div> <div id="search-results" class="flex-1 overflow-y-auto p-2"> <p id="search-empty" class="py-8 text-center text-sm text-text-muted">Type to search v0.9.0</p> <p id="search-loading" class="hidden py-8 text-center text-sm text-text-muted">Loading...</p> <p id="search-no-results" class="hidden py-8 text-center text-sm text-text-muted">No results found</p> <ul id="search-list" class="hidden space-y-1"></ul> </div> <div class="border-t border-border px-4 py-2 bg-background-secondary flex justify-between text-xs text-text-muted"> <span><kbd class="px-1.5 py-0.5 bg-background-primary border border-border rounded">↑↓</kbd> Navigate <kbd class="ml-2 px-1.5 py-0.5 bg-background-primary border border-border rounded">↵</kbd> Select</span> <span>v0.9.0</span> </div> </div> </div> <script type="module" src="/pr-17/_astro/SearchModal.astro_astro_type_script_index_0_lang.B77cYAp2.js"></script> <script type="module">let u=window.scrollY,l=!1;const c=document.getElementById("main-header");function f(){const e=window.scrollY;e<=10?c?.classList.remove("-translate-y-full"):e>u?c?.classList.add("-translate-y-full"):c?.classList.remove("-translate-y-full"),u=e,l=!1}function E(){l||(window.requestAnimationFrame(f),l=!0)}window.addEventListener("scroll",E);const t=document.getElementById("hamburger-btn"),n=document.getElementById("mobile-menu");t&&n&&(t.addEventListener("click",()=>{const e=t.getAttribute("aria-expanded")==="true";t.setAttribute("aria-expanded",e?"false":"true"),e?(n.style.maxHeight="0",t.classList.remove("open")):(n.style.maxHeight=n.scrollHeight+"px",t.classList.add("open"))}),window.addEventListener("resize",()=>{window.innerWidth>=1024&&(n.style.maxHeight="0",t.setAttribute("aria-expanded","false"),t.classList.remove("open"))}));const d=document.getElementById("version-dropdown-btn"),a=document.getElementById("version-dropdown-menu"),p=document.getElementById("version-chevron");function h(){a?.classList.remove("opacity-100","visible"),a?.classList.add("opacity-0","invisible"),p?.classList.remove("rotate-180"),d?.setAttribute("aria-expanded","false")}function y(){a?.classList.remove("opacity-0","invisible"),a?.classList.add("opacity-100","visible"),p?.classList.add("rotate-180"),d?.setAttribute("aria-expanded","true")}d&&a&&(d.addEventListener("click",e=>{e.stopPropagation(),d.getAttribute("aria-expanded")==="true"?h():y()}),document.addEventListener("click",e=>{document.getElementById("version-dropdown-container")?.contains(e.target)||h()}));const r=document.getElementById("mobile-version-dropdown-btn"),s=document.getElementById("mobile-version-dropdown-menu"),g=document.getElementById("mobile-version-chevron");r&&s&&r.addEventListener("click",()=>{const e=r.getAttribute("aria-expanded")==="true";r.setAttribute("aria-expanded",e?"false":"true"),e?(s.style.maxHeight="0",g?.classList.remove("rotate-180")):(s.style.maxHeight=s.scrollHeight+"px",g?.classList.add("rotate-180"),n&&t?.getAttribute("aria-expanded")==="true"&&(n.style.maxHeight=n.scrollHeight+s.scrollHeight+"px"))});document.getElementById("desktop-search-btn")?.addEventListener("click",()=>{window.openSearchModal?.()});document.getElementById("mobile-search-btn")?.addEventListener("click",()=>{window.openSearchModal?.(),n&&t&&(n.style.maxHeight="0",t.setAttribute("aria-expanded","false"),t.classList.remove("open"))});function v(e){const o=document.querySelectorAll("#sun-icon, .sun-icon"),m=document.querySelectorAll("#moon-icon, .moon-icon");e==="dark"?(o.forEach(i=>i.classList.remove("hidden")),m.forEach(i=>i.classList.add("hidden"))):(o.forEach(i=>i.classList.add("hidden")),m.forEach(i=>i.classList.remove("hidden")))}function b(){const o=(document.documentElement.getAttribute("data-theme")||"light")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",o),localStorage.setItem("theme",o),v(o)}const L=document.documentElement.getAttribute("data-theme")||"light";v(L);document.getElementById("theme-toggle")?.addEventListener("click",b);document.getElementById("mobile-theme-toggle")?.addEventListener("click",b);</script>  <main class="w-full flex">  <div class="flex-1 min-w-0 px-4 sm:px-8 lg:px-12 xl:px-24 pt-12"> <div class="max-w-4xl mx-auto">     <div class="mb-4"> <h1 class="text-text-secondary text-5xl font-bold"></h1>  </div> <div class="markdown-body flex-1 min-w-0 pb-8"> <h1 id="octezjs-v090">octez.js v0.9.0</h1>
+</style></head> <body class="flex flex-col min-h-screen bg-background-primary text-text-primary"> <header class="bg-brand-dark px-6 sticky top-0 z-100 shadow-sm transition-transform duration-300 ease-in-out navbar-font" id="main-header" data-astro-cid-3ef6ksr2> <div class="flex justify-between items-center py-3" data-astro-cid-3ef6ksr2> <a href="/pr-17/" class="logo no-underline flex items-center gap-2" aria-label="octez.js home" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/octez-logo.CEHtwN6o.svg" alt="octez.js" class="h-7 w-auto object-contain" data-astro-cid-3ef6ksr2> </a> <!-- Desktop Navigation --> <nav class="hidden lg:flex items-center gap-8" data-astro-cid-3ef6ksr2> <!-- Search Button --> <button id="desktop-search-btn" class="flex items-center gap-2 bg-background-secondary px-4 py-1.5 rounded-full hover:bg-background-tertiary transition-colors border border-border text-text-tertiary text-sm" aria-label="Search documentation" data-astro-cid-3ef6ksr2> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" data-astro-cid-3ef6ksr2></path> </svg> <span data-astro-cid-3ef6ksr2>Search</span> <kbd class="hidden xl:inline-block ml-2 px-1.5 py-0.5 text-xs text-text-muted bg-background-tertiary rounded" data-astro-cid-3ef6ksr2>⌘K</kbd> </button> <!-- Version Dropdown --> <div class="relative" id="version-dropdown-container" data-astro-cid-3ef6ksr2> <button id="version-dropdown-btn" class="flex items-center gap-1.5 hover:text-primary transition-colors nav-link" aria-expanded="false" aria-haspopup="true" data-astro-cid-3ef6ksr2> <span id="version-display" data-astro-cid-3ef6ksr2>0.9.0</span> <svg class="w-4 h-4 transition-transform duration-200" id="version-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" data-astro-cid-3ef6ksr2></path> </svg> </button> <div id="version-dropdown-menu" class="absolute top-full left-0 mt-2 py-2 bg-background-secondary rounded-lg shadow-lg border border-border min-w-32 opacity-0 invisible transition-all duration-200 z-50" data-astro-cid-3ef6ksr2> <a href="/pr-17/docs/0.9.0/quick_start" class="block px-4 py-2 text-sm hover:bg-accent-light transition-colors text-accent bg-accent-light" data-astro-cid-3ef6ksr2> 0.9.0 </a><a href="/pr-17/docs/next/quick_start" class="block px-4 py-2 text-sm hover:bg-accent-light transition-colors text-text-secondary" data-astro-cid-3ef6ksr2> next </a> </div> </div> <a href="/pr-17/changelog" class="nav-link" data-astro-cid-3ef6ksr2>Release Notes</a> <a href="/pr-17/docs/0.9.0/quick_start" class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3 py-1.5 rounded-full" data-astro-cid-3ef6ksr2>Get Started</a> <!-- Socials --> <div class="flex items-center gap-6" data-astro-cid-3ef6ksr2> <a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors social-icon" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/x.DDkM7Rcg.svg" alt="X" class="inline-block size-6 align-middle mr-1" data-astro-cid-3ef6ksr2> </a> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors social-icon" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/github.CttcLjjd.svg" alt="GitHub" class="inline-block size-7 align-middle mr-1" data-astro-cid-3ef6ksr2> </a> </div> </nav> <!-- Hamburger Button --> <button id="hamburger-btn" class="lg:hidden flex flex-col gap-1.5 p-2 focus:outline-none" aria-label="Toggle menu" aria-expanded="false" data-astro-cid-3ef6ksr2> <span class="hamburger-line block w-6 h-0.5 bg-white transition-transform duration-300" data-astro-cid-3ef6ksr2></span> <span class="hamburger-line block w-6 h-0.5 bg-white transition-opacity duration-300" data-astro-cid-3ef6ksr2></span> <span class="hamburger-line block w-6 h-0.5 bg-white transition-transform duration-300" data-astro-cid-3ef6ksr2></span> </button> </div> <!-- Mobile Navigation --> <nav id="mobile-menu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0" data-astro-cid-3ef6ksr2> <div class="flex flex-col gap-4 pb-4 px-2" data-astro-cid-3ef6ksr2> <!-- Search Button --> <button id="mobile-search-btn" class="w-full bg-background-secondary px-4 py-2 rounded-full text-center hover:bg-background-tertiary transition-colors border border-border text-white/70 text-sm flex items-center justify-center gap-2" aria-label="Search documentation" data-astro-cid-3ef6ksr2> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" data-astro-cid-3ef6ksr2></path> </svg> <span data-astro-cid-3ef6ksr2>Search</span> </button> <!-- Mobile Version Dropdown --> <div class="relative" id="mobile-version-dropdown-container" data-astro-cid-3ef6ksr2> <button id="mobile-version-dropdown-btn" class="w-full py-2 px-4 hover:bg-accent-light rounded-lg transition-colors flex items-center justify-between text-white" aria-expanded="false" aria-haspopup="true" data-astro-cid-3ef6ksr2> <span data-astro-cid-3ef6ksr2>Version: <span id="mobile-version-display" data-astro-cid-3ef6ksr2>0.9.0</span></span> <svg class="w-4 h-4 transition-transform duration-200" id="mobile-version-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" data-astro-cid-3ef6ksr2></path> </svg> </button> <div id="mobile-version-dropdown-menu" class="overflow-hidden transition-all duration-200 max-h-0 bg-background-tertiary rounded-lg mt-1" data-astro-cid-3ef6ksr2> <a href="/pr-17/docs/0.9.0/quick_start" class="block px-6 py-2 text-sm hover:bg-accent-light transition-colors text-accent bg-accent-light" data-astro-cid-3ef6ksr2> 0.9.0 </a><a href="/pr-17/docs/next/quick_start" class="block px-6 py-2 text-sm hover:bg-accent-light transition-colors text-text-secondary" data-astro-cid-3ef6ksr2> next </a> </div> </div> <a href="/pr-17/changelog" class="py-2 px-4 hover:bg-accent-light rounded-lg transition-colors text-white" data-astro-cid-3ef6ksr2>Release Notes</a> <a href="/pr-17/docs/0.9.0/quick_start" class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-4 py-2 rounded-full text-center" data-astro-cid-3ef6ksr2>Get Started</a> <!-- Socials --> <div class="flex items-center justify-center gap-6 pt-2" data-astro-cid-3ef6ksr2> <a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-accent transition-colors" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/x.DDkM7Rcg.svg" alt="X" class="inline-block size-7 align-middle" data-astro-cid-3ef6ksr2> </a> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-accent transition-colors" data-astro-cid-3ef6ksr2> <img src="/pr-17/_astro/github.CttcLjjd.svg" alt="GitHub" class="inline-block size-7 align-middle" data-astro-cid-3ef6ksr2> </a> </div> </div> </nav> </header> <div id="search-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/50 backdrop-blur-sm" data-version="0.9.0"> <div class="w-full max-w-2xl mx-4 bg-background-primary rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"> <div class="flex items-center gap-3 px-4 py-3 border-b border-border"> <svg class="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <input id="search-input" type="text" placeholder="Search documentation..." class="flex-1 outline-none text-lg bg-transparent text-text-primary placeholder:text-text-muted" autocomplete="off"> <kbd class="hidden sm:block px-2 py-1 text-xs font-semibold text-text-tertiary bg-background-tertiary rounded">ESC</kbd> </div> <div id="search-results" class="flex-1 overflow-y-auto p-2"> <p id="search-empty" class="py-8 text-center text-sm text-text-muted">Type to search v0.9.0</p> <p id="search-loading" class="hidden py-8 text-center text-sm text-text-muted">Loading...</p> <p id="search-no-results" class="hidden py-8 text-center text-sm text-text-muted">No results found</p> <ul id="search-list" class="hidden space-y-1"></ul> </div> <div class="border-t border-border px-4 py-2 bg-background-secondary flex justify-between text-xs text-text-muted"> <span><kbd class="px-1.5 py-0.5 bg-background-primary border border-border rounded">↑↓</kbd> Navigate <kbd class="ml-2 px-1.5 py-0.5 bg-background-primary border border-border rounded">↵</kbd> Select</span> <span>v0.9.0</span> </div> </div> </div> <script type="module" src="/pr-17/_astro/SearchModal.astro_astro_type_script_index_0_lang.CKXHzzvt.js"></script> <script type="module">let l=window.scrollY,d=!1;const r=document.getElementById("main-header");function v(){const e=window.scrollY;e<=10?r?.classList.remove("-translate-y-full"):e>l?r?.classList.add("-translate-y-full"):r?.classList.remove("-translate-y-full"),l=e,d=!1}function g(){d||(window.requestAnimationFrame(v),d=!0)}window.addEventListener("scroll",g);const t=document.getElementById("hamburger-btn"),n=document.getElementById("mobile-menu");t&&n&&(t.addEventListener("click",()=>{const e=t.getAttribute("aria-expanded")==="true";t.setAttribute("aria-expanded",e?"false":"true"),e?(n.style.maxHeight="0",t.classList.remove("open")):(n.style.maxHeight=n.scrollHeight+"px",t.classList.add("open"))}),window.addEventListener("resize",()=>{window.innerWidth>=1024&&(n.style.maxHeight="0",t.setAttribute("aria-expanded","false"),t.classList.remove("open"))}));const s=document.getElementById("version-dropdown-btn"),o=document.getElementById("version-dropdown-menu"),u=document.getElementById("version-chevron");function c(){o?.classList.remove("opacity-100","visible"),o?.classList.add("opacity-0","invisible"),u?.classList.remove("rotate-180"),s?.setAttribute("aria-expanded","false")}function b(){o?.classList.remove("opacity-0","invisible"),o?.classList.add("opacity-100","visible"),u?.classList.add("rotate-180"),s?.setAttribute("aria-expanded","true")}s&&o&&(s.addEventListener("click",e=>{e.stopPropagation(),s.getAttribute("aria-expanded")==="true"?c():b()}),document.addEventListener("click",e=>{document.getElementById("version-dropdown-container")?.contains(e.target)||c()}));const a=document.getElementById("mobile-version-dropdown-btn"),i=document.getElementById("mobile-version-dropdown-menu"),m=document.getElementById("mobile-version-chevron");a&&i&&a.addEventListener("click",()=>{const e=a.getAttribute("aria-expanded")==="true";a.setAttribute("aria-expanded",e?"false":"true"),e?(i.style.maxHeight="0",m?.classList.remove("rotate-180")):(i.style.maxHeight=i.scrollHeight+"px",m?.classList.add("rotate-180"),n&&t?.getAttribute("aria-expanded")==="true"&&(n.style.maxHeight=n.scrollHeight+i.scrollHeight+"px"))});document.getElementById("desktop-search-btn")?.addEventListener("click",()=>{window.openSearchModal?.()});document.getElementById("mobile-search-btn")?.addEventListener("click",()=>{window.openSearchModal?.(),n&&t&&(n.style.maxHeight="0",t.setAttribute("aria-expanded","false"),t.classList.remove("open"))});</script>  <main class="w-full flex">  <div class="flex-1 min-w-0 px-6 lg:px-10 pt-8"> <div class="max-w-4xl mx-auto">     <div class="mb-4"> <h1 class="text-text-secondary text-5xl font-bold"></h1>  </div> <div class="markdown-body flex-1 min-w-0 pb-8"> <h1 id="octezjs-v110">octez.js v1.1.0</h1>
+<p>Synced with Taquito v24.3.0, bringing the Taquito v24.1–v24.3 changes into octez.js. The API stays compatible; most items are dependency/runtime updates, with a few breaking changes noted below.</p>
+<h3 id="breaking-changes">Breaking changes</h3>
+<ul>
+<li><strong>Node.js &gt;=22 is now required</strong> for development and server-side use. <code>node-fetch</code> has been dropped in favour of the native <code>globalThis.fetch</code>. Bundled browser apps are unaffected.</li>
+<li><strong><code>NetworkType</code> enum trimmed.</strong> Fifteen long-retired protocol testnets were removed (<code>DELPHINET</code>, <code>EDONET</code>, <code>FLORENCENET</code>, <code>GRANADANET</code>, <code>HANGZHOUNET</code>, <code>ITHACANET</code>, <code>JAKARTANET</code>, <code>KATHMANDUNET</code>, <code>LIMANET</code>, <code>MUMBAINET</code>, <code>NAIROBINET</code>, <code>OXFORDNET</code>, <code>PARISNET</code>, <code>QUEBECNET</code>, <code>RIONET</code>). <code>GHOSTNET</code> and <code>SEOULNET</code> are now deprecated aliases — migrate to <code>SHADOWNET</code> and <code>TALLINNNET</code>.</li>
+<li><strong><code>bignumber.js</code> upgraded to v10.</strong> Transparent for most consumers; if you annotate <code>BigNumber</code> in your own type signatures, add a direct <code>bignumber.js@^10</code> dependency.</li>
+<li><strong>TypeScript upgraded to 5.9.3</strong>, with the compilation target moved to <code>es2020</code>.</li>
+</ul>
+<h3 id="tezos-xoctezjs-sapling-overhaul"><code>@tezos-x/octez.js-sapling</code> overhaul</h3>
+<ul>
+<li>No more install-time (<code>postinstall</code>) network fetch. Proving parameters are now <strong>lazy-loaded at runtime</strong> via <code>initSapling()</code> and <strong>SHA-256 verified</strong> before use, served from a first-party mirror by default.</li>
+<li>Viewing-only flows (key derivation, balances, history) need no initialization; call <code>preloadSaplingParams()</code> to warm the cache and hide first-use latency.</li>
+<li>The wasm dependency moved to <code>@taquito/sapling-wasm@0.2.0</code>. Four source modes are supported: first-party mirror (default), <code>zcash</code>, custom remote URLs with SHA-256 digests, and local filesystem paths for Node.js/CI.</li>
+</ul>
+<h3 id="estimation--rpc">Estimation &amp; RPC</h3>
+<ul>
+<li><strong>Gas/fee estimation now matches <code>octez-client</code>/protocol semantics</strong> on mainnet-like networks (reserves reveal gas, divides remaining block gas correctly). Estimated values may shift, especially for mixed batches and unrevealed accounts — revalidate any brittle assertions.</li>
+<li><strong>RPC read consistency finalized:</strong> <code>atExactBlock(...)</code> keeps exact historical pinning, while <code>at(..., block)</code> and <code>op.contract()</code> bootstrap from the block then track head, preserving existing contract semantics.</li>
+</ul>
+<h3 id="wallet-integration">Wallet integration</h3>
+<ul>
+<li><strong>Fixes wallet connections that could freeze on page load</strong> — relay health-check timeouts, automatic recovery from stale/decommissioned servers, and proper errors instead of hung promises.</li>
+<li>Beacon SDK types (<code>NetworkType</code>, <code>BeaconEvent</code>, …) are re-exported from <code>@tezos-x/octez.js-dapp-wallet</code>, so you no longer need to depend on the Beacon SDK packages directly.</li>
+<li><code>@tezos-x/octez.js-wallet-connect</code>: <code>getAllExistingSessionKeys()</code> and <code>configureWithExistingSessionKey()</code> are now synchronous in the type surface (runtime <code>await</code> still works).</li>
+</ul>
+<hr/>
+<h1 id="octezjs-v100">octez.js v1.0.0</h1>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>Updated <code>@tezos-x/octez.connect-dapp</code> to v1.0.0 in <code>@tezos-x/octez.js-dapp-wallet</code></li>
+<li>Updated <code>@tezos-x/octez.connect-sdk</code> to v1.0.0 in the website</li>
+</ul>
+<hr/>
+<h1 id="octezjs-v090">octez.js v0.9.0</h1>
 <p><strong>Initial release</strong> - octez.js is a fork of <a href="https://github.com/ecadlabs/taquito">Taquito</a> v24.0.2.</p>
-<p>This release establishes octez.js as the continuation of Taquito under new stewardship. The API remains fully compatible with Taquito - see the <a href="/docs/0.9.0/migration_from_taquito">migration guide</a> for details on updating your imports.</p>
+<p>The API remains fully compatible with Taquito - see the <a href="/docs/0.9.0/migration_from_taquito">migration guide</a> for details on updating your imports.</p>
 <h3 id="changes-from-taquito">Changes from Taquito</h3>
 <ul>
 <li>Renamed all packages from <code>@taquito/*</code> to <code>@tezos-x/octez.js-*</code></li>
-<li>Updated documentation and branding</li>
+<li>Updated documentation</li>
 <li>New website at <a href="https://octez-js.tezos.com">octez-js.tezos.com</a></li>
 </ul>
 <hr/>
 <h1 id="taquito-history">Taquito History</h1>
 <blockquote>
-<p><strong>Note:</strong> The following releases are from <a href="https://github.com/ecadlabs/taquito">Taquito</a>, the project from which octez.js was forked. These releases document the evolution of the library before it became octez.js.</p>
+<p><strong>Note:</strong> The following releases are from <a href="https://github.com/ecadlabs/taquito">Taquito</a>, the project from which octez.js was forked.</p>
 </blockquote>
 <h1 id="taquito-v2402">Taquito v24.0.2</h1>
 <h2 id="summary">Summary</h2>
@@ -67,7 +97,7 @@ There are only websites and internal changes since 24.0.0-RC.0</p>
 <ul>
 <li><code>@taquito/rpc</code> – Updated multiple RPC types to align with <strong>Protocol 24 (Tallinn)</strong> schemas, including: VotingInfoResponse, OperationContentsAndResultMetadataExtended1, BakingRightsQueryArgumentsBase, AttestationRightsQueryArguments, OperationResultTransaction, ConstantsResponse, ConstantsResponseProto024, BlockMetadata #3244, #3245, #3261</li>
 </ul>
-<h3 id="dependencies">Dependencies</h3>
+<h3 id="dependencies-1">Dependencies</h3>
 <ul>
 <li>Upgraded multiple Ledger-related dependencies via Snyk #3266</li>
 <li>Switched to native <code>fetch</code> where applicable #3266</li>
@@ -392,7 +422,7 @@ const length = payloadLength[PrefixV2.Ed25519PublicKeyHash]
 <code>@taquito/rpc</code> - Updated type <code>ConstantsResponse</code> with new interface <code>ConstantsResponseProto022</code> #3115
 <code>@taquito/rpc</code> - Updated <code>DelegatesResponse</code> with multiple new properties and obsolete old ones #3112
 <code>@taquito/rpc</code> - Added new types <code>OperationContentsDalEntrapmentEvidence</code>, <code>OperationContentsAndResultDalEntrapmentEvidence</code> and <code>OperationContentsAndResultMetadataDalEntrapmentEvidence</code> for new anonymous operation <code>dal_entrapment_evidence</code> #3116</p>
-<h3 id="breaking-changes">Breaking Changes</h3>
+<h3 id="breaking-changes-1">Breaking Changes</h3>
 <p><code>@taquito/utils</code> - Deprecated <code>b58decodeL2Address</code> and <code>encodeL2Address</code> util functions, please use <code>b58decode</code> and <code>encodeAddress</code> instead #3130</p>
 <h1 id="taquito-v2105">Taquito v21.0.5</h1>
 <h2 id="summary-3">Summary</h2>
@@ -517,7 +547,7 @@ For more information, visit <a href="https://www.ecadinfra.com/">ECAD Infra’s 
 <ul>
 <li><code>@tezos-x/octez.js</code> - Exported SmartRollupExecuteOutboxMessageParams PR #3031</li>
 <li><code>@taquito/beacon-wallet</code> - reverted <code>subscribeToEvent</code> of <code>ACTIVE_ACCOUNT_SET</code> in the package to ensure users will get a console warning, if they didn’t subscribe events themselves PR #2987</li>
-<li><code>@taquito/rpc</code> - Updated rpc type <code>FrozenStaker</code>  with <code>Baker_edge</code> PR #2987</li>
+<li><code>@taquito/rpc</code> - Updated rpc type <code>FrozenStaker</code> with <code>Baker_edge</code> PR #2987</li>
 <li><code>@taquito/rpc</code> - Updated rpc type <code>METADATA_BALANCE_UPDATES_CATEGORY</code> and<code>OperationMetadataBalanceUpdates</code> to have backwards compatible PR #2987</li>
 </ul>
 <h3 id="documentation-3">Documentation</h3>
@@ -613,15 +643,17 @@ await wallet.requestPermissions();
 </ul>
 <h3 id="tezos-xoctezjs---added-staking-pseudo-operations-stake-unstake-finalize_unstake-to-the-contract-api"><code>@tezos-x/octez.js</code> - Added staking pseudo operations (stake, unstake, finalize_unstake) to the Contract API</h3>
 <pre><code class="language-javascript">const op = await Tezos.contract.stake({
-  amount: 100
+  amount: 100,
 });
 await op.confirmation();
 </code></pre>
 <h3 id="tezos-xoctezjs---added-staking-pseudo-operations-stake-unstake-finalize_unstake-to-the-wallet-api"><code>@tezos-x/octez.js</code> - Added staking pseudo operations (stake, unstake, finalize_unstake) to the Wallet API</h3>
-<pre><code class="language-javascript">const op = await Tezos.wallet.stake({
-  amount: 100,
-  mutez: false
-}).send();
+<pre><code class="language-javascript">const op = await Tezos.wallet
+  .stake({
+    amount: 100,
+    mutez: false,
+  })
+  .send();
 await op.confirmation();
 </code></pre>
 <h1 id="taquito-v1920">Taquito v19.2.0</h1>
@@ -796,7 +828,7 @@ We have updated various dependencies to the latest version in this release. Plea
 <h2 id="summary-19">Summary</h2>
 <ul>
 <li>This is a patch release to upgrade <code>@airgap/beacon-sdk</code> and <code>@airgap/beacon-dapp</code> packages to <code>v4.0.10</code> <a href="https://github.com/ecadlabs/taquito/pull/2649">PR#2649</a></li>
-<li>Updating license to <code>Apache-2.0</code> in <code>package.json</code> files  <a href="https://github.com/ecadlabs/taquito/pull/2636">PR#2636</a></li>
+<li>Updating license to <code>Apache-2.0</code> in <code>package.json</code> files <a href="https://github.com/ecadlabs/taquito/pull/2636">PR#2636</a></li>
 <li>Updated the ledger dependencies <a href="https://github.com/ecadlabs/taquito/pull/2645">PR#2645</a></li>
 <li>Applied dependency upgrades in website suggested by dependabot <a href="https://github.com/ecadlabs/taquito/pull/2645">PR#2645</a></li>
 </ul>
@@ -1021,7 +1053,7 @@ let simulate = await Tezos.rpc.simulateOperation(op)).contents[0]
 <p><strong>Potential Breaking Changes</strong></p>
 <ul>
 <li>Updated RxJS version from v6.6.3 to v7.8.1</li>
-<li>Updated TS version into  v4.2.4</li>
+<li>Updated TS version into v4.2.4</li>
 <li>Please be wary due to the RxJS version upgrade, we’ve been seeing intermittent timeouts when testing against a Flextesa sandbox. This behaviour is <strong>not</strong> present when using it against a regular node (Mainnet, Nairobinet, etc). We are still investigating what the cause might be. #2261</li>
 </ul>
 <p>Some other subtle changes that might affect some developers:</p>
@@ -1132,7 +1164,7 @@ let simulate = await Tezos.rpc.simulateOperation(op)).contents[0]
 </ol>
 </li>
 <li>
-<p>In <code>@taquito/michelson-encoder</code> we introduced a new semantic <code>{ Some: null}</code>  to EncodeObject() for nested options type like (option (option nat)). The old semantic still works when making contract calls but will look to deprecated them in the future as table below. And the corresponding <code>Execute()</code> will now return new semantic <code>{ Some: 1 }</code> as previously return <code>1</code> will be deprecated soon. #2344
+<p>In <code>@taquito/michelson-encoder</code> we introduced a new semantic <code>{ Some: null}</code> to EncodeObject() for nested options type like (option (option nat)). The old semantic still works when making contract calls but will look to deprecated them in the future as table below. And the corresponding <code>Execute()</code> will now return new semantic <code>{ Some: 1 }</code> as previously return <code>1</code> will be deprecated soon. #2344
 <img src="https://github.com/ecadlabs/taquito/assets/106410553/455e7f9f-9d6a-4503-bb89-8f337c322063" alt="image"/></p>
 </li>
 </ul>
@@ -1178,7 +1210,7 @@ let simulate = await Tezos.rpc.simulateOperation(op)).contents[0]
 Tezos.setStreamProvider(
   Tezos.getFactory(PollingSubscribeProvider)({
     shouldObservableSubscriptionRetry: true,
-    pollingIntervalMilliseconds: 1500
+    pollingIntervalMilliseconds: 1500,
   })
 );
 
@@ -1186,11 +1218,10 @@ try {
   const sub = Tezos.stream.subscribeEvent({
     tag: &#39;tagName&#39;,
     address: &#39;KT1_CONTRACT_ADDRESS&#39;,
-    excludeFailedOperations: true
+    excludeFailedOperations: true,
   });
 
   sub.on(&#39;data&#39;, console.log);
-
 } catch (e) {
   console.log(e);
 }
@@ -1329,8 +1360,8 @@ const forgedBytes = await forger.forge(params);
 <p>Support for a new manager operation to add messages to a smart rollup inbox have been added, and can be used as follows:</p>
 <pre><code class="language-typescript">const op = await Tezos.contract.smartRollupAddMessages({
   message: [
-    &#39;0000000031010000000b48656c6c6f20776f726c6401bdb6f61e4f12c952f807ae7d3341af5367887dac000000000764656661756c74&#39;
-  ]
+    &#39;0000000031010000000b48656c6c6f20776f726c6401bdb6f61e4f12c952f807ae7d3341af5367887dac000000000764656661756c74&#39;,
+  ],
 });
 </code></pre>
 <h2 id="taquitorpc---support-for-new-mumbai-operation-types-in-the-rpc-package"><code>@taquito/rpc</code> - Support for new Mumbai operation types in the RPC package</h2>
@@ -1376,8 +1407,8 @@ const forgedBytes = await forger.forge(params);
 <p><code>PrepareProvider</code> now extends more control to the user to give them the ability to ‘prepare’ Tezos operations before forging and injection. The preparation step now can be done through the <code>TezosToolkit</code> class as such:</p>
 <pre><code class="language-typescript">// example of a transaction operation preparation
 const prepare = await Tezos.prepare.transaction({
-    to: &#39;tz1KvJCU5cNdz5RAS3diEtdRvS9wfhRC7Cwj&#39;,
-    amount: 5
+  to: &#39;tz1KvJCU5cNdz5RAS3diEtdRvS9wfhRC7Cwj&#39;,
+  amount: 5,
 });
 </code></pre>
 <p>The expected output will look something like this:</p>
@@ -1403,10 +1434,12 @@ const prepare = await Tezos.prepare.transaction({
 </code></pre>
 <h2 id="tezos-xoctezjs---increase-paid-storage-operation-support-in-the-wallet-api"><code>@tezos-x/octez.js</code> - Increase paid storage operation support in the wallet API</h2>
 <p>octez.js now supports <code>increase_paid_storage</code> operation in the Wallet API (previously only available in the Contract API).</p>
-<pre><code class="language-typescript">const op = await Tezos.wallet.increasePaidStorage({
-  amount: 1,
-  destination: simpleContractAddress
-}).send();
+<pre><code class="language-typescript">const op = await Tezos.wallet
+  .increasePaidStorage({
+    amount: 1,
+    destination: simpleContractAddress,
+  })
+  .send();
 </code></pre>
 <h1 id="taquito-v1501">Taquito v15.0.1</h1>
 <h2 id="hotfix">Hotfix</h2>
@@ -1435,7 +1468,7 @@ PR: <a href="https://github.com/ecadlabs/taquito/pull/2221">https://github.com/e
 <h2 id="tezos-xoctezjs-drain_delegate-operation-support"><code>@tezos-x/octez.js</code> drain_delegate operation support</h2>
 <p>A new manager operation related to the consensus_key change in Lima has been added:</p>
 <pre><code class="language-typescript">const op = await Tezos.contract.updateConsensusKey({
-    pk: &#39;PUBLIC_KEY&#39;
+  pk: &#39;PUBLIC_KEY&#39;,
 });
 
 await op.confirmation();
@@ -1481,7 +1514,7 @@ await op.confirmation();
 <h2 id="tezos-xoctezjs---added-support-for-update_consensus_key"><code>@tezos-x/octez.js</code> - Added support for <code>update_consensus_key</code></h2>
 <p>A new manager operation to update consensus keys can be used as follows:</p>
 <pre><code class="language-typescript">const op = await Tezos.contract.updateConsensusKey({
-    pk: &#39;PUBLIC_KEY&#39;
+  pk: &#39;PUBLIC_KEY&#39;,
 });
 
 await op.confirmation();
@@ -1531,7 +1564,7 @@ await op.confirmation();
 <p>We added a new Contract API method to support the <code>Ballot</code> operation. Bakers can now cast their ballots using this operation from octez.js as follows:</p>
 <pre><code class="language-typescript">const op = await Tezos.contract.ballot({
   proposal: &#39;PROTOCOL_HASH&#39;,
-  ballot: &#39;BALLOT_VOTE_STRING&#39;
+  ballot: &#39;BALLOT_VOTE_STRING&#39;,
 });
 
 await op.confirmation();
@@ -1539,15 +1572,21 @@ await op.confirmation();
 <h2 id="tezos-xoctezjs---added-support-for-proposals-operation"><code>@tezos-x/octez.js</code> - Added support for <code>Proposals</code> operation</h2>
 <p>Alongside the <code>Ballot</code> operation support, bakers can now also submit proposals using the <code>Proposals</code> operation that can be used as follows:</p>
 <pre><code class="language-typescript">const op = await Tezos.contract.proposals({
-  proposals: [&#39;PROTOCOL_HASH1&#39;, &#39;PROTOCOL_HASH2&#39;]
+  proposals: [&#39;PROTOCOL_HASH1&#39;, &#39;PROTOCOL_HASH2&#39;],
 });
 
 await op.confirmation();
 </code></pre>
 <h2 id="taquitosigner---added-new-method-frommnemonic"><code>@taquito/signer</code> - Added new method <code>fromMnemonic</code></h2>
 <p>Users can now create an <code>InMemorySigner</code> instance using the <code>fromMnemonic</code> method for a tz1, tz2, or tz3 address: ed25519, secp256k1, or p256 respectively.</p>
-<pre><code class="language-typescript">const mnemonic = &#39;author crumble medal dose ribbon permit ankle sport final hood shadow vessel horn hawk enter zebra prefer devote captain during fly found despair business&#39;
-const signer = InMemorySigner.fromMnemonic({ mnemonic, password, derivationPath: &quot;44h/1729h/1/0&quot;, curve: &#39;secp256k1&#39; });
+<pre><code class="language-typescript">const mnemonic =
+  &#39;author crumble medal dose ribbon permit ankle sport final hood shadow vessel horn hawk enter zebra prefer devote captain during fly found despair business&#39;;
+const signer = InMemorySigner.fromMnemonic({
+  mnemonic,
+  password,
+  derivationPath: &#39;44h/1729h/1/0&#39;,
+  curve: &#39;secp256k1&#39;,
+});
 </code></pre>
 <h1 id="taquito-v1410-beta">Taquito v14.1.0-beta</h1>
 <h2 id="summary-32">Summary</h2>
@@ -1595,11 +1634,10 @@ const signer = InMemorySigner.fromMnemonic({ mnemonic, password, derivationPath:
 try {
   const sub = Tezos.stream.subscribeEvent({
     tag: &#39;tagName&#39;,
-    address: &#39;KT1_CONTRACT_ADDRESS&#39;
+    address: &#39;KT1_CONTRACT_ADDRESS&#39;,
   });
 
   sub.on(&#39;data&#39;, console.log);
-
 } catch (e) {
   console.log(e);
 }
@@ -1617,12 +1655,7 @@ try {
 <h2 id="taquitoledger-signer---add-support-for-bip25519-curve"><code>@taquito/ledger-signer</code> - Add support for bip25519 curve</h2>
 <p>We added support for the bip32-ed25519 derivation scheme in the ledger package. It can be used as follows:</p>
 <pre><code class="language-typescript">const transport = await TransportNodeHid.create();
-const signer = new LedgerSigner(
-    transport,
-    &quot;44&#39;/1729&#39;/0&#39;/0&#39;&quot;,
-    false,
-    DerivationType.BIP32_ED25519
-)
+const signer = new LedgerSigner(transport, &quot;44&#39;/1729&#39;/0&#39;/0&#39;&quot;, false, DerivationType.BIP32_ED25519);
 </code></pre>
 <h2 id="taquitohttp-utils---issue-using-octezjs-in-a-service-worker-environment"><code>@taquito/http-utils</code> - Issue using octez.js in a service worker environment</h2>
 <p>In service worker environments (e.g., Cloudflare workers), <code>XMLHttpRequest</code> used by <code>Axios</code> is deprecated. When using the <code>@taquito/http-utils</code> package in such an environment, the following error was occurring: <code>TypeError: adapter is not a function</code>. A fix has been made to use <code>@vespaiach/axios-fetch-adapter</code> when not in a nodejs environment.</p>
@@ -1721,10 +1754,10 @@ const op = await Tezos.contract.increasePaidStorage({
 <p>@taquito/michel-codec is responsible, among others, for validating Michelson code to ensure its correctness. The package now supports the new <code>EMIT</code> instruction.</p>
 <h2 id="tezos-xoctezjs---replace-consumed_gas-with-consumed_milligas"><code>@tezos-x/octez.js</code> - Replace <code>consumed_gas</code> with <code>consumed_milligas</code></h2>
 <p>In Kathmandu, the property <code>consumed_gas</code> that was previously deprecated in favor of <code>consumed_milligas</code> has been removed.</p>
-<p>In octez.js (Contract API), the classes that extend the <code>Operation</code> class like <code>BatchOperation</code>,  <code>DelegateOperation</code>, <code>OriginationOperation</code>, <code>TransactionOperation</code>, and so on, have a <code>consumedGas</code> getter. We did an internal change to calculate the consumed gas based on the consumed milligas, so there is no breaking change for the users. We also implemented a new <code>consumedMilligas</code> getter which returns the consumed milligas.</p>
+<p>In octez.js (Contract API), the classes that extend the <code>Operation</code> class like <code>BatchOperation</code>, <code>DelegateOperation</code>, <code>OriginationOperation</code>, <code>TransactionOperation</code>, and so on, have a <code>consumedGas</code> getter. We did an internal change to calculate the consumed gas based on the consumed milligas, so there is no breaking change for the users. We also implemented a new <code>consumedMilligas</code> getter which returns the consumed milligas.</p>
 <p>On the wallet API side, the <code>WalletOperation</code> class has a <code>receipt</code> method that returns a <code>Receipt</code> object containing a <code>totalGas</code> property. It is now calculated based on the consumed milligas, and we added an additional <code>totalMilliGas</code> property.</p>
 <h2 id="taquitorpc---support-new-propertiesoperations-for-kathmandu"><code>@taquito/rpc</code> - Support new properties/operations for Kathmandu</h2>
-<p>Kathmandu brings new operation kinds that can be found in a block response. New interfaces representing the new operations have been added to the <code>OperationContents</code> and <code>OperationContentsAndResult</code> types of the RPC package. The new operation kinds are: <code>increase_paid_storage</code>, <code>vdf_revelation</code>.  There is also a new internal operation named <code>event</code>.</p>
+<p>Kathmandu brings new operation kinds that can be found in a block response. New interfaces representing the new operations have been added to the <code>OperationContents</code> and <code>OperationContentsAndResult</code> types of the RPC package. The new operation kinds are: <code>increase_paid_storage</code>, <code>vdf_revelation</code>. There is also a new internal operation named <code>event</code>.</p>
 <p>The <code>DelegatesResponse</code> interface returned by the <code>getDelegates</code> method on the <code>RpcCLient</code> has the new properties <code>current_ballot</code>, <code>current_proposals</code> and <code>remaining_proposals</code>.</p>
 <p>The <code>ConstantsResponse</code> type returned by the <code>getConstants</code> method on the <code>RpcCLient</code> has the new properties <code>max_wrapped_proof_binary_size</code>, <code>nonce_revelation_threshold</code>, <code>vdf_difficulty</code>, <code>testnet_dictator</code>,<code>dal_parametric</code>, <code>sc_rollup_stake_amount</code>, <code>sc_rollup_commitment_period_in_blocks</code>, <code>sc_rollup_max_lookahead_in_blocks</code>, <code>sc_rollup_max_active_outbox_levels</code>, <code>sc_rollup_max_outbox_messages_per_level</code>.</p>
 <h2 id="taquitorpc---add-support-for-run_script_view-endpoint"><code>@taquito/rpc</code> - Add support for <code>run_script_view</code> endpoint</h2>
@@ -2151,7 +2184,7 @@ const result = await contractView.views.getBalance(arg).read(chainId)
 <ul>
 <li>Retrieve the <code>chain_id</code> using the <code>getChainId</code> method of the <code>RpcClient</code> instead of <code>getBlockHeader</code> as it can be cached.</li>
 <li>Retrieve the <code>timestamp</code> and <code>level</code> using <code>getBlockHeader</code> instead of <code>getBlock</code> to reduce the response payload size.</li>
-<li>Implemented a new method named <code>getProtocols</code> on the <code>RpcClient</code> class using the RPC <code>protocols</code> endpoint.  In the codebase, we are now retrieving the next protocol value using the <code>getProtocols</code> method instead of <code>getBlockMetadata</code> as it offers the possibility to be cached at least for a cycle.</li>
+<li>Implemented a new method named <code>getProtocols</code> on the <code>RpcClient</code> class using the RPC <code>protocols</code> endpoint. In the codebase, we are now retrieving the next protocol value using the <code>getProtocols</code> method instead of <code>getBlockMetadata</code> as it offers the possibility to be cached at least for a cycle.</li>
 </ul>
 <h2 id="tezos-xoctezjs---use-the-localforger-by-default-instead-of-the-rpcforger">@tezos-x/octez.js - Use the LocalForger by default instead of the RpcForger</h2>
 <p>Before version 12, the default forger set on the <code>TezosToolkit</code> was the <code>RpcForger</code>. It is important to ensure that the node is trusted when forging with the RPC and users can change the forger implementation by calling the <code>setForgerProvider</code> method.
@@ -2419,14 +2452,17 @@ Tezos.setGlobalConstantsProvider(globalConstantProvider);
 });
 </code></pre>
 <h2 id="tezos-xoctezjs---support-the-new-operation-kind-register_global_constant-on-the-contract-batch-and-estimate-apis"><code>@tezos-x/octez.js</code> - Support the new operation kind <code>register_global_constant</code> on the contract, batch and estimate APIs</h2>
-<p>The new manager operation <code>register_global_constant</code> has been added to the contract, batch, and estimate APIs.  This new operation allows users to register Micheline expressions in a global table of constants.</p>
+<p>The new manager operation <code>register_global_constant</code> has been added to the contract, batch, and estimate APIs. This new operation allows users to register Micheline expressions in a global table of constants.</p>
 <p>A <code>registerGlobalConstant</code> method is available on the <code>ContractProvider</code> class. A <code>value</code> representing the Micheline expression to register in its JSON format is required as a parameter. The <code>registerGlobalConstant</code> method returns an instance of <code>RegisterGlobalConstantOperation</code> containing a <code>globalConstantHash</code> member that corresponds to the index(hash) of the newly registered constant.</p>
 <pre><code class="language-ts">const op = await Tezos.contract.registerGlobalConstant({
-    value: { &quot;prim&quot;: &quot;or&quot;,
-                &quot;args&quot;:
-                  [ { &quot;prim&quot;: &quot;int&quot;, &quot;annots&quot;: [ &quot;%decrement&quot; ] },
-                    { &quot;prim&quot;: &quot;int&quot;, &quot;annots&quot;: [ &quot;%increment&quot; ] } ] }
-    });
+  value: {
+    prim: &#39;or&#39;,
+    args: [
+      { prim: &#39;int&#39;, annots: [&#39;%decrement&#39;] },
+      { prim: &#39;int&#39;, annots: [&#39;%increment&#39;] },
+    ],
+  },
+});
 await op.confirmation();
 const hash = op.globalConstantHash; // expr...
 </code></pre>
@@ -2492,16 +2528,16 @@ const contractsLibrary = new ContractsLibrary();
 const Tezos = new TezosToolkit(&#39;rpc&#39;);
 
 contractsLibrary.addContract({
-    &#39;contractAddress1&#39;: {
-        script: script1, // script should be obtained from Tezos.rpc.getScript(&#39;contractAddress1&#39;)
-        entrypoints: entrypoints1 // entrypoints should be obtained from Tezos.rpc.getEntrypoints(&#39;contractAddress1&#39;)
-    },
-    &#39;contractAddress2&#39;: {
-        script: script2,
-        entrypoints: entrypoints2
-    },
-    //...
-})
+  contractAddress1: {
+    script: script1, // script should be obtained from Tezos.rpc.getScript(&#39;contractAddress1&#39;)
+    entrypoints: entrypoints1, // entrypoints should be obtained from Tezos.rpc.getEntrypoints(&#39;contractAddress1&#39;)
+  },
+  contractAddress2: {
+    script: script2,
+    entrypoints: entrypoints2,
+  },
+  //...
+});
 
 Tezos.addExtension(contractsLibrary);
 
@@ -2543,7 +2579,7 @@ const tezos = new TezosToolkit(new RpcClientCache(rpcClient));
 <p>Bug fix where the custom polling interval values for the confirmation methods were overridden with the default ones.</p>
 <h1 id="taquito-v1010-beta">Taquito v10.1.0-beta</h1>
 <p><strong>Breaking change</strong></p>
-<p>In version 9.2.0-beta of octez.js, the ability to send more than one operation in the same block was added to octez.js. This ability relied on a workaround solution. The <code>helpers/preapply/operations</code> and <code>helpers/scripts/run_operation</code>  RPC methods do not accept a counter higher than the head <code>counter + 1</code> as described in issue <a href="https://gitlab.com/tezos/tezos/-/issues/376">tezos/tezos#376</a>. Despite the limitation of these RPC’s, the Tezos protocol itself does allow the inclusion of more than one operation from the same implicit account. In version 9.2.0-beta of octez.js, we introduced an internal counter and simulated the operation using a counter value that the <code>preapply</code> &amp; <code>run_operation</code> will accept. This allowed octez.js to send many operations in a single block. However, we found that the workaround used may lead to inconsistent states, and results that violate the <a href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">principle of least astonishment</a>. We decided to remove this feature temporarily.  We aim to reintroduce this feature when Tezos RPC issue <a href="https://gitlab.com/tezos/tezos/-/issues/376">tezos/tezos#376</a> is addressed and considers the transaction in the mempool when checking the account counter value or otherwise by providing a separate and adapted new interface to support this use case properly.</p>
+<p>In version 9.2.0-beta of octez.js, the ability to send more than one operation in the same block was added to octez.js. This ability relied on a workaround solution. The <code>helpers/preapply/operations</code> and <code>helpers/scripts/run_operation</code> RPC methods do not accept a counter higher than the head <code>counter + 1</code> as described in issue <a href="https://gitlab.com/tezos/tezos/-/issues/376">tezos/tezos#376</a>. Despite the limitation of these RPC’s, the Tezos protocol itself does allow the inclusion of more than one operation from the same implicit account. In version 9.2.0-beta of octez.js, we introduced an internal counter and simulated the operation using a counter value that the <code>preapply</code> &amp; <code>run_operation</code> will accept. This allowed octez.js to send many operations in a single block. However, we found that the workaround used may lead to inconsistent states, and results that violate the <a href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">principle of least astonishment</a>. We decided to remove this feature temporarily. We aim to reintroduce this feature when Tezos RPC issue <a href="https://gitlab.com/tezos/tezos/-/issues/376">tezos/tezos#376</a> is addressed and considers the transaction in the mempool when checking the account counter value or otherwise by providing a separate and adapted new interface to support this use case properly.</p>
 <h2 id="summary-42">Summary</h2>
 <h3 id="enhancements-1">Enhancements</h3>
 <ul>
@@ -2564,16 +2600,16 @@ const tezos = new TezosToolkit(new RpcClientCache(rpcClient));
 </ul>
 <h2 id="tezos-xoctezjs---made-pollingsubscribeproviders-polling-interval-configurable">@tezos-x/octez.js - Made PollingSubscribeProvider’s polling interval configurable</h2>
 <p>The default streamer set on the <code>TezosToolkit</code> used a hardcoded polling interval of 20 seconds, and there was no easy way to change this. To reduce the probability of missing blocks, it is now possible to configure the interval as follow:</p>
-<pre><code class="language-ts">const tezos = new TezosToolkit(&#39;https://mainnet.tezos.ecadinfra.com&#39;)
+<pre><code class="language-ts">const tezos = new TezosToolkit(&#39;https://mainnet.tezos.ecadinfra.com&#39;);
 tezos.setProvider({ config: { streamerPollingIntervalMilliseconds: 15000 } });
 
-const sub = tezos.stream.subscribeOperation(filter)
+const sub = tezos.stream.subscribeOperation(filter);
 </code></pre>
 <h2 id="tezos-xoctezjs---possibility-to-withdraw-delegate">@tezos-x/octez.js - Possibility to withdraw delegate</h2>
 <p>It is now possible to <code>undelegate</code> by executing a new setDelegate operation and not specifying the delegate property.</p>
 <pre><code class="language-ts">// const Tezos = new TezosToolkit(&#39;https://YOUR_PREFERRED_RPC_URL&#39;);
 
-await Tezos.contract.setDelegate({ source: &#39;tz1_source&#39;});
+await Tezos.contract.setDelegate({ source: &#39;tz1_source&#39; });
 </code></pre>
 <h2 id="tezos-xoctezjs---property-status-doesnt-exist-on-a-batched-transaction-for-the-wallet-api">@tezos-x/octez.js - Property status doesn’t exist on a batched transaction for the wallet API</h2>
 <p>When multiple operations were batched together using the <code>batch</code> method of the wallet API, the <code>send()</code> method returned a value of type <code>WalletOperation</code> where the status was missing. <code>BatchWalletOperation</code>, which extends the <code>WalletOperation</code> class and contains a <code>status</code> method, is now returned.</p>
@@ -2912,7 +2948,7 @@ These values are configurable by the user:
 <p>Developers can now test and evaluate new features and bug fixes as soon as possible without having to clone and locally link octez.js. Preview builds are published to our npm preview registry from all pull requests (except PR’s from forks).</p>
 <p>IMPORTANT NOTE: Preview builds are not official releases. They are helpful for testing and evaluating new features in octez.js. Preview builds may contain incomplete features or features that have not been fully tested.</p>
 <h2 id="fetch-multiple-bigmaps-at-once">Fetch multiple bigmaps at once.</h2>
-<p>octez.js now provides a new API <code>getMultipleValues</code> that fetches multiple keys in a single call.  octez.js ensures that all fetched keys are fetched from the same block level. Future enhancements for this feature may include octez.js directly fetching multiple big maps from an RPC call as and when such an RPC is added to the Tezos nodes. See docs <a href="https://taquito.io/docs/maps_bigmaps#fetch-multiple-big-map-values-at-once">here</a></p>
+<p>octez.js now provides a new API <code>getMultipleValues</code> that fetches multiple keys in a single call. octez.js ensures that all fetched keys are fetched from the same block level. Future enhancements for this feature may include octez.js directly fetching multiple big maps from an RPC call as and when such an RPC is added to the Tezos nodes. See docs <a href="https://taquito.io/docs/maps_bigmaps#fetch-multiple-big-map-values-at-once">here</a></p>
 <h2 id="expanded-property-value-support-for-tickets-and-better-nat-type-support">Expanded property value support for tickets and better <code>nat</code> type support.</h2>
 <p>The Michelson encoder package initially supported tickets having a value property of type nat, but now it has been updated to support every comparable token. Additionally, when invoking a contract with nat as a parameter, encoding a numeral with more than 21 digits has been fixed.</p>
 <h2 id="save-operation-hash-before-executing-on-the-network---better-debugging">Save operation hash before executing on the network - better debugging.</h2>
@@ -3050,7 +3086,7 @@ Delphi changelogs: <a href="https://blog.nomadic-labs.com/delphi-changelog.html#
 <li><a href="https://taquito.io/docs/rpc_package">Docs for RPC</a></li>
 <li><a href="https://taquito.io/docs/rpc_nodes">Docs for popular public Tezos nodes</a></li>
 </ul>
-<h3 id="breaking-changes-1">Breaking Changes</h3>
+<h3 id="breaking-changes-2">Breaking Changes</h3>
 <p>With a major version release, comes an opportunity for us to make some breaking changes.</p>
 <p>We have published an <a href="https://taquito.io/docs/upgrading_guide">upgrade guide</a> to help guide developers and making these changes as easy to adopt as possible.</p>
 <p>The three most notable changes are:</p>
@@ -3130,47 +3166,47 @@ Correct types are applied to parameters on the RPC response #312</p>
 <p>This release introduces a breaking change to Map and BigMaps. In the forthcoming protocol “Carthage/006_PsCARTHA”, it is possible to use a complex type composed of a pair as a key in a Smart Contracts Map or BigMap. This type of key isn’t useable in Javascripts Map objects.</p>
 <p>This release introduces <code>MichelsonMap()</code> class that provides an abstraction over these details.</p>
 <p>Existing code that accesses Map or BigMap storage via the octez.js data abstraction in the following fashion:</p>
-<pre><code class="language-typescript">const account = storage.accounts[&quot;tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD&quot;]
+<pre><code class="language-typescript">const account = storage.accounts[&#39;tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD&#39;];
 </code></pre>
 <p>Must be updated to use the <code>get()</code> and <code>set()</code> methods as follows;</p>
-<pre><code class="language-typescript">const account = storage.accounts.get(&quot;tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD&quot;)
+<pre><code class="language-typescript">const account = storage.accounts.get(&#39;tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD&#39;);
 </code></pre>
 <p>Additionally, if existing code initializes storage (during contract origination for example), this code must be updated. One can create a new <code>MichelsonMap()</code> as follows:</p>
-<pre><code class="language-typescript">    const map = new MichelsonMap()
+<pre><code class="language-typescript">const map = new MichelsonMap();
 
-    map.set({firstName:&quot;Joe&quot;, lastName: &quot;Bloe&quot;}, &quot;myValue&quot;)
+map.set({ firstName: &#39;Joe&#39;, lastName: &#39;Bloe&#39; }, &#39;myValue&#39;);
 
-    Tezos.contract.originate({
-        code: myContractWithAPairAsKeyCode,
-        storage: map
-    })
+Tezos.contract.originate({
+  code: myContractWithAPairAsKeyCode,
+  storage: map,
+});
 </code></pre>
 <p>Or one can also use the <code>fromLiteral</code> convenience method, as illustrated below.</p>
-<pre><code class="language-typescript">    Tezos.contract.originate({
-        code: assertContractCode,
-        storage: {
-            owner: &quot;tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD&quot;,
-            accounts: MichelsonMap.fromLiteral({
-                &quot;tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD&quot;: {
-                    balance: &quot;1&quot;,
-                    allowances: MichelsonMap.fromLiteral({
-                      &quot;tz3YjfexGakCDeCseXFUpcXPSAN9xHxE9TH2&quot;: &quot;1&quot;
-                    })
-                }
-            })
-        }
-    })
+<pre><code class="language-typescript">Tezos.contract.originate({
+  code: assertContractCode,
+  storage: {
+    owner: &#39;tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD&#39;,
+    accounts: MichelsonMap.fromLiteral({
+      tz2Ch1abG7FNiibmV26Uzgdsnfni9XGrk5wD: {
+        balance: &#39;1&#39;,
+        allowances: MichelsonMap.fromLiteral({
+          tz3YjfexGakCDeCseXFUpcXPSAN9xHxE9TH2: &#39;1&#39;,
+        }),
+      },
+    }),
+  },
+});
 </code></pre>
 <p>A pair can by uses as a key as follows:</p>
-<pre><code class="language-typescript">map.set({firstName:&quot;Joe&quot;, lastName: &quot;Bloe&quot;}, &quot;myValue&quot;)
-storage.get({firstName:&quot;Joe&quot;, lastName: &quot;Bloe&quot;})
+<pre><code class="language-typescript">map.set({ firstName: &#39;Joe&#39;, lastName: &#39;Bloe&#39; }, &#39;myValue&#39;);
+storage.get({ firstName: &#39;Joe&#39;, lastName: &#39;Bloe&#39; });
 </code></pre>
 <p><a href="https://github.com/ecadlabs/taquito/issues/251">https://github.com/ecadlabs/taquito/issues/251</a></p>
 <h3 id="documentation-35">Documentation</h3>
 <p>New documentation covering how to interact with Smart Contracts using octez.js <a href="https://taquito.io/docs/smartcontracts/">https://taquito.io/docs/smartcontracts/</a></p>
 <h3 id="improvements--fixes-2">Improvements &amp; Fixes</h3>
 <ul>
-<li>Add a <code>UnitType</code> symbol to the <code>MichelsonEncoder</code> [#221][<a href="https://github.com/ecadlabs/taquito/issues/221">https://github.com/ecadlabs/taquito/issues/221</a>]</li>
+<li>Add a <code>UnitType</code> symbol to the <code>MichelsonEncoder</code> [#221]<a href="https://github.com/ecadlabs/taquito/issues/221">https://github.com/ecadlabs/taquito/issues/221</a>]</li>
 <li>Improved test coverage throughout the project</li>
 <li>Represent all Operation kinds as an ENUM</li>
 <li>Fix for handling of Zarith numbers as reported by Doyensec’s security audit <a href="https://github.com/ecadlabs/taquito/issues/264">https://github.com/ecadlabs/taquito/issues/264</a></li>
@@ -3179,8 +3215,11 @@ storage.get({firstName:&quot;Joe&quot;, lastName: &quot;Bloe&quot;})
 <li>Add the mutez option in send method for Smart contract abstraction #255</li>
 </ul>
 <h3 id="cdn-bundle">CDN Bundle</h3>
-<pre><code class="language-html">&lt;script src=&quot;https://unpkg.com/@tezos-x/octez.js@6.1.0-beta.0/dist/taquito.min.js&quot;
-crossorigin=&quot;anonymous&quot; integrity=&quot;sha384-sk4V+57zLUCfkna8z4p1u6CioucJqmeo+QnaiXoFiuE8vdkm7/ae2TNFLbL+Ys02&quot;&gt;&lt;/script&gt;
+<pre><code class="language-html">&lt;script
+  src=&quot;https://unpkg.com/@tezos-x/octez.js@6.1.0-beta.0/dist/taquito.min.js&quot;
+  crossorigin=&quot;anonymous&quot;
+  integrity=&quot;sha384-sk4V+57zLUCfkna8z4p1u6CioucJqmeo+QnaiXoFiuE8vdkm7/ae2TNFLbL+Ys02&quot;
+&gt;&lt;/script&gt;
 </code></pre>
 <h2 id="603-beta0-local-forging-batch-ops-and-more">6.0.3-beta.0 Local Forging, Batch Ops and more</h2>
 <p>This release brings several new features to octez.js. In line with our versioning policy, we have also bumped the major release number to v6 on this release, as this version has and continues to be tested against the Carthage testnet. By using this version of octez.js, your application will be compatible with both the Babylonnet protocol and the anticipated Carthage protocol.</p>
@@ -3214,7 +3253,7 @@ crossorigin=&quot;anonymous&quot; integrity=&quot;sha384-sk4V+57zLUCfkna8z4p1u6C
 <li>WS streamer package is flagged as un-maintained.</li>
 </ul>
 <h3 id="tests-2">Tests</h3>
-<p>We have added many new  unit and integration tests including but not limited to multisig contract interaction scenarios, emptying of accounts, and multiple big map encoding scenarios</p>
+<p>We have added many new unit and integration tests including but not limited to multisig contract interaction scenarios, emptying of accounts, and multiple big map encoding scenarios</p>
 <h3 id="fixes">Fixes</h3>
 <p>fix(michelson-encoder): Fix improper encoding of boolean parameters #215</p>
 <p>fix(michelson-encoder) Encoder now sorts maps and big map keys as expected by the protocol</p>
@@ -3228,7 +3267,7 @@ docs(website) Add origination documentation page #196</p>
 <h2 id="520-beta1-remote-signer-package-limits-bigmap-abstraction-and-fixes">5.2.0-beta.1 Remote signer package, limits, bigmap abstraction and fixes</h2>
 <h3 id="features-2">Features</h3>
 <ul>
-<li>Introduction of the remote signer package, allowing octez.js to interact with the Tezos HTTP  remote signer API</li>
+<li>Introduction of the remote signer package, allowing octez.js to interact with the Tezos HTTP remote signer API</li>
 <li><code>gasLimit</code>, <code>storageLimit</code> and <code>fees</code> are now surfaced on <code>Orgination</code>, <code>Transaction</code> and <code>Delegation</code> operations</li>
 <li>Our HTTP backend package now throws more useful errors, which extend javascript’s <code>Error</code></li>
 <li>New bigmap abstraction (released in 5.1.0-beta.1 but not announced)</li>
@@ -3245,21 +3284,19 @@ docs(website) Add origination documentation page #196</p>
 <h2 id="501-beta2-support-for-babylon-protocol-update">5.0.1-beta.2 Support for Babylon protocol update</h2>
 <p>This release supports Babylon/Proto005. With this release, it is possible to inject operations into a chain running either <code>Athens/004</code> or <code>Babylon/005</code>.</p>
 <p>Developers have two options around operating with the blockchain during the protocol amendment. First option, you can specify the protocol you expect to use in your provider as follows:</p>
-<pre><code class="language-js">Tezos.setProvider({protocol: Protocols.PsBabyM1})
+<pre><code class="language-js">Tezos.setProvider({ protocol: Protocols.PsBabyM1 });
 </code></pre>
 <p>Second option is to not specify the protocol in your provider. octez.js will discover the current protocol before injection an operation by querying the RPC. This method requires less code, but adds an additional RPC query for every injection and is thus slightly slower.</p>
 <h3 id="misc">Misc</h3>
 <ul>
 <li>Polling interval for operation confirmation can be set globally for a taquito instance. Useful when working with <code>zeronet</code></li>
 </ul>
-<pre><code class="language-js">Tezos.setProvider(
-    {
-        config: {
-            confirmationPollingIntervalSecond: 10,
-            confirmationPollingTimeoutSecond: 180
-        }
-    }
-)
+<pre><code class="language-js">Tezos.setProvider({
+  config: {
+    confirmationPollingIntervalSecond: 10,
+    confirmationPollingTimeoutSecond: 180,
+  },
+});
 </code></pre>
 <h3 id="caveats">Caveats</h3>
 <h4 id="bigmap">BigMap</h4>
@@ -3268,7 +3305,7 @@ docs(website) Add origination documentation page #196</p>
 <ul>
 <li>Estimation now properly supports estimation of internal operations</li>
 </ul>
-<h3 id="breaking-changes-2">BREAKING CHANGES</h3>
+<h3 id="breaking-changes-3">BREAKING CHANGES</h3>
 <ul>
 <li>In order to be consistent with Tezos RPC. All RPC types are now all <em>snake_case</em>.</li>
 </ul>
@@ -3435,6 +3472,6 @@ docs(website) Add origination documentation page #196</p>
     setupToggle();
     checkAutoOpen();
   }
-})();</script>  </div> </div> </div> <aside id="sidebar" class="hidden md:block pt-12 w-64 pr-8 shrink-0 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pl-1"> <div id="sidebar-content" class="relative"> <div id="sidebar-line" class="w-[2px] bg-secondary absolute left-0 top-0 bottom-0"></div> <nav> <ul id="sidebar-nav" class="list-none p-0 m-0"></ul> </nav> </div> </aside> </main> <footer class="bg-background-primary border-t border-border py-12 px-12 md:px-24 flex-col-reverse md:flex-row flex justify-between text-text-secondary relative z-10"> <div> <img src="/pr-17/_astro/octez-logo-light.-Ons0Gwx.png" alt="octez.js Logo" class="h-20 w-auto mb-4 logo-light object-contain"> <img src="/pr-17/_astro/octez-logo-dark.B9DlBCM3.png" alt="octez.js Logo" class="h-20 w-auto mb-4 logo-dark object-contain"> <p class="mt-2 text-sm opacity-60">Build on Tezos with TypeScript</p> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="mt-6 bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3.5 items-center py-2.5 rounded-full text-lg flex w-fit"> <!-- Github Logo --> <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline-block size-7 align-middle mr-1" aria-label="GitHub"> <path d="M8.10059 19.0137C8.10059 19.1113 7.98828 19.1895 7.84668 19.1895C7.68555 19.2041 7.57324 19.126 7.57324 19.0137C7.57324 18.916 7.68555 18.8379 7.82715 18.8379C7.97363 18.8232 8.10059 18.9014 8.10059 19.0137ZM6.58203 18.7939C6.54785 18.8916 6.64551 19.0039 6.79199 19.0332C6.91895 19.082 7.06543 19.0332 7.09473 18.9355C7.12402 18.8379 7.03125 18.7256 6.88477 18.6816C6.75781 18.6475 6.61621 18.6963 6.58203 18.7939ZM8.74023 18.7109C8.59863 18.7451 8.50098 18.8379 8.51562 18.9502C8.53027 19.0479 8.65723 19.1113 8.80371 19.0771C8.94531 19.043 9.04297 18.9502 9.02832 18.8525C9.01367 18.7598 8.88184 18.6963 8.74023 18.7109ZM11.9531 0C5.18066 0 0 5.1416 0 11.9141C0 17.3291 3.4082 21.9629 8.27637 23.5938C8.90137 23.7061 9.12109 23.3203 9.12109 23.0029C9.12109 22.7002 9.10645 21.0303 9.10645 20.0049C9.10645 20.0049 5.68848 20.7373 4.9707 18.5498C4.9707 18.5498 4.41406 17.1289 3.61328 16.7627C3.61328 16.7627 2.49512 15.9961 3.69141 16.0107C3.69141 16.0107 4.90723 16.1084 5.57617 17.2705C6.64551 19.1553 8.4375 18.6133 9.13574 18.291C9.24805 17.5098 9.56543 16.9678 9.91699 16.6455C7.1875 16.3428 4.43359 15.9473 4.43359 11.25C4.43359 9.90723 4.80469 9.2334 5.58594 8.37402C5.45898 8.05664 5.04395 6.74805 5.71289 5.05859C6.7334 4.74121 9.08203 6.37695 9.08203 6.37695C10.0586 6.10352 11.1084 5.96191 12.1484 5.96191C13.1885 5.96191 14.2383 6.10352 15.2148 6.37695C15.2148 6.37695 17.5635 4.73633 18.584 5.05859C19.2529 6.75293 18.8379 8.05664 18.7109 8.37402C19.4922 9.23828 19.9707 9.91211 19.9707 11.25C19.9707 15.9619 17.0947 16.3379 14.3652 16.6455C14.8145 17.0312 15.1953 17.7637 15.1953 18.9111C15.1953 20.5566 15.1807 22.5928 15.1807 22.9932C15.1807 23.3105 15.4053 23.6963 16.0254 23.584C20.9082 21.9629 24.2188 17.3291 24.2188 11.9141C24.2188 5.1416 18.7256 0 11.9531 0ZM4.74609 16.8408C4.68262 16.8896 4.69727 17.002 4.78027 17.0947C4.8584 17.1729 4.9707 17.207 5.03418 17.1436C5.09766 17.0947 5.08301 16.9824 5 16.8896C4.92188 16.8115 4.80957 16.7773 4.74609 16.8408ZM4.21875 16.4453C4.18457 16.5088 4.2334 16.5869 4.33105 16.6357C4.40918 16.6846 4.50684 16.6699 4.54102 16.6016C4.5752 16.5381 4.52637 16.46 4.42871 16.4111C4.33105 16.3818 4.25293 16.3965 4.21875 16.4453ZM5.80078 18.1836C5.72266 18.2471 5.75195 18.3936 5.86426 18.4863C5.97656 18.5986 6.11816 18.6133 6.18164 18.5352C6.24512 18.4717 6.21582 18.3252 6.11816 18.2324C6.01074 18.1201 5.86426 18.1055 5.80078 18.1836ZM5.24414 17.4658C5.16602 17.5146 5.16602 17.6416 5.24414 17.7539C5.32227 17.8662 5.4541 17.915 5.51758 17.8662C5.5957 17.8027 5.5957 17.6758 5.51758 17.5635C5.44922 17.4512 5.32227 17.4023 5.24414 17.4658Z" fill="currentColor"></path> </svg> <p class="text-lg tracking-wide ml-1 uppercase">GitHub</p> </a> <p class="mt-12 text-sm opacity-60">
+})();</script>  </div> </div> </div> <aside id="sidebar" class="hidden md:block pt-8 pr-4 shrink-0 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pl-4 border-l border-[var(--ifm-toc-border-color)] toc-sidebar"> <div id="sidebar-content" class="relative"> <nav> <ul id="sidebar-nav" class="list-none p-0 m-0"></ul> </nav> </div> </aside> </main> <footer class="bg-brand-dark border-t border-white/10 py-12 px-12 md:px-24 flex-col-reverse md:flex-row flex justify-between text-white relative z-10 footer-font" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <img src="/pr-17/_astro/octez-logo.CEHtwN6o.svg" alt="octez.js Logo" class="h-14 w-auto mb-4 object-contain" data-astro-cid-sz7xmlte> <p class="mt-2 text-sm opacity-60" data-astro-cid-sz7xmlte>Build on Tezos with TypeScript</p> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="mt-6 bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3.5 items-center py-2.5 rounded-full text-lg flex w-fit" data-astro-cid-sz7xmlte> <!-- Github Logo --> <svg width="10" height="10" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline-block size-7 align-middle mr-1" aria-label="GitHub" data-astro-cid-sz7xmlte> <path d="M8.10059 19.0137C8.10059 19.1113 7.98828 19.1895 7.84668 19.1895C7.68555 19.2041 7.57324 19.126 7.57324 19.0137C7.57324 18.916 7.68555 18.8379 7.82715 18.8379C7.97363 18.8232 8.10059 18.9014 8.10059 19.0137ZM6.58203 18.7939C6.54785 18.8916 6.64551 19.0039 6.79199 19.0332C6.91895 19.082 7.06543 19.0332 7.09473 18.9355C7.12402 18.8379 7.03125 18.7256 6.88477 18.6816C6.75781 18.6475 6.61621 18.6963 6.58203 18.7939ZM8.74023 18.7109C8.59863 18.7451 8.50098 18.8379 8.51562 18.9502C8.53027 19.0479 8.65723 19.1113 8.80371 19.0771C8.94531 19.043 9.04297 18.9502 9.02832 18.8525C9.01367 18.7598 8.88184 18.6963 8.74023 18.7109ZM11.9531 0C5.18066 0 0 5.1416 0 11.9141C0 17.3291 3.4082 21.9629 8.27637 23.5938C8.90137 23.7061 9.12109 23.3203 9.12109 23.0029C9.12109 22.7002 9.10645 21.0303 9.10645 20.0049C9.10645 20.0049 5.68848 20.7373 4.9707 18.5498C4.9707 18.5498 4.41406 17.1289 3.61328 16.7627C3.61328 16.7627 2.49512 15.9961 3.69141 16.0107C3.69141 16.0107 4.90723 16.1084 5.57617 17.2705C6.64551 19.1553 8.4375 18.6133 9.13574 18.291C9.24805 17.5098 9.56543 16.9678 9.91699 16.6455C7.1875 16.3428 4.43359 15.9473 4.43359 11.25C4.43359 9.90723 4.80469 9.2334 5.58594 8.37402C5.45898 8.05664 5.04395 6.74805 5.71289 5.05859C6.7334 4.74121 9.08203 6.37695 9.08203 6.37695C10.0586 6.10352 11.1084 5.96191 12.1484 5.96191C13.1885 5.96191 14.2383 6.10352 15.2148 6.37695C15.2148 6.37695 17.5635 4.73633 18.584 5.05859C19.2529 6.75293 18.8379 8.05664 18.7109 8.37402C19.4922 9.23828 19.9707 9.91211 19.9707 11.25C19.9707 15.9619 17.0947 16.3379 14.3652 16.6455C14.8145 17.0312 15.1953 17.7637 15.1953 18.9111C15.1953 20.5566 15.1807 22.5928 15.1807 22.9932C15.1807 23.3105 15.4053 23.6963 16.0254 23.584C20.9082 21.9629 24.2188 17.3291 24.2188 11.9141C24.2188 5.1416 18.7256 0 11.9531 0ZM4.74609 16.8408C4.68262 16.8896 4.69727 17.002 4.78027 17.0947C4.8584 17.1729 4.9707 17.207 5.03418 17.1436C5.09766 17.0947 5.08301 16.9824 5 16.8896C4.92188 16.8115 4.80957 16.7773 4.74609 16.8408ZM4.21875 16.4453C4.18457 16.5088 4.2334 16.5869 4.33105 16.6357C4.40918 16.6846 4.50684 16.6699 4.54102 16.6016C4.5752 16.5381 4.52637 16.46 4.42871 16.4111C4.33105 16.3818 4.25293 16.3965 4.21875 16.4453ZM5.80078 18.1836C5.72266 18.2471 5.75195 18.3936 5.86426 18.4863C5.97656 18.5986 6.11816 18.6133 6.18164 18.5352C6.24512 18.4717 6.21582 18.3252 6.11816 18.2324C6.01074 18.1201 5.86426 18.1055 5.80078 18.1836ZM5.24414 17.4658C5.16602 17.5146 5.16602 17.6416 5.24414 17.7539C5.32227 17.8662 5.4541 17.915 5.51758 17.8662C5.5957 17.8027 5.5957 17.6758 5.51758 17.5635C5.44922 17.4512 5.32227 17.4023 5.24414 17.4658Z" fill="currentColor" data-astro-cid-sz7xmlte></path> </svg> <p class="tracking-wide ml-1 uppercase" data-astro-cid-sz7xmlte>GitHub</p> </a> <p class="mt-12 text-sm opacity-60" data-astro-cid-sz7xmlte>
 Copyright © 2026 Nomadic Labs - Open Source Apache 2.0 License
-</p> </div> <div class="grid grid-cols-2 md:flex gap-16 mb-12 md:mb-0"> <div> <h4 class="font-bold mb-2">Documentation</h4> <ul class="text-sm space-y-2"> <li><a href="/docs/0.9.0/quick_start">Quick Start</a></li> </ul> </div> <div> <h4 class="font-bold mb-2">Community</h4> <ul class="text-sm space-y-2"> <li><a href="https://tezos.stackexchange.com/questions/tagged/octez.js" target="_blank" rel="noopener noreferrer">Stack Exchange</a></li> <li><a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li> <li><a href="https://github.com/trilitech/octez.js/blob/master/code-of-conduct.md" target="_blank" rel="noopener noreferrer">Code of Conduct</a></li> <li><a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer">GitHub</a></li> </ul> </div> <div> <h4 class="font-bold mb-2">Contact</h4> <ul class="text-sm space-y-2"> <li><a href="https://github.com/trilitech/octez.js/issues/new/choose" target="_blank" rel="noopener noreferrer">Report Issues</a></li> <li><a href="https://github.com/trilitech/octez.js/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contribute</a></li> </ul> </div> </div> </footer>  <script type="module" src="/pr-17/_astro/MarkdownLayout.astro_astro_type_script_index_2_lang.Cq0aiIZH.js"></script></body></html>
+</p> </div> <div class="grid grid-cols-2 md:flex gap-16 mb-12 md:mb-0" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Documentation</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="/docs/0.9.0/quick_start" data-astro-cid-sz7xmlte>Quick Start</a></li> </ul> </div> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Community</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="https://tezos.stackexchange.com/questions/tagged/octez.js" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Stack Exchange</a></li> <li data-astro-cid-sz7xmlte><a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>X (Twitter)</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/blob/master/code-of-conduct.md" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Code of Conduct</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>GitHub</a></li> </ul> </div> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Contact</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/issues/new/choose" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Report Issues</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Contribute</a></li> </ul> </div> </div> </footer>   <script type="module" src="/pr-17/_astro/MarkdownLayout.astro_astro_type_script_index_2_lang.DdnmElcP.js"></script></body></html>
