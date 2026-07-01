@@ -1,0 +1,1165 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/pr-39/favicon.ico"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v5.18.2"><meta name="base-url" content="/pr-39/"><title>Smart contract collection | octez.js</title><meta name="description" content="Smart contract collection - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><link rel="canonical" href="https://effective-chainsaw-r6861q1.pages.github.io/pr-39/docs/0.9.0/contract-test-collection"><!-- Prevent indexing of old/next versions --><meta name="robots" content="noindex, follow"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-39/docs/1.0.0/contract-test-collection"><meta property="og:title" content="Smart contract collection | octez.js"><meta property="og:description" content="Smart contract collection - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><meta property="og:site_name" content="octez.js"><meta property="og:image" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-39/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:url" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-39/docs/1.0.0/contract-test-collection"><meta name="twitter:title" content="Smart contract collection | octez.js"><meta name="twitter:description" content="Smart contract collection - Learn how to use octez.js, a TypeScript library for Tezos blockchain development."><meta name="twitter:image" content="https://effective-chainsaw-r6861q1.pages.github.io/pr-39/og-image.png"><!-- Structured Data --><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Smart contract collection","description":"Smart contract collection - Learn how to use octez.js, a TypeScript library for Tezos blockchain development.","url":"https://effective-chainsaw-r6861q1.pages.github.io/pr-39/docs/1.0.0/contract-test-collection","publisher":{"@type":"Organization","name":"Nomadic Labs","url":"https://nomadic-labs.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://effective-chainsaw-r6861q1.pages.github.io/pr-39/docs/1.0.0/contract-test-collection"},"isPartOf":{"@type":"WebSite","name":"octez.js Documentation","url":"https://effective-chainsaw-r6861q1.pages.github.io/"}}</script><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><!-- Theme initialization --><script>
+      document.documentElement.setAttribute('data-theme', 'light');
+    </script><!-- Load octez.js --><script type="module">document.querySelectorAll(".markdown-body pre").forEach(t=>{const e=document.createElement("button");e.className="copy-button",e.textContent="Copy",e.setAttribute("aria-label","Copy code to clipboard"),e.addEventListener("click",async()=>{const o=t.querySelector("code")?.textContent||t.textContent||"";try{await navigator.clipboard.writeText(o)}catch(a){console.error("Failed to copy code:",a),e.textContent="Failed to copy",setTimeout(()=>{e.textContent="Copy"},2e3)}}),t.appendChild(e)});const n=document.querySelectorAll(".markdown-body h1, .markdown-body h2, .markdown-body h3"),c=document.getElementById("sidebar-nav");n.length>0&&c&&n.forEach(t=>{const e=document.createElement("a"),o=document.createElement("li");t.tagName==="H1"?(o.className="mb-1",e.className="toc-link toc-link-h1"):t.tagName==="H2"?(o.className="mb-0.5",e.className="toc-link toc-link-h2"):t.tagName==="H3"&&(o.className="mb-0.5 ml-3",e.className="toc-link toc-link-h3"),e.href=`#${t.id}`,e.textContent=t.textContent||"",e.addEventListener("click",a=>{a.preventDefault(),t.scrollIntoView({behavior:"smooth"}),history.pushState(null,"",`#${t.id}`)}),o.appendChild(e),c.appendChild(o)});const d=document.querySelectorAll(".markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6");d.forEach((t,e)=>{if(!t.id){const a=t.textContent||"";t.id=a.toLowerCase().replace(/[^a-z0-9\s-]/g,"").replace(/\s+/g,"-").trim()||`heading-${e}`}const o=document.createElement("a");o.href=`#${t.id}`,o.className="header-anchor",o.textContent="#",o.setAttribute("aria-label","Copy link to section"),o.addEventListener("click",async a=>{a.preventDefault();const r=`${window.location.origin}${window.location.pathname}#${t.id}`;try{await navigator.clipboard.writeText(r),t.scrollIntoView({behavior:"smooth"}),history.pushState(null,"",`#${t.id}`)}catch(l){console.error("Failed to copy link:",l)}}),t.appendChild(o)});</script><!-- Load Prism for syntax highlighting --><script type="module" src="/pr-39/_astro/MarkdownLayout.astro_astro_type_script_index_1_lang.CBGUddAE.js"></script><link rel="stylesheet" href="/pr-39/_astro/index.Brdm5tJE.css">
+<link rel="stylesheet" href="/pr-39/_astro/changelog.GS8Cczfw.css">
+<style>code[class*=language-],pre[class*=language-]{color:#000;background:none;text-shadow:0 1px white;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]::-moz-selection,pre[class*=language-] ::-moz-selection,code[class*=language-]::-moz-selection,code[class*=language-] ::-moz-selection{text-shadow:none;background:#b3d4fc}pre[class*=language-]::selection,pre[class*=language-] ::selection,code[class*=language-]::selection,code[class*=language-] ::selection{text-shadow:none;background:#b3d4fc}@media print{code[class*=language-],pre[class*=language-]{text-shadow:none}}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#f5f2f0}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.comment,.token.prolog,.token.doctype,.token.cdata{color:#708090}.token.punctuation{color:#999}.token.namespace{opacity:.7}.token.property,.token.tag,.token.boolean,.token.number,.token.constant,.token.symbol,.token.deleted{color:#905}.token.selector,.token.attr-name,.token.string,.token.char,.token.builtin,.token.inserted{color:#690}.token.operator,.token.entity,.token.url,.language-css .token.string,.style .token.string{color:#9a6e3a;background:#ffffff80}.token.atrule,.token.attr-value,.token.keyword{color:#07a}.token.function,.token.class-name{color:#dd4a68}.token.regex,.token.important,.token.variable{color:#e90}.token.important,.token.bold{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}
+</style><style>.tabs-container[data-astro-cid-xlvzfuxv]{margin:2rem 0}.tabs-buttons[data-astro-cid-xlvzfuxv]{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}.tab-button[data-astro-cid-xlvzfuxv]{padding:.5rem 1.5rem;border:none;border-radius:9999px;background-color:transparent;color:#6b7280;font-size:1rem;font-weight:500;cursor:pointer;transition:all .2s ease}.tab-button[data-astro-cid-xlvzfuxv]:hover{color:#374151}.tab-button[data-astro-cid-xlvzfuxv].active{background-color:#0000000d;color:#1f2937}.tabs-content[data-astro-cid-xlvzfuxv]{position:relative}
+</style><style>.tab-item[data-astro-cid-r7gez2uh]{display:none}
+</style></head> <body class="flex flex-col min-h-screen bg-background-primary text-text-primary"> <header class="bg-brand-dark px-6 sticky top-0 z-100 shadow-sm transition-transform duration-300 ease-in-out navbar-font" id="main-header" data-astro-cid-3ef6ksr2> <div class="flex justify-between items-center py-3" data-astro-cid-3ef6ksr2> <!-- Left side: logo + primary nav items --> <div class="flex items-center gap-8" data-astro-cid-3ef6ksr2> <a href="/pr-39/" class="logo no-underline flex items-center gap-2" aria-label="octez.js home" data-astro-cid-3ef6ksr2> <img src="/pr-39/_astro/octez-logo.CEHtwN6o.svg" alt="octez.js" class="h-7 w-auto object-contain" data-astro-cid-3ef6ksr2> </a> <!-- Version Dropdown, Release Notes, Get Started (desktop only) --> <div class="hidden lg:flex items-center gap-8" data-astro-cid-3ef6ksr2> <!-- Version Dropdown --> <div class="relative" id="version-dropdown-container" data-astro-cid-3ef6ksr2> <button id="version-dropdown-btn" class="flex items-center gap-1.5 hover:text-primary transition-colors nav-link" aria-expanded="false" aria-haspopup="true" data-astro-cid-3ef6ksr2> <span id="version-display" data-astro-cid-3ef6ksr2>0.9.0</span> <svg class="w-4 h-4 transition-transform duration-200" id="version-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" data-astro-cid-3ef6ksr2></path> </svg> </button> <div id="version-dropdown-menu" class="absolute top-full left-0 mt-2 py-2 bg-background-secondary rounded-lg shadow-lg border border-border min-w-32 opacity-0 invisible transition-all duration-200 z-50" data-astro-cid-3ef6ksr2> <a href="/pr-39/docs/0.9.0/contract-test-collection" class="block px-4 py-2 text-sm hover:bg-accent-light transition-colors text-accent bg-accent-light" data-astro-cid-3ef6ksr2> 0.9.0 </a><a href="/pr-39/docs/next/contract-test-collection" class="block px-4 py-2 text-sm hover:bg-accent-light transition-colors text-text-secondary" data-astro-cid-3ef6ksr2> next </a> </div> </div> <a href="/pr-39/docs/0.9.0/quick_start" class="nav-link" data-astro-cid-3ef6ksr2>Get Started</a> <a href="/pr-39/changelog" class="nav-link" data-astro-cid-3ef6ksr2>Release Notes</a> </div> </div> <!-- Desktop Navigation (right side: search + socials) --> <nav class="hidden lg:flex items-center gap-8" data-astro-cid-3ef6ksr2> <!-- Search Button --> <button id="desktop-search-btn" class="flex items-center gap-2 bg-background-secondary px-4 py-1.5 rounded-full hover:bg-background-tertiary transition-colors border border-border text-text-tertiary text-sm" aria-label="Search documentation" data-astro-cid-3ef6ksr2> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" data-astro-cid-3ef6ksr2></path> </svg> <span data-astro-cid-3ef6ksr2>Search</span> <kbd class="hidden xl:inline-block ml-2 px-1.5 py-0.5 text-xs text-text-muted bg-background-tertiary rounded" data-astro-cid-3ef6ksr2>⌘K</kbd> </button> <a href="https://docs.tezos.com/overview/resources#documentation-map" target="_blank" class="nav-link flex items-center gap-1" data-astro-cid-3ef6ksr2>Doc map<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" data-astro-cid-3ef6ksr2></path></svg></a> <!-- Socials --> <div class="flex items-center gap-6" data-astro-cid-3ef6ksr2> <a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors social-icon" data-astro-cid-3ef6ksr2> <img src="/pr-39/_astro/x.DDkM7Rcg.svg" alt="X" class="inline-block size-6 align-middle mr-1" data-astro-cid-3ef6ksr2> </a> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors social-icon" data-astro-cid-3ef6ksr2> <img src="/pr-39/_astro/github.CttcLjjd.svg" alt="GitHub" class="inline-block size-7 align-middle mr-1" data-astro-cid-3ef6ksr2> </a> </div> </nav> <!-- Hamburger Button --> <button id="hamburger-btn" class="lg:hidden flex flex-col gap-1.5 p-2 focus:outline-none" aria-label="Toggle menu" aria-expanded="false" data-astro-cid-3ef6ksr2> <span class="hamburger-line block w-6 h-0.5 bg-white transition-transform duration-300" data-astro-cid-3ef6ksr2></span> <span class="hamburger-line block w-6 h-0.5 bg-white transition-opacity duration-300" data-astro-cid-3ef6ksr2></span> <span class="hamburger-line block w-6 h-0.5 bg-white transition-transform duration-300" data-astro-cid-3ef6ksr2></span> </button> </div> <!-- Mobile Navigation --> <nav id="mobile-menu" class="lg:hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0" data-astro-cid-3ef6ksr2> <div class="flex flex-col gap-4 pb-4 px-2" data-astro-cid-3ef6ksr2> <!-- Search Button --> <button id="mobile-search-btn" class="w-full bg-background-secondary px-4 py-2 rounded-full text-center hover:bg-background-tertiary transition-colors border border-border text-white/70 text-sm flex items-center justify-center gap-2" aria-label="Search documentation" data-astro-cid-3ef6ksr2> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" data-astro-cid-3ef6ksr2></path> </svg> <span data-astro-cid-3ef6ksr2>Search</span> </button> <!-- Mobile Version Dropdown --> <div class="relative" id="mobile-version-dropdown-container" data-astro-cid-3ef6ksr2> <button id="mobile-version-dropdown-btn" class="w-full py-2 px-4 hover:bg-accent-light rounded-lg transition-colors flex items-center justify-between text-white" aria-expanded="false" aria-haspopup="true" data-astro-cid-3ef6ksr2> <span data-astro-cid-3ef6ksr2>Version: <span id="mobile-version-display" data-astro-cid-3ef6ksr2>0.9.0</span></span> <svg class="w-4 h-4 transition-transform duration-200" id="mobile-version-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-3ef6ksr2> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" data-astro-cid-3ef6ksr2></path> </svg> </button> <div id="mobile-version-dropdown-menu" class="overflow-hidden transition-all duration-200 max-h-0 bg-background-tertiary rounded-lg mt-1" data-astro-cid-3ef6ksr2> <a href="/pr-39/docs/0.9.0/contract-test-collection" class="block px-6 py-2 text-sm hover:bg-accent-light transition-colors text-accent bg-accent-light" data-astro-cid-3ef6ksr2> 0.9.0 </a><a href="/pr-39/docs/next/contract-test-collection" class="block px-6 py-2 text-sm hover:bg-accent-light transition-colors text-text-secondary" data-astro-cid-3ef6ksr2> next </a> </div> </div> <a href="/pr-39/changelog" class="py-2 px-4 hover:bg-accent-light rounded-lg transition-colors text-white" data-astro-cid-3ef6ksr2>Release Notes</a> <a href="/pr-39/docs/0.9.0/quick_start" class="bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-4 py-2 rounded-full text-center" data-astro-cid-3ef6ksr2>Get Started</a> <!-- Socials --> <div class="flex items-center justify-center gap-6 pt-2" data-astro-cid-3ef6ksr2> <a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-accent transition-colors" data-astro-cid-3ef6ksr2> <img src="/pr-39/_astro/x.DDkM7Rcg.svg" alt="X" class="inline-block size-7 align-middle" data-astro-cid-3ef6ksr2> </a> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-accent transition-colors" data-astro-cid-3ef6ksr2> <img src="/pr-39/_astro/github.CttcLjjd.svg" alt="GitHub" class="inline-block size-7 align-middle" data-astro-cid-3ef6ksr2> </a> </div> </div> </nav> </header> <div id="search-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/50 backdrop-blur-sm" data-version="0.9.0"> <div class="w-full max-w-2xl mx-4 bg-background-primary rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"> <div class="flex items-center gap-3 px-4 py-3 border-b border-border"> <svg class="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <input id="search-input" type="text" placeholder="Search documentation..." class="flex-1 outline-none text-lg bg-transparent text-text-primary placeholder:text-text-muted" autocomplete="off"> <kbd class="hidden sm:block px-2 py-1 text-xs font-semibold text-text-tertiary bg-background-tertiary rounded">ESC</kbd> </div> <div id="search-results" class="flex-1 overflow-y-auto p-2"> <p id="search-empty" class="py-8 text-center text-sm text-text-muted">Type to search v0.9.0</p> <p id="search-loading" class="hidden py-8 text-center text-sm text-text-muted">Loading...</p> <p id="search-no-results" class="hidden py-8 text-center text-sm text-text-muted">No results found</p> <ul id="search-list" class="hidden space-y-1"></ul> </div> <div class="border-t border-border px-4 py-2 bg-background-secondary flex justify-between text-xs text-text-muted"> <span><kbd class="px-1.5 py-0.5 bg-background-primary border border-border rounded">↑↓</kbd> Navigate <kbd class="ml-2 px-1.5 py-0.5 bg-background-primary border border-border rounded">↵</kbd> Select</span> <span>v0.9.0</span> </div> </div> </div> <script type="module" src="/pr-39/_astro/SearchModal.astro_astro_type_script_index_0_lang.CKXHzzvt.js"></script> <script type="module">let l=window.scrollY,d=!1;const r=document.getElementById("main-header");function v(){const e=window.scrollY;e<=10?r?.classList.remove("-translate-y-full"):e>l?r?.classList.add("-translate-y-full"):r?.classList.remove("-translate-y-full"),l=e,d=!1}function g(){d||(window.requestAnimationFrame(v),d=!0)}window.addEventListener("scroll",g);const t=document.getElementById("hamburger-btn"),n=document.getElementById("mobile-menu");t&&n&&(t.addEventListener("click",()=>{const e=t.getAttribute("aria-expanded")==="true";t.setAttribute("aria-expanded",e?"false":"true"),e?(n.style.maxHeight="0",t.classList.remove("open")):(n.style.maxHeight=n.scrollHeight+"px",t.classList.add("open"))}),window.addEventListener("resize",()=>{window.innerWidth>=1024&&(n.style.maxHeight="0",t.setAttribute("aria-expanded","false"),t.classList.remove("open"))}));const s=document.getElementById("version-dropdown-btn"),o=document.getElementById("version-dropdown-menu"),u=document.getElementById("version-chevron");function c(){o?.classList.remove("opacity-100","visible"),o?.classList.add("opacity-0","invisible"),u?.classList.remove("rotate-180"),s?.setAttribute("aria-expanded","false")}function b(){o?.classList.remove("opacity-0","invisible"),o?.classList.add("opacity-100","visible"),u?.classList.add("rotate-180"),s?.setAttribute("aria-expanded","true")}s&&o&&(s.addEventListener("click",e=>{e.stopPropagation(),s.getAttribute("aria-expanded")==="true"?c():b()}),document.addEventListener("click",e=>{document.getElementById("version-dropdown-container")?.contains(e.target)||c()}));const a=document.getElementById("mobile-version-dropdown-btn"),i=document.getElementById("mobile-version-dropdown-menu"),m=document.getElementById("mobile-version-chevron");a&&i&&a.addEventListener("click",()=>{const e=a.getAttribute("aria-expanded")==="true";a.setAttribute("aria-expanded",e?"false":"true"),e?(i.style.maxHeight="0",m?.classList.remove("rotate-180")):(i.style.maxHeight=i.scrollHeight+"px",m?.classList.add("rotate-180"),n&&t?.getAttribute("aria-expanded")==="true"&&(n.style.maxHeight=n.scrollHeight+i.scrollHeight+"px"))});document.getElementById("desktop-search-btn")?.addEventListener("click",()=>{window.openSearchModal?.()});document.getElementById("mobile-search-btn")?.addEventListener("click",()=>{window.openSearchModal?.(),n&&t&&(n.style.maxHeight="0",t.setAttribute("aria-expanded","false"),t.classList.remove("open"))});</script>  <main class="w-full flex"> <aside id="docs-sidebar" class="hidden lg:block shrink-0 sticky top-0 self-start max-h-screen overflow-y-auto border-r bg-background-primary relative sidebar-border docs-sidebar-desktop" data-astro-cid-qrwn6rcr> <nav data-astro-cid-qrwn6rcr> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Getting Started</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/quick_start" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Quick Start </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/migration_from_taquito" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Migration from Taquito </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tutorial" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Building Your First dApp </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/operation_flow" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Operation Flow </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/rpc_nodes" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> RPC nodes </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/web3js_taquito" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> web3js vs octez.js </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/fallback_rpc" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Fallback RPC URLs </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>octez.js Providers</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/prepare" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Prepare Provider </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/estimate" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Estimate Provider </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Operations</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/making_transfers" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Transfers (Transaction) </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/originate" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Originating (Deploying) Contracts </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/consensus_key" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Consensus Keys </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/global_constant" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Global constants </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/increase_paid_storage" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Increase Paid Storage </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/set_delegate" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Delegation </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/smart_rollups" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Smart Rollups </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/proposal_and_ballot" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Proposal &amp; Ballot </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/failing_noop" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Failing Noop </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/staking" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Staking and Adaptive Issuance </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Smart Contracts</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/smartcontracts" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Smart contract interaction </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/contract_call_parameters" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Contract call parameters </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/fa2_parameters" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> FA2 Parameters </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/manager_lambda" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> MANAGER_LAMBDA </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/multisig_doc" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Multisig contract interactions </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/failwith_errors" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Catching error messages </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Wallets</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/walletconnect" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> WalletConnect (BETA) </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/wallets" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Wallets </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/transaction_limits" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Transaction limits </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Michelson</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/maps_bigmaps" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Maps and BigMaps </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/michelsonmap" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> MichelsonMap class </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tickets" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Tickets </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Views</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/lambda_view" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Lambda View </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/on_chain_views" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> On-chain views </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Contract and Token Metadata</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tzip12" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> TZIP-12 Token Metadata </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/metadata-tzip16" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> TZIP-16 Contract Metadata and Views </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tzip16-sequence-diagram" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> TZIP-16 Sequence diagrams </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Signers</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/signing" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Signing data </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/inmemory_signer" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> In Memory Signer </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/ledger_signer" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Ledger Signer </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Packages</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/rpc_package" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> RPC </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/michelson_encoder" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Michelson Encoder </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/michel_codec" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Michel Codec </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/contracts-library" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Contracts Library </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/timelock" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Timelock (BETA) </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/taquito_utils" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> octez.js Utils </a> </li><li data-astro-cid-qrwn6rcr> <div class="sidebar-group-title" data-astro-cid-qrwn6rcr> Sapling </div> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/sapling" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Sapling Toolkit </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/sapling_in_memory_spending_key" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> InMemorySpendingKey </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/sapling_in_memory_viewing_key" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> InMemoryViewingKey </a> </li> </ul> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Advanced Scenarios</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/ophash_before_injecting" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Getting the Operation Hash without Injecting </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/drain_account" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Drain an account </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/complex_parameters" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Working with contracts having complex storage/parameters </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/confirmation_event_stream" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Confirmation Event Stream </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/events" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Contract Events </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/liquidity_baking" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Liquidity Baking interactions </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/storage_annotations" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Storage with/without annotations </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tezos_domains" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Tezos Domains </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Modules customization</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/forger" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Forger </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/rpc-cache" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> RPC caching </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/cancel_http_requests" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Cancel HTTP requests </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Testing</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/testing_strategies" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> octez.js Testing Strategies </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/ledger_integration_test" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Ledger tests </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/rpc_nodes_integration_test" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> RPC tests </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Dapp Development</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/package_bundle" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Client-Side Environments </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/dapp_template" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Dapp Templates </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/dapp_prelaunch" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Dapp pre-launch checklist </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>octez.js Public API</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/wallet_API" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Wallet API </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/batch-api" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Batch API </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Misc</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/contract-test-collection" class="sidebar-link sidebar-link-child sidebar-link-active" data-astro-cid-qrwn6rcr> Smart contract collection </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/validators" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Validation functions </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/ballot" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Ballot Operation </a> </li> </ul> </li> </ul> </nav> </aside> <div id="docs-sidebar-mobile" class="fixed inset-0 z-110 lg:hidden hidden" data-astro-cid-qrwn6rcr> <div id="docs-sidebar-overlay" class="absolute inset-0 bg-black/30" data-astro-cid-qrwn6rcr></div> <aside id="docs-sidebar-panel" class="absolute left-0 top-0 bottom-0 w-64 bg-background-primary shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto" data-astro-cid-qrwn6rcr> <div class="p-4 border-b border-border flex items-center justify-between" data-astro-cid-qrwn6rcr> <h2 class="text-lg font-bold text-text-secondary" data-astro-cid-qrwn6rcr>Documentation</h2> <button id="docs-sidebar-close" class="p-2 hover:bg-background-tertiary rounded" aria-label="Close sidebar" data-astro-cid-qrwn6rcr> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-qrwn6rcr> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" data-astro-cid-qrwn6rcr></path> </svg> </button> </div> <nav class="p-2" data-astro-cid-qrwn6rcr> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Getting Started</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/quick_start" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Quick Start </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/migration_from_taquito" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Migration from Taquito </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tutorial" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Building Your First dApp </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/operation_flow" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Operation Flow </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/rpc_nodes" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> RPC nodes </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/web3js_taquito" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> web3js vs octez.js </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/fallback_rpc" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Fallback RPC URLs </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>octez.js Providers</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/prepare" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Prepare Provider </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/estimate" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Estimate Provider </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Operations</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/making_transfers" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Transfers (Transaction) </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/originate" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Originating (Deploying) Contracts </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/consensus_key" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Consensus Keys </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/global_constant" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Global constants </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/increase_paid_storage" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Increase Paid Storage </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/set_delegate" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Delegation </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/smart_rollups" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Smart Rollups </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/proposal_and_ballot" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Proposal &amp; Ballot </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/failing_noop" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Failing Noop </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/staking" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Staking and Adaptive Issuance </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Smart Contracts</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/smartcontracts" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Smart contract interaction </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/contract_call_parameters" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Contract call parameters </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/fa2_parameters" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> FA2 Parameters </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/manager_lambda" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> MANAGER_LAMBDA </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/multisig_doc" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Multisig contract interactions </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/failwith_errors" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Catching error messages </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Wallets</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/walletconnect" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> WalletConnect (BETA) </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/wallets" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Wallets </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/transaction_limits" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Transaction limits </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Michelson</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/maps_bigmaps" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Maps and BigMaps </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/michelsonmap" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> MichelsonMap class </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tickets" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Tickets </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Views</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/lambda_view" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Lambda View </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/on_chain_views" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> On-chain views </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Contract and Token Metadata</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tzip12" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> TZIP-12 Token Metadata </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/metadata-tzip16" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> TZIP-16 Contract Metadata and Views </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tzip16-sequence-diagram" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> TZIP-16 Sequence diagrams </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Signers</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/signing" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Signing data </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/inmemory_signer" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> In Memory Signer </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/ledger_signer" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Ledger Signer </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Packages</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/rpc_package" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> RPC </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/michelson_encoder" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Michelson Encoder </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/michel_codec" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Michel Codec </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/contracts-library" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Contracts Library </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/timelock" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Timelock (BETA) </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/taquito_utils" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> octez.js Utils </a> </li><li data-astro-cid-qrwn6rcr> <div class="sidebar-group-title" data-astro-cid-qrwn6rcr> Sapling </div> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/sapling" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Sapling Toolkit </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/sapling_in_memory_spending_key" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> InMemorySpendingKey </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/sapling_in_memory_viewing_key" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> InMemoryViewingKey </a> </li> </ul> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Advanced Scenarios</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/ophash_before_injecting" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Getting the Operation Hash without Injecting </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/drain_account" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Drain an account </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/complex_parameters" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Working with contracts having complex storage/parameters </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/confirmation_event_stream" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Confirmation Event Stream </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/events" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Contract Events </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/liquidity_baking" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Liquidity Baking interactions </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/storage_annotations" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Storage with/without annotations </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/tezos_domains" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Tezos Domains </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Modules customization</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/forger" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Forger </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/rpc-cache" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> RPC caching </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/cancel_http_requests" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Cancel HTTP requests </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Testing</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/testing_strategies" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> octez.js Testing Strategies </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/ledger_integration_test" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Ledger tests </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/rpc_nodes_integration_test" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> RPC tests </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Dapp Development</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/package_bundle" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Client-Side Environments </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/dapp_template" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Dapp Templates </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/dapp_prelaunch" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Dapp pre-launch checklist </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>octez.js Public API</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/wallet_API" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Wallet API </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/batch-api" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Batch API </a> </li> </ul> </li><li class="mb-1" data-astro-cid-qrwn6rcr> <button class="sidebar-category-title" aria-expanded="true" data-astro-cid-qrwn6rcr> <span data-astro-cid-qrwn6rcr>Misc</span> <svg class="sidebar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-qrwn6rcr> <path d="M9 18l6-6-6-6" data-astro-cid-qrwn6rcr></path> </svg> </button> <ul class="list-none p-0 m-0" data-astro-cid-qrwn6rcr> <li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/contract-test-collection" class="sidebar-link sidebar-link-child sidebar-link-active" data-astro-cid-qrwn6rcr> Smart contract collection </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/validators" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Validation functions </a> </li><li data-astro-cid-qrwn6rcr> <a href="/pr-39/docs/1.0.0/ballot" class="sidebar-link sidebar-link-child " data-astro-cid-qrwn6rcr> Ballot Operation </a> </li> </ul> </li> </ul> </nav> </aside> </div> <script type="module">const n=document.getElementById("docs-sidebar-toggle"),t=document.getElementById("docs-sidebar-mobile"),c=document.getElementById("docs-sidebar-overlay"),l=document.getElementById("docs-sidebar-close"),d=document.getElementById("docs-sidebar-panel");function o(){t&&d&&(t.classList.remove("hidden"),setTimeout(()=>{d.classList.remove("-translate-x-full")},10))}function s(){d&&(d.classList.add("-translate-x-full"),setTimeout(()=>{t&&t.classList.add("hidden")},300))}n&&n.addEventListener("click",o);l&&l.addEventListener("click",s);c&&c.addEventListener("click",s);document.addEventListener("keydown",e=>{e.key==="Escape"&&t&&!t.classList.contains("hidden")&&s()});d&&d.addEventListener("click",e=>{e.target.tagName==="A"&&s()});document.querySelectorAll(".sidebar-category-title").forEach(e=>{e.addEventListener("click",()=>{const i=e.getAttribute("aria-expanded")==="true";e.setAttribute("aria-expanded",i?"false":"true");const a=e.nextElementSibling;a&&(a.style.display=i?"none":"")})});</script>  <div class="flex-1 min-w-0 px-6 lg:px-10 pt-8"> <div class="max-w-4xl mx-auto"> <button id="docs-sidebar-toggle" class="mb-4 lg:hidden block top-20 left-4 z-40 p-2 bg-primary text-white rounded shadow-lg hover:bg-opacity-90 transition-colors" aria-label="Open documentation sidebar"> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path> </svg> </button> <div class="bg-primary rounded-md py-0.5 px-2 w-fit mb-1"> <p class="text-white text-xs">Version: 1.0.0</p> </div> <div class="bg-amber-50 border border-amber-300 rounded-md p-4 my-4"> <div class="flex items-start gap-3"> <svg class="w-5 h-5 text-amber-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path> </svg> <p class="text-amber-800 text-sm">
+This documentation is for octez.js version <strong>1.0.0</strong> and is no
+                    longer being updated. Some information may be outdated. View the  <a href="/pr-39/docs/0.9.0/contract-test-collection" class="text-amber-700 underline hover:text-amber-900">
+latest version
+</a>
+.
+</p> </div> </div>  <div class="mb-4"> <h1 class="text-text-secondary text-5xl font-bold">Smart contract collection</h1>  </div> <div class="markdown-body flex-1 min-w-0 pb-8">  <p>The contracts used in the octez.js integration tests and in the octez.js documentation live code examples are test data and require curation. Here we collect the contracts, give them names, demonstrate their properties and describe their use.</p>
+<p>Each contract description will include the storage in Michelson and the storage as Javascript as used by octez.js.</p>
+<ul>
+<li><strong>Basic Contracts</strong>
+<ul>
+<li><a href="#incrementcontract">IncrementContract</a></li>
+<li><a href="#michelsonmapcontract">MichelsonMapContract</a></li>
+<li><a href="#genericmultisigcontract">GenericMultisigContract</a></li>
+</ul>
+</li>
+<li><strong>Lambda Contracts</strong>
+<ul>
+<li><a href="#lambdaviewcontract">LambdaViewContract</a></li>
+<li><a href="#lambdaviewwithtokencontract">LambdaViewWithTokenContract</a></li>
+</ul>
+</li>
+<li><strong>Map and BigMap Contracts</strong>
+<ul>
+<li><a href="#mapwithpairasmapcontract">MapWithPairasMapContract</a></li>
+<li><a href="#mapwithvaluescomplexkeyscontract">MapWithValuesComplexKeysContract</a></li>
+<li><a href="#mapwithinitialstoragecontract">MapWithInitialStorageContract</a></li>
+<li><a href="#mapwithmapandbigmapcontract">MapWithMapandBigmapContract</a></li>
+<li><a href="#bigmapsmultiplevaluescontract">BigMapsMultipleValuesContract</a></li>
+<li><a href="#bigmapscomplexstoragecontract">BigMapsComplexStorageContract</a></li>
+<li><a href="#bigmapswithledgercontract">BigMapsWithLedgerContract</a></li>
+<li><a href="#bigmappackcontract">BigMapPackContract</a></li>
+</ul>
+</li>
+<li><strong>On Chain Views</strong>
+<ul>
+<li><a href="#contractcallfib">ContractCallFib</a></li>
+<li><a href="#contracttoplevelviews">contractTopLevelViews</a></li>
+</ul>
+</li>
+<li><strong>Tzip7 Contracts</strong>
+<ul>
+<li><a href="#tokencontract">TokenContract</a></li>
+</ul>
+</li>
+<li><strong>Tzip12 Contracts</strong>
+<ul>
+<li><a href="#tzip12bigmapoffchaincontract">Tzip12BigMapOffChainContract</a></li>
+</ul>
+</li>
+<li><strong>Tzip 16 Contracts</strong>
+<ul>
+<li><a href="#tzip16storagecontract">Tzip16StorageContract</a></li>
+<li><a href="#tzip16httpscontract">Tzip16HTTPSContract</a></li>
+<li><a href="#tzip16sha256contract">Tzip16SHA256Contract</a></li>
+<li><a href="#tzip16ipfscontract">Tzip16IPFSContract</a></li>
+<li><a href="#tzip16offchaincontractjson">Tzip16OffChainContractJSON</a></li>
+<li><a href="#tzip16offchaincontractmultiply">Tzip16OffChainContractMultiply</a></li>
+</ul>
+</li>
+<li><strong>Wallet Contracts</strong>
+<ul>
+<li><a href="#walletcontract">WalletContract</a></li>
+<li><a href="#walletareyoutherecontract">WalletAreYouThereContract</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="basic-contracts">Basic Contracts</h1>
+<h2 id="incrementcontract">IncrementContract</h2>
+<p>This contract serves as the default introductory example. The contract is used to demo addition and subtraction by a smart contract.</p>
+<h4 id="entrypoints">Entrypoints:</h4>
+<ul>
+<li><code>decrement</code></li>
+<li><code>increment</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-n9jauxaei" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage int
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: 1;
+</code></pre> </div>  </div> </div>  <script type="module">document.querySelectorAll(".tabs-container").forEach(s=>{const c=s.querySelectorAll(".tab-button"),b=s.querySelectorAll("[data-tab-item]"),o=a=>{c.forEach(e=>{const t=e;t.dataset.tab===a?t.classList.add("active"):t.classList.remove("active")}),b.forEach(e=>{const t=e;t.dataset.tabItem===a?t.style.display="block":t.style.display="none"})};c.forEach(a=>{a.addEventListener("click",()=>{const t=a.dataset.tab;t&&o(t)})});const l=s.querySelector(".tab-button.active");l?.dataset.tab&&o(l.dataset.tab)});</script>
+<h2 id="michelsonmapcontract">MichelsonMapContract</h2>
+<p>The contract supports a <a href="/pr-39/docs/1.0.0/michelsonmap">Michelson Tutorial</a>. It has a default endpoint that takes a pair of an address and an amount of tez.</p>
+<ul>
+<li><a href="https://medium.com/coinmonks/working-with-michelson-maps-in-octez.js-8d8be9930662">See the full tutorial</a></li>
+</ul>
+<h4 id="entrypoints-1">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-keddgrtcl" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map address mutez);
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: MichelsonMap&lt;string, BigNumber&gt;
+</code></pre> </div>  </div> </div>  
+<h2 id="genericmultisigcontract">GenericMultisigContract</h2>
+<p>This contract has a stored counter. The contract is used in some octez.js integration tests for generic tests for features like transfers.</p>
+<h4 id="entrypoints-2">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+<li><code>main</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-tddldl8a3" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (nat %stored_counter) (pair (nat %threshold) (list %keys key)));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">        storage: {
+          stored_counter: 0,
+          threshold: 2,
+          keys: [await account1.signer.publicKey(), await account2.signer.publicKey(), await account3.signer.publicKey()]
+        }
+</code></pre> </div>  </div> </div>  
+<h1 id="lambda-contracts">Lambda Contracts</h1>
+<p>octez.js internally contains a list of lambda contracts. Thus, there is no need to deploy a lambda contract if you are using Mainnet, Ghostnet or another testnet. octez.js will detect the current network and use the appropriate lambda contract.</p>
+<p>Lambda views are introduced in <a href="https://gitlab.com/tezos/tzip/-/blob/master/proposals/tzip-4/tzip-4.md#view-entrypoints">Tzip4</a>.</p>
+<h2 id="lambdaviewcontract">LambdaViewContract</h2>
+<p>Not a supported FA1.2 contract. Almost an FA2 interface but is missing <code>update_operators</code>.</p>
+<h4 id="entrypoints-3">Entrypoints:</h4>
+<ul>
+<li><code>approve</code></li>
+<li><code>getAllowance</code></li>
+<li><code>getBalance</code></li>
+<li><code>getTotalSupply</code></li>
+<li><code>mint</code></li>
+<li><code>transfer</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-eot3emslj" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+          (pair
+            (big_map %ledger address (pair (map %allowances address nat) (nat %balance)))
+            (address %owner))
+          (nat %totalSupply));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const allowances = new MichelsonMap();
+    const ledger = new MichelsonMap();
+    ledger.set(&#39;tz1btkXVkVFWLgXa66sbRJa8eeUSwvQFX4kP&#39;, { allowances, balance: &#39;100&#39; });
+
+    const opknownBigMapContract = await tezos.contract.originate({
+      code: knownBigMapContract,
+      storage: {
+        ledger,
+        owner: &#39;tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM&#39;,
+        totalSupply: &#39;100&#39;,
+      },
+    });   }
+</code></pre> </div>  </div> </div>  
+<h2 id="lambdaviewwithtokencontract">LambdaViewWithTokenContract</h2>
+<p>This contract is another example of a Lambda contract, this time involving a token. It is not a supported FA1.2 contract, but it does have the entrypoints that define an FA2 interface: <code>balance_of</code>, <code>transfer</code>, and <code>update_operators</code>.</p>
+<h4 id="entrypoints-4">Entrypoints:</h4>
+<ul>
+<li><code>balance_of</code></li>
+<li><code>token_metadata_registry</code></li>
+<li><code>transfer</code></li>
+<li><code>update_operators</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-24s4krini" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+          (pair
+            (big_map %ledger address (pair (set %allowances address) (nat %balance)))
+            (big_map %token_metadata nat
+                                     (pair (nat %token_id)
+                                           (pair (string %symbol)
+                                                 (pair (string %name)
+                                                       (pair (nat %decimals)
+                                                             (map %extras string string)))))))
+          (nat %total_supply));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const bigMapLedger = new MichelsonMap();
+bigMapLedger.set(&#39;tz1c1X8vD4pKV9TgV1cyosR7qdnkc8FTEyM1&#39;, {
+  allowances: [&#39;tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3xY&#39;],
+  balance: &#39;50&#39;,
+});
+bigMapLedger.set(&#39;tz1XTyqBn4xi9tkRDutpRyQwHxfF8ar4i4Wq&#39;, {
+  allowances: [&#39;tz1Nu949TjA4zzJ1iobz76fHPZbWUraRVrCE&#39;],
+  balance: &#39;50&#39;,
+});
+
+const tokenMetadataBigMap = new MichelsonMap();
+tokenMetadataBigMap.set(&#39;0&#39;, {
+  token_id: &#39;0&#39;,
+  symbol: &#39;hello&#39;,
+  name: &#39;test&#39;,
+  decimals: &#39;0&#39;,
+  extras: new MichelsonMap(),
+});
+tokenMetadataBigMap.set(&#39;1&#39;, {
+  token_id: &#39;1&#39;,
+  symbol: &#39;world&#39;,
+  name: &#39;test2&#39;,
+  decimals: &#39;0&#39;,
+  extras: new MichelsonMap(),
+});
+
+const op = await tezos.contract.originate({
+  balance: &#39;1&#39;,
+  code: fa2Contract,
+  storage: {
+    ledger: bigMapLedger,
+    token_metadata: tokenMetadataBigMap,
+    total_supply: &#39;100&#39;,
+  },
+});
+</code></pre> </div>  </div> </div>  
+<h1 id="contracts-with-maps">Contracts with Maps</h1>
+<h2 id="mapwithpairasmapcontract">MapWithPairasMapContract</h2>
+<p>A simple contract with a default entrypoint that takes unit. Not a supported FA1.2 contract.</p>
+<p>The contract is used to demonstrate the <code>get</code> method of the <code>MichelsonMap</code> class, which accesses values of the map for a specified key. If the storage does not annotate its properties, the caller must use numeric indexes instead. This contract does not annotate the pairs of the key pair either so numeric indexes are used for this also.</p>
+<h4 id="entrypoints-5">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-ekll0td1r" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+          (pair (address %theAddress)
+                (map %theMap (pair nat address) (pair (mutez %amount) (int %quantity))))
+          (int %theNumber));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const storageMap = new MichelsonMap();
+storageMap.set(
+  {
+    0: &#39;1&#39;,
+    1: user_addresses.get(&#39;Freda&#39;),
+  },
+  { quantity: &#39;10&#39;, amount: &#39;100&#39; }
+);
+storageMap.set(
+  {
+    0: &#39;2&#39;,
+    1: user_addresses.get(&#39;Deborah&#39;),
+  },
+  { quantity: &#39;20&#39;, amount: &#39;200&#39; }
+);
+storageMap.set(
+  {
+    0: &#39;3&#39;,
+    1: user_addresses.get(&#39;Eddy&#39;),
+  },
+  { quantity: &#39;30&#39;, amount: &#39;300&#39; }
+);
+
+const op = await tezos.contract.originate({
+  code: contractMapPairKey,
+  storage: {
+    theAddress: user_addresses.get(&#39;Alice&#39;),
+    theMap: storageMap,
+    theNumber: 10,
+  },
+});
+</code></pre> </div>  </div> </div>  
+<h2 id="mapwithcomplexkeyscontract">MapWithComplexKeysContract</h2>
+<p>This contract has a single default entrypoint that takes unit and produces a map:</p>
+<pre><code class="language-js">Pair 10 (Pair 20 (Pair &quot;Hello&quot; (Pair 0xffff (Pair 100 (Pair False (Pair &quot;tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx&quot; (Pair 1570374509 &quot;tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx&quot;)))))))
+</code></pre>
+<p>The get method of the MichelsonMap class accesses values of the map for a specified key.</p>
+<h4 id="entrypoints-6">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-6vts4i444" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map
+          (pair int
+                (pair nat
+                      (pair string
+                            (pair bytes
+                                  (pair mutez
+                                        (pair bool
+                                              (pair key_hash (pair timestamp address))))))))
+          int);
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const storageMap = new MichelsonMap();
+storageMap.set(
+  {
+    0: &#39;1&#39;,
+    1: &#39;2&#39;,
+    2: &#39;test&#39;,
+    3: &#39;cafe&#39;,
+    4: &#39;10&#39;,
+    5: true,
+    6: user_addresses.get(&#39;Eddy&#39;),
+    7: &#39;2019-09-06T15:08:29.000Z&#39;,
+    8: user_addresses.get(&#39;Eddy&#39;),
+  },
+  100
+);
+
+storageMap.set(
+  {
+    0: &#39;10&#39;,
+    1: &#39;20&#39;,
+    2: &#39;Hello&#39;,
+    3: &#39;ffff&#39;,
+    4: &#39;100&#39;,
+    5: false,
+    6: user_addresses.get(&#39;Freda&#39;),
+    7: &#39;2019-10-06T15:08:29.000Z&#39;,
+    8: user_addresses.get(&#39;Freda&#39;),
+  },
+  1000
+);
+
+const op = await tezos.contract.originate({
+  code: contractMap8pairs,
+  storage: storageMap,
+});
+</code></pre> </div>  </div> </div>  
+<p>Note the lack of annotations in the Michelson for the storage. If the storage does not annotate its properties, the caller must use numeric indexes instead, as the octez.js javascript shows.</p>
+<h2 id="mapwithinitialstoragecontract">MapWithInitialStorageContract</h2>
+<p>octez.js provides a get method of the MichelsonMap on storage of type Map. We can only change contract storage by calling the function provided by the contract. The main function on this Smart Contract is decreasing the value of the current_stock associated with the key 1.</p>
+<h4 id="entrypoints-7">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-w6i0yc6h2" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map nat (pair (nat %current_stock) (mutez %max_price)));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const storageMap = new MichelsonMap();
+storageMap.set(&#39;1&#39;, { current_stock: &#39;10000&#39;, max_price: &#39;50&#39; });
+storageMap.set(&#39;2&#39;, { current_stock: &#39;120&#39;, max_price: &#39;20&#39; });
+storageMap.set(&#39;3&#39;, { current_stock: &#39;50&#39;, max_price: &#39;60&#39; });
+</code></pre> </div>  </div> </div>  
+<h2 id="mapwithmapandbigmapcontract">MapWithMapandBigmapContract</h2>
+<p>The get method of the MichelsonMap class accesses the values of the map and values of the bigMap. The difference is that the value gets returned directly for a map while the get method on a bigMap returns a promise.</p>
+<h4 id="entrypoints-8">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-30kig7y1k" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %thebigmap (pair nat address) int)
+              (map %themap (pair nat address) int));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">Tezos.contract
+  .at(&#39;KT1RBE127YSA96FwCYrA8sazvr8pt1TYaThS&#39;)
+  .then((myContract) =&gt; {
+    return myContract
+      .storage()
+      .then((myStorage) =&gt; {
+        //When called on a map, the get method returns the value directly
+        const valueMap = myStorage[&#39;themap&#39;].get({
+          0: &#39;1&#39;, //nat
+          1: &#39;tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx&#39;, //address
+        });
+        console.log(`The value associated with the specified key of the map is ${valueMap}.`);
+        return myContract.storage();
+      })
+
+      .then((myStorage) =&gt; {
+        //When called on a bigMap, the get method returns a promise
+        return myStorage[&#39;thebigmap&#39;].get({
+          0: &#39;10&#39;, //nat
+          1: &#39;tz3WXYtyDUNL91qfiCJtVUX746QpNv5i5ve5&#39;, //address
+        });
+      })
+      .then((valueBigMap) =&gt; {
+        console.log(`The value associated with the specified key of the bigMap is ${valueBigMap}.`);
+      });
+  })
+  .catch((error) =&gt; console.log(`Error: ${JSON.stringify(error, null, 2)}`));
+</code></pre> </div>  </div> </div>  
+<h1 id="contracts-with-bigmaps">Contracts with BigMaps</h1>
+<h2 id="bigmapsmultiplevaluescontract">BigMapsMultipleValuesContract</h2>
+<p>This contract has an FA1.2 interface.</p>
+<p>It is possible to fetch multiple big map values using octez.js with one call using the getMultipleValues method of the BigMapAbstraction class. octez.js will ensure that all fetched big maps come from the same block to ensure a consistent state.</p>
+<h4 id="entrypoints-9">Entrypoints:</h4>
+<ul>
+<li><code>approve</code></li>
+<li><code>burn</code></li>
+<li><code>getAdministrator</code></li>
+<li><code>getAllowance</code></li>
+<li><code>getBalance</code></li>
+<li><code>getTotalSupply</code></li>
+<li><code>mint</code></li>
+<li><code>setAdministrator</code></li>
+<li><code>setPause</code></li>
+<li><code>transfer</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-w0r68871t" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map address (pair nat (map address nat)))
+              (pair address (pair bool nat)));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const bigMapInit = new MichelsonMap();
+bigMapInit.set(signer, { 0: &#39;1&#39;, 1: new MichelsonMap() });
+bigMapInit.set(user_addresses.get(&#39;Eddy&#39;), { 0: &#39;2&#39;, 1: new MichelsonMap() });
+bigMapInit.set(user_addresses.get(&#39;Glen&#39;), { 0: &#39;3&#39;, 1: new MichelsonMap() });
+bigMapInit.set(user_addresses.get(&#39;Freda&#39;), { 0: &#39;4&#39;, 1: new MichelsonMap() });
+
+const op = await tezos.contract.originate({
+  code: tokenCode,
+  storage: {
+    0: bigMapInit,
+    1: signer,
+    2: true,
+    3: &#39;3&#39;,
+  },
+});
+</code></pre> </div>  </div> </div>  
+<h2 id="bigmapscomplexstoragecontract">BigMapsComplexStorageContract</h2>
+<p>This contract is used in many octez.js documentation Live Code Examples to demonstrate how to get data from a complex storage. Not a supported FA1.2 contract.</p>
+<p>The storage uses a pair composed of a nested pair and a map (annotated as %validators). The nested pair consists of an address (annotated as %owner) and a bigMap (annotated as %records). The map %validators use a natural number (nat) as its key and address its value. The bigMap %records uses a value in bytes as its key and a pair consisting of nested pairs as its value. We find addresses and natural numbers in these nested pairs, where some are optional, and a map (annotated %data). The map %data uses a string as its key, and the user needs to choose the value of the map between different proposed types (int, bytes, bool, …).</p>
+<h4 id="entrypoints-10">Entrypoints:</h4>
+<ul>
+<li><code>admin_update</code></li>
+<li><code>resolve</code></li>
+<li><code>set_child_record</code></li>
+<li><code>update_record</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-bhz4umrrl" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+          (pair (address %owner)
+                (big_map %records bytes
+                                  (pair
+                                    (pair
+                                      (pair (option %address address)
+                                            (map %data string
+                                                       (or
+                                                         (or
+                                                           (or
+                                                             (or (address %address)
+                                                                 (bool %bool))
+                                                             (or (bytes %bytes)
+                                                                 (int %int)))
+                                                           (or
+                                                             (or (key %key)
+                                                                 (key_hash %key_hash))
+                                                             (or (nat %nat)
+                                                                 (signature %signature))))
+                                                         (or
+                                                           (or (string %string)
+                                                               (mutez %tez))
+                                                           (timestamp %timestamp)))))
+                                      (pair (address %owner) (option %ttl nat)))
+                                    (option %validator nat))))
+          (map %validators nat address));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const dataMap = new MichelsonMap();
+dataMap.set(&#39;Hello&#39;, { bool: true });
+
+const recordsBigMap = new MichelsonMap();
+recordsBigMap.set(&#39;FFFF&#39;, {
+  data: dataMap,
+  owner: user_addresses.get(&#39;Glen&#39;),
+});
+recordsBigMap.set(&#39;AAAA&#39;, {
+  data: dataMap,
+  owner: user_addresses.get(&#39;Glen&#39;),
+  validator: &#39;1&#39;,
+});
+
+const validatorsMap = new MichelsonMap();
+validatorsMap.set(&#39;1&#39;, user_addresses.get(&#39;Deborah&#39;));
+
+const op = await tezos.contract.originate({
+  code: contractJson,
+  storage: {
+    owner: user_addresses.get(&#39;Glen&#39;),
+    records: recordsBigMap,
+    validators: validatorsMap,
+  },
+});
+</code></pre> </div>  </div> </div>  
+<h2 id="bigmapswithledgercontract">BigMapsWithLedgerContract</h2>
+<p>This contract is used in octez.js integration tests. It is not a FA1.2 contract, since Entrypoint “transfer” has type (pair (pair (address %0) (address %1)) (nat %2)), but should have type (pair address address nat). Also not an FA2 contract as it does not have an entrypoint for update_operators.</p>
+<h4 id="entrypoints-11">Entrypoints:</h4>
+<ul>
+<li><code>approve</code></li>
+<li><code>burn</code></li>
+<li><code>getAllowance</code></li>
+<li><code>getBalance</code></li>
+<li><code>getTotalSupply</code></li>
+<li><code>mint</code></li>
+<li><code>setOwner</code></li>
+<li><code>setPause</code></li>
+<li><code>transfer</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-r1x5aokfx" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+          (pair
+            (big_map %ledger address (pair (map %allowances address nat) (nat %balance)))
+            (address %owner))
+          (pair (bool %paused) (nat %totalSupply)));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const allowances = new MichelsonMap();
+const ledger = new MichelsonMap();
+ledger.set(&#39;tz1btkXVkVFWLgXa66sbRJa8eeUSwvQFX4kP&#39;, { allowances, balance: &#39;100&#39; });
+
+const opknownBigMapContract = await tezos.contract.originate({
+  code: knownBigMapContract,
+  storage: {
+    ledger,
+    owner: &#39;tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM&#39;,
+    paused: true,
+    totalSupply: &#39;100&#39;,
+  },
+});
+</code></pre> </div>  </div> </div>  
+<h2 id="bigmappackcontract">BigMapPackContract</h2>
+<p>By default, a call to an RPC node is used to pack data when fetching values from a big map. Big map keys need to be serialized or packed and octez.js relies on the PACK functionality of a Tezos RPC node to pack the big map keys. This may be considered inefficient as it adds a request to a remote node to fetch data.</p>
+<p>Now, octez.js allows you to pack the required data locally to fetch values from a big map. By relying on the local pack implementation, octez.js eliminates one RPC roundtrip when fetching big map values.</p>
+<p>This contract is for demonstrating packing. Not a supported FA1.2 contract.</p>
+<h4 id="entrypoints-12">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-qgv4gqebr" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map nat string));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const bigmap = new MichelsonMap();
+
+for (let i = 1; i &lt;= 410; i++) {
+  bigmap.set(i, `${i}`);
+}
+
+const op = await tezos.contract.originate({
+  code,
+  storage: {
+    0: &#39;10&#39;,
+    1: bigmap,
+  },
+  storageLimit: 32500,
+});
+</code></pre> </div>  </div> </div>  
+<h1 id="on-chain-views-contracts">On Chain Views Contracts</h1>
+<p>Views are meant to be called by a contract using the Michelson Instruction View followed by the view name and its result type. See the <a href="/pr-39/docs/1.0.0/on_chain_views">On-chain views documentation</a> for more details.</p>
+<h2 id="contractcallfib">ContractCallFib</h2>
+<p>This contract is used to demonstrate On Chain views. It calls the view ‘fib’ in another contract called contractTopLevelViews.</p>
+<h4 id="entrypoints-13">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-nvcswti2l" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage nat
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: 1;
+</code></pre> </div>  </div> </div>  
+<h2 id="contracttoplevelviews">ContractTopLevelViews</h2>
+<p>This contract has a series of views which are sections of Michelson Code, for example:</p>
+<pre><code class="language-js">view &quot;add&quot; nat nat { UNPAIR ; ADD } ;
+</code></pre>
+<p>which can be called by other contracts to calculate and return some value.</p>
+<h4 id="entrypoints-14">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-am0qon50e" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage nat
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: 1;
+</code></pre> </div>  </div> </div>  
+<h1 id="tzip-7-contracts">Tzip-7 Contracts</h1>
+<p>Tzip-7 introduced the approvable ledger: <a href="https://gitlab.com/tezos/tzip/-/blob/master/proposals/tzip-7/tzip-7.md">Tzip-7</a></p>
+<h2 id="tokencontract">TokenContract</h2>
+<ul>
+<li><a href="https://claudebarde.medium.com/a-beginners-guide-to-tezos-tzip-7-proposal-90a8b816af7e">A Beginner’s Guide to Tezos Tzip-7 Proposal</a></li>
+</ul>
+<p>This contract has an FA1.2 interface. To determine if a contract has an FA1.2 interface we can use</p>
+<pre><code>tezos-client check contract KT1CfFBaLoUrgv93k8668KCCcu2hNDNYPz4L implements fa1.2
+</code></pre>
+<h4 id="entrypoints-15">Entrypoints:</h4>
+<ul>
+<li><code>approve</code></li>
+<li><code>burn</code></li>
+<li><code>getAdministrator</code></li>
+<li><code>getAllowance</code></li>
+<li><code>getBalance</code></li>
+<li><code>getTotalSupply</code></li>
+<li><code>mint</code></li>
+<li><code>setAdministrator</code></li>
+<li><code>setPause</code></li>
+<li><code>transfer</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-k6gnhvsnc" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map address (pair nat (map address nat)))
+              (pair address (pair bool nat)));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const pkh = await Tezos.signer.publicKeyHash();
+const bigMap = new MichelsonMap();
+bigMap.set(pkh, {
+    0: &quot;2&quot;,
+    1: new MichelsonMap()
+});
+
+storage: {
+    0: bigMap,
+    1: pkh,
+    2: true,
+    3: &quot;200&quot;
+}
+</code></pre> </div>  </div> </div>  
+<h1 id="tzip-12-contracts">Tzip-12 Contracts</h1>
+<p>The @tezos-x/octez.js-tzip12 package allows retrieving metadata associated with tokens of an FA2 contract. You can find more information about the TZIP-12 standard <a href="https://gitlab.com/tezos/tzip/-/blob/master/proposals/tzip-12/tzip-12.md">here</a>.</p>
+<p>A contract has an FA2 interface if it has entrypoints: transfer, balance_of, and update_operators</p>
+<h2 id="tzip12bigmapoffchaincontract">Tzip12BigMapOffChainContract</h2>
+<p>This contract has an FA2 interface.</p>
+<h4 id="entrypoints-16">Entrypoints:</h4>
+<ul>
+<li><code>balance_of</code></li>
+<li><code>mint</code></li>
+<li><code>mutez_transfer</code></li>
+<li><code>set_administrator</code></li>
+<li><code>set_metadata</code></li>
+<li><code>set_pause</code></li>
+<li><code>transfer</code></li>
+<li><code>update_operators</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-2v0d0eio9" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+          (pair (address %administrator)
+                (pair (nat %all_tokens) (big_map %ledger (pair address nat) nat)))
+          (pair
+            (pair (big_map %metadata string bytes)
+                  (big_map %operators
+                    (pair (address %owner) (pair (address %operator) (nat %token_id)))
+                    unit))
+            (pair (bool %paused)
+                  (big_map %tokens nat
+                                   (pair (map %metadata_map string bytes)
+                                         (nat %total_supply))))));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-ts">const ledger = new MichelsonMap();
+ledger.set(
+  {
+    0: user_addresses.get(&#39;Eddy&#39;),
+    1: 0,
+  },
+  &#39;20000&#39;
+);
+ledger.set(
+  {
+    0: user_addresses.get(&#39;Glen&#39;),
+    1: 1,
+  },
+  &#39;20000&#39;
+);
+
+const url = &#39;https://storage.googleapis.com/tzip-16/fa2-views.json&#39;;
+const bytesUrl = stringToBytes(url);
+const metadata = new MichelsonMap();
+metadata.set(&#39;&#39;, bytesUrl);
+
+const operators = new MichelsonMap();
+
+const tokens = new MichelsonMap();
+const metadataMap0 = new MichelsonMap();
+metadataMap0.set(&#39;&#39;, stringToBytes(&#39;https://storage.googleapis.com/tzip-16/token-metadata.json&#39;));
+metadataMap0.set(&#39;name&#39;, stringToBytes(&#39;Name from URI is prioritized!&#39;));
+const metadataMap1 = new MichelsonMap();
+metadataMap1.set(&#39;name&#39;, stringToBytes(&#39;AliceToken&#39;));
+metadataMap1.set(&#39;symbol&#39;, stringToBytes(&#39;ALC&#39;));
+metadataMap1.set(&#39;decimals&#39;, &#39;30&#39;);
+metadataMap1.set(&#39;extra&#39;, stringToBytes(&#39;Add more data&#39;));
+const metadataMap2 = new MichelsonMap();
+metadataMap2.set(&#39;name&#39;, stringToBytes(&#39;Invalid token metadata&#39;));
+tokens.set(&#39;0&#39;, {
+  metadata_map: metadataMap0,
+  total_supply: &#39;20000&#39;,
+});
+tokens.set(&#39;1&#39;, {
+  metadata_map: metadataMap1,
+  total_supply: &#39;20000&#39;,
+});
+tokens.set(&#39;2&#39;, {
+  metadata_map: metadataMap2,
+  total_supply: &#39;20000&#39;,
+});
+
+const op = await tezos.contract.originate({
+  code: fa2ForTokenMetadataView,
+  storage: {
+    administrator: user_addresses.get(&#39;TestFunder&#39;),
+    all_tokens: &#39;2&#39;,
+    ledger,
+    metadata,
+    operators,
+    paused: false,
+    tokens,
+  },
+});
+</code></pre> </div> <div data-tab-item="metadata" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">name: Test octez.js FA2 token_metadata view
+description: This is a test to retrieve tokens metadata from a view %token_metadata
+interfaces: TZIP-012
+
+</code></pre> </div>  </div> </div>  
+<h1 id="tzip-16-contracts">Tzip-16 Contracts</h1>
+<p>The @tezos-x/octez.js-tzip16 package allows retrieving metadata associated with a smart contract. These metadata can be stored on-chain (tezos-storage) or off-chain (HTTP(S) or IPFS). The package also provides a way to execute the MichelsonStorageView found in the metadata. More information about the TZIP-16 standard can be found <a href="https://gitlab.com/tezos/tzip/-/blob/master/proposals/tzip-16/tzip-16.md#introduction">here</a>.</p>
+<p>The <code>getMetadata</code> method returns an object which contains the URI, the metadata in JSON format, an optional SHA256 hash of the metadata and an optional integrity check result.</p>
+<p>A sequence diagram can be found <a href="./tzip16-sequence-diagram#get-the-metadata">here</a>.</p>
+<p>Each of the following contracts is used to demonstrate an aspect of getMetadata.</p>
+<h2 id="tzip16storagecontract">Tzip16StorageContract</h2>
+<p>In this example the storage holds the metadata in a bigmap.</p>
+<h4 id="entrypoints-17">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-7dakbnrzj" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
+              (map %taco_shop_storage nat (pair (nat %current_stock) (mutez %max_price))));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const metadataJSON = {
+  name: &#39;test&#39;,
+  description: &#39;A metadata test&#39;,
+  version: &#39;0.1&#39;,
+  license: &#39;MIT&#39;,
+  authors: [&#39;octez.js &lt;https://octez.js.dev/&gt;&#39;],
+  homepage: &#39;https://octez.js.dev/&#39;,
+};
+
+const metadataBigMap = new MichelsonMap();
+metadataBigMap.set(&#39;&#39;, stringToBytes(&#39;tezos-storage:here&#39;));
+metadataBigMap.set(&#39;here&#39;, stringToBytes(JSON.stringify(metadataJSON)));
+
+const tacoShopStorageMap = new MichelsonMap();
+
+const op = await tezos.contract.originate({
+  code: tacoContractTzip16,
+  storage: {
+    metadata: metadataBigMap,
+    taco_shop_storage: tacoShopStorageMap,
+  },
+});
+</code></pre> </div> <div data-tab-item="metadata" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">name: test
+description: A metadata test
+version: 0.1
+license: MIT
+authors: octez.js
+homepage: https://octez.js.dev/
+</code></pre> </div>  </div> </div>  
+<h2 id="tzip16httpscontract">Tzip16HTTPSContract</h2>
+<p>In this example the storage holds a URL that refers to the metadata.</p>
+<h4 id="entrypoints-18">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-yz1cxuskr" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
+              (map %taco_shop_storage nat (pair (nat %current_stock) (mutez %max_price))));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const url = &#39;https://storage.googleapis.com/tzip-16/taco-shop-metadata.json&#39;;
+const bytesUrl = stringToBytes(url);
+
+const metadataBigMap = new MichelsonMap();
+metadataBigMap.set(&#39;&#39;, bytesUrl);
+
+const tacoShopStorageMap = new MichelsonMap();
+tacoShopStorageMap.set(&#39;1&#39;, { current_stock: &#39;10000&#39;, max_price: &#39;50&#39; });
+
+const op = await tezos.contract.originate({
+  code: tacoContractTzip16,
+  storage: {
+    metadata: metadataBigMap,
+    taco_shop_storage: tacoShopStorageMap,
+  },
+});
+</code></pre> </div> <div data-tab-item="metadata" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">name: octez.js test with valid metadata
+description: This is metadata test for octez.js integration tests with the Ligo Taco shop contract modified to include metadata in storage
+version: 7.1.0-beta.0
+license: MIT
+homepage: https://github.com/trilitech/octez.js
+</code></pre> </div>  </div> </div>  
+<h2 id="tzip16sha256contract">Tzip16SHA256Contract</h2>
+<p>In this example the storage holds a URL encrypted with SHA 256 that refers to the metadata.</p>
+<h4 id="entrypoints-19">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-qg7urt3sz" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
+              (map %taco_shop_storage nat (pair (nat %current_stock) (mutez %max_price))));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const urlPercentEncoded = encodeURIComponent(
+  &#39;//storage.googleapis.com/tzip-16/taco-shop-metadata.json&#39;
+);
+const metadataSha256 = &#39;0x7e99ecf3a4490e3044ccdf319898d77380a2fc20aae36b6e40327d678399d17b&#39;;
+const url = &#39;sha256://&#39; + metadataSha256 + &#39;/https:&#39; + urlPercentEncoded;
+const bytesUrl = stringToBytes(url);
+
+const metadataBigMap = new MichelsonMap();
+metadataBigMap.set(&#39;&#39;, bytesUrl);
+
+const tacoShopStorageMap = new MichelsonMap();
+tacoShopStorageMap.set(&#39;1&#39;, { current_stock: &#39;10000&#39;, max_price: &#39;50&#39; });
+
+const op = await tezos.contract.originate({
+  code: tacoContractTzip16,
+  storage: {
+    metadata: metadataBigMap,
+    taco_shop_storage: tacoShopStorageMap,
+  },
+});
+</code></pre> </div> <div data-tab-item="metadata" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">name: octez.js test with valid metadata
+description: This is metadata test for octez.js integration tests with the Ligo Taco shop contract modified to include metadata in storage
+version: 7.1.0-beta.0
+license: MIT
+homepage: https://github.com/trilitech/octez.js
+</code></pre> </div>  </div> </div>  
+<h2 id="tzip16ipfscontract">Tzip16IPFSContract</h2>
+<p>In this example the storage holds an IPFS location that refers to the metadata.</p>
+<h4 id="entrypoints-20">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-uupl2yj4k" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
+              (map %taco_shop_storage nat (pair (nat %current_stock) (mutez %max_price))));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const uri = &#39;ipfs://QmXnASUptTDnfhmcoznFqz3S1Mxu7X1zqo2YwbTN3nW52V&#39;;
+const bytesUrl = stringToBytes(uri);
+
+const metadataBigMap = new MichelsonMap();
+metadataBigMap.set(&#39;&#39;, bytesUrl);
+
+const tacoShopStorageMap = new MichelsonMap();
+
+const op = await tezos.contract.originate({
+  code: tacoContractTzip16,
+  storage: {
+    metadata: metadataBigMap,
+    taco_shop_storage: tacoShopStorageMap,
+  },
+});
+</code></pre> </div> <div data-tab-item="metadata" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">name: octez.js test with valid metadata
+description: This is metadata test for octez.js integration tests with the Ligo Taco shop contract modified to include metadata in storage
+version: 7.1.0-beta.0
+license: MIT
+homepage: https://github.com/trilitech/octez.jsj
+</code></pre> </div>  </div> </div>  
+<h2 id="tzip16offchaincontractjson">Tzip16OffChainContractJSON</h2>
+<p>This contract has a view named <code>someJson</code> that can be found in the metadata. When we inspect those metadata, we can see that this view takes no parameter and has a returnType of bytes.</p>
+<h4 id="entrypoints-21">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-mbv07znkd" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map %metadata string bytes));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const metadataBigMAp = new MichelsonMap();
+metadataBigMAp.set(&#39;&#39;, stringToBytes(&#39;tezos-storage:here&#39;));
+metadataBigMAp.set(&#39;here&#39;, stringToBytes(JSON.stringify(metadataViewsExample1)));
+
+const op = await tezos.contract.originate({
+  code: contractCode,
+  storage: {
+    0: 7,
+    metadata: metadataBigMAp,
+  },
+});
+</code></pre> </div> <div data-tab-item="metadata" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">description: This contract has bytes-returning off-chain-views.
+license: MIT
+</code></pre> </div>  </div> </div>  
+<h2 id="tzip16offchaincontractmultiply">Tzip16OffChainContractMultiply</h2>
+<p>This contract has a view named <code>multiply-the-nat-in-storage</code> that can be found in the metadata. When we inspect those metadata, we can see that this view takes a <code>nat</code> has a parameter, has a returnType of <code>nat</code> and has the following instructions: <code>DUP, CDR, CAR, SWAP, CAR, MUL</code>.</p>
+<h4 id="entrypoints-22">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-633r5o99y" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map %metadata string bytes));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const metadataBigMAp = new MichelsonMap();
+metadataBigMAp.set(&#39;&#39;, stringToBytes(&#39;tezos-storage:here&#39;));
+metadataBigMAp.set(&#39;here&#39;, stringToBytes(JSON.stringify(metadataViewsExample2)));
+
+const op = await tezos.contract.originate({
+  code: contractCode,
+  storage: {
+    0: 7,
+    metadata: metadataBigMAp,
+  },
+});
+</code></pre> </div> <div data-tab-item="metadata" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">description: This contract has bytes-returning off-chain-views.
+license: MIT
+</code></pre> </div>  </div> </div>  
+<h2 id="walletcontract">WalletContract</h2>
+<p>Transactions to smart contracts operate in the same fashion as transactions to an implicit account, the only difference being the <code>KT1...</code> address. You will also receive a transaction hash and have to wait for the transaction to be confirmed. Once confirmed, it can be the right time to update the user’s/contract’s balance, for example.</p>
+<p>Sending a transaction to a smart contract to update its storage will be a different type of action as it implies targeting a specific entrypoint and formatting correctly the data to be sent.</p>
+<p>Fortunately, octez.js will make this operation go like a breeze! First, you need the contract abstraction created with the address of the smart contract you are targeting:</p>
+<pre><code class="language-js">const contract = await Tezos.wallet.at(&#39;KT1B4WtE3MSEjGKnucRL5xhqnXCEX1QkLGPx&#39;);
+</code></pre>
+<p>This line creates a contract abstraction with multiple methods named after the contract entrypoints. For example, if you have a <code>transfer</code> entrypoint in your contract, you will also have a <code>.transfer()</code> method in the <code>contract</code> object. Each method accepts parameters required by the contract entrypoint.</p>
+<p>For more details see <a href="/docs/next/wallet_API">octez.js Wallet API doc</a></p>
+<h4 id="entrypoints-23">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-r01ejrbhi" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage int
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: 1;
+</code></pre> </div>  </div> </div>  
+<h2 id="walletareyoutherecontract">WalletAreYouThereContract</h2>
+<p>This is a simple smart contract with two methods: <code>areYouThere</code> expects a value of type <code>boolean</code> to update the <code>areYouThere</code> value in the storage of the same type, and <code>addName</code> expects a value of type <code>string</code> to add it to the map in the contract.</p>
+<h4 id="entrypoints-24">Entrypoints:</h4>
+<ul>
+<li><code>addName</code></li>
+<li><code>areYouThere</code></li>
+<li><code>changeMessage</code></li>
+<li><code>decrement</code></li>
+<li><code>increment</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-z01inkkp5" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (pair (bool %areyouthere) (int %integer))
+              (pair (string %message) (map %names address string)));
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">        init: `(Pair (Pair True 0)
+      (Pair &quot;&quot;
+            { Elt 0x00006b82198cb179e8306c1bedd08f12dc863f328886 &quot;Alice&quot; ;
+              Elt 0x0000b2e19a9e74440d86c59f13dab8a18ff873e889ea &quot;HEllo!&quot; }))`,
+</code></pre> </div>  </div> </div>  
+<h2 id="saplingcontract">SaplingContract</h2>
+<p>Sapling is a protocol enabling privacy-preserving transactions of fungible tokens in a decentralised environment. The example contract used
+in octez.js Integration Tests is a single-state sapling contract. It features the Michelson instruction “SAPLING_VERIFY_UPDATE”.
+A sapling_state is represented by an integer value in the contract storage.</p>
+<h4 id="entrypoints-25">Entrypoints:</h4>
+<ul>
+<li><code>default</code></li>
+</ul>
+<div class="tabs-container" data-tabs-id="tabs-7ovjq91g3" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (sapling_state 8)
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">import { SaplingStateValue } from @tezos-x/octez.js-michelson-encoder
+storage: SaplingStateValue
+</code></pre> </div>  </div> </div>  
+<h2 id="chart-of-smart-contract-properties">Chart of Smart Contract Properties</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Contract</th><th>Type</th><th>Interface</th><th>Metadata</th><th>Default Endpoint</th></tr></thead><tbody><tr><td>IncrementContract</td><td>Basic</td><td></td><td></td><td></td></tr><tr><td>MichelsonMapContract</td><td>Basic</td><td></td><td></td><td>default</td></tr><tr><td>GenericMultisigContract</td><td>Basic</td><td></td><td></td><td>default</td></tr><tr><td>LambdaViewContract</td><td>Lambda</td><td></td><td></td><td></td></tr><tr><td>LambdaViewWithTokenContract</td><td>Lambda</td><td>FA2</td><td></td><td></td></tr><tr><td>MapWithPairasMapContract</td><td>Maps</td><td></td><td></td><td>default</td></tr><tr><td>MapWithComplexKeysContract</td><td>Maps</td><td></td><td></td><td>default</td></tr><tr><td>MapWithInitialStorageContract</td><td>Maps</td><td></td><td></td><td>default</td></tr><tr><td>MapWithMapandBigmapContract</td><td>Maps</td><td></td><td></td><td>default</td></tr><tr><td>BigMapsMultipleValuesContract</td><td>BigMaps</td><td>FA1.2</td><td></td><td></td></tr><tr><td>BigMapsComplexStorageContract</td><td>BigMaps</td><td></td><td></td><td></td></tr><tr><td>BigMapsWithLedgerContract</td><td>BigMaps</td><td></td><td></td><td></td></tr><tr><td>BigMapPackContract</td><td>BigMaps</td><td></td><td></td><td>default</td></tr><tr><td>ContractCallFib</td><td>Views</td><td></td><td></td><td>default</td></tr><tr><td>ContractTopLevelViews</td><td>Views</td><td></td><td></td><td>default</td></tr><tr><td>TokenContract</td><td>Tzip-7</td><td>FA1.2</td><td></td><td></td></tr><tr><td>Tzip12BigMapOffChainContract</td><td>Tzip-12</td><td>FA2</td><td>✓</td><td></td></tr><tr><td>Tzip16StorageContract</td><td>Tzip-16</td><td></td><td>✓</td><td>default</td></tr><tr><td>Tzip16HTTPSContract</td><td>Tzip-16</td><td></td><td>✓</td><td>default</td></tr><tr><td>Tzip16SHA256Contract</td><td>Tzip-16</td><td></td><td>✓</td><td>default</td></tr><tr><td>Tzip16IPFSContract</td><td>Tzip-16</td><td></td><td>✓</td><td>default</td></tr><tr><td>Tzip16OffChainContractJSON</td><td>Tzip-16</td><td></td><td>✓</td><td>default</td></tr><tr><td>Tzip16OffChainContractMultiply</td><td>Tzip-16</td><td></td><td>✓</td><td>default</td></tr><tr><td>WalletContract</td><td>Wallet</td><td></td><td></td><td>default</td></tr><tr><td>WalletAreYouThereContract</td><td>Wallet</td><td></td><td></td><td></td></tr><tr><td>SaplingContract</td><td>Sapling</td><td></td><td></td><td>default</td></tr></tbody></table>  <button id="chat-toggle" aria-label="Open chat" data-astro-cid-hw72w3ds> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-hw72w3ds> <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-hw72w3ds></path> </svg> </button> <div id="chatkit-container" class="hidden" data-astro-cid-hw72w3ds> <button id="chat-close" aria-label="Close chat" data-astro-cid-hw72w3ds> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-hw72w3ds> <line x1="18" y1="6" x2="6" y2="18" data-astro-cid-hw72w3ds></line> <line x1="6" y1="6" x2="18" y2="18" data-astro-cid-hw72w3ds></line> </svg> </button> <div id="chatkit-widget" data-astro-cid-hw72w3ds></div> </div> <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script> <script>(function(){const apiEndpoint = "https://octez.js-chatkit.ops-octez.js-cloudflare.workers.dev/api/chatkit/session";
+
+  let chatkitInitialized = false;
+
+  function initChatKit() {
+    if (chatkitInitialized) return;
+
+    if (!customElements.get('openai-chatkit')) {
+      setTimeout(initChatKit, 100);
+      return;
+    }
+
+    const chatkit = document.createElement('openai-chatkit');
+
+    chatkit.setOptions({
+      api: {
+        async getClientSecret() {
+          const res = await fetch(apiEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+          });
+          if (!res.ok) throw new Error('Failed to create session');
+          const { client_secret } = await res.json();
+          return client_secret;
+        },
+      },
+      startScreen: {
+        greeting: 'Hi! How can I help you?',
+        prompts: [
+          { label: 'Getting started', prompt: 'How do I get started?', icon: "sparkle" },
+          { label: 'Search docs', prompt: "Help me find what I'm looking for", icon: "search" },
+        ],
+      },
+      composer: {
+        placeholder: 'Ask a question...',
+      },
+      theme: {
+        colorScheme: 'light',
+        radius: 'round',
+      },
+    });
+
+    const widgetContainer = document.getElementById('chatkit-widget');
+    if (!widgetContainer) return;
+
+    widgetContainer.appendChild(chatkit);
+    chatkitInitialized = true;
+  }
+
+  function setupToggle() {
+    const toggleBtn = document.getElementById('chat-toggle');
+    const closeBtn = document.getElementById('chat-close');
+    const container = document.getElementById('chatkit-container');
+
+    if (!toggleBtn || !closeBtn || !container) return;
+
+    toggleBtn.addEventListener('click', () => {
+      container.classList.remove('hidden');
+      toggleBtn.classList.add('hidden');
+      initChatKit();
+    });
+
+    closeBtn.addEventListener('click', () => {
+      container.classList.add('hidden');
+      toggleBtn.classList.remove('hidden');
+    });
+  }
+
+  function openChatbot() {
+    const toggleBtn = document.getElementById('chat-toggle');
+    const container = document.getElementById('chatkit-container');
+    if (toggleBtn && container) {
+      container.classList.remove('hidden');
+      toggleBtn.classList.add('hidden');
+      initChatKit();
+    }
+  }
+
+  function checkAutoOpen() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('chatbot') === 'open') {
+      openChatbot();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setupToggle();
+      checkAutoOpen();
+    });
+  } else {
+    setupToggle();
+    checkAutoOpen();
+  }
+})();</script>  </div> </div> </div> <aside id="sidebar" class="hidden md:block pt-8 pr-4 shrink-0 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pl-4 border-l border-[var(--ifm-toc-border-color)] toc-sidebar"> <div id="sidebar-content" class="relative"> <nav> <ul id="sidebar-nav" class="list-none p-0 m-0"></ul> </nav> </div> </aside> </main> <footer class="bg-brand-dark border-t border-white/10 py-12 px-12 md:px-24 flex-col-reverse md:flex-row flex justify-between text-white relative z-10 footer-font" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <img src="/pr-39/_astro/octez-logo.CEHtwN6o.svg" alt="octez.js Logo" class="h-14 w-auto mb-4 object-contain" data-astro-cid-sz7xmlte> <p class="mt-2 text-sm opacity-60" data-astro-cid-sz7xmlte>Build on Tezos with TypeScript</p> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="mt-6 bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3.5 items-center py-2.5 rounded-full text-lg flex w-fit" data-astro-cid-sz7xmlte> <!-- Github Logo --> <svg width="10" height="10" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline-block size-7 align-middle mr-1" aria-label="GitHub" data-astro-cid-sz7xmlte> <path d="M8.10059 19.0137C8.10059 19.1113 7.98828 19.1895 7.84668 19.1895C7.68555 19.2041 7.57324 19.126 7.57324 19.0137C7.57324 18.916 7.68555 18.8379 7.82715 18.8379C7.97363 18.8232 8.10059 18.9014 8.10059 19.0137ZM6.58203 18.7939C6.54785 18.8916 6.64551 19.0039 6.79199 19.0332C6.91895 19.082 7.06543 19.0332 7.09473 18.9355C7.12402 18.8379 7.03125 18.7256 6.88477 18.6816C6.75781 18.6475 6.61621 18.6963 6.58203 18.7939ZM8.74023 18.7109C8.59863 18.7451 8.50098 18.8379 8.51562 18.9502C8.53027 19.0479 8.65723 19.1113 8.80371 19.0771C8.94531 19.043 9.04297 18.9502 9.02832 18.8525C9.01367 18.7598 8.88184 18.6963 8.74023 18.7109ZM11.9531 0C5.18066 0 0 5.1416 0 11.9141C0 17.3291 3.4082 21.9629 8.27637 23.5938C8.90137 23.7061 9.12109 23.3203 9.12109 23.0029C9.12109 22.7002 9.10645 21.0303 9.10645 20.0049C9.10645 20.0049 5.68848 20.7373 4.9707 18.5498C4.9707 18.5498 4.41406 17.1289 3.61328 16.7627C3.61328 16.7627 2.49512 15.9961 3.69141 16.0107C3.69141 16.0107 4.90723 16.1084 5.57617 17.2705C6.64551 19.1553 8.4375 18.6133 9.13574 18.291C9.24805 17.5098 9.56543 16.9678 9.91699 16.6455C7.1875 16.3428 4.43359 15.9473 4.43359 11.25C4.43359 9.90723 4.80469 9.2334 5.58594 8.37402C5.45898 8.05664 5.04395 6.74805 5.71289 5.05859C6.7334 4.74121 9.08203 6.37695 9.08203 6.37695C10.0586 6.10352 11.1084 5.96191 12.1484 5.96191C13.1885 5.96191 14.2383 6.10352 15.2148 6.37695C15.2148 6.37695 17.5635 4.73633 18.584 5.05859C19.2529 6.75293 18.8379 8.05664 18.7109 8.37402C19.4922 9.23828 19.9707 9.91211 19.9707 11.25C19.9707 15.9619 17.0947 16.3379 14.3652 16.6455C14.8145 17.0312 15.1953 17.7637 15.1953 18.9111C15.1953 20.5566 15.1807 22.5928 15.1807 22.9932C15.1807 23.3105 15.4053 23.6963 16.0254 23.584C20.9082 21.9629 24.2188 17.3291 24.2188 11.9141C24.2188 5.1416 18.7256 0 11.9531 0ZM4.74609 16.8408C4.68262 16.8896 4.69727 17.002 4.78027 17.0947C4.8584 17.1729 4.9707 17.207 5.03418 17.1436C5.09766 17.0947 5.08301 16.9824 5 16.8896C4.92188 16.8115 4.80957 16.7773 4.74609 16.8408ZM4.21875 16.4453C4.18457 16.5088 4.2334 16.5869 4.33105 16.6357C4.40918 16.6846 4.50684 16.6699 4.54102 16.6016C4.5752 16.5381 4.52637 16.46 4.42871 16.4111C4.33105 16.3818 4.25293 16.3965 4.21875 16.4453ZM5.80078 18.1836C5.72266 18.2471 5.75195 18.3936 5.86426 18.4863C5.97656 18.5986 6.11816 18.6133 6.18164 18.5352C6.24512 18.4717 6.21582 18.3252 6.11816 18.2324C6.01074 18.1201 5.86426 18.1055 5.80078 18.1836ZM5.24414 17.4658C5.16602 17.5146 5.16602 17.6416 5.24414 17.7539C5.32227 17.8662 5.4541 17.915 5.51758 17.8662C5.5957 17.8027 5.5957 17.6758 5.51758 17.5635C5.44922 17.4512 5.32227 17.4023 5.24414 17.4658Z" fill="currentColor" data-astro-cid-sz7xmlte></path> </svg> <p class="tracking-wide ml-1 uppercase" data-astro-cid-sz7xmlte>GitHub</p> </a> <p class="mt-12 text-sm opacity-60" data-astro-cid-sz7xmlte>
+Copyright © 2026 Nomadic Labs - Open Source Apache 2.0 License
+</p> </div> <div class="grid grid-cols-2 md:flex gap-16 mb-12 md:mb-0" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Documentation</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="/docs/0.9.0/quick_start" data-astro-cid-sz7xmlte>Quick Start</a></li> </ul> </div> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Community</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="https://tezos.stackexchange.com/questions/tagged/octez.js" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Stack Exchange</a></li> <li data-astro-cid-sz7xmlte><a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>X (Twitter)</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/blob/master/code-of-conduct.md" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Code of Conduct</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>GitHub</a></li> </ul> </div> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Contact</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/issues/new/choose" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Report Issues</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Contribute</a></li> </ul> </div> </div> </footer>   <script type="module" src="/pr-39/_astro/MarkdownLayout.astro_astro_type_script_index_2_lang.DYKsDemC.js"></script></body></html>
