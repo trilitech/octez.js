@@ -96,39 +96,11 @@ jobs:
           CI: true
           RUN_INTEGRATION: true
 
-  # Pre-flight: keep the per-shard keygen master accounts funded. Checks each
-  # master's on-chain balance and tops up from the faucet only when below the
-  # threshold (fast no-op otherwise). Funds by address, so only the public pkhs
-  # are needed here. Best-effort: a faucet/RPC blip won't fail this job.
-  keygen-master-topup:
-    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
-    needs:
-      - integration-tests-change-filter
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-      - name: Top up keygen master accounts
-        env:
-          PKHS: tz1Lhwc4sYVNnE6nbaEARZH2CSxL866UqdtF,tz1iSJyGQhn6oTUvc9JHE2y4skG2BVB3uq2w,tz1Xj1voZkomub9QbCiG2aGPCrrx4NUhc9d8,tz1QhoXceXuKHmy3u9Ab7U1NdSsXynMVi5Rp
-          # Reclaim is disabled (it raced running tests), so a master must cover a
-          # whole run's drain: the heaviest shard funds ~72 keys at up to ~10 tez
-          # (~720 tez). MIN must exceed that so a master not topped this run still
-          # covers it; TARGET adds headroom.
-          MIN_BALANCE_TEZ: '800'
-          TARGET_TEZ: '1000'
-          RPC_URL: https://rpc.shadownet.teztnets.com
-          FAUCET_URL: https://faucet.shadownet.teztnets.com
-        run: node .github/scripts/topup-keygen-masters.mjs
-
   integration-tests-testnet:
     if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
     name: integration-tests-shadownet-shard-${{ matrix.shard }}
     needs:
       - integration-tests-change-filter
-      - keygen-master-topup
     strategy:
       fail-fast: false
       matrix:
@@ -169,6 +141,27 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # Fund THIS shard's keygen master (by address, via faucet) right here in the
+      # shard job — not as a separate pre-flight job — so that "Re-run failed jobs"
+      # can never start a shard against a drained master. Idempotent: a healthy
+      # master is a fast no-op. Only this shard's own account is touched, so the
+      # four shards never contend on a counter. Best-effort (never fails the job).
+      - name: Top up this shard's keygen master
+        env:
+          SHARD: ${{ matrix.shard }}
+          MIN_BALANCE_TEZ: '800'
+          TARGET_TEZ: '1000'
+          RPC_URL: https://rpc.shadownet.teztnets.com
+          FAUCET_URL: https://faucet.shadownet.teztnets.com
+        run: |
+          # Ordered by shard (index 1..4); element 0 is an unused placeholder.
+          MASTERS=(_ \
+            tz1Lhwc4sYVNnE6nbaEARZH2CSxL866UqdtF \
+            tz1iSJyGQhn6oTUvc9JHE2y4skG2BVB3uq2w \
+            tz1Xj1voZkomub9QbCiG2aGPCrrx4NUhc9d8 \
+            tz1QhoXceXuKHmy3u9Ab7U1NdSsXynMVi5Rp)
+          export PKHS="${MASTERS[$SHARD]}"
+          node .github/scripts/topup-keygen-masters.mjs
       - name: Wait for keygen service
         run: |
           for i in $(seq 1 30); do
@@ -213,13 +206,17 @@ jobs:
           TAQUITO_KEYGEN_URL: http://localhost:3000
           TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
           # The keygen funds from a master account and waits for confirmation, so
-          # returned keys are baked. These retries/timeout remain as a safety net
-          # for transient RPC blips; the per-request timeout covers the time the
-          # keygen spends waiting for the funding op to confirm.
+          # returned keys are baked. The request timeout MUST exceed the time the
+          # keygen spends waiting for a funding op to confirm: if the client gives
+          # up first, the master has already spent the tez but the funded key is
+          # never returned -> an orphaned, unreclaimable key. Under shadownet load
+          # confirmation regularly exceeded the old 60s, so a single slow shard
+          # orphaned dozens of keys (each client retry funds a NEW key), draining
+          # ~1000 tez/run. Longer timeout + fewer attempts caps that leak.
           TAQUITO_FRESH_KEY_RETRY_MS: '12000'
-          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '8'
-          TAQUITO_FRESH_KEY_PREFETCH: '2'
-          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '60000'
+          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '3'
+          TAQUITO_FRESH_KEY_PREFETCH: '1'
+          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
           # Retry transient shadownet RPC gateway errors (502/503/504) on
           # idempotent calls; the default is 1 retry.
           TAQUITO_HTTP_RETRY_COUNT: '4'
