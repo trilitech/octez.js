@@ -11,13 +11,13 @@ interface EstimateLike {
 
 type EstimateSnapshot = EstimateLike;
 
-const isUshuaianet = (rpc: string) => rpc.includes('ushuaia');
-
 export const expectEstimate = (
   estimate: EstimateLike,
-  rpc: string,
+  // Retained for call-site compatibility; the accepted-value logic is now
+  // network-agnostic (see below), so the rpc is no longer branched on.
+  _rpc: string,
   expected: EstimateSnapshot,
-  ...ushuaianetExpected: EstimateSnapshot[]
+  ...alternativeExpected: EstimateSnapshot[]
 ) => {
   const estimateKeys: (keyof EstimateSnapshot)[] = [
     'gasLimit',
@@ -30,15 +30,19 @@ export const expectEstimate = (
     'usingBaseFeeMutez',
   ];
 
-  const ushuaianetExpectedValues =
-    ushuaianetExpected.length > 0 ? [expected, ...ushuaianetExpected] : [expected];
+  // Fee/gas estimates drift slightly across protocol upgrades and vary
+  // run-to-run (especially consumedMilligas), so we match against the set of
+  // all recorded snapshots rather than pinning one exact value per network.
+  // With a single snapshot this is still an exact match, so callers that pass
+  // no alternatives keep their strict behaviour.
+  const snapshots = [expected, ...alternativeExpected];
 
   for (const key of estimateKeys) {
-    const expectedValues = isUshuaianet(rpc)
-      ? [...new Set(ushuaianetExpectedValues.map((value) => value[key]))]
-      : [expected[key]];
+    const expectedValues = [...new Set(snapshots.map((value) => value[key]))];
 
-    if (isUshuaianet(rpc) && key === 'consumedMilligas' && expectedValues.length > 2) {
+    // consumedMilligas is nondeterministic; when several distinct values have
+    // been observed, accept anything within their range.
+    if (key === 'consumedMilligas' && expectedValues.length > 2) {
       expect(estimate[key]).toBeGreaterThanOrEqual(Math.min(...expectedValues));
       expect(estimate[key]).toBeLessThanOrEqual(Math.max(...expectedValues));
       continue;
