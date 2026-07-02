@@ -325,7 +325,7 @@ CONFIGS().forEach(({ lib, rpc, networkType }) => {
     shadownet(`should successfully fetch all constants for Shadownet
       using ${rpc}`, async () => {
       Tezos.setRpcProvider(rpc);
-      const constants: ConstantsResponseProto023 = await Tezos.rpc.getConstants();
+      const constants: ConstantsResponseProto025 = await Tezos.rpc.getConstants();
       expect(constants).toEqual({
         proof_of_work_nonce_size: 8,
         nonce_length: 32,
@@ -335,7 +335,7 @@ CONFIGS().forEach(({ lib, rpc, networkType }) => {
         max_micheline_node_count: 50000,
         max_micheline_bytes_limit: 50000,
         max_allowed_global_constants_depth: 10000,
-        cache_layout_size: 3,
+        cache_layout_size: 5,
         michelson_maximum_type_size: 2001,
         denunciation_period: 1,
         slashing_delay: 1,
@@ -393,11 +393,15 @@ CONFIGS().forEach(({ lib, rpc, networkType }) => {
         cache_script_size: 100000000,
         cache_stake_distribution_cycles: 5,
         cache_sampler_state_cycles: 5,
+        cache_stake_info_cycles: 5,
+        cache_swrr_selected_distribution_cycles: 5,
         dal_parametric: {
           feature_enable: true,
           incentives_enable: true,
-          number_of_slots: 32,
-          attestation_lag: 8,
+          dynamic_lag_enable: true,
+          number_of_slots: 160,
+          attestation_lag: 5,
+          attestation_lags: [1, 2, 3, 4, 5],
           attestation_threshold: 66,
           minimal_participation_ratio: {
             numerator: '16',
@@ -413,7 +417,7 @@ CONFIGS().forEach(({ lib, rpc, networkType }) => {
           },
           redundancy_factor: 8,
           page_size: 3967,
-          slot_size: 126944,
+          slot_size: 380832,
           number_of_shards: 512
         },
         smart_rollup_arith_pvm_enable: false,
@@ -439,6 +443,7 @@ CONFIGS().forEach(({ lib, rpc, networkType }) => {
         },
         smart_rollup_private_enable: true,
         smart_rollup_riscv_pvm_enable: false,
+        smart_rollup_canonical_rollup_address: 'sr19fMYrr5C4qqvQqQrDSjtP31GcrWjodzvg',
         zk_rollup_enable: false,
         zk_rollup_origination_size: 4000,
         zk_rollup_min_pending_to_process: 10,
@@ -487,6 +492,9 @@ CONFIGS().forEach(({ lib, rpc, networkType }) => {
         },
         issuance_modification_delay: 2,
         consensus_key_activation_delay: 2,
+        native_contracts_enable: false,
+        swrr_new_baker_lottery_enable: false,
+        tz5_account_enable: false,
         unstake_finalization_delay: 3
       });
     });

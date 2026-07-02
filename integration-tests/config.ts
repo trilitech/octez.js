@@ -490,7 +490,7 @@ const defaultConfig = ({
 
 const shadownetEphemeral: Config = defaultConfig({
   networkName: 'SHADOWNET',
-  protocol: Protocols.PtTALLiNt,
+  protocol: Protocols.PsUshuai,
   defaultRpc: 'https://rpc.shadownet.teztnets.com',
   knownContracts: knownContractsShadownet,
   signerConfig: defaultEphemeralConfig('shadownet'),
