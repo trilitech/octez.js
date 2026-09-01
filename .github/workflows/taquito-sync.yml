@@ -1,0 +1,35 @@
+name: Taquito Upstream Sync
+
+# Weekly drift check against upstream ecadlabs/taquito's main branch. Maintains
+# a single always-up-to-date GitHub tracking issue (found by title + label,
+# never re-created) listing new upstream commits grouped by package and type.
+# The review checkpoint (last-reviewed upstream SHA) lives inside the issue
+# body itself, not in a repo file — see .github/scripts/taquito-sync.mjs.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      # gh issue create --label fails if the label doesn't already exist in
+      # the repo, which would otherwise break the very first run. --force
+      # makes this idempotent (no-op once the label exists).
+      - run: gh label create "${ISSUE_LABEL:-taquito-sync}" --color BFD4F2 --force
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_LABEL: ${{ vars.ISSUE_LABEL }}
+      - run: node .github/scripts/taquito-sync.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
