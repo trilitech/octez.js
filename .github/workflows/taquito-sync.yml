@@ -9,7 +9,12 @@ name: Taquito Upstream Sync
 on:
   schedule:
     - cron: '0 6 * * 1'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Print the computed issue instead of creating/updating it for real'
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -33,3 +38,9 @@ jobs:
       - run: node .github/scripts/taquito-sync.mjs
         env:
           GH_TOKEN: ${{ github.token }}
+          # Must match the label step above — otherwise a repo-level ISSUE_LABEL
+          # override creates a label the script never looks for.
+          ISSUE_LABEL: ${{ vars.ISSUE_LABEL }}
+          # Scheduled runs are always live. Manual (workflow_dispatch) runs default
+          # to dry-run so the tracker issue can't be mutated by accident.
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '' }}
