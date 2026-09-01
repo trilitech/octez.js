@@ -54,7 +54,7 @@
     "gh-pages": "gh-pages",
     "integration-tests": "npm -w integration-tests run originate-known-contracts && npm -w integration-tests run test:secret-key",
     "version-stamp": "npm run --workspaces --if-present version-stamp",
-    "test:scripts": "node --test scripts/*.test.js",
+    "test:scripts": "node --test scripts/*.test.js .github/scripts/*.test.mjs",
     "test:browser:packages": "npm run build && npm run test:dist:esm-imports && playwright test --config browser-tests/playwright.config.ts --project=chromium",
     "test:browser:packages:firefox": "npm run build && npm run test:dist:esm-imports && playwright test --config browser-tests/playwright.config.ts --project=firefox",
     "test:browser:packages:webkit": "npm run build && npm run test:dist:esm-imports && playwright test --config browser-tests/playwright.config.ts --project=webkit",
