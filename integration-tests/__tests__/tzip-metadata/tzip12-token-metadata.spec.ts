@@ -41,7 +41,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 				'9990000'
 			);
 
-			const url = 'https://storage.googleapis.com/tzip-16/fa2-token-factory.json';
+			const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-token-factory.json';
 			const bytesUrl = stringToBytes(url);
 			const metadata = new MichelsonMap();
 			metadata.set('', bytesUrl);
@@ -119,7 +119,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 
 			// Fetch contract metadata on HTTPs
 			const metadata = await contract.tzip16().getMetadata();
-			expect(metadata.uri).toEqual('https://storage.googleapis.com/tzip-16/fa2-token-factory.json');
+			expect(metadata.uri).toEqual('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-token-factory.json');
 			expect(metadata.integrityCheckResult).toBeUndefined();
 			expect(metadata.sha256Hash).toBeUndefined();
 			expect(metadata.metadata).toEqual({
@@ -192,7 +192,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 				'20000'
 			);
 
-			const url = 'https://storage.googleapis.com/tzip-16/fa2-views.json';
+			const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-views.json';
 			const bytesUrl = stringToBytes(url);
 			const metadata = new MichelsonMap();
 			metadata.set('', bytesUrl);
@@ -201,7 +201,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 
 			const tokens = new MichelsonMap();
 			const metadataMap0 = new MichelsonMap();
-			metadataMap0.set('', stringToBytes('https://storage.googleapis.com/tzip-16/token-metadata.json'));
+			metadataMap0.set('', stringToBytes('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/token-metadata.json'));
 			metadataMap0.set('name', stringToBytes('Name from URI is prioritized!'));
 			const metadataMap1 = new MichelsonMap();
 			metadataMap1.set('name', stringToBytes('AliceToken'));
@@ -259,7 +259,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 
 			// Fetch contract metadata on HTTPs
 			const metadata = await contract.tzip16().getMetadata();
-			expect(metadata.uri).toEqual('https://storage.googleapis.com/tzip-16/fa2-views.json');
+			expect(metadata.uri).toEqual('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-views.json');
 			expect(metadata.integrityCheckResult).toBeUndefined();
 			expect(metadata.sha256Hash).toBeUndefined();
 			expect(metadata.metadata).toBeDefined();

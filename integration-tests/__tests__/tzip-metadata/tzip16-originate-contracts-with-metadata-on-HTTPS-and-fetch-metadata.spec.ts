@@ -38,7 +38,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
     })
 
     test('Verify contract.originate for a contract having valid metadata stored at an HTTPS URL', async () => {
-      const url = 'https://storage.googleapis.com/tzip-16/taco-shop-metadata.json';
+      const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json';
       const op = await Tezos.contract.originate({
         code: tacoContractTzip16,
         storage: {
@@ -56,7 +56,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
       beforeAll(async () => {
         contractAddressEmptyMetadata = (await originateContractWithMetadataUrl(
-          'https://storage.googleapis.com/tzip-16/empty-metadata.json',
+          'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/empty-metadata.json',
           [
             ["1", { current_stock: "10000", max_price: "50" }],
             ["2", { current_stock: "120", max_price: "20" }],
@@ -73,7 +73,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
         const contract = await Tezos.contract.at(contractAddressEmptyMetadata, tzip16);
         const metadata = await contract.tzip16().getMetadata();
 
-        expect(metadata.uri).toEqual('https://storage.googleapis.com/tzip-16/empty-metadata.json');
+        expect(metadata.uri).toEqual('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/empty-metadata.json');
         expect(metadata.integrityCheckResult).toBeUndefined();
         expect(metadata.sha256Hash).toBeUndefined();
         expect(metadata.metadata).toEqual({});
@@ -85,7 +85,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
       beforeAll(async () => {
         contractAddressEmoji = (await originateContractWithMetadataUrl(
-          'https://storage.googleapis.com/tzip-16/emoji-in-metadata.json',
+          'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/emoji-in-metadata.json',
           [["1", { current_stock: "10000", max_price: "50" }]]
         )).address;
       });
@@ -98,7 +98,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
         const contract = await Tezos.contract.at(contractAddressEmoji, tzip16);
         const metadata = await contract.tzip16().getMetadata();
 
-        expect(metadata.uri).toEqual('https://storage.googleapis.com/tzip-16/emoji-in-metadata.json');
+        expect(metadata.uri).toEqual('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/emoji-in-metadata.json');
         expect(metadata.integrityCheckResult).toBeUndefined();
         expect(metadata.sha256Hash).toBeUndefined();
         expect(metadata.metadata).toEqual({
@@ -146,7 +146,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
       beforeAll(async () => {
         contractAddressInvalidMetadata = (await originateContractWithMetadataUrl(
-          'https://storage.googleapis.com/tzip-16/invalid.json',
+          'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/invalid.json',
           [["1", { current_stock: "10000", max_price: "50" }]]
         )).address;
       });

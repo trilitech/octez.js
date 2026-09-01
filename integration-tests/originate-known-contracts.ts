@@ -121,7 +121,7 @@ CONFIGS().forEach(({ lib, setup, networkName }) => {
       '20000'
     );
 
-    const url = 'https://storage.googleapis.com/tzip-16/fa2-views.json';
+    const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-views.json';
     const bytesUrl = stringToBytes(url);
     const metadata = new MichelsonMap();
     metadata.set('', bytesUrl);
@@ -130,7 +130,7 @@ CONFIGS().forEach(({ lib, setup, networkName }) => {
 
     const tokens = new MichelsonMap();
     const metadataMap0 = new MichelsonMap();
-    metadataMap0.set('', stringToBytes('https://storage.googleapis.com/tzip-16/token-metadata.json'));
+    metadataMap0.set('', stringToBytes('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/token-metadata.json'));
     metadataMap0.set('name', stringToBytes('Name from URI is prioritized!'));
     const metadataMap1 = new MichelsonMap();
     metadataMap1.set('name', stringToBytes('AliceToken'));

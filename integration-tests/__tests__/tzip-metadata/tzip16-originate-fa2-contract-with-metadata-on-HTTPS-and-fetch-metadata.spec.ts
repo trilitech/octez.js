@@ -19,7 +19,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
          const localTez2Pkh = await LocalTez2.signer.publicKeyHash();
 
          // location of the contract metadata
-         const url = 'https://storage.googleapis.com/tzip-16/fa2-metadata.json';
+         const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-metadata.json';
          const bytesUrl = stringToBytes(url);
 
          const metadataBigMAp = new MichelsonMap();
@@ -69,7 +69,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
          const contract = await Tezos.contract.at(contractAddress, tzip16);
          const metadata = await contract.tzip16().getMetadata();
 
-         expect(metadata.uri).toEqual('https://storage.googleapis.com/tzip-16/fa2-metadata.json');
+         expect(metadata.uri).toEqual('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-metadata.json');
          expect(metadata.integrityCheckResult).toBeUndefined();
          expect(metadata.sha256Hash).toBeUndefined();
          expect(metadata.metadata).toEqual({

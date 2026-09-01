@@ -12,7 +12,7 @@ async function example() {
   try {
     console.log('Deploying Tzip16SHA256 contract...');
     // location of the contract metadata
-    const urlPercentEncoded = encodeURIComponent('//storage.googleapis.com/tzip-16/taco-shop-metadata.json');
+    const urlPercentEncoded = encodeURIComponent('//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json');
     const metadataSha256 = '0x7e99ecf3a4490e3044ccdf319898d77380a2fc20aae36b6e40327d678399d17b';
     const url = 'sha256://' + metadataSha256 + '/https:' + urlPercentEncoded;
     const bytesUrl = stringToBytes(url);

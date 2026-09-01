@@ -140,14 +140,14 @@ console.log(isValid);
 ```ts
 import { stringToBytes, bytesToString } from '@tezos-x/octez.js-utils';
 
-const url = 'https://storage.googleapis.com/tzip-16/fa2-views.json';
+const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-views.json';
 const hex = '68747470733a2f2f73746f726167652e676f6f676c65617069732e636f6d2f747a69702d31362f6661322d76696577732e6a736f6e';
 
 console.log(stringToBytes(url));
 // output: 68747470733a2f2f73746f726167652e676f6f676c65617069732e636f6d2f747a69702d31362f6661322d76696577732e6a736f6e
 
 console.log(bytesToString(hex));
-// output: https://storage.googleapis.com/tzip-16/fa2-views.json
+// output: https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-views.json
 ```
 
 **Conversion between buffer and hexadecimal strings**

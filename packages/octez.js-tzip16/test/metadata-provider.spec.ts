@@ -43,12 +43,12 @@ describe('Metadata provider test', () => {
 
     const metadata = await metadataProvider.provideMetadata(
       mockContractAbstraction,
-      'https://storage.googleapis.com/tzip-16/metadata.json',
+      'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/metadata.json',
       mockContext
     );
 
     expect(metadata).toMatchObject({
-      uri: 'https://storage.googleapis.com/tzip-16/metadata.json',
+      uri: 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/metadata.json',
       metadata: {
         name: 'test',
         description: 'A metadata test',
@@ -67,12 +67,12 @@ describe('Metadata provider test', () => {
 
     const metadata = await metadataProvider.provideMetadata(
       mockContractAbstraction,
-      'http://storage.googleapis.com/tzip-16/metadata.json',
+      'http://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/metadata.json',
       mockContext
     );
 
     expect(metadata).toMatchObject({
-      uri: 'http://storage.googleapis.com/tzip-16/metadata.json',
+      uri: 'http://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/metadata.json',
       metadata: { name: 'test' },
       integrityCheckResult: undefined,
       sha256Hash: undefined,
@@ -198,19 +198,19 @@ describe('Metadata provider test', () => {
     });
 
     expect(
-      metadataProvider['extractProtocolInfo']('https://storage.googleapis.com/tzip-16/invalid.json')
+      metadataProvider['extractProtocolInfo']('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/invalid.json')
     ).toMatchObject({
       sha256hash: undefined,
       protocol: 'https',
-      location: '//storage.googleapis.com/tzip-16/invalid.json',
+      location: '//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/invalid.json',
     });
 
     expect(
-      metadataProvider['extractProtocolInfo']('http://storage.googleapis.com/tzip-16/invalid.json')
+      metadataProvider['extractProtocolInfo']('http://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/invalid.json')
     ).toMatchObject({
       sha256hash: undefined,
       protocol: 'http',
-      location: '//storage.googleapis.com/tzip-16/invalid.json',
+      location: '//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/invalid.json',
     });
 
     expect(metadataProvider['extractProtocolInfo']('hello/world')).toBeUndefined();

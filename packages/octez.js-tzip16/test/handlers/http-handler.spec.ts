@@ -23,7 +23,7 @@ describe('Tzip16 http handler test', () => {
     const tzip16Uri = {
       sha256hash: undefined,
       protocol: 'https',
-      location: '//storage.googleapis.com/tzip-16/emoji-in-metadata.json',
+      location: '//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/emoji-in-metadata.json',
     };
     const metadata = await httpHandler.getMetadata(mockContractAbstraction, tzip16Uri, mockContext);
 

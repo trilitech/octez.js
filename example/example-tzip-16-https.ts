@@ -12,7 +12,7 @@ async function example() {
   try {
     console.log('Deploying Tzip16Https contract...');
     // location of the contract metadata
-    const url = 'https://storage.googleapis.com/tzip-16/taco-shop-metadata.json';
+    const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json';
     const bytesUrl = stringToBytes(url);
 
     const metadataBigMap = new MichelsonMap();

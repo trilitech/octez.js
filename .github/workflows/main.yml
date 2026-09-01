@@ -260,7 +260,7 @@ jobs:
         with:
           # Pull the sapling .params binaries tracked by git-lfs
           # (packages/octez.js-sapling/params/*.params) instead of
-          # downloading them from sapling.taquito.io at run time.
+          # downloading them from the mirror in gs://tezos-linux-repo at run time.
           lfs: true
       - uses: actions/setup-node@v6
         with:
