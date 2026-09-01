@@ -493,6 +493,10 @@ const defaultConfig = ({
 
 const shadownetEphemeral: Config = defaultConfig({
   networkName: 'SHADOWNET',
+  // Shadownet shadows whichever proposal is currently under test, so this value
+  // goes stale on every migration. Tests that care about the running protocol
+  // (e.g. gas estimation) read it live from the RPC via resolveProtocol(); keep
+  // this roughly current for operation building.
   protocol: Protocols.PsUshuai,
   defaultRpc: 'https://rpc.shadownet.teztnets.com',
   knownContracts: knownContractsShadownet,
@@ -529,6 +533,19 @@ const ushuaianetSecretKey: Config = {
   ...ushuaianetEphemeral,
   signerConfig: defaultSecretKey,
 };
+
+// --- Featurenet placeholder -------------------------------------------------
+// When protocol V lands on a *dedicated* teztnet (not yet shadowed into
+// shadownet), wire it up here:
+//   1. <name>Ephemeral + <name>SecretKey via defaultConfig({ protocol, defaultRpc, knownContracts, ... })
+//   2. known-contracts-<name>.ts (+ originate-known-contracts entry if needed)
+//   3. package.json scripts: test:<name>, test:<name>:shard, test:<name>-secret-key
+//   4. main.yml integration-tests matrix entry + keygen path
+//   5. Estimation baselines: add [Protocols.P…]: [...] maps in
+//      __tests__/contract/tz*-estimation-tests.spec.ts (fail-loud if missing)
+// Prefer resolveProtocol() over Config.protocol for gas/constants-sensitive
+// tests; Config.protocol is only a hint for operation building.
+// ----------------------------------------------------------------------------
 
 const weeklynetSecretKey: Config = defaultConfig({
   networkName: 'WEEKLYNET',

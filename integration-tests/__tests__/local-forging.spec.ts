@@ -8,7 +8,11 @@ import { rethrowInfrastructureRpcError } from '../test-helpers/rpc-error-asserti
 
 CONFIGS().forEach(({ rpc, protocol }) => {
   const Tezos = new TezosToolkit(rpc);
-  const tallinnnetAndAlpha = protocol === Protocols.PtTALLiNt || protocol === Protocols.ProtoALpha ? test: test.skip;
+  // INDEX_ADDRESS / GET_ADDRESS_INDEX ops (tallinnCases) exist from Tallinn
+  // onward, so they're exercised on any lane running Tallinn or later
+  // (tallinnnet and shadownet/ushuaianet-on-Ushuaia are both still active here).
+  const indexAddressProtocols =
+    protocol === Protocols.PtTALLiNt || protocol === Protocols.PsUshuai || protocol === Protocols.ProtoALpha ? test : test.skip;
 
   describe(`Test local forger: ${rpc}`, () => {
     // all protocols
@@ -36,7 +40,7 @@ CONFIGS().forEach(({ rpc, protocol }) => {
     });
 
     tallinnCases.forEach(({ name, operation }) => {
-      tallinnnetAndAlpha(`Verify that .forge for local forge will return same result as for network forge for rpc: ${name} (${rpc})`, async () => {
+      indexAddressProtocols(`Verify that .forge for local forge will return same result as for network forge for rpc: ${name} (${rpc})`, async () => {
         const localForger = new LocalForger(protocol as unknown as ProtocolsHash);
         const result = await localForger.forge(operation);
         const rpcResult = await Tezos.rpc.forgeOperations(operation);
