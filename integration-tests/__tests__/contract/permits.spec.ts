@@ -176,7 +176,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
     });
 
     test('Verify contract.originate for a permit fa1.2 contract with metadata views', async () => {
-      const url = 'https://storage.googleapis.com/tzip-16/permit_metadata.json';
+      const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/permit_metadata.json';
       const bytesUrl = stringToBytes(url);
       const metadata = new MichelsonMap();
       metadata.set('', bytesUrl);
@@ -286,7 +286,7 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
         await funding_op4.confirmation();
 
         //Originate permit-fa1.2 contract with bootstrap1_address as administrator
-        const url = 'https://storage.googleapis.com/tzip-16/permit_metadata.json';
+        const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/permit_metadata.json';
         const bytesUrl = stringToBytes(url);
         const metadata = new MichelsonMap();
         metadata.set('', bytesUrl);

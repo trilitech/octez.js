@@ -100,8 +100,8 @@ describe('Sapling params loader', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(fetchMock.mock.calls.map(([url]) => String(url))).toEqual([
-      'https://sapling.taquito.io/params/groth16-mainnet-1/spend.params',
-      'https://sapling.taquito.io/params/groth16-mainnet-1/output.params',
+      'https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1/spend.params',
+      'https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1/output.params',
     ]);
     expect(digestMock).toHaveBeenCalledTimes(2);
     expect(initParameters).toHaveBeenCalledTimes(1);
@@ -164,7 +164,7 @@ describe('Sapling params loader', () => {
     const fetchMock = vi.fn().mockImplementation(async (url: string | URL | Request) => {
       const normalizedUrl = String(url);
 
-      if (normalizedUrl.startsWith('https://sapling.taquito.io/')) {
+      if (normalizedUrl.startsWith('https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/')) {
         throw new Error('mirror unavailable');
       }
 
@@ -209,8 +209,8 @@ describe('Sapling params loader', () => {
     await expect(preloadSaplingParams()).resolves.toBeUndefined();
 
     expect(fetchMock.mock.calls.map(([url]) => String(url))).toEqual([
-      'https://sapling.taquito.io/params/groth16-mainnet-1/spend.params',
-      'https://sapling.taquito.io/params/groth16-mainnet-1/output.params',
+      'https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1/spend.params',
+      'https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1/output.params',
       'https://download.z.cash/downloads/sapling-spend.params',
       'https://download.z.cash/downloads/sapling-output.params',
     ]);

@@ -9,7 +9,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
     Tezos.addExtension(new Tzip16Module());
 
     const originateContractWithShaUri = async (metadataSha256: string) => {
-        const urlPercentEncoded = encodeURIComponent('//storage.googleapis.com/tzip-16/taco-shop-metadata.json');
+        const urlPercentEncoded = encodeURIComponent('//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json');
         const url = 'sha256://' + metadataSha256 + '/https:' + urlPercentEncoded;
 
         const op = await Tezos.contract.originate({

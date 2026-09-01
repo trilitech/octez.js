@@ -1,15 +1,18 @@
 ## Sapling Parameter Provenance
 
-octez.js now treats the Sapling proving parameters as immutable release artifacts served from the first-party host at `https://sapling.octez.js.io`, not as vendored package payloads.
+octez.js now treats the Sapling proving parameters as immutable release artifacts served from the Nomadic-hosted mirror at `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling`, not as vendored package payloads.
 
 Original source:
 - `https://download.z.cash/downloads/sapling-spend.params`
 - `https://download.z.cash/downloads/sapling-output.params`
 
 Hosted release paths:
-- `https://sapling.octez.js.io/params/groth16-mainnet-1/spend.params`
-- `https://sapling.octez.js.io/params/groth16-mainnet-1/output.params`
-- `https://sapling.octez.js.io/manifests/groth16-mainnet-1.json`
+- `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1/spend.params`
+- `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1/output.params`
+
+The mirror holds only the two parameter objects. `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1.json` is not
+published: nothing fetches a manifest at runtime — `src/sapling-params-loader.ts` imports the
+pinned manifest from this package instead.
 
 Pinned verification data:
 - `sapling-spend.params`
@@ -27,4 +30,8 @@ Release source of truth:
 Operational note:
 - upload only immutable, versioned objects
 - verify the public bytes against the pinned hashes after upload
-- the Cloudflare rollout and verification steps are documented in `docs/infra/sapling-cloudflare-r2-rollout.md`
+- the mirror is a GCS bucket (`gs://tezos-linux-repo`, project `nl-gitlab-runner`), whose
+  objects are world-readable; uploads are verified against the pinned hashes over the public
+  URL after upload
+- `docs/infra/sapling-cloudflare-r2-rollout.md` describes the earlier Cloudflare R2 plan and
+  no longer matches where the parameters are hosted

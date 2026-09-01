@@ -200,7 +200,7 @@ describe('Tzip12 contract abstraction test', () => {
       prim: 'map',
       args: [{ prim: 'string' }, { prim: 'bytes' }],
     });
-    tokenMap.set('', stringToBytes('https://storage.googleapis.com/tzip-16/token-metadata.json'));
+    tokenMap.set('', stringToBytes('https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/token-metadata.json'));
 
     mockMichelsonStorageView.executeView.mockResolvedValue({
       token_id: '0',

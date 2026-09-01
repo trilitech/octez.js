@@ -607,7 +607,7 @@ async function originateTzip16Storage() {
 async function originateTzip16Https() {
   tezos.setSignerProvider(signer);
   try {
-    const url = 'https://storage.googleapis.com/tzip-16/taco-shop-metadata.json';
+    const url = 'https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json';
     const bytesUrl = stringToBytes(url);
 
     const metadataBigMap = new MichelsonMap();
@@ -636,7 +636,7 @@ async function originateTzip16SHA256() {
   tezos.setSignerProvider(signer);
   try {
     const urlPercentEncoded = encodeURIComponent(
-      '//storage.googleapis.com/tzip-16/taco-shop-metadata.json'
+      '//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json'
     );
     const metadataSha256 = '0x7e99ecf3a4490e3044ccdf319898d77380a2fc20aae36b6e40327d678399d17b';
     const url = 'sha256://' + metadataSha256 + '/https:' + urlPercentEncoded;
