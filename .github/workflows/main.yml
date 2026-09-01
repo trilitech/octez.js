@@ -215,7 +215,14 @@ jobs:
           # ~1000 tez/run. Longer timeout + fewer attempts caps that leak.
           TAQUITO_FRESH_KEY_RETRY_MS: '12000'
           TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '3'
-          TAQUITO_FRESH_KEY_PREFETCH: '1'
+          # 2, not the previous 1: each distinct min-balance bucket gets its own
+          # prefetch buffer, and a buffered-but-never-consumed key is a second,
+          # narrower version of the leak above (funded, delivered, but no test
+          # ever takes it -> no reclaim runs, since reclaim only fires for keys a
+          # test actually received). 2 is taquito's own client-side default;
+          # ushuaianet.yml already runs 4. Watch keygen container logs for
+          # balance warnings before raising further.
+          TAQUITO_FRESH_KEY_PREFETCH: '2'
           TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
           # Retry transient shadownet RPC gateway errors (502/503/504) on
           # idempotent calls; the default is 1 retry.
