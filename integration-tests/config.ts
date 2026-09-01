@@ -281,9 +281,12 @@ export const defaultSecretKey: SecretKeyConfig = {
   password: process.env['PASSWORD_SECRET_KEY'] || undefined,
 };
 
-const defaultKeygenBaseUrl = process.env['GITHUB_ACTIONS']
-  ? 'http://keygen-direct.ecadinfra.com'
-  : 'https://keygen.ecadinfra.com';
+// The keygen is self-hosted: CI runs ghcr.io/trilitech/octezjs-keygen as a service
+// container and sets TAQUITO_KEYGEN_URL explicitly, and the README's `docker run
+// -p 3000:3000 ghcr.io/trilitech/octezjs-keygen:latest` gives a local run the same
+// address. The previous defaults were ECAD-operated hosts, one of which
+// (keygen-direct.ecadinfra.com) was only reachable from inside their network.
+const defaultKeygenBaseUrl = 'http://localhost:3000';
 
 const keygenBaseUrl = (process.env['TAQUITO_KEYGEN_URL'] || defaultKeygenBaseUrl).replace(
   /\/+$/,
