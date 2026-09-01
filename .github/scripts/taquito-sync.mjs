@@ -292,6 +292,7 @@ export function renderIssueBody({ lastReviewedSha, generatedAt, bootstrap, commi
   lines.push(
     `**Last reviewed:** \`${lastReviewedSha}\` — ${generatedAt} (${commitUrl(repoUrl, lastReviewedSha)})`,
   );
+  lines.push(renderLastCheckedLine(generatedAt));
   lines.push('');
   lines.push(renderCheckpointMarker(lastReviewedSha));
   lines.push('');
@@ -377,6 +378,57 @@ export function renderIssueBody({ lastReviewedSha, generatedAt, bootstrap, commi
   lines.push(`_Scanned ${commits.length} commit(s) this run. Run at ${generatedAt}._`);
 
   return lines.join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// "Last checked" heartbeat
+//
+// Separate from the review checkpoint above: "Last reviewed" only advances
+// when there's new content to show. On a no-op run (no new upstream commits)
+// the rest of the body is left untouched, but this line still updates — it's
+// the only signal, short of checking the Actions run history, that the
+// scheduled job is actually alive rather than silently not running (e.g.
+// GitHub auto-disables a scheduled workflow after 60 days of repo
+// inactivity). No comment is posted for a no-op run — just this line.
+// ---------------------------------------------------------------------------
+
+function renderLastCheckedLine(generatedAt) {
+  return `**Last checked:** ${generatedAt}`;
+}
+
+const LAST_CHECKED_LINE_RE = /^\*\*Last checked:\*\* .*$/m;
+
+// Inserts or replaces the "Last checked" line in an existing issue body.
+// Used only on the no-op path, which patches the previous run's body in
+// place rather than going through renderIssueBody. If the line is already
+// present (the normal case — every renderIssueBody call includes it), it's
+// replaced in place; otherwise it's inserted right after the checkpoint
+// marker — reachable when a human hand-edits the body and drops the line,
+// the same "hand-edited body" scenario main()'s `corrupted` check already
+// treats as a real, live case. That same check guarantees a body reaching
+// this function always has a valid marker (a missing/malformed one is
+// classified `corrupted` and hard-fails in main() before this is ever
+// called), so there is no third "marker also missing" fallback here.
+export function upsertLastCheckedLine(body, generatedAt) {
+  const line = renderLastCheckedLine(generatedAt);
+  if (LAST_CHECKED_LINE_RE.test(body)) {
+    // A function replacement (not a plain string) so a `$`-bearing
+    // generatedAt can never be misread as a replacement pattern by
+    // String.prototype.replace — no realistic input triggers this today
+    // (generatedAt is always an ISO timestamp), but the function is
+    // exported, so it's worth being unconditionally safe.
+    return body.replace(LAST_CHECKED_LINE_RE, () => line);
+  }
+  const markerMatch = CHECKPOINT_MARKER_RE.exec(body);
+  if (!markerMatch) {
+    // Should be unreachable from main() — see the invariant note above.
+    // Fail loud rather than silently append to a body shape this function
+    // has no real model of, consistent with how a missing/malformed marker
+    // is handled everywhere else in this file.
+    throw new Error('upsertLastCheckedLine: body has no checkpoint marker to anchor the insert.');
+  }
+  const insertAt = markerMatch.index + markerMatch[0].length;
+  return `${body.slice(0, insertAt)}\n\n${line}${body.slice(insertAt)}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -600,7 +652,24 @@ export async function main(env = process.env) {
     const commits = parseGitLogOutput(raw);
 
     if (commits.length === 0) {
-      console.log('No new commits since last checkpoint. Nothing to do.');
+      // Nothing to report, but still record that the job ran — see the
+      // "Last checked" heartbeat section above. No comment is posted; this
+      // is a silent, single-line body edit, not a content update.
+      const heartbeatBody = upsertLastCheckedLine(issue.body, generatedAt);
+      if (config.dryRun) {
+        console.log(
+          'No new commits since last checkpoint. [DRY_RUN] Would update the "Last checked" ' +
+            'heartbeat only (no comment).',
+        );
+        console.log('--- issue body ---');
+        console.log(heartbeatBody);
+      } else {
+        updateIssue(issue.number, heartbeatBody);
+        console.log(
+          `No new commits since last checkpoint. Updated the "Last checked" heartbeat on tracker ` +
+            `issue #${issue.number}.`,
+        );
+      }
       return;
     }
 
