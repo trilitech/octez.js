@@ -1,4 +1,4 @@
-import { MANAGER_LAMBDA, TezosToolkit, getRevealFee } from '@tezos-x/octez.js';
+import { MANAGER_LAMBDA, Protocols, TezosToolkit, getRevealFee } from '@tezos-x/octez.js';
 import { Contract } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 import { originate, originate2, transferImplicit2 } from '../../data/lambda';
@@ -7,12 +7,13 @@ import { managerCode } from '../../data/manager_code';
 import { InvalidAmountError } from '@tezos-x/octez.js-core';
 import { PrefixV2 } from '@tezos-x/octez.js-utils';
 import { waitForContractAt } from './contract-test-helpers';
-import { expectEstimate } from './estimation-test-helpers';
+import { expectEstimate, resolveProtocol } from './estimation-test-helpers';
 
 CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
 
   const Tezos = lib;
   let pkh: string;
+  let protocol: Protocols;
   describe(`Test estimate scenarios using: ${rpc}`, () => {
     let Tz4: TezosToolkit;
     let contract: Contract;
@@ -21,6 +22,7 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
     beforeAll(async () => {
       try {
         await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
+        protocol = resolveProtocol(await Tezos.rpc.getProtocols());
         Tz4 = await createAddress(PrefixV2.BLS12_381SecretKey);
         pkh = await Tz4.signer.publicKeyHash();
         amt += getRevealFee(pkh);
@@ -99,33 +101,35 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
     it('Verify .estimate.transfer for internal transfer to allocated implicit', async () => {
       const tx = contract.methodsObject.do(MANAGER_LAMBDA.transferImplicit(knownBaker, 5)).toTransferParams();
       const estimate = await Tz4.estimate.transfer(tx);
-      expectEstimate(estimate, rpc, {
-        gasLimit: 3458,
-        storageLimit: 0,
-        suggestedFeeMutez: 596,
-        burnFeeMutez: 0,
-        minimalFeeMutez: 576,
-        totalCost: 576,
-        usingBaseFeeMutez: 576,
-        consumedMilligas: 3457645,
-      }, {
-        gasLimit: 3458,
-        storageLimit: 0,
-        suggestedFeeMutez: 594,
-        burnFeeMutez: 0,
-        minimalFeeMutez: 574,
-        totalCost: 574,
-        usingBaseFeeMutez: 574,
-        consumedMilligas: 3457129,
-      }, {
-        gasLimit: 3458,
-        storageLimit: 0,
-        suggestedFeeMutez: 594,
-        burnFeeMutez: 0,
-        minimalFeeMutez: 574,
-        totalCost: 574,
-        usingBaseFeeMutez: 574,
-        consumedMilligas: 3457258,
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 3458,
+          storageLimit: 0,
+          suggestedFeeMutez: 596,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 576,
+          totalCost: 576,
+          usingBaseFeeMutez: 576,
+          consumedMilligas: 3457645,
+        }, {
+          gasLimit: 3458,
+          storageLimit: 0,
+          suggestedFeeMutez: 594,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 574,
+          totalCost: 574,
+          usingBaseFeeMutez: 574,
+          consumedMilligas: 3457129,
+        }, {
+          gasLimit: 3458,
+          storageLimit: 0,
+          suggestedFeeMutez: 594,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 574,
+          totalCost: 574,
+          usingBaseFeeMutez: 574,
+          consumedMilligas: 3457258,
+        }],
       });
     });
 
@@ -136,99 +140,105 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
         50)
       ).toTransferParams();
       const estimate = await Tz4.estimate.transfer(tx);
-      expectEstimate(estimate, rpc, {
-        gasLimit: 5573,
-        storageLimit: 534,
-        suggestedFeeMutez: 867,
-        burnFeeMutez: 133500,
-        minimalFeeMutez: 847,
-        totalCost: 134347,
-        usingBaseFeeMutez: 847,
-        consumedMilligas: 5572174,
-      }, {
-        gasLimit: 5572,
-        storageLimit: 534,
-        suggestedFeeMutez: 865,
-        burnFeeMutez: 133500,
-        minimalFeeMutez: 845,
-        totalCost: 134345,
-        usingBaseFeeMutez: 845,
-        consumedMilligas: 5571658,
-      }, {
-        gasLimit: 5572,
-        storageLimit: 534,
-        suggestedFeeMutez: 865,
-        burnFeeMutez: 133500,
-        minimalFeeMutez: 845,
-        totalCost: 134345,
-        usingBaseFeeMutez: 845,
-        consumedMilligas: 5571787,
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 5573,
+          storageLimit: 534,
+          suggestedFeeMutez: 867,
+          burnFeeMutez: 133500,
+          minimalFeeMutez: 847,
+          totalCost: 134347,
+          usingBaseFeeMutez: 847,
+          consumedMilligas: 5572174,
+        }, {
+          gasLimit: 5572,
+          storageLimit: 534,
+          suggestedFeeMutez: 865,
+          burnFeeMutez: 133500,
+          minimalFeeMutez: 845,
+          totalCost: 134345,
+          usingBaseFeeMutez: 845,
+          consumedMilligas: 5571658,
+        }, {
+          gasLimit: 5572,
+          storageLimit: 534,
+          suggestedFeeMutez: 865,
+          burnFeeMutez: 133500,
+          minimalFeeMutez: 845,
+          totalCost: 134345,
+          usingBaseFeeMutez: 845,
+          consumedMilligas: 5571787,
+        }],
       });
     });
 
     it('Verify .estimate.transfer for internal origination', async () => {
       const tx = contract.methodsObject.do(originate()).toTransferParams();
       const estimate = await Tz4.estimate.transfer(tx);
-      expectEstimate(estimate, rpc, {
-        gasLimit: 1869,
-        storageLimit: 337,
-        suggestedFeeMutez: 443,
-        burnFeeMutez: 84250,
-        minimalFeeMutez: 423,
-        totalCost: 84673,
-        usingBaseFeeMutez: 423,
-        consumedMilligas: 1868269,
-      }, {
-        gasLimit: 1868,
-        storageLimit: 337,
-        suggestedFeeMutez: 441,
-        burnFeeMutez: 84250,
-        minimalFeeMutez: 421,
-        totalCost: 84671,
-        usingBaseFeeMutez: 421,
-        consumedMilligas: 1867753,
-      }, {
-        gasLimit: 1868,
-        storageLimit: 337,
-        suggestedFeeMutez: 441,
-        burnFeeMutez: 84250,
-        minimalFeeMutez: 421,
-        totalCost: 84671,
-        usingBaseFeeMutez: 421,
-        consumedMilligas: 1867882,
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 1869,
+          storageLimit: 337,
+          suggestedFeeMutez: 443,
+          burnFeeMutez: 84250,
+          minimalFeeMutez: 423,
+          totalCost: 84673,
+          usingBaseFeeMutez: 423,
+          consumedMilligas: 1868269,
+        }, {
+          gasLimit: 1868,
+          storageLimit: 337,
+          suggestedFeeMutez: 441,
+          burnFeeMutez: 84250,
+          minimalFeeMutez: 421,
+          totalCost: 84671,
+          usingBaseFeeMutez: 421,
+          consumedMilligas: 1867753,
+        }, {
+          gasLimit: 1868,
+          storageLimit: 337,
+          suggestedFeeMutez: 441,
+          burnFeeMutez: 84250,
+          minimalFeeMutez: 421,
+          totalCost: 84671,
+          usingBaseFeeMutez: 421,
+          consumedMilligas: 1867882,
+        }],
       });
     });
 
     it('Verify .estimate.transfer for multiple internal originations', async () => {
       const tx = contract.methodsObject.do(originate2()).toTransferParams();
       const estimate = await Tz4.estimate.transfer(tx);
-      expectEstimate(estimate, rpc, {
-        gasLimit: 2394,
-        storageLimit: 654,
-        suggestedFeeMutez: 561,
-        burnFeeMutez: 163500,
-        minimalFeeMutez: 541,
-        totalCost: 164041,
-        usingBaseFeeMutez: 541,
-        consumedMilligas: 2393422,
-      }, {
-        gasLimit: 2393,
-        storageLimit: 654,
-        suggestedFeeMutez: 559,
-        burnFeeMutez: 163500,
-        minimalFeeMutez: 539,
-        totalCost: 164039,
-        usingBaseFeeMutez: 539,
-        consumedMilligas: 2392906,
-      }, {
-        gasLimit: 2394,
-        storageLimit: 654,
-        suggestedFeeMutez: 559,
-        burnFeeMutez: 163500,
-        minimalFeeMutez: 539,
-        totalCost: 164039,
-        usingBaseFeeMutez: 539,
-        consumedMilligas: 2393035,
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 2394,
+          storageLimit: 654,
+          suggestedFeeMutez: 561,
+          burnFeeMutez: 163500,
+          minimalFeeMutez: 541,
+          totalCost: 164041,
+          usingBaseFeeMutez: 541,
+          consumedMilligas: 2393422,
+        }, {
+          gasLimit: 2393,
+          storageLimit: 654,
+          suggestedFeeMutez: 559,
+          burnFeeMutez: 163500,
+          minimalFeeMutez: 539,
+          totalCost: 164039,
+          usingBaseFeeMutez: 539,
+          consumedMilligas: 2392906,
+        }, {
+          gasLimit: 2394,
+          storageLimit: 654,
+          suggestedFeeMutez: 559,
+          burnFeeMutez: 163500,
+          minimalFeeMutez: 539,
+          totalCost: 164039,
+          usingBaseFeeMutez: 539,
+          consumedMilligas: 2393035,
+        }],
       });
       // Do the actual operation
       const op2 = await contract.methodsObject.do(originate2()).send();

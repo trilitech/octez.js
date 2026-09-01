@@ -22,10 +22,15 @@ CONFIGS().forEach(
   }) => {
     const Tezos = lib;
     const isUnrestricted = rpc.includes("teztnets.com") || rpc.includes("net-rolling-1.i.ecadinfra.com") ? true : false;
-    const isTallinnnetAndAlpha = protocol === Protocols.PtTALLiNt || protocol === Protocols.ProtoALpha ? true : false;
+    // Destination-index (INDEX_ADDRESS / GET_ADDRESS_INDEX) and attestation-rights
+    // shapes were introduced in Tallinn, so they exist on any lane running Tallinn
+    // or later — tallinnnet, shadownet/ushuaianet on Ushuaia, and alpha (weeklynet).
+    // Gating on PtTALLiNt alone silently skipped these on every lane that has since
+    // migrated to Ushuaia, which is all of the ones CI actually runs.
+    const isTallinnOrLater = protocol === Protocols.PtTALLiNt || protocol === Protocols.PsUshuai || protocol === Protocols.ProtoALpha;
     const unrestrictedNode = isUnrestricted ? test : test.skip;
-    const unrestrictedTallinnnetAndAlpha = isTallinnnetAndAlpha && isUnrestricted ? test : test.skip;
-    const tallinnnetAndAlpha = isTallinnnetAndAlpha ? test : test.skip;
+    const unrestrictedTallinnOrLater = isTallinnOrLater && isUnrestricted ? test : test.skip;
+    const tallinnOrLater = isTallinnOrLater ? test : test.skip;
     let ticketContract: DefaultContractType;
     let freshAddress: string;
 
@@ -211,12 +216,12 @@ CONFIGS().forEach(
           }
         });
 
-        tallinnnetAndAlpha('Verify that rpcClient.getDestinationIndex returns null when the address is not indexed', async () => {
+        tallinnOrLater('Verify that rpcClient.getDestinationIndex returns null when the address is not indexed', async () => {
           const destinationIndex = await rpcClient.getDestinationIndex(freshAddress);
           expect(destinationIndex).toBeNull();
         });
 
-        tallinnnetAndAlpha('Verify that rpcClient.getDestinationIndex returns the index of the destination with a custom block', async () => {
+        tallinnOrLater('Verify that rpcClient.getDestinationIndex returns the index of the destination with a custom block', async () => {
           // Originate a contract that uses INDEX_ADDRESS
           const originateIndexAddress = await Tezos.contract.originate({
             code: indexAddressCode,
@@ -263,7 +268,7 @@ CONFIGS().forEach(
           expect(bakingRights[0].round).toBeDefined();
         });
 
-        unrestrictedTallinnnetAndAlpha('Verify that rpcClient.getAttestationRights retrieves the list of delegates allowed to attest a block', async () => {
+        unrestrictedTallinnOrLater('Verify that rpcClient.getAttestationRights retrieves the list of delegates allowed to attest a block', async () => {
           const attestationRights = await rpcClient.getAttestationRights();
           expect(attestationRights).toBeDefined();
           expect(attestationRights[0].delegates).toBeDefined();
