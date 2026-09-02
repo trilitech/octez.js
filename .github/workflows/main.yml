@@ -117,7 +117,7 @@ jobs:
     # injections per process and waits for confirmation, so returned keys are baked.
     services:
       keygen:
-        image: ghcr.io/trilitech/octezjs-keygen:latest
+        image: ghcr.io/trilitech/octezjs-keygen:pr-11
         credentials:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PULL_TOKEN }}
