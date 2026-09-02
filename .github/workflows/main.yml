@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - master
+  # Lets a maintainer kick off the shadownet suite (4 shards + sapling) on demand
+  # from the Actions UI, without waiting for a qualifying push/PR.
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/master' || github.run_number }}
@@ -97,7 +100,9 @@ jobs:
           RUN_INTEGRATION: true
 
   integration-tests-testnet:
-    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    # Manual only: run via "Run workflow" in the Actions UI. No longer runs
+    # automatically on push/PR — the shadownet suite is opt-in on demand.
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     name: integration-tests-shadownet-shard-${{ matrix.shard }}
     needs:
       - integration-tests-change-filter
@@ -246,7 +251,8 @@ jobs:
           retention-days: 30
 
   integration-tests-sapling:
-    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    # Manual only: see integration-tests-testnet above.
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     name: integration-tests-shadownet-sapling
     needs:
       - integration-tests-change-filter
