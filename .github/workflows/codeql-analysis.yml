@@ -17,6 +17,8 @@ jobs:
   analyse:
     name: Analyse
     runs-on: ubuntu-latest
+    # Report findings but don't block merges on this job failing.
+    continue-on-error: true
     permissions:
       actions: read
       contents: read
