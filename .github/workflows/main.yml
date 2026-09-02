@@ -336,7 +336,10 @@ jobs:
           retention-days: 30
 
   rpc-health-monitor:
-    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    # Manual only: this exists to correlate RPC weather with the shadownet/
+    # ushuaianet test window, which is itself manual now (see
+    # integration-tests-testnet above).
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     name: rpc-health-monitor-${{ matrix.network.name }}
     needs:
       - integration-tests-change-filter
@@ -378,7 +381,7 @@ jobs:
       - integration-tests-change-filter
       - integration-tests-testnet
       - integration-tests-sapling
-    if: ${{ always() && needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    if: ${{ always() && github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download timing artifacts
