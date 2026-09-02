@@ -26,12 +26,16 @@ function mockResponse(opts: {
   statusText?: string;
   body?: string;
   jsonBody?: unknown;
+  headers?: Record<string, string>;
 }) {
   return {
     status: opts.status ?? 200,
     statusText: opts.statusText ?? 'OK',
     json: vi.fn().mockResolvedValue(opts.jsonBody ?? {}),
     text: vi.fn().mockResolvedValue(opts.body ?? ''),
+    headers: {
+      get: (name: string) => opts.headers?.[name.toLowerCase()] ?? null,
+    },
   };
 }
 
@@ -380,6 +384,114 @@ describe('HttpBackend', () => {
         );
         expect(mockFetch).toHaveBeenCalledTimes(2);
         expect(result).toEqual({ forged: 'abc' });
+      });
+
+      it('retries GET on transient 429 rate limit', async () => {
+        mockFetch
+          .mockResolvedValueOnce(
+            mockResponse({ status: 429, statusText: 'Too Many Requests', body: 'slow down' })
+          )
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { ok: true } }));
+        const result = await drainRetries(
+          backend.createRequest({ url: 'https://rpc.example.com/' })
+        );
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(result).toEqual({ ok: true });
+      });
+
+      it('waits the Retry-After delay (seconds form) before retrying a 429', async () => {
+        mockFetch
+          .mockResolvedValueOnce(
+            mockResponse({
+              status: 429,
+              statusText: 'Too Many Requests',
+              body: 'slow down',
+              headers: { 'retry-after': '5' },
+            })
+          )
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { ok: true } }));
+        const promise = backend.createRequest({ url: 'https://rpc.example.com/' });
+
+        // Just under the 5s Retry-After: must not have retried yet.
+        await vi.advanceTimersByTimeAsync(4_900);
+        expect(mockFetch).toHaveBeenCalledTimes(1);
+
+        await vi.advanceTimersByTimeAsync(200);
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(await promise).toEqual({ ok: true });
+      });
+
+      it('waits the Retry-After delay (HTTP-date form) before retrying a 429', async () => {
+        // toUTCString() has only 1-second resolution (RFC 9110), so the parsed
+        // delay can be up to ~999ms shorter than the nominal gap -- assert with
+        // margins wide enough to accommodate that, not the exact nominal value.
+        const now = Date.now();
+        vi.setSystemTime(now);
+        const retryAt = new Date(now + 5_000).toUTCString();
+        mockFetch
+          .mockResolvedValueOnce(
+            mockResponse({
+              status: 429,
+              statusText: 'Too Many Requests',
+              body: 'slow down',
+              headers: { 'retry-after': retryAt },
+            })
+          )
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { ok: true } }));
+        const promise = backend.createRequest({ url: 'https://rpc.example.com/' });
+
+        await vi.advanceTimersByTimeAsync(3_500);
+        expect(mockFetch).toHaveBeenCalledTimes(1);
+
+        await vi.advanceTimersByTimeAsync(1_600);
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(await promise).toEqual({ ok: true });
+      });
+
+      it('clamps an excessive Retry-After instead of stalling on it', async () => {
+        mockFetch
+          .mockResolvedValueOnce(
+            mockResponse({
+              status: 429,
+              statusText: 'Too Many Requests',
+              body: 'slow down',
+              headers: { 'retry-after': '3600' },
+            })
+          )
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { ok: true } }));
+        const promise = backend.createRequest({ url: 'https://rpc.example.com/' });
+
+        await vi.advanceTimersByTimeAsync(30_000);
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(await promise).toEqual({ ok: true });
+      });
+
+      it('falls back to exponential backoff when Retry-After is absent or unparsable', async () => {
+        mockFetch
+          .mockResolvedValueOnce(
+            mockResponse({
+              status: 429,
+              statusText: 'Too Many Requests',
+              body: 'slow down',
+              headers: { 'retry-after': 'not-a-valid-value' },
+            })
+          )
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { ok: true } }));
+        const result = await drainRetries(
+          backend.createRequest({ url: 'https://rpc.example.com/' })
+        );
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(result).toEqual({ ok: true });
+      });
+
+      it('does not retry 429 on a non-retriable POST path', async () => {
+        mockFetch.mockResolvedValue(
+          mockResponse({ status: 429, statusText: 'Too Many Requests', body: 'slow down' })
+        );
+        await expect(
+          backend.createRequest({ url: 'https://rpc.example.com/some/random/endpoint', method: 'POST' })
+        ).rejects.toThrow(HttpResponseError);
+        expect(mockFetch).toHaveBeenCalledTimes(1);
       });
 
       it('does not retry a deterministic 500 on a retriable request', async () => {

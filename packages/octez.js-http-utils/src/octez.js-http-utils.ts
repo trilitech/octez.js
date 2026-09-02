@@ -122,9 +122,34 @@ const isRetriableRequest = (method: string, url: string) => {
 
 // Transient gateway/proxy errors: the node is briefly unreachable behind its
 // reverse proxy (e.g. nginx 502/503/504), not a deterministic application error
-// like a 4xx or a protocol 500. Safe to retry for idempotent/retriable requests.
+// like a 4xx or a protocol 500. 429 (rate limited) is transient in the same
+// sense -- the server is explicitly telling the caller to slow down and retry,
+// often naming exactly how long via Retry-After (see retryAfterMs below).
+// Safe to retry for idempotent/retriable requests.
 const isTransientServerError = (status: number) =>
-  status === 502 || status === 503 || status === 504;
+  status === 429 || status === 502 || status === 503 || status === 504;
+
+// A server sending 429/503 may include a Retry-After header naming the wait
+// itself, either as delay-seconds or an HTTP-date (RFC 9110 SS10.2.3). Honoring
+// it beats guessing via exponential backoff -- retrying too soon just earns
+// another 429. Clamped so a malformed or very large value can't stall a
+// request far longer than the caller's own timeout budget expects.
+const maxRetryAfterMs = 30_000;
+const parseRetryAfterMs = (response: Response): number | undefined => {
+  const header = response.headers?.get?.('retry-after');
+  if (!header) {
+    return undefined;
+  }
+  const seconds = Number(header);
+  if (Number.isFinite(seconds) && seconds >= 0) {
+    return Math.min(seconds * 1000, maxRetryAfterMs);
+  }
+  const dateMs = Date.parse(header);
+  if (Number.isFinite(dateMs)) {
+    return Math.min(Math.max(dateMs - Date.now(), 0), maxRetryAfterMs);
+  }
+  return undefined;
+};
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -148,8 +173,11 @@ export interface HttpRequestOptions {
  * HTTP client used by octez.js to communicate with Tezos RPC nodes.
  *
  * Uses `globalThis.fetch` (Node.js >= 22 built-in or browser native).
- * Retries retriable transport errors (socket resets, DNS, timeouts) with
- * exponential backoff and jitter. Configure via environment variables:
+ * Retries retriable transport errors (socket resets, DNS, timeouts) and
+ * transient server responses (429/502/503/504) on idempotent/retriable
+ * requests, honoring a Retry-After header when the server sends one, else
+ * falling back to exponential backoff with jitter. Configure via environment
+ * variables:
  *
  * - `TAQUITO_HTTP_RETRY_COUNT` - max retries (default `1`)
  * - `TAQUITO_HTTP_RETRY_BASE_MS` - base delay in ms (default `100`)
@@ -255,16 +283,18 @@ export class HttpBackend {
         // Handle responses with status code >= 400
         if (response.status >= 400) {
           const errorData = await response.text();
-          // Retry transient gateway errors (502/503/504) for retriable requests,
-          // instead of failing the caller on a momentary node/proxy blip.
+          // Retry transient errors (429/502/503/504) for retriable requests,
+          // instead of failing the caller on a momentary node/proxy blip or a
+          // rate limit the server itself expects to be retried.
           if (
             attempt < httpRetryCount &&
             isTransientServerError(response.status) &&
             isRetriableRequest(methodValue, urlWithQuery)
           ) {
+            const retryAfterMs = parseRetryAfterMs(response);
             const exponential = httpRetryBaseMs * Math.pow(2, attempt);
             const jitter = Math.floor(Math.random() * httpRetryBaseMs);
-            const retryDelayMs = exponential + jitter;
+            const retryDelayMs = retryAfterMs ?? exponential + jitter;
             traceHttp({
               stage: 'request-retry',
               method: methodValue,
@@ -274,6 +304,7 @@ export class HttpBackend {
               attempt: attempt + 1,
               maxAttempts: httpRetryCount + 1,
               retryDelayMs,
+              retryAfterHeaderHonored: retryAfterMs !== undefined,
             });
             await sleep(retryDelayMs);
             continue;
