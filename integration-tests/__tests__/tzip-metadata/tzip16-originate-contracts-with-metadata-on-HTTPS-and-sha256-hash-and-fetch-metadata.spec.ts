@@ -8,8 +8,13 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
     const Tezos = lib;
     Tezos.addExtension(new Tzip16Module());
 
+    // Single source of truth for the metadata URL: assertions build the expected
+    // metadata.uri from this same constant instead of a duplicated literal, so a
+    // future bucket-path change (like the tzip-16 -> tezos-linux-repo/octez-js/tz16
+    // move) can't silently desync the origination URL from what the test expects.
+    const urlPercentEncoded = encodeURIComponent('//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json');
+
     const originateContractWithShaUri = async (metadataSha256: string) => {
-        const urlPercentEncoded = encodeURIComponent('//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json');
         const url = 'sha256://' + metadataSha256 + '/https:' + urlPercentEncoded;
 
         const op = await Tezos.contract.originate({
@@ -54,7 +59,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
                 const contract = await Tezos.contract.at(contractAddress, tzip16);
                 const metadata = await contract.tzip16().getMetadata();
 
-                expect(metadata.uri).toEqual('sha256://0x18b983a4cc78d7c15d53f7642461176c1366fbdb83960ea432188130db1f8c9d/https:%2F%2Fstorage.googleapis.com%2Ftzip-16%2Ftaco-shop-metadata.json');
+                expect(metadata.uri).toEqual('sha256://0x18b983a4cc78d7c15d53f7642461176c1366fbdb83960ea432188130db1f8c9d/https:' + urlPercentEncoded);
                 expect(metadata.integrityCheckResult).toEqual(true);
                 expect(metadata.sha256Hash).toEqual('18b983a4cc78d7c15d53f7642461176c1366fbdb83960ea432188130db1f8c9d');
                 expect(metadata.metadata).toEqual({
@@ -114,7 +119,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
                 const contract = await Tezos.contract.at(contractAddressInvalidHash, tzip16);
                 const metadata = await contract.tzip16().getMetadata();
 
-                expect(metadata.uri).toEqual('sha256://0x7e99ecf3a4491e3044ccdf319898d77380a2fc20aae36b6e40327d678399d17b/https:%2F%2Fstorage.googleapis.com%2Ftzip-16%2Ftaco-shop-metadata.json');
+                expect(metadata.uri).toEqual('sha256://0x7e99ecf3a4491e3044ccdf319898d77380a2fc20aae36b6e40327d678399d17b/https:' + urlPercentEncoded);
                 expect(metadata.integrityCheckResult).toEqual(false);
                 expect(metadata.sha256Hash).toEqual('18b983a4cc78d7c15d53f7642461176c1366fbdb83960ea432188130db1f8c9d');
                 expect(metadata.metadata).toEqual({
