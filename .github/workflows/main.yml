@@ -154,8 +154,8 @@ jobs:
       - name: Top up this shard's keygen master
         env:
           SHARD: ${{ matrix.shard }}
-          MIN_BALANCE_TEZ: '800'
-          TARGET_TEZ: '1000'
+          MIN_BALANCE_TEZ: '1200'
+          TARGET_TEZ: '1600'
           RPC_URL: https://rpc.shadownet.teztnets.com
           FAUCET_URL: https://faucet.shadownet.teztnets.com
         run: |
