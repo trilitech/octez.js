@@ -534,6 +534,24 @@ const ushuaianetSecretKey: Config = {
   signerConfig: defaultSecretKey,
 };
 
+// Weeklynet resets (new chain, new dated hostname) every Wednesday, so both
+// defaultRpc below and the committed known-contracts-weeklynet.ts addresses
+// go stale on a fixed weekly schedule, not just by drift. CI never relies on
+// these defaults for the automated lane: it resolves the live
+// rpc.weeklynet-<date> host and re-originates known contracts fresh every
+// run (see weeklynet-resolve-rpc / weeklynet-originate in main.yml), passing
+// both in via the same TEZOS_RPC_WEEKLYNET / TEZOS_WEEKLYNET_*_ADDRESS env
+// overrides defaultConfig() already reads. These values only matter for ad
+// hoc local runs against whatever instance's addresses happen to be
+// committed.
+const weeklynetEphemeral: Config = defaultConfig({
+  networkName: 'WEEKLYNET',
+  protocol: Protocols.ProtoALpha,
+  defaultRpc: 'https://rpc.weeklynet-2025-12-03.teztnets.com',
+  knownContracts: knownContractsWeeklynet,
+  signerConfig: defaultEphemeralConfig('weeklynet'),
+});
+
 // --- Featurenet placeholder -------------------------------------------------
 // When protocol V lands on a *dedicated* teztnet (not yet shadowed into
 // shadownet), wire it up here:
@@ -588,6 +606,8 @@ if (process.env['RUN_WITH_SECRET_KEY']) {
   providers.push(tallinnnetEphemeral);
 } else if (process.env['USHUAIANET']) {
   providers.push(ushuaianetEphemeral);
+} else if (process.env['WEEKLYNET']) {
+  providers.push(weeklynetEphemeral);
 } else {
   providers.push(shadownetEphemeral, tallinnnetEphemeral);
 }

@@ -335,6 +335,226 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
+  weeklynet-resolve-rpc:
+    # Weeklynet has no stable hostname — it resets onto a new dated host
+    # every Wednesday (rpc.weeklynet-<date>.teztnets.com) — so it can't be
+    # hardcoded the way shadownet/ushuaianet's fixed hostnames are. Resolved
+    # once here, in a job with no services, because a service container's
+    # env is fixed at job start and can't consume a lookup step run first in
+    # the SAME job (see weeklynet-originate / integration-tests-weeklynet
+    # below, which depend on this job's outputs for exactly that reason).
+    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    needs:
+      - integration-tests-change-filter
+    runs-on: ubuntu-latest
+    outputs:
+      rpc_url: ${{ steps.resolve.outputs.rpc_url }}
+      faucet_url: ${{ steps.resolve.outputs.faucet_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - id: resolve
+        run: node .github/scripts/resolve-weeklynet.mjs
+
+  weeklynet-originate:
+    # Weeklynet's weekly reset wipes any previously originated contracts too,
+    # not just the RPC host: known-contracts-weeklynet.ts committed to the
+    # repo goes stale on the same schedule. Re-originate the 6 known
+    # contracts fresh on every automated run, from a single ephemeral key,
+    # and hand the resulting addresses to the shard matrix below as outputs.
+    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    needs:
+      - integration-tests-change-filter
+      - weeklynet-resolve-rpc
+    runs-on: ubuntu-latest
+    services:
+      keygen:
+        image: ghcr.io/trilitech/octezjs-keygen:latest
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PULL_TOKEN }}
+        env:
+          KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          ALLOWED_NETWORKS: weeklynet
+          RPC_URL: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
+          FAUCET_URL: ${{ needs.weeklynet-resolve-rpc.outputs.faucet_url }}
+          DEFAULT_FUND_TEZ: '10'
+          FUND_HEADROOM_TEZ: '1'
+          # No MASTER_KEY: a persistent master account would just be wiped by
+          # the next reset too, so this (and the shard matrix below) fund
+          # every key on demand via the faucet's PoW challenge instead of a
+          # pre-funded account, unlike shadownet/ushuaianet. Slower and more
+          # exposed to faucet flakiness — accepted for now; revisit if that
+          # proves too unreliable in practice.
+          RECLAIM_ENABLED: 'false'
+        ports:
+          - 3000:3000
+    outputs:
+      contract: ${{ steps.addresses.outputs.contract }}
+      big_map_contract: ${{ steps.addresses.outputs.big_map_contract }}
+      tzip1216_contract: ${{ steps.addresses.outputs.tzip1216_contract }}
+      sapling_contract: ${{ steps.addresses.outputs.sapling_contract }}
+      view_contract: ${{ steps.addresses.outputs.view_contract }}
+      ticket_contract: ${{ steps.addresses.outputs.ticket_contract }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Wait for keygen service
+        run: |
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/health || true)
+            echo "attempt $i: /health -> $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 2
+          done
+          echo "::error::keygen service did not become healthy"; exit 1
+      - name: Originate known contracts on weeklynet
+        run: npm -w integration-tests run originate-known-contracts
+        env:
+          WEEKLYNET: 'true'
+          TEZOS_RPC_WEEKLYNET: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
+          TAQUITO_KEYGEN_URL: http://localhost:3000
+          TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+      - id: addresses
+        name: Read originated addresses
+        run: node .github/scripts/read-known-contracts.mjs weeklynet
+      - name: Keygen container logs
+        if: always()
+        run: docker logs "${{ job.services.keygen.id }}" 2>&1 | tail -300 || true
+
+  integration-tests-weeklynet:
+    # Runs automatically (unlike the shadownet matrix above) — see
+    # weeklynet-resolve-rpc / weeklynet-originate for why this needs two
+    # pre-flight jobs instead of the fixed RPC_URL and committed
+    # known-contracts shadownet/ushuaianet use directly.
+    #
+    # No sapling counterpart: the sapling job needs a static, long-lived
+    # secret key with a pre-initialized shielded-pool balance, which can't
+    # survive a weekly full chain reset the way shadownet/ushuaianet's
+    # persistent SECRET_KEY does — out of scope until weeklynet has its own
+    # shielded-pool re-init story.
+    if: ${{ needs.integration-tests-change-filter.outputs.run_expensive == 'true' }}
+    name: integration-tests-weeklynet-shard-${{ matrix.shard }}
+    needs:
+      - integration-tests-change-filter
+      - weeklynet-resolve-rpc
+      - weeklynet-originate
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    runs-on: ubuntu-latest
+    # No MASTER_KEY, unlike the shadownet matrix above: a persistent master
+    # account would be wiped by weeklynet's own Wednesday reset just like any
+    # other account, so every shard funds its ephemeral keys on demand via
+    # the faucet instead. Four shards hitting the same faucet concurrently at
+    # once is untested at this scale — watch for PoW-challenge contention or
+    # latency here first if this lane turns out to be flaky.
+    services:
+      keygen:
+        image: ghcr.io/trilitech/octezjs-keygen:latest
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PULL_TOKEN }}
+        env:
+          KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          ALLOWED_NETWORKS: weeklynet
+          RPC_URL: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
+          FAUCET_URL: ${{ needs.weeklynet-resolve-rpc.outputs.faucet_url }}
+          DEFAULT_FUND_TEZ: '10'
+          FUND_HEADROOM_TEZ: '1'
+          RECLAIM_ENABLED: 'false'
+        ports:
+          - 3000:3000
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Wait for keygen service
+        run: |
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/health || true)
+            echo "attempt $i: /health -> $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 2
+          done
+          echo "::error::keygen service did not become healthy"; exit 1
+      - id: run-tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          start_epoch="$(date +%s)"
+          start_iso="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+          set +e
+          npm -w integration-tests run test:weeklynet:shard -- \
+            --shard=${{ matrix.shard }}/4 \
+            --exclude='**/sapling/**' \
+            --exclude='**/ledger/**'
+          test_exit_code="$?"
+          set -e
+
+          end_epoch="$(date +%s)"
+          end_iso="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          elapsed_seconds="$((end_epoch - start_epoch))"
+
+          mkdir -p ci-metrics
+          cat > "ci-metrics/itest-weeklynet-${SHARD}.json" <<EOF
+          {"suite":"weeklynet","shard":${SHARD},"status":"$([ "$test_exit_code" -eq 0 ] && echo pass || echo fail)","exit_code":$test_exit_code,"elapsed_seconds":$elapsed_seconds,"started_at":"$start_iso","completed_at":"$end_iso","run_id":"${RUN_ID}","run_attempt":"${RUN_ATTEMPT}","sha":"${COMMIT_SHA}"}
+          EOF
+
+          # shellcheck disable=SC2129
+          echo "### Integration timing: weeklynet shard ${SHARD}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- status: $([ "$test_exit_code" -eq 0 ] && echo pass || echo fail)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- exit_code: $test_exit_code" >> "$GITHUB_STEP_SUMMARY"
+          echo "- elapsed_seconds: $elapsed_seconds" >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$test_exit_code"
+        env:
+          TEZOS_RPC_WEEKLYNET: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
+          TEZOS_WEEKLYNET_CONTRACT_ADDRESS: ${{ needs.weeklynet-originate.outputs.contract }}
+          TEZOS_WEEKLYNET_BIGMAPCONTRACT_ADDRESS: ${{ needs.weeklynet-originate.outputs.big_map_contract }}
+          TEZOS_WEEKLYNET_TZIP1216CONTRACT_ADDRESS: ${{ needs.weeklynet-originate.outputs.tzip1216_contract }}
+          TEZOS_WEEKLYNET_SAPLINGCONTRACT_ADDRESS: ${{ needs.weeklynet-originate.outputs.sapling_contract }}
+          TEZOS_WEEKLYNET_ON_CHAIN_VIEW_CONTRACT: ${{ needs.weeklynet-originate.outputs.view_contract }}
+          TEZOS_WEEKLYNET_TICKET_CONTRACT: ${{ needs.weeklynet-originate.outputs.ticket_contract }}
+          TAQUITO_KEYGEN_URL: http://localhost:3000
+          TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          TAQUITO_FRESH_KEY_RETRY_MS: '12000'
+          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '3'
+          TAQUITO_FRESH_KEY_PREFETCH: '2'
+          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+          TAQUITO_HTTP_RETRY_COUNT: '4'
+          SHARD: ${{ matrix.shard }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          COMMIT_SHA: ${{ github.sha }}
+          TAQUITO_ITEST_DIAGNOSTICS: 'true'
+          TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
+      - name: Keygen container logs
+        if: always()
+        run: docker logs "${{ job.services.keygen.id }}" 2>&1 | tail -300 || true
+      - name: Upload timing artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: itest-timing-weeklynet-${{ matrix.shard }}
+          path: ci-metrics/itest-weeklynet-${{ matrix.shard }}.json
+          if-no-files-found: warn
+          retention-days: 30
+
   rpc-health-monitor:
     # Manual only: this exists to correlate RPC weather with the shadownet/
     # ushuaianet test window, which is itself manual now (see

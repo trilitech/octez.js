@@ -60,23 +60,69 @@ drop the usable balance below what the test needs. See the keygen repo's
 ```
 integration-tests-change-filter        # decides whether the expensive suite runs
         │
-        ▼
-keygen-master-topup                     # pre-flight: top up the 4 master accounts
-        │                                 from the faucet if below threshold
-        ▼
-integration-tests-shadownet-shard-{1..4}  # matrix; each job has its OWN keygen
-        │                                   service container on localhost:3000
-        ▼                                   funded by KEYGEN_MASTER_KEY_<shard>
-(integration-tests-shadownet-sapling)     # separate; shares a key-1 concurrency group
+        ├── (workflow_dispatch only, manual) ─────────────────────────────────┐
+        │                                                                      ▼
+        │                                                       keygen-master-topup
+        │                                                       (top up the 4 master
+        │                                                        accounts from the
+        │                                                        faucet if below
+        │                                                        threshold)
+        │                                                                      │
+        │                                                                      ▼
+        │                                        integration-tests-shadownet-shard-{1..4}
+        │                                        (matrix; each job has its OWN keygen
+        │                                         service container on localhost:3000,
+        │                                         funded by KEYGEN_MASTER_KEY_<shard>)
+        │                                                      │
+        │                                        (integration-tests-shadownet-sapling)
+        │                                        (separate; shares a key-1 concurrency
+        │                                         group; static SHADOWNET_SECRET_KEY_1)
+        │
+        └── (default: every push/PR) ────────────────────────────────────────┐
+                                                                                ▼
+                                                              weeklynet-resolve-rpc
+                                                              (resolve current
+                                                               rpc.weeklynet-<date>
+                                                               + faucet, no stable
+                                                               hostname to hardcode)
+                                                                                │
+                                                                                ▼
+                                                                weeklynet-originate
+                                                              (re-originate the 6 known
+                                                               contracts fresh every run
+                                                               — weeklynet's weekly
+                                                               reset wipes them too —
+                                                               from one faucet-funded
+                                                               key; no sapling job)
+                                                                                │
+                                                                                ▼
+                                                    integration-tests-weeklynet-shard-{1..4}
+                                                    (matrix; faucet-funded ephemeral keys,
+                                                     no persistent master account — one
+                                                     would be wiped by the next reset too)
 ```
 
-Each shard job runs `ghcr.io/trilitech/octezjs-keygen:latest` as a **service
-container** reachable at `http://localhost:3000` (`TAQUITO_KEYGEN_URL`). The four
-shards each use a **distinct** master account (`MASTER_KEY` =
-`KEYGEN_MASTER_KEY_<shard>`) so the four keygen processes don't collide on a
-shared master's operation counter. A "Keygen container logs" step dumps the
-container's stdout/stderr (boot mode + per-request `keygen error:` stacks) for
-diagnosis.
+Shadownet stays manual-only (`workflow_dispatch`), unchanged since #49. Weeklynet
+is the automated, PR-gating lane: because it fully resets (new chain, new
+hostname) every Wednesday, it can't reuse the shadownet/ushuaianet pattern of a
+fixed `RPC_URL` and a persistent, faucet-topped-up master account — both go
+stale on the same weekly schedule, so weeklynet resolves its RPC/faucet and
+re-originates its known contracts fresh on every run instead (see
+`resolve-weeklynet.mjs` and `read-known-contracts.mjs` in `.github/scripts/`),
+and funds every key on demand via the faucet's PoW challenge rather than a
+master account. That's slower and more exposed to faucet flakiness under load
+than shadownet/ushuaianet's master-account funding — accepted for now as the
+tradeoff for having *any* automated lane again; revisit if it proves too
+unreliable running four shards concurrently against the faucet.
+
+Each shard job (either network) runs `ghcr.io/trilitech/octezjs-keygen:latest`
+as a **service container** reachable at `http://localhost:3000`
+(`TAQUITO_KEYGEN_URL`). Shadownet's four shards each use a **distinct** master
+account (`MASTER_KEY` = `KEYGEN_MASTER_KEY_<shard>`) so the four keygen
+processes don't collide on a shared master's operation counter; weeklynet's
+shards have no `MASTER_KEY` at all, so the keygen falls back to faucet mode
+per key. A "Keygen container logs" step dumps the container's stdout/stderr
+(boot mode + per-request `keygen error:` stacks) for diagnosis.
 
 ## Configuration (env)
 
