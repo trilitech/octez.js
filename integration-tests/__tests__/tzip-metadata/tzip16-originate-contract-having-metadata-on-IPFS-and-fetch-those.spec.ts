@@ -8,7 +8,11 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
     const Tezos = lib;
 
     const customHandler = new Map<string, Handler>([
-        ['ipfs', new IpfsHttpHandler('dweb.link')]
+        // dweb.link and ipfs.io are both Protocol Labs infra, both deprecating the
+        // legacy path-style /ipfs/<CID> gateway format ("This IPFS gateway is
+        // switching to a service worker gateway only") -- an independent provider
+        // avoids that specific shutoff, not just another host in the same family.
+        ['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')]
     ]);
 
     const customMetadataProvider = new MetadataProvider(customHandler);
