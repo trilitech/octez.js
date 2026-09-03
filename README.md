@@ -195,7 +195,7 @@ The [octez.js website][4] is built with [Astro][5]. To run it locally:
 
 Do not report security issues in public GitHub issues, discussions, or pull requests.
 
-Use GitHub private vulnerability reporting on the repository [Security page](https://github.com/trilitech/octez.js/security), or email [security@ecadlabs.com](mailto:security@ecadlabs.com) if needed.
+Use GitHub private vulnerability reporting on the repository [Security page](https://github.com/trilitech/octez.js/security), or email [security@tezos.com](mailto:security@tezos.com) if needed.
 
 See [SECURITY.md](SECURITY.md) for the current policy.
 

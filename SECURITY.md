@@ -27,7 +27,7 @@ Private vulnerability reporting is enabled on GitHub for this repository and is 
 2. Open the advisories section.
 3. Use **Report a vulnerability** to send the report privately.
 
-If GitHub private reporting is not suitable for your case, email [security@ecadlabs.com](mailto:security@ecadlabs.com).
+If GitHub private reporting is not suitable for your case, email [security@tezos.com](mailto:security@tezos.com).
 
 When possible, include:
 
