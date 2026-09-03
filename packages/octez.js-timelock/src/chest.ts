@@ -66,18 +66,18 @@ export class Chest {
     return { chest: new Chest({ lockedValue, cipherText }), key: proof };
   }
 
-  newKey(time: number, mod?: BigInteger): ChestKey {
+  newKey(time: number, mod?: BigInteger, rng?: RNG): ChestKey {
     if (time <= 0) {
       throw new Error('Invalid argument');
     }
-    return unlockAndProve(time, this.lockedValue, mod);
+    return unlockAndProve(time, this.lockedValue, mod, rng);
   }
 
-  open(key: ChestKey, time: number): Uint8Array | null {
+  open(key: ChestKey, time: number, rng?: RNG): Uint8Array | null {
     if (time <= 0) {
       throw new Error('Invalid argument');
     }
-    if (!verify(this.lockedValue, key, time)) {
+    if (!verify(this.lockedValue, key, time, rng)) {
       return null;
     }
     const symKey = key.symmetricKey();
