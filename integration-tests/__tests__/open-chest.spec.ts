@@ -4,6 +4,7 @@ import { Chest, Timelock, ChestKey } from '@tezos-x/octez.js-timelock';
 import { stringToBytes } from '@tezos-x/octez.js-utils';
 import { timelockCode, timelockStorage } from '../data/timelock-flip-contract';
 import { sequentialTestSuite } from '../sequential-test';
+import { makeSeededRng } from '../test-helpers/seeded-rng';
 
 // please read the following link to understand the game (with guessing blocks increase from 10 to 20)
 // https://gitlab.com/tezos/tezos/-/blob/master/src/proto_alpha/lib_protocol/contracts/timelock_flip.tz
@@ -13,6 +14,18 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
   const time = 1024;
   const message = 'hi';
   let chestKey: ChestKey;
+  // Chest/key generation otherwise draws on globalThis.crypto: a real, unseeded
+  // source of randomness. A fixed seed makes every run generate the exact same
+  // chest/key bytes, so a failure here reproduces identically instead of being a
+  // CI-only Heisenbug. Each call site below gets its OWN literal seed constant
+  // -- not a shared incrementing counter -- so a step's bytes are the same
+  // whether the whole file runs or the step is isolated with `vitest -t`, and
+  // so two independently-generated chest/key pairs can never share PRNG state.
+  const INIT_GAME_CHEST_SEED = 1;
+  const WRONG_GUESS_PRECOMPUTE_SEED = 2;
+  const WRONG_GUESS_CHEST_SEED = 3;
+  const WRONG_KEY_CHEST_SEED = 4;
+  const WRONG_KEY_MISMATCHED_KEY_SEED = 5;
 
   describe(`Timelock test coin flip contract ${rpc}`, () => {
     const step = sequentialTestSuite();
@@ -34,7 +47,12 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     step('should be able to initialize the game with chest', async () => {
       const payload = new TextEncoder().encode(message);
-      const { chest, key } = Chest.newChestAndKey(payload, time);
+      const { chest, key } = Chest.newChestAndKey(
+        payload,
+        time,
+        undefined,
+        makeSeededRng(INIT_GAME_CHEST_SEED)
+      );
       chestKey = key;
       let init = await contract.methodsObject.initialize_game(chest.encode()).send();
       await init.confirmation();
@@ -65,8 +83,17 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     step('should be able to guess wrong', async () => {
       const payload = new TextEncoder().encode(message);
-      const precomputedTimelock = Timelock.precompute(time);
-      const { chest, key } = Chest.fromTimelock(payload, time, precomputedTimelock);
+      const precomputedTimelock = Timelock.precompute(
+        time,
+        undefined,
+        makeSeededRng(WRONG_GUESS_PRECOMPUTE_SEED)
+      );
+      const { chest, key } = Chest.fromTimelock(
+        payload,
+        time,
+        precomputedTimelock,
+        makeSeededRng(WRONG_GUESS_CHEST_SEED)
+      );
       chestKey = key;
       let init = await contract.methodsObject.initialize_game(chest.encode()).send();
       await init.confirmation();
@@ -102,7 +129,12 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       const isolatedContract = await originate.contract();
 
       const payload = new TextEncoder().encode(message);
-      const { chest } = Chest.newChestAndKey(payload, time);
+      const { chest } = Chest.newChestAndKey(
+        payload,
+        time,
+        undefined,
+        makeSeededRng(WRONG_KEY_CHEST_SEED)
+      );
       const init = await isolatedContract.methodsObject.initialize_game(chest.encode()).send();
       await init.confirmation();
       expect(init.status).toBe('applied');
@@ -112,7 +144,14 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       expect(storageInit.guess).toBe('a0');
       expect(storageInit.result).toBe('a0');
 
-      const { key } = Chest.newChestAndKey(payload, time);
+      // A DIFFERENT seed on purpose: this key must NOT match the chest above --
+      // the point of this step is proving a mismatched key fails to open it.
+      const { key } = Chest.newChestAndKey(
+        payload,
+        time,
+        undefined,
+        makeSeededRng(WRONG_KEY_MISMATCHED_KEY_SEED)
+      );
       const finish = await isolatedContract.methodsObject.finish_game(key.encode()).send();
       await finish.confirmation();
       expect(finish.status).toBe('applied');
