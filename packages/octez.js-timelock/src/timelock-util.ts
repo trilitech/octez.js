@@ -22,14 +22,18 @@ function randomInteger(rng: RNG, bits: number): BigInteger {
   return bigInt.fromArray(Array.from(bytes), 256);
 }
 
-function nextPrime(n: BigInteger): BigInteger {
+function nextPrime(n: BigInteger, rng: RNG = defaultRNG): BigInteger {
   if (n.compare(2) < 0) {
     return bigInt(2);
   }
   const limit = n.multiply(2);
   for (let p = n.next(); p.compare(limit) < 0; p = p.next()) {
-    // use 25 bases like in GMP mpz_nextprime and thus in Tezos
-    if (p.isProbablePrime(25, rand)) {
+    // use 25 bases like in GMP mpz_nextprime and thus in Tezos.
+    // isProbablePrime's callback contract is a zero-arg () => number in [0, 1)
+    // (see randBetween in big-integer), not the RNG.getRandomValues interface --
+    // close over the caller's rng so witness selection is seeded too, instead of
+    // always falling through to rand()'s own defaultRNG.
+    if (p.isProbablePrime(25, () => rand(rng))) {
       return p;
     }
   }
@@ -55,7 +59,8 @@ function hashToPrime(
   time: number,
   value: BigInteger,
   key: BigInteger,
-  mod: BigInteger
+  mod: BigInteger,
+  rng: RNG = defaultRNG
 ): BigInteger {
   const b: number[] = [
     ...new TextEncoder().encode(String(time)),
@@ -69,16 +74,17 @@ function hashToPrime(
 
   const sum = blake2b(new Uint8Array(b), { dkLen: 32, key: new Uint8Array([32]) });
   const val = fromLE(Array.from(sum));
-  return nextPrime(val);
+  return nextPrime(val, rng);
 }
 
 function proveWesolowski(
   time: number,
   locked: BigInteger,
   unlocked: BigInteger,
-  mod: BigInteger
+  mod: BigInteger,
+  rng: RNG = defaultRNG
 ): BigInteger {
-  const l = hashToPrime(time, locked, unlocked, mod);
+  const l = hashToPrime(time, locked, unlocked, mod, rng);
   let pi = bigInt(1);
   let r = bigInt(1);
   for (; time > 0; time -= 1) {
@@ -98,13 +104,14 @@ export function prove(
   time: number,
   locked: BigInteger,
   unlocked: BigInteger,
-  mod: BigInteger = RSA_MODULUS
+  mod: BigInteger = RSA_MODULUS,
+  rng: RNG = defaultRNG
 ): TimelockProof {
   return new TimelockProof({
     vdfTuple: new Timelock({
       lockedValue: locked,
       unlockedValue: unlocked,
-      vdfProof: proveWesolowski(time, locked, unlocked, mod),
+      vdfProof: proveWesolowski(time, locked, unlocked, mod, rng),
       modulus: mod,
     }),
     nonce: bigInt(1),
@@ -125,14 +132,15 @@ function unlockTimelock(time: number, locked: BigInteger, mod: BigInteger): BigI
 export function unlockAndProve(
   time: number,
   locked: BigInteger,
-  mod: BigInteger = RSA_MODULUS
+  mod: BigInteger = RSA_MODULUS,
+  rng: RNG = defaultRNG
 ): TimelockProof {
   const unlocked = unlockTimelock(time, locked, mod);
-  return prove(time, locked, unlocked, mod);
+  return prove(time, locked, unlocked, mod, rng);
 }
 
-function verifyWesolowski(vdfTuple: Timelock, time: number): boolean {
-  const l = hashToPrime(time, vdfTuple.lockedValue, vdfTuple.unlockedValue, vdfTuple.modulus);
+function verifyWesolowski(vdfTuple: Timelock, time: number, rng: RNG = defaultRNG): boolean {
+  const l = hashToPrime(time, vdfTuple.lockedValue, vdfTuple.unlockedValue, vdfTuple.modulus, rng);
   const ll = vdfTuple.vdfProof.modPow(l, vdfTuple.modulus);
   const r = bigInt(2).modPow(time, l);
   const rr = vdfTuple.lockedValue.modPow(r, vdfTuple.modulus);
@@ -140,12 +148,17 @@ function verifyWesolowski(vdfTuple: Timelock, time: number): boolean {
   return unlocked.compare(vdfTuple.unlockedValue) === 0;
 }
 
-export function verify(locked: BigInteger, proof: TimelockProof, time: number): boolean {
+export function verify(
+  locked: BigInteger,
+  proof: TimelockProof,
+  time: number,
+  rng: RNG = defaultRNG
+): boolean {
   const randomizedChallenge = proof.vdfTuple.lockedValue.modPow(
     proof.nonce,
     proof.vdfTuple.modulus
   );
-  return randomizedChallenge.compare(locked) === 0 && verifyWesolowski(proof.vdfTuple, time);
+  return randomizedChallenge.compare(locked) === 0 && verifyWesolowski(proof.vdfTuple, time, rng);
 }
 
 export class Timelock {
@@ -167,7 +180,7 @@ export class Timelock {
     return new Timelock({
       lockedValue: locked,
       unlockedValue: unlocked,
-      vdfProof: proveWesolowski(time, locked, unlocked, mod),
+      vdfProof: proveWesolowski(time, locked, unlocked, mod, rng),
       modulus: mod,
     });
   }
@@ -183,7 +196,7 @@ export class Timelock {
     ) {
       throw new Error('Invalid argument');
     }
-    if (!verifyWesolowski(this, time)) {
+    if (!verifyWesolowski(this, time, rng)) {
       throw new Error('Verification error');
     }
     const nonce = randomInteger(rng, 16 * 8);
