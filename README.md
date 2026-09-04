@@ -182,12 +182,18 @@ git commit
 
 Use a conventional commit message for your final commit.
 
-### Running the Website Locally
+### Building and viewing documentation
 
-The [octez.js website][4] is built with [Astro][5]. To run it locally:
+The [octez.js website][4] is built with [Astro][5].
+
+> Note: A previous version used Docusaurus. For this reason, we support both Docusaurus-style and Github-style admonitions (notes, warnings, etc).
+
+To build the documentation and see it locally:
 
 1. `npm ci`
-2. `npm -w @tezos-x/octez.js-website dev`
+2. `npm run build`  # for making sure packages build ok
+3. `npm -w website run build`  # build the website
+4. `npm -w website run dev`   # run the server locally
 
 ## Contributions / Reporting Issues
 
