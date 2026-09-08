@@ -58,6 +58,14 @@ export const resolveProtocol = (protocols: ProtocolsResponse): Protocols => {
  * (weeklynet) came back byte-identical, but a later CI run did observe the
  * same milligas spread PsUshuai has, so those sites now carry PsUshuai's
  * full 3-snapshot set too — don't assume a short list stays short.
+ *
+ * Fee-derived fields (suggestedFeeMutez, minimalFeeMutez, totalCost,
+ * usingBaseFeeMutez) are matched exactly, not banded, and weeklynet's
+ * ProtoALpha build can change them wholesale: an underlying protocol
+ * rebuild mid-week has shifted every fee site by the same delta at once
+ * (e.g. +2 mutez across all 36 call sites in tz1-4). That is a real
+ * baseline change, not jitter — when it happens, re-run live and replace
+ * the recorded values rather than widening these into a tolerance band.
  */
 export const expectEstimate = (
   estimate: EstimateLike,
