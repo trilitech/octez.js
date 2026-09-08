@@ -50,6 +50,14 @@ export const resolveProtocol = (protocols: ProtocolsResponse): Protocols => {
  * (gasLimit 1868 and 1869, consumedMilligas 3457129 through 3457645), so a
  * speculative Tallinn/Ushuaia split turns all 16 call sites red. Add a new
  * protocol key only once you have actually recorded values under it.
+ *
+ * A single-snapshot entry for a new protocol key is not automatically
+ * suspect just because it's shorter than an older key's list — the length
+ * reflects how much jitter was actually observed, not how many times it was
+ * run. An initial 3-run sample of ProtoALpha's "internal" call sites
+ * (weeklynet) came back byte-identical, but a later CI run did observe the
+ * same milligas spread PsUshuai has, so those sites now carry PsUshuai's
+ * full 3-snapshot set too — don't assume a short list stays short.
  */
 export const expectEstimate = (
   estimate: EstimateLike,

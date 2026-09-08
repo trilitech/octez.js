@@ -45,26 +45,54 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
 
     it('Verify .estimate.transfer with allocated destination', async () => {
       const estimate = await Tz4.estimate.transfer({ to: await Tezos.signer.publicKeyHash(), amount: 0.019 });
-      expect(estimate.gasLimit).toEqual(2101);
-      expect(estimate.storageLimit).toEqual(0);
-      expect(estimate.suggestedFeeMutez).toEqual(388);
-      expect(estimate.burnFeeMutez).toEqual(0);
-      expect(estimate.minimalFeeMutez).toEqual(368);
-      expect(estimate.totalCost).toEqual(368);
-      expect(estimate.usingBaseFeeMutez).toEqual(368);
-      expect(estimate.consumedMilligas).toEqual(2100040);
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 2101,
+          storageLimit: 0,
+          suggestedFeeMutez: 388,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 368,
+          totalCost: 368,
+          usingBaseFeeMutez: 368,
+          consumedMilligas: 2100040,
+        }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 2101,
+          storageLimit: 0,
+          suggestedFeeMutez: 384,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 364,
+          totalCost: 364,
+          usingBaseFeeMutez: 364,
+          consumedMilligas: 2100040,
+        }],
+      });
     });
 
     it('Verify .estimate.transfer with unallocated destination', async () => {
       const estimate = await Tz4.estimate.transfer({ to: await (await createAddress()).signer.publicKeyHash(), amount: 0.017 });
-      expect(estimate.gasLimit).toEqual(2101);
-      expect(estimate.storageLimit).toEqual(277);
-      expect(estimate.suggestedFeeMutez).toEqual(388);
-      expect(estimate.burnFeeMutez).toEqual(69250);
-      expect(estimate.minimalFeeMutez).toEqual(368);
-      expect(estimate.totalCost).toEqual(69618);
-      expect(estimate.usingBaseFeeMutez).toEqual(368);
-      expect(estimate.consumedMilligas).toEqual(2100040);
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 2101,
+          storageLimit: 277,
+          suggestedFeeMutez: 388,
+          burnFeeMutez: 69250,
+          minimalFeeMutez: 368,
+          totalCost: 69618,
+          usingBaseFeeMutez: 368,
+          consumedMilligas: 2100040,
+        }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 2101,
+          storageLimit: 277,
+          suggestedFeeMutez: 384,
+          burnFeeMutez: 69250,
+          minimalFeeMutez: 364,
+          totalCost: 69614,
+          usingBaseFeeMutez: 364,
+          consumedMilligas: 2100040,
+        }],
+      });
     });
 
     it('Verify .estimate.originate simple contract', async () => {
@@ -73,14 +101,28 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
         code: ligoSample,
         storage: 0,
       });
-      expect(estimate.gasLimit).toEqual(677);
-      expect(estimate.storageLimit).toEqual(591);
-      expect(estimate.suggestedFeeMutez).toEqual(537);
-      expect(estimate.burnFeeMutez).toEqual(147750);
-      expect(estimate.minimalFeeMutez).toEqual(517);
-      expect(estimate.totalCost).toEqual(148267);
-      expect(estimate.usingBaseFeeMutez).toEqual(517);
-      expect(estimate.consumedMilligas).toEqual(676402);
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 677,
+          storageLimit: 591,
+          suggestedFeeMutez: 537,
+          burnFeeMutez: 147750,
+          minimalFeeMutez: 517,
+          totalCost: 148267,
+          usingBaseFeeMutez: 517,
+          consumedMilligas: 676402,
+        }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 677,
+          storageLimit: 591,
+          suggestedFeeMutez: 533,
+          burnFeeMutez: 147750,
+          minimalFeeMutez: 513,
+          totalCost: 148263,
+          usingBaseFeeMutez: 513,
+          consumedMilligas: 676402,
+        }],
+      });
     });
 
     it('Verify .estimate.setDelegate result', async () => {
@@ -88,14 +130,28 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
         delegate: knownBaker,
         source: pkh,
       });
-      expect(estimate.gasLimit).toEqual(100);
-      expect(estimate.storageLimit).toEqual(0);
-      expect(estimate.suggestedFeeMutez).toEqual(183);
-      expect(estimate.burnFeeMutez).toEqual(0);
-      expect(estimate.minimalFeeMutez).toEqual(163);
-      expect(estimate.totalCost).toEqual(163);
-      expect(estimate.usingBaseFeeMutez).toEqual(163);
-      expect(estimate.consumedMilligas).toEqual(100000);
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 100,
+          storageLimit: 0,
+          suggestedFeeMutez: 183,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 163,
+          totalCost: 163,
+          usingBaseFeeMutez: 163,
+          consumedMilligas: 100000,
+        }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 100,
+          storageLimit: 0,
+          suggestedFeeMutez: 179,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 159,
+          totalCost: 159,
+          usingBaseFeeMutez: 159,
+          consumedMilligas: 100000,
+        }],
+      });
     });
 
     it('Verify .estimate.transfer for internal transfer to allocated implicit', async () => {
@@ -128,6 +184,34 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
           minimalFeeMutez: 574,
           totalCost: 574,
           usingBaseFeeMutez: 574,
+          consumedMilligas: 3457258,
+        }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 3458,
+          storageLimit: 0,
+          suggestedFeeMutez: 592,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 572,
+          totalCost: 572,
+          usingBaseFeeMutez: 572,
+          consumedMilligas: 3457645,
+        }, {
+          gasLimit: 3458,
+          storageLimit: 0,
+          suggestedFeeMutez: 592,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 572,
+          totalCost: 572,
+          usingBaseFeeMutez: 572,
+          consumedMilligas: 3457129,
+        }, {
+          gasLimit: 3458,
+          storageLimit: 0,
+          suggestedFeeMutez: 592,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 572,
+          totalCost: 572,
+          usingBaseFeeMutez: 572,
           consumedMilligas: 3457258,
         }],
       });
@@ -169,6 +253,34 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
           usingBaseFeeMutez: 845,
           consumedMilligas: 5571787,
         }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 5573,
+          storageLimit: 534,
+          suggestedFeeMutez: 863,
+          burnFeeMutez: 133500,
+          minimalFeeMutez: 843,
+          totalCost: 134343,
+          usingBaseFeeMutez: 843,
+          consumedMilligas: 5572174,
+        }, {
+          gasLimit: 5572,
+          storageLimit: 534,
+          suggestedFeeMutez: 863,
+          burnFeeMutez: 133500,
+          minimalFeeMutez: 843,
+          totalCost: 134343,
+          usingBaseFeeMutez: 843,
+          consumedMilligas: 5571658,
+        }, {
+          gasLimit: 5572,
+          storageLimit: 534,
+          suggestedFeeMutez: 863,
+          burnFeeMutez: 133500,
+          minimalFeeMutez: 843,
+          totalCost: 134343,
+          usingBaseFeeMutez: 843,
+          consumedMilligas: 5571787,
+        }],
       });
     });
 
@@ -202,6 +314,34 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
           minimalFeeMutez: 421,
           totalCost: 84671,
           usingBaseFeeMutez: 421,
+          consumedMilligas: 1867882,
+        }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 1869,
+          storageLimit: 337,
+          suggestedFeeMutez: 439,
+          burnFeeMutez: 84250,
+          minimalFeeMutez: 419,
+          totalCost: 84669,
+          usingBaseFeeMutez: 419,
+          consumedMilligas: 1868269,
+        }, {
+          gasLimit: 1868,
+          storageLimit: 337,
+          suggestedFeeMutez: 439,
+          burnFeeMutez: 84250,
+          minimalFeeMutez: 419,
+          totalCost: 84669,
+          usingBaseFeeMutez: 419,
+          consumedMilligas: 1867753,
+        }, {
+          gasLimit: 1868,
+          storageLimit: 337,
+          suggestedFeeMutez: 439,
+          burnFeeMutez: 84250,
+          minimalFeeMutez: 419,
+          totalCost: 84669,
+          usingBaseFeeMutez: 419,
           consumedMilligas: 1867882,
         }],
       });
@@ -239,6 +379,34 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
           usingBaseFeeMutez: 539,
           consumedMilligas: 2393035,
         }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 2394,
+          storageLimit: 654,
+          suggestedFeeMutez: 557,
+          burnFeeMutez: 163500,
+          minimalFeeMutez: 537,
+          totalCost: 164037,
+          usingBaseFeeMutez: 537,
+          consumedMilligas: 2393422,
+        }, {
+          gasLimit: 2393,
+          storageLimit: 654,
+          suggestedFeeMutez: 557,
+          burnFeeMutez: 163500,
+          minimalFeeMutez: 537,
+          totalCost: 164037,
+          usingBaseFeeMutez: 537,
+          consumedMilligas: 2392906,
+        }, {
+          gasLimit: 2394,
+          storageLimit: 654,
+          suggestedFeeMutez: 557,
+          burnFeeMutez: 163500,
+          minimalFeeMutez: 537,
+          totalCost: 164037,
+          usingBaseFeeMutez: 537,
+          consumedMilligas: 2393035,
+        }],
       });
       // Do the actual operation
       const op2 = await contract.methodsObject.do(originate2()).send();
@@ -259,6 +427,7 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
 
     beforeAll(async () => {
       await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
+      protocol = resolveProtocol(await Tezos.rpc.getProtocols());
       LowAmountTz4 = await createAddress(PrefixV2.BLS12_381SecretKey);
       const pkh = await LowAmountTz4.signer.publicKeyHash();
       amt += getRevealFee(pkh);
@@ -268,14 +437,28 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
 
     it('Verify .estimate.transfer to regular address', async () => {
       let estimate = await LowAmountTz4.estimate.transfer({ to: await Tezos.signer.publicKeyHash(), mutez: true, amount: amt - (1382 + getRevealFee(pkh)) });
-      expect(estimate.gasLimit).toEqual(2101);
-      expect(estimate.storageLimit).toEqual(0);
-      expect(estimate.suggestedFeeMutez).toEqual(387);
-      expect(estimate.burnFeeMutez).toEqual(0);
-      expect(estimate.minimalFeeMutez).toEqual(367);
-      expect(estimate.totalCost).toEqual(367);
-      expect(estimate.usingBaseFeeMutez).toEqual(367);
-      expect(estimate.consumedMilligas).toEqual(2100040);
+      expectEstimate(estimate, protocol, {
+        [Protocols.PsUshuai]: [{
+          gasLimit: 2101,
+          storageLimit: 0,
+          suggestedFeeMutez: 387,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 367,
+          totalCost: 367,
+          usingBaseFeeMutez: 367,
+          consumedMilligas: 2100040,
+        }],
+        [Protocols.ProtoALpha]: [{
+          gasLimit: 2101,
+          storageLimit: 0,
+          suggestedFeeMutez: 383,
+          burnFeeMutez: 0,
+          minimalFeeMutez: 363,
+          totalCost: 363,
+          usingBaseFeeMutez: 363,
+          consumedMilligas: 2100040,
+        }],
+      });
     });
 
     it('Estimate transfer to regular address with a fixed fee', async () => {
