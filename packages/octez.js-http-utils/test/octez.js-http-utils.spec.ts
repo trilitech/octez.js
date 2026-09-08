@@ -595,6 +595,40 @@ describe('HttpBackend', () => {
         expect(result).toEqual({ forged: '00' });
       });
 
+      it('retries a transient 502 on POST to /helpers/scripts/pack_data', async () => {
+        // getBigMapKeyByID calls pack_data to hash a big-map key -- pure
+        // read-only computation, same as simulate_operation/run_operation,
+        // but it wasn't on the allowlist: a single transient gateway 502
+        // used to fail the caller outright with no retry at all.
+        mockFetch
+          .mockResolvedValueOnce(
+            mockResponse({ status: 502, statusText: 'Bad Gateway', body: 'bad gateway' })
+          )
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { packed: '00' } }));
+        const result = await drainRetries(
+          backend.createRequest({
+            url: 'https://rpc.example.com/chains/main/blocks/head/helpers/scripts/pack_data',
+            method: 'POST',
+          })
+        );
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(result).toEqual({ packed: '00' });
+      });
+
+      it('retries POST to other /helpers/scripts/ endpoints too (run_view)', async () => {
+        mockFetch
+          .mockRejectedValueOnce(econnreset())
+          .mockResolvedValueOnce(mockResponse({ jsonBody: { data: 'Unit' } }));
+        const result = await drainRetries(
+          backend.createRequest({
+            url: 'https://rpc.example.com/chains/main/blocks/head/helpers/scripts/run_view',
+            method: 'POST',
+          })
+        );
+        expect(mockFetch).toHaveBeenCalledTimes(2);
+        expect(result).toEqual({ data: 'Unit' });
+      });
+
       it('sends identical body bytes on retry (body serialized once before loop)', async () => {
         let callCount = 0;
         const data = {
