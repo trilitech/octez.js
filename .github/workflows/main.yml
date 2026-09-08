@@ -168,14 +168,7 @@ jobs:
           export PKHS="${MASTERS[$SHARD]}"
           node .github/scripts/topup-keygen-masters.mjs
       - name: Wait for keygen service
-        run: |
-          for i in $(seq 1 30); do
-            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/health || true)
-            echo "attempt $i: /health -> $code"
-            [ "$code" = "200" ] && exit 0
-            sleep 2
-          done
-          echo "::error::keygen service did not become healthy"; exit 1
+        run: bash .github/scripts/wait-for-keygen.sh
       - id: run-tests
         shell: bash
         run: |
@@ -407,14 +400,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Wait for keygen service
-        run: |
-          for i in $(seq 1 30); do
-            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/health || true)
-            echo "attempt $i: /health -> $code"
-            [ "$code" = "200" ] && exit 0
-            sleep 2
-          done
-          echo "::error::keygen service did not become healthy"; exit 1
+        run: bash .github/scripts/wait-for-keygen.sh
       - name: Originate known contracts on weeklynet
         run: npm -w integration-tests run originate-known-contracts
         env:
@@ -423,6 +409,16 @@ jobs:
           TAQUITO_KEYGEN_URL: http://localhost:3000
           TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
           TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+          # Never set before, because this step never used to check balance
+          # at all (that was 403fcfa22's bug). Now that it does: each retry
+          # attempt pulls a brand-new candidate key from the prefetch pool
+          # (setupSignerWithFreshKey in config.ts), not a re-check of the
+          # same one — with the previous defaults (5 attempts, 0ms between
+          # them), every candidate got discarded for a fresh one before its
+          # funding tx had any chance to confirm. Same fix the shard jobs
+          # below already needed for the same reason; matching their values.
+          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '8'
+          TAQUITO_FRESH_KEY_RETRY_MS: '12000'
       - id: addresses
         name: Read originated addresses
         run: node .github/scripts/read-known-contracts.mjs weeklynet
@@ -483,14 +479,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Wait for keygen service
-        run: |
-          for i in $(seq 1 30); do
-            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/health || true)
-            echo "attempt $i: /health -> $code"
-            [ "$code" = "200" ] && exit 0
-            sleep 2
-          done
-          echo "::error::keygen service did not become healthy"; exit 1
+        run: bash .github/scripts/wait-for-keygen.sh
       - id: run-tests
         shell: bash
         run: |
@@ -532,9 +521,18 @@ jobs:
           TEZOS_WEEKLYNET_TICKET_CONTRACT: ${{ needs.weeklynet-originate.outputs.ticket_contract }}
           TAQUITO_KEYGEN_URL: http://localhost:3000
           TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          # Higher than shadownet's 3/2: shadownet's master-account funding
+          # basically never fails, so 3 outer attempts is plenty. Weeklynet's
+          # faucet-funded keys occasionally exhaust the keygen's own internal
+          # retry under concurrent load from all 4 shards (observed: ~4-5
+          # exhaustions/shard over a full run, out of ~90-100 transient 500s
+          # that resolved on retry). More outer attempts gives a stuck
+          # acquisition more independent tries spread over more wall-clock
+          # time; a lower prefetch halves each shard's own self-inflicted
+          # concurrent load on the shared faucet.
           TAQUITO_FRESH_KEY_RETRY_MS: '12000'
-          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '3'
-          TAQUITO_FRESH_KEY_PREFETCH: '2'
+          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '6'
+          TAQUITO_FRESH_KEY_PREFETCH: '1'
           TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
           TAQUITO_HTTP_RETRY_COUNT: '4'
           SHARD: ${{ matrix.shard }}

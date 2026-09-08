@@ -21,7 +21,18 @@ CONFIGS().forEach(({ lib, setup, networkName }) => {
   let keyInitialBalance: BigNumber = new BigNumber(0);
 
   (async () => {
-    await setup(true);
+    // An explicit minBalanceMutez matters here, not just as a safety margin:
+    // setup(true) alone requests no minimum, and the harness only waits for
+    // a confirmed on-chain balance `if (options.minBalanceMutez > 0)` (see
+    // requestFreshKeyCandidate in config.ts) — with no minimum, it accepts
+    // whatever key the keygen hands back immediately, racing the faucet's
+    // funding operation instead of waiting for it to confirm. That race was
+    // silently intermittent (some originations would land before funding
+    // confirmed, some wouldn't) until it was caught outright: a fresh key
+    // accepted with a *confirmed* 0 mutez balance, failing every one of the
+    // 6 originations with empty_implicit_contract. 40 tez is comfortably
+    // above what all 6 known contracts + their reveal actually cost.
+    await setup({ preferFreshKey: true, minBalanceMutez: 40_000_000 });
     console.log(`networkName: ${networkName}`);
 
     let outputFile = await fs.open(`known-contracts-${networkName.toLowerCase()}.ts`, 'w');

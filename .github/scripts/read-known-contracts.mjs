@@ -36,11 +36,24 @@ if (!GITHUB_OUTPUT) {
 }
 
 const lines = [];
+const missing = [];
 for (const [field, outputName] of Object.entries(FIELDS)) {
   const match = text.match(new RegExp(`${field}:\\s*"([^"]*)"`));
   const address = match ? match[1] : '';
-  if (!address) console.error(`::warning::${field} was not originated (empty address)`);
+  if (!address) missing.push(field);
   lines.push(`${outputName}=${address}`);
 }
 await appendFile(GITHUB_OUTPUT, lines.join('\n') + '\n');
 console.error(`read ${Object.keys(FIELDS).length} addresses from ${path}`);
+
+// Fail the job, not just warn: an empty address here doesn't stay contained
+// to this job. config.ts's env-override falls back to the committed (and
+// likely stale, post-reset) known-contracts-weeklynet.ts address on any
+// falsy override, so a silent origination failure here previously surfaced
+// as ~20 unrelated-looking 404s in the shard jobs three steps downstream
+// (nodes.spec.ts, big-map*.spec.ts, batch.spec.ts, ...) instead of one
+// clearly-named job failing at the source.
+if (missing.length) {
+  console.error(`::error::${missing.length} known contract(s) were not originated: ${missing.join(', ')}`);
+  process.exit(1);
+}
