@@ -109,8 +109,16 @@ const isRetriableRequest = (method: string, url: string) => {
   return (
     normalizedUrl.endsWith('/helpers/forge/operations') ||
     normalizedUrl.endsWith('/helpers/preapply/operations') ||
-    normalizedUrl.endsWith('/helpers/scripts/simulate_operation') ||
-    normalizedUrl.endsWith('/helpers/scripts/run_operation') ||
+    // The whole /helpers/scripts/ family (pack_data, unpack_data, run_code,
+    // run_view, run_script_view, simulate_operation, run_operation, ...) is
+    // pure read-only computation against the current context -- nothing here
+    // mutates chain state or the mempool, so retrying is always safe. This
+    // used to enumerate simulate_operation/run_operation individually, which
+    // left siblings like pack_data with no retry at all: a single transient
+    // 502 from getBigMapKeyByID's pack_data call failed a whole test outright
+    // despite TAQUITO_HTTP_RETRY_COUNT being set, because pack_data wasn't on
+    // the list.
+    normalizedUrl.includes('/helpers/scripts/') ||
     // Safe to retry: ops are content-addressed, mempool deduplicates identical bytes,
     // and counter prevents replay. If the first request secretly succeeded but the
     // connection dropped, the retry may get a 500 (async_injection_failed) which
