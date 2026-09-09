@@ -24,17 +24,38 @@ if (!names.length) {
 }
 // Lexicographic sort of an ISO date suffix is also chronological.
 const name = names.sort().pop();
-const { rpc_url: rpcUrl, faucet_url: faucetUrl } = networks[name];
+const {
+  rpc_url: rpcUrl,
+  faucet_url: faucetUrl,
+  // Supplementary version info, not load-bearing for the test run itself
+  // (unlike rpc_url/faucet_url above): which octez build this weeklynet
+  // instance is running, and since when. Useful to record in the
+  // weeklynet-notify tracker issue (see weeklynet-failure-notify.mjs) so a
+  // reader can tell "did weeklynet itself change" from "did octez.js
+  // regress" without visiting teztnets.com. Absent gracefully rather than
+  // failing the run — teztnets.json's shape for these fields isn't a
+  // contract the way rpc_url/faucet_url are.
+  activated_on: activatedOn = '',
+  docker_build: dockerBuild = '',
+  git_ref: gitRef = '',
+} = networks[name];
 if (!rpcUrl || !faucetUrl) {
   console.error(`weeklynet entry ${name} is missing rpc_url/faucet_url`);
   process.exit(1);
 }
 
-console.error(`resolved ${name}: rpc=${rpcUrl} faucet=${faucetUrl}`);
+console.error(
+  `resolved ${name}: rpc=${rpcUrl} faucet=${faucetUrl} activated_on=${activatedOn} ` +
+    `docker_build=${dockerBuild} git_ref=${gitRef}`,
+);
 
 const { GITHUB_OUTPUT } = process.env;
 if (!GITHUB_OUTPUT) {
   console.error('GITHUB_OUTPUT is not set');
   process.exit(1);
 }
-await appendFile(GITHUB_OUTPUT, `name=${name}\nrpc_url=${rpcUrl}\nfaucet_url=${faucetUrl}\n`);
+await appendFile(
+  GITHUB_OUTPUT,
+  `name=${name}\nrpc_url=${rpcUrl}\nfaucet_url=${faucetUrl}\nactivated_on=${activatedOn}\n` +
+    `docker_build=${dockerBuild}\ngit_ref=${gitRef}\n`,
+);
