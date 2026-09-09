@@ -31,10 +31,11 @@ The toolkit surfaces its services as properties. The most commonly used are:
 
 - `tz` — account-level reads and operations (balance, delegate, reveal) via a `TzProvider`.
 - `contract` — the contract-API surface (`ContractProvider`) for originating and calling
-  contracts with a node-signed key.
-- `wallet` — the wallet-API surface for the same actions routed through a connected wallet.
+  contracts with a node-signed key. Also exposes `batch()` for grouping several operations
+  into a single injection.
+- `wallet` — the wallet-API surface for the same actions routed through a connected wallet,
+  with its own `batch()` for the same purpose.
 - `estimate` — fee, gas and storage estimation (`EstimationProvider`).
-- `batch` — grouping several operations into a single injection.
 - `rpc` — the underlying `RpcClient`.
 - `stream` — block/operation subscriptions.
 

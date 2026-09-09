@@ -29,7 +29,7 @@ The methods fall into a few groups:
   `getBigMapExpr`, `getConstants`, and the block accessors (`getBlock`, `getBlockHeader`,
   `getBlockMetadata`).
 - **Forging / injection** — `forgeOperations`, `injectOperation`.
-- **Simulation** — `runOperation`, `simulateOperation`, `runCode`, `runScriptView`,
+- **Simulation** — `simulateOperation`, `runCode`, `runScriptView`,
   `preapplyOperations`, `packData`.
 - **Governance** — proposals, ballots and voting-period queries.
 
@@ -39,11 +39,9 @@ octez.js never guesses fees, gas or storage. Before an operation is signed, the
 [estimator](/docs/next/estimate) sends the operation to the node in *simulation* mode, which
 executes it without including it in a block and reports the resources it would consume.
 
-Two endpoints back this:
-
-- `runOperation` executes a single operation against the current context.
-- `simulateOperation` performs the same simulation while accounting for additional context (such
-  as the block's remaining gas), giving more accurate feedback and clearer errors.
+This is backed by the `simulateOperation` endpoint, which simulates the operation while
+accounting for the current context (such as the block's remaining gas), giving accurate
+feedback and clear errors.
 
 From the returned `consumed_gas` and storage figures, octez.js derives gas and storage limits and
 computes the fee using the protocol constants fetched via `getConstants`. The
