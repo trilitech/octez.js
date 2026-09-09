@@ -60,12 +60,16 @@ export const resolveProtocol = (protocols: ProtocolsResponse): Protocols => {
  * full 3-snapshot set too — don't assume a short list stays short.
  *
  * Fee-derived fields (suggestedFeeMutez, minimalFeeMutez, totalCost,
- * usingBaseFeeMutez) are matched exactly, not banded, and weeklynet's
- * ProtoALpha build can change them wholesale: an underlying protocol
- * rebuild mid-week has shifted every fee site by the same delta at once
- * (e.g. +2 mutez across all 36 call sites in tz1-4). That is a real
- * baseline change, not jitter — when it happens, re-run live and replace
- * the recorded values rather than widening these into a tolerance band.
+ * usingBaseFeeMutez) are matched exactly, not banded, and weeklynet's build
+ * can change them wholesale, in either direction, more than once in the same
+ * day: one mid-week rebuild shifted every fee site by +2 mutez at once, and
+ * weeklynet's own Wednesday reset a few hours later reverted that same delta
+ * back to -2 while separately widening the "internal" sites' consumedMilligas
+ * bands further (new values landed below the previously recorded minimum).
+ * Both are real baseline changes to re-record, not jitter to band over — but
+ * "record the live value" here means what's live *right now*, since
+ * weeklynet's own identity (see resolveProtocol above) and behavior can both
+ * have moved again by the time you read this.
  */
 export const expectEstimate = (
   estimate: EstimateLike,
