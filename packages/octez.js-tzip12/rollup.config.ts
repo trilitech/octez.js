@@ -15,7 +15,7 @@ export default {
       format: 'umd', 
       sourcemap: true, 
       globals: { 
-        "@tezos-x/octez.js-core": "taquitoCore",
+        "@tezos-x/octez.js-core": "octezJsCore",
         "@tezos-x/octez.js-michelson-encoder": "michelsonEncoder",
         "@tezos-x/octez.js-tzip16": "tzip16",
         "@tezos-x/octez.js-utils": "utils"

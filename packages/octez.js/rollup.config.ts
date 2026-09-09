@@ -26,7 +26,7 @@ export default {
         'bignumber.js': 'BigNumber',
         '@tezos-x/octez.js-michel-codec': 'michelCodec',
         '@tezos-x/octez.js-local-forging': 'localForging',
-        '@tezos-x/octez.js-signer': 'taquitoSigner'
+        '@tezos-x/octez.js-signer': 'octezJsSigner'
       }
     },
     { file: pkg.module, format: 'es', sourcemap: true },

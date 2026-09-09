@@ -17,11 +17,11 @@ const mainConfig = {
       sourcemap: true,
       globals: {
         '@tezos-x/octez.connect-sdk': 'beacon',
-        '@tezos-x/octez.js-core': 'taquitoCore',
+        '@tezos-x/octez.js-core': 'octezJsCore',
         '@tezos-x/octez.connect-dapp': 'beaconDapp',
         'typedarray-to-buffer': 'typedarrayToBuffer',
         '@tezos-x/octez.js': 'octez.js',
-        '@tezos-x/octez.js-utils': 'taquitoUtils',
+        '@tezos-x/octez.js-utils': 'octezJsUtils',
       },
     },
     { file: pkg.module, format: 'es', sourcemap: true },
