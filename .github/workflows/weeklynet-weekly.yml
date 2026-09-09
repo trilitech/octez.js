@@ -9,6 +9,15 @@ name: Weeklynet Weekly Integration Suite
 # lane is untouched by this file — the three jobs below are a deliberate
 # duplicate, not a refactor of main.yml, to avoid touching the existing,
 # load-bearing push CI for this addition.
+#
+# On every run — pass or fail — weeklynet-notify finds-or-creates a single
+# evergreen, labelled GitHub issue linking to the run so a maintainer can look
+# at the CI artifacts themselves — see
+# .github/scripts/weeklynet-failure-notify.mjs for why this deliberately does
+# not attempt a per-test diff against prior runs. Like taquito-sync.yml's
+# tracker issue, its header always carries the last commit tested and the
+# last checked date, and it is never closed by the script: only reopened if a
+# human closed it, regardless of pass/fail. A human decides when to close it.
 
 on:
   schedule:
@@ -24,6 +33,11 @@ on:
     # flagged, not silently worked around).
     - cron: '0 3 * * 0'
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Print the computed notify action/issue body instead of creating/updating/closing the tracker issue for real'
+        type: boolean
+        default: true
 
 concurrency:
   group: weeklynet-weekly
@@ -45,6 +59,12 @@ jobs:
     outputs:
       rpc_url: ${{ steps.resolve.outputs.rpc_url }}
       faucet_url: ${{ steps.resolve.outputs.faucet_url }}
+      # Supplementary version info (teztnets.com/weeklynet-about), not used
+      # to configure the test run itself — only surfaced in the
+      # weeklynet-notify tracker issue below.
+      activated_on: ${{ steps.resolve.outputs.activated_on }}
+      docker_build: ${{ steps.resolve.outputs.docker_build }}
+      git_ref: ${{ steps.resolve.outputs.git_ref }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -229,3 +249,70 @@ jobs:
           path: ci-metrics/itest-timing-weeklynet-weekly-${{ matrix.shard }}.json
           if-no-files-found: warn
           retention-days: 30
+
+  weeklynet-notify:
+    # Runs regardless of pass/fail (if: !cancelled()) so every terminal run
+    # touches the tracker issue: creates it if missing, reopens it if a human
+    # closed it (pass or fail — see
+    # .github/scripts/weeklynet-failure-notify.mjs for the
+    # create/reopen/update + comment decision logic), or just refreshes its
+    # "last commit tested" / "last checked" header if already open. Never a
+    # resolver: only a human closes it.
+    #
+    # Depends on all three upstream jobs, not just the shard matrix: weeklynet
+    # resets onto a new dated host every Wednesday and re-originates its known
+    # contracts from a public faucet on every run, which makes
+    # weeklynet-resolve-rpc/weeklynet-originate the most likely failure point
+    # — exactly the "quiet week" drift this workflow exists to catch. Rolling
+    # their result into RUN_RESULT below means a resolve/originate failure
+    # (which would otherwise skip the shard matrix and leave RUN_RESULT
+    # 'skipped' — no notification at all) still opens the tracker issue.
+    name: weeklynet-notify-failure
+    needs:
+      - weeklynet-resolve-rpc
+      - weeklynet-originate
+      - integration-tests-weeklynet
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      # gh issue create --label fails if the label doesn't already exist in
+      # the repo, which would otherwise break the very first failing run.
+      # --force makes this idempotent (no-op once the label exists) — same
+      # convention as the label step in taquito-sync.yml.
+      - run: gh label create "${ISSUE_LABEL:-weeklynet-regression}" --color B60205 --force
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_LABEL: ${{ vars.WEEKLYNET_ISSUE_LABEL }}
+      - name: Download shard timing artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v8
+        with:
+          pattern: itest-timing-weeklynet-weekly-*
+          path: ci-metrics
+          merge-multiple: true
+      # A gh/API hiccup here shouldn't turn an otherwise-passing (or
+      # already-notified-failing) run red — this job is best-effort
+      # notification, not a gate.
+      - continue-on-error: true
+        run: node .github/scripts/weeklynet-failure-notify.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_LABEL: ${{ vars.WEEKLYNET_ISSUE_LABEL }}
+          RUN_RESULT: ${{ (needs.weeklynet-resolve-rpc.result == 'failure' || needs.weeklynet-originate.result == 'failure') && 'failure' || needs.integration-tests-weeklynet.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          WEEKLYNET_ACTIVATED_ON: ${{ needs.weeklynet-resolve-rpc.outputs.activated_on }}
+          WEEKLYNET_DOCKER_BUILD: ${{ needs.weeklynet-resolve-rpc.outputs.docker_build }}
+          WEEKLYNET_GIT_REF: ${{ needs.weeklynet-resolve-rpc.outputs.git_ref }}
+          # Scheduled runs are always live. Manual (workflow_dispatch) runs
+          # default to dry-run so the tracker issue can't be mutated by
+          # accident — same convention as taquito-sync.yml.
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '' }}
