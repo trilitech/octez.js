@@ -17,9 +17,9 @@ export default {
       sourcemap: true,
       globals: {
         'fast-json-stable-stringify': 'stringify',
-        '@tezos-x/octez.js-core': 'taquitoCore',
+        '@tezos-x/octez.js-core': 'octezJsCore',
         'bignumber.js': 'BigNumber',
-        '@tezos-x/octez.js-utils': 'taquitoUtils',
+        '@tezos-x/octez.js-utils': 'octezJsUtils',
       },
     },
     { file: pkg.module, format: 'es', sourcemap: true },
