@@ -49,6 +49,7 @@
     "sync:package-catalog": "node ./scripts/package-catalog.js --write",
     "check:package-release": "node ./scripts/prepare-package-release.js --check",
     "prepare-package-release": "node ./scripts/prepare-package-release.js",
+    "check:rebrand": "node ./scripts/rebrand-lint.js",
     "test": "nx run-many --target=test --exclude=integration-tests,@tezos-x/octez.js-website -- --coverage",
     "test:tz5:local": "vitest run --config integration-tests/tz5/vitest.config.ts",
     "test:dist:esm-imports": "node ./scripts/check-esm-imports.js",
