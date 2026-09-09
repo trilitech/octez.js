@@ -44,6 +44,7 @@
     "rebuild": "npm run clean && npm install && npm run build",
     "check:package-catalog": "node ./scripts/package-catalog.js --check",
     "sync:package-catalog": "node ./scripts/package-catalog.js --write",
+    "check:rebrand": "node ./scripts/rebrand-lint.js",
     "test": "nx run-many --target=test --exclude=integration-tests,@tezos-x/octez.js-website -- --coverage",
     "test:dist:esm-imports": "node ./scripts/check-esm-imports.js",
     "lint": "npm run check:package-catalog && npm run --workspaces --if-present lint",
