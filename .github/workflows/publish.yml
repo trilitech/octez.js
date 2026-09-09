@@ -28,6 +28,15 @@ jobs:
           node-version: 'lts/Jod'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Set release version
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF_TYPE}" != "tag" || ! "${GITHUB_REF_NAME}" =~ ^v[0-9] ]]; then
+            echo "This workflow publishes from a 'vX.Y.Z' tag push; got ref '${GITHUB_REF_NAME}' (type ${GITHUB_REF_TYPE})." >&2
+            exit 1
+          fi
+          node scripts/sync-workspace-deps.js "${GITHUB_REF_NAME#v}"
+
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libusb-1.0-0-dev libudev-dev
 
@@ -38,7 +47,7 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm run test -- --runInBand
+        run: npm run test
 
       - name: Publish (dry run)
         if: ${{ github.event.inputs.dry_run == 'true' }}
