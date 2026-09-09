@@ -1,0 +1,207 @@
+[
+  {
+    "pattern": "*",
+    "file": "scripts/rebrand-lint.js",
+    "reason": "The linter's own source necessarily contains these literal pattern strings (regexes, labels, comments) in order to detect them."
+  },
+  {
+    "pattern": "*",
+    "file": "scripts/rebrand-lint.allowlist.json",
+    "reason": "This allowlist's own pattern ids and justification text necessarily quote the literal strings being tracked."
+  },
+  {
+    "pattern": "*",
+    "file": "scripts/rebrand-lint.test.js",
+    "reason": "Test fixtures deliberately construct these literal strings to exercise the detection logic."
+  },
+  {
+    "pattern": "*",
+    "file": "CLAUDE.md",
+    "reason": "Meta-doc explaining the taquito -> octez.js rename itself; it deliberately quotes old names (TaquitoProvider, TaquitoError, @taquito/*, ecadlabs, TAQUITO_*) as documentation of what changed, not as leftover code."
+  },
+  {
+    "pattern": "*",
+    "file": "NOTICE",
+    "reason": "Legal copyright/attribution document; states the accurate historical fact that this project is a fork of Taquito (ecadlabs/taquito). Any future change here is legally/compliance-sensitive per CLAUDE.md and needs human review regardless of this allowlist entry."
+  },
+  {
+    "pattern": "*",
+    "file": ".github/scripts/taquito-sync.mjs",
+    "reason": "This tool's entire job is tracking upstream ecadlabs/taquito for backport parity (see CLAUDE.md, 'Backporting from upstream Taquito'); TAQUITO_REPO_URL/TAQUITO_BRANCH are its own intentional config var names, not leftovers."
+  },
+  {
+    "pattern": "*",
+    "file": ".github/scripts/taquito-sync.test.mjs",
+    "reason": "Tests for taquito-sync.mjs; same reasoning as that file."
+  },
+  {
+    "pattern": "*",
+    "file": ".github/workflows/taquito-sync.yml",
+    "reason": "Workflow wiring for taquito-sync.mjs; same reasoning as that file."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "package.json",
+    "reason": "Historical author/contributor attribution to ECAD Labs Inc. carried over from Taquito; part of the NOTICE copyright chain, not a rebrand miss."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "packages/**/package.json",
+    "reason": "Historical author/contributor attribution to ECAD Labs Inc. carried over from Taquito; part of the NOTICE copyright chain, not a rebrand miss. Covers per-package package.json files and nested sub-tools (e.g. pack-test-tool)."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "packages/*/signature.json",
+    "reason": "Generated npm provenance/build-signature artifact that echoes the package.json author/contributor attribution to ECAD Labs Inc.; generated, not hand-edited."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "packages/octez.js-sapling/rollup.config.ts",
+    "reason": "Bundler config references the tracked @taquito/sapling-wasm dependency (UMD global name and external declaration)."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "browser-tests/vite.config.mts",
+    "reason": "Vite optimizeDeps exclusion for the tracked @taquito/sapling-wasm dependency."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "website/src/content/docs/*/dapp_template.mdx",
+    "reason": "Links to community starter templates (taquito-react-template, taquito-vue-template) that genuinely live under github.com/ecadlabs; not this project's own branding."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "website/src/content/docs/*/rpc_nodes.mdx",
+    "reason": "Links to the ecadlabs/ansible-role-tezos-node repo, a real third-party resource, not a rebrand miss."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "website/src/pages/changelog.mdx",
+    "reason": "Changelog documents historical, pre-fork Taquito releases; those entries inherently reference ecadlabs/taquito."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "README.md",
+    "reason": "Package catalog row for @taquito/sapling-wasm links to its source repo under github.com/ecadlabs/sapling-wasm; tracked exception per CLAUDE.md."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "scripts/package-catalog-data.js",
+    "reason": "Source data behind the README package-catalog row for @taquito/sapling-wasm; same reason as the README entry."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "cspell.json",
+    "reason": "Spellchecker dictionary entry allowing 'ecadlabs' as a valid word elsewhere (e.g. in package.json attribution, NOTICE); not itself a rebrand leftover."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "integration-tests/config.ts",
+    "reason": "Doc comment referencing the real external tezos-key-gen-api tool repo hosted under the ecadlabs GitHub org; not this project's own branding."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "integration-tests/__tests__/tzip-metadata/*.spec.ts",
+    "reason": "Test fixtures use a real external URL (github.com/ecadlabs/taquito) as sample TZIP-16 contract metadata content; the point is parsing arbitrary metadata, not this project's own branding."
+  },
+  {
+    "pattern": "taquito-io",
+    "file": "website/src/pages/changelog.mdx",
+    "reason": "Changelog documents historical, pre-fork Taquito releases; those entries reference taquito.io as it existed at the time."
+  },
+  {
+    "pattern": "taquito-io",
+    "file": "packages/octez.js-tzip16/test/handlers/tezos-storage-handler.spec.ts",
+    "reason": "Test fixture asserting parsed third-party contract metadata content; not this project's own branding."
+  },
+  {
+    "pattern": "taquito-io",
+    "file": "website/src/cloudflare/chatkit/README.md",
+    "reason": "One of the known, tracked taquito.io doc URL leftovers called out in CLAUDE.md ('a couple of taquito.io doc URLs')."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "packages/octez.js-sapling/package.json",
+    "reason": "@taquito/sapling-wasm is the one remaining real npm dependency on the Taquito org, accepted pending republishing (see CLAUDE.md)."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "packages/octez.js-sapling/src/sapling-wasm.ts",
+    "reason": "Imports from @taquito/sapling-wasm, the tracked accepted dependency (see CLAUDE.md)."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "website/src/content/docs/*/migration_from_taquito.mdx",
+    "reason": "Migration guide for Taquito users; the whole point of the page is documenting the old @taquito/* package names."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "website/src/pages/changelog.mdx",
+    "reason": "Changelog documents historical, pre-fork Taquito releases under their original @taquito/* package names."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "README.md",
+    "reason": "Package catalog row names the @taquito/sapling-wasm dependency itself; tracked exception per CLAUDE.md."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "scripts/package-catalog-data.js",
+    "reason": "Source data behind the README package-catalog row naming the @taquito/sapling-wasm dependency; same reason as the README entry."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "scripts/sync-workspace-deps.test.js",
+    "reason": "Test fixture using the tracked @taquito/sapling-wasm dependency name/version to verify workspace-dependency syncing."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": "package-lock.json",
+    "reason": "npm lockfile entries mechanically generated from the tracked @taquito/sapling-wasm dependency; regenerate via npm install, don't hand-edit."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": ".github/workflows/release.yml",
+    "reason": "Release workflow checks the tracked @taquito/sapling-wasm dependency's version before publishing."
+  },
+  {
+    "pattern": "taquito-scope",
+    "file": ".github/workflows/release_rehearsal.yml",
+    "reason": "Release rehearsal workflow checks the tracked @taquito/sapling-wasm dependency's version, mirroring release.yml."
+  },
+  {
+    "pattern": "taquito-env-prefix",
+    "file": "packages/octez.js-http-utils/src/octez.js-http-utils.ts",
+    "reason": "Stale TAQUITO_* env var prefix kept for backward compatibility with existing consumers; renaming is a breaking change (tracked per CLAUDE.md)."
+  },
+  {
+    "pattern": "taquito-env-prefix",
+    "file": "packages/octez.js-http-utils/README.md",
+    "reason": "Documents the same tracked TAQUITO_* env vars implemented in this package's src."
+  },
+  {
+    "pattern": "taquito-env-prefix",
+    "file": "packages/octez.js/src/operations/operations.ts",
+    "reason": "Stale TAQUITO_* env var prefix kept for backward compatibility with existing consumers; renaming is a breaking change (tracked per CLAUDE.md)."
+  },
+  {
+    "pattern": "taquito-env-prefix",
+    "file": "packages/octez.js/src/wallet/operation.ts",
+    "reason": "Stale TAQUITO_* env var prefix kept for backward compatibility with existing consumers; renaming is a breaking change (tracked per CLAUDE.md)."
+  },
+  {
+    "pattern": "taquito-env-prefix",
+    "file": "packages/octez.js-dapp-wallet/src/octez.js-dapp-wallet.ts",
+    "reason": "Stale TAQUITO_* env var prefix kept for backward compatibility with existing consumers; renaming is a breaking change (tracked per CLAUDE.md)."
+  },
+  {
+    "pattern": "taquito-env-prefix",
+    "file": "integration-tests/**",
+    "reason": "Integration-test infra (config, KEYGEN docs, specs) uses a long-standing TAQUITO_* env var convention for test keys/config; a separate, much bigger tracked cleanup than a stray rebrand miss (see CLAUDE.md)."
+  },
+  {
+    "pattern": "taquito-env-prefix",
+    "file": ".github/**",
+    "reason": "CI workflows configure the same long-standing TAQUITO_* env var convention used by integration-tests infra; tracked per CLAUDE.md, not a stray rebrand miss."
+  }
+]
