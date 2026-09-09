@@ -1,4 +1,3 @@
-import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 import { securityWrongAnnotations } from '../../data/security-wrong-annotations-contract';
 
@@ -46,9 +45,9 @@ import { securityWrongAnnotations } from '../../data/security-wrong-annotations-
  *
  */
 
-CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
+CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
   const Tezos = lib;
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
 
   describe(`Test contracts to verify wrong field annotations are leading to failed transactions using: ${rpc}`, () => {
     beforeAll(async () => {

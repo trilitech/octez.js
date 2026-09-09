@@ -1,4 +1,3 @@
-import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 /**
@@ -12,9 +11,9 @@ import { CONFIGS } from '../../config';
  * TC-V-004: On-chain view - dup instruction
 **/
 
-CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
+CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
   const Tezos = lib;
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
 
   describe(`Test contracts using: ${rpc}`, () => {
     beforeAll(async () => {

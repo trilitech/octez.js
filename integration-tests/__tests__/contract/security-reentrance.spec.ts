@@ -1,4 +1,3 @@
-import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS, TAQUITO_MUTEZ } from '../../config';
 
 /**
@@ -9,9 +8,9 @@ import { CONFIGS, TAQUITO_MUTEZ } from '../../config';
  * updated when executing the transfer transaction. Any reentrancy (after the transfer transaction operation) to the contract finds the updated balance.
  */
 
-CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
+CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
   const Tezos = lib;
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
   const address = 'tz1bwsEWCwSEXdRvnJxvegQZKeX5dj6oKEys';
 
   describe(`Test contracts using: ${rpc}`, () => {

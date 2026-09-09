@@ -1,4 +1,3 @@
-import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 // TC-T-009 - Create Ticket - callback case 2 - address and option
@@ -10,9 +9,9 @@ import { CONFIGS } from '../../config';
 // *Naively - meaning: WE just try it without thinking whether this test makes sense in regards with the used underlying architecture.
 // We think of the underlying architecture (type system, stack separation, etc.) as a black box.
 
-CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
+CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
   const Tezos = lib;
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
 
   describe(`Test contracts using: ${rpc}`, () => {
     beforeAll(async () => {

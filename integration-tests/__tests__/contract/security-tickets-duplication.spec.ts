@@ -1,13 +1,12 @@
-import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 // TC-T-022: Duplicate ticket - duplicate transaction operation
 // TC-T-023: Duplicate ticket - Duplicate ticket - duplicate map containing tickets
 // TC-T-024: Duplicate ticket - duplicate big_map containing tickets
 
-CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
+CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
   const Tezos = lib;
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
 
   describe(`Test contracts using: ${rpc}`, () => {
     beforeAll(async () => {
