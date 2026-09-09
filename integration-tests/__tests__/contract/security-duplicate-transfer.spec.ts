@@ -1,13 +1,12 @@
-import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 /**
  * TC-006: Check that the type "operation" is not duplicable and that the error will be "internal_operation_replay"
  */
 
-CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
+CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
   const Tezos = lib;
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
 
   describe(`Test contracts using: ${rpc}`, () => {
     beforeAll(async () => {

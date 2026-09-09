@@ -1,11 +1,10 @@
 import { CONFIGS } from '../../config';
-import { Protocols } from '@tezos-x/octez.js';
 
 // TC-007 - A 0tez transaction to an implicit account should fail.
 
-CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
+CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
   const Tezos = lib;
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
 
   describe(`Test contracts using: ${rpc}`, () => {
     beforeEach(async () => {

@@ -1,12 +1,11 @@
-import { Protocols } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 
 // TC-T-008: assume that the ticket is just a (pair address cty nat) and can "easily" be created via a callback.
 // To see why the test fails with error message {\"prim\":\"Unit\"}, look at the Micheline form of the contract.
 
-CONFIGS().forEach(({ lib, rpc, setup, protocol }) => {
+CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
   const Tezos = lib;
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
 
   describe(`Test contracts using: ${rpc}`, () => {
     beforeAll(async () => {

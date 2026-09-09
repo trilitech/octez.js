@@ -1,6 +1,6 @@
 import { CONFIGS } from '../../config';
 import { RpcClient } from '@tezos-x/octez.js-rpc';
-import { Protocols, TezosToolkit } from '@tezos-x/octez.js';
+import { TezosToolkit } from '@tezos-x/octez.js';
 
 // TC001 - non-existing KT addresses can not be prefunded
 
@@ -8,8 +8,8 @@ import { Protocols, TezosToolkit } from '@tezos-x/octez.js';
 
 const testContractAddress = 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn';
 
-CONFIGS().forEach(({ rpc, setup, protocol }) => {
-  const weeklynet = protocol === Protocols.ProtoALpha ? test : test.skip;
+CONFIGS().forEach(({ rpc, setup, networkName }) => {
+  const weeklynet = networkName === 'WEEKLYNET' ? test : test.skip;
   const Tezos = new TezosToolkit(new RpcClient(rpc));
 
   describe(`Test contracts using: ${rpc}`, () => {
