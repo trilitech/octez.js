@@ -3,13 +3,20 @@ import { OpKind } from '@tezos-x/octez.js';
 import { CONFIGS } from '../config';
 import { LocalForger } from '@tezos-x/octez.js-local-forging';
 
-CONFIGS().forEach(({ lib, setup, protocol, createAddress }) => {
+CONFIGS().forEach(({ lib, setup, createAddress }) => {
   const Tezos = lib;
   let contractAddress: string;
+  // Resolved live rather than trusted from CONFIGS()'s static `protocol` field:
+  // that field is only a hint for operation building and goes stale the
+  // moment a lane's live protocol moves (weeklynet in particular can be
+  // running literally any protocol at any time), while what this test
+  // actually needs to know is what protocol the branch is *currently* on.
+  let currentProtocol: string;
 
   describe(`Test Preparation of operations using the PrepareProvider`, () => {
     beforeAll(async () => {
       await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
+      currentProtocol = (await Tezos.rpc.getProtocols()).protocol;
 
       try {
         const op = await Tezos.contract.originate({
@@ -95,7 +102,7 @@ CONFIGS().forEach(({ lib, setup, protocol, createAddress }) => {
 
       expect(prepared.opOb.contents[0].kind).toEqual('proposals');
       expect(content.proposals).toEqual(['PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg']);
-      expect(prepared.opOb.protocol).toEqual(protocol);
+      expect(prepared.opOb.protocol).toEqual(currentProtocol);
     });
 
     it('should be able to prepare a ballot operation', async () => {
@@ -115,7 +122,7 @@ CONFIGS().forEach(({ lib, setup, protocol, createAddress }) => {
       expect(prepared.opOb.contents[0].kind).toEqual('ballot');
       expect(content.proposal).toEqual('PtKathmankSpLLDALzWw7CGD2j2MtyveTwboEYokqUCP4a1LxMg');
       expect(content.ballot).toEqual('yay');
-      expect(prepared.opOb.protocol).toEqual(protocol);
+      expect(prepared.opOb.protocol).toEqual(currentProtocol);
     });
 
     it('should be able to prepare a contractCall', async () => {
