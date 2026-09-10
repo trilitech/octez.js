@@ -132,7 +132,10 @@ export class Operation {
         switchMap((newHead) => {
           const prevHead =
             this.lastHead?.header.level ?? newHead.header.level - 1 - this.lookBackLevels;
-          return range(prevHead + 1, newHead.header.level - prevHead - 1).pipe(
+          // prevHead can be negative depending on lookBackLevels and on how
+          // close the head is to the beginning of the chain.
+          const from = Math.max(prevHead + 1, 0);
+          return range(from, newHead.header.level - from).pipe(
             concatMap((level) => this.context.readProvider.getBlock(level)),
             endWith(newHead)
           );
