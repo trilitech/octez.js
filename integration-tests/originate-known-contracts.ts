@@ -56,10 +56,6 @@ CONFIGS().forEach(({ lib, setup, networkName }) => {
         await operation.confirmation();
         const contract = await operation.contract();
         console.log(`known ${contractName} address:  ${contract.address}`);
-        // Set the contract's address for subsequent GitHub actions
-        const contractNameCapitalized = contractName.charAt(0).toUpperCase() + contractName.slice(1);
-        const outputAddressVariableName: string = `known${contractNameCapitalized}Address`;
-        console.log(`::set-output name=${outputAddressVariableName}::${contract.address}\n`);
         appendOutput(`  ${contractName}: "${contract.address}",`);
       } catch (e: any) {
         console.error(`Failed to deploy ${contractName} known contract | Error: ${e.stack}`);
