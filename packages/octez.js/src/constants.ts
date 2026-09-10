@@ -146,3 +146,9 @@ export const getRevealFeeInternal = (address: string) => {
       throw new Error(`Cannot estimate reveal fee for ${address}`);
   }
 };
+
+/**
+ * Default number of blocks below the first observed head to scan when confirming
+ * an operation. Indeed, fast networks can make the application miss some blocks.
+ */
+export const DEFAULT_CONFIRMATION_LOOKBACK_LEVELS = 5;

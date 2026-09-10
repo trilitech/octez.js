@@ -25,6 +25,7 @@ import { SubscribeProvider } from './subscribe/interface';
 import { PollingSubscribeProvider } from './subscribe/polling-subcribe-provider';
 import { OctezJsLocalForger } from './forger/octez.js-local-forger';
 import { PrepareProvider } from './prepare/prepare-provider';
+import { DEFAULT_CONFIRMATION_LOOKBACK_LEVELS } from './constants';
 
 export interface OctezJsProvider<T, K extends Array<any>> {
   new (context: Context, ...rest: K): T;
@@ -33,11 +34,13 @@ export interface OctezJsProvider<T, K extends Array<any>> {
 export interface ConfigConfirmation {
   confirmationPollingTimeoutSecond: number;
   defaultConfirmationCount: number;
+  confirmationLookBackLevels?: number;
 }
 
 export const defaultConfigConfirmation: ConfigConfirmation = {
   defaultConfirmationCount: 1,
   confirmationPollingTimeoutSecond: 180,
+  confirmationLookBackLevels: DEFAULT_CONFIRMATION_LOOKBACK_LEVELS,
 };
 
 /**
