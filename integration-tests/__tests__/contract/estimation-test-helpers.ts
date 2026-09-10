@@ -60,16 +60,20 @@ export const resolveProtocol = (protocols: ProtocolsResponse): Protocols => {
  * full 3-snapshot set too — don't assume a short list stays short.
  *
  * Fee-derived fields (suggestedFeeMutez, minimalFeeMutez, totalCost,
- * usingBaseFeeMutez) are matched exactly, not banded, and weeklynet's build
- * can change them wholesale, in either direction, more than once in the same
- * day: one mid-week rebuild shifted every fee site by +2 mutez at once, and
- * weeklynet's own Wednesday reset a few hours later reverted that same delta
- * back to -2 while separately widening the "internal" sites' consumedMilligas
- * bands further (new values landed below the previously recorded minimum).
- * Both are real baseline changes to re-record, not jitter to band over — but
- * "record the live value" here means what's live *right now*, since
- * weeklynet's own identity (see resolveProtocol above) and behavior can both
- * have moved again by the time you read this.
+ * usingBaseFeeMutez) are each matched against the *set* of values recorded
+ * across all snapshots, exactly like the other fields above — not a
+ * continuous min/max band. This changed from an earlier "matched exactly,
+ * re-recorded on every drift" policy after weeklynet was observed flipping
+ * its live `minimal_fees` mempool-filter value between two states (100 and
+ * 102 mutez) multiple times in a single day, shifting every fee-derived
+ * field by a uniform +/-2 mutez each time. Chasing that with single-value
+ * rebaselines just goes stale again on the next flip (it did, twice, in one
+ * morning) — so both observed fee states are now recorded side by side, the
+ * same way gas jitter is handled, instead of picking whichever was live at
+ * rebaseline time. Widen this list again if a third state is ever observed;
+ * don't just replace it — this can still go stale in a way this fix doesn't
+ * cover, since weeklynet's own identity (see resolveProtocol above) and
+ * behavior can both move again by the time you read this.
  */
 export const expectEstimate = (
   estimate: EstimateLike,
