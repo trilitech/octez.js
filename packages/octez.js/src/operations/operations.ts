@@ -18,6 +18,7 @@ import {
   timeout,
 } from 'rxjs/operators';
 import { Context } from '../context';
+import { DEFAULT_CONFIRMATION_LOOKBACK_LEVELS } from '../constants';
 import { ForgedBytes, hasMetadataWithResult } from './types';
 import { validateOperation, ValidationResult } from '@tezos-x/octez.js-utils';
 import { createObservableFromSubscription } from '../subscribe/create-observable-from-subscription';
@@ -107,6 +108,13 @@ export class Operation {
   private lastHead: BlockResponse | undefined;
   protected _includedInBlock = new ReplaySubject<BlockResponse>(1);
 
+  private get lookBackLevels(): number {
+    const configured = this.context.config.confirmationLookBackLevels;
+    return typeof configured === 'number' && Number.isFinite(configured) && configured >= 0
+      ? Math.floor(configured)
+      : DEFAULT_CONFIRMATION_LOOKBACK_LEVELS;
+  }
+
   private currentHead$ = this._pollingConfig$.pipe(
     switchMap((config) => {
       return new BehaviorSubject(config).pipe(
@@ -122,7 +130,8 @@ export class Operation {
         createObservableFromSubscription(this.context.stream.subscribeBlock('head'))
       ).pipe(
         switchMap((newHead) => {
-          const prevHead = this.lastHead?.header.level ?? newHead.header.level - 1;
+          const prevHead =
+            this.lastHead?.header.level ?? newHead.header.level - 1 - this.lookBackLevels;
           return range(prevHead + 1, newHead.header.level - prevHead - 1).pipe(
             concatMap((level) => this.context.readProvider.getBlock(level)),
             endWith(newHead)
