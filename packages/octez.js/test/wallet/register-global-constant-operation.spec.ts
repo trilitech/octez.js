@@ -5,6 +5,7 @@ import {
   OpKind,
 } from '@tezos-x/octez.js-rpc';
 import { RegisterGlobalConstantWalletOperation } from '../../src/wallet/register-global-constant-operation';
+import { defaultConfigConfirmation } from '../../src/context';
 
 describe('RegisterGlobalConstantWalletOperation', () => {
   let testScheduler: TestScheduler;
@@ -57,7 +58,11 @@ describe('RegisterGlobalConstantWalletOperation', () => {
       rpc: {
         getBlock: vi.fn(),
       },
-      config: { confirmationPollingIntervalSecond: 10 },
+      config: {
+        ...defaultConfigConfirmation,
+        confirmationPollingIntervalSecond: 10,
+        confirmationLookBackLevels: 0,
+      },
     };
 
     fakeContext.rpc.getBlock.mockResolvedValue({

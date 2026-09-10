@@ -1,6 +1,6 @@
 import { BlockResponse } from '@tezos-x/octez.js-rpc';
 import { TestScheduler } from 'rxjs/testing';
-import { Context } from '../../src/context';
+import { Context, defaultConfigConfirmation } from '../../src/context';
 import { BatchWalletOperation } from '../../src/wallet/batch-operation';
 import {
   resultOriginations,
@@ -178,6 +178,7 @@ describe('BatchWalletOperation', () => {
         const op = new BatchWalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
           {
+            config: { ...defaultConfigConfirmation, confirmationLookBackLevels: 0 },
             readProvider: {
               getBlock: vi.fn().mockResolvedValue(createFakeBlock(1)),
             },
@@ -200,6 +201,7 @@ describe('BatchWalletOperation', () => {
         const op = new BatchWalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
           {
+            config: { ...defaultConfigConfirmation, confirmationLookBackLevels: 0 },
             readProvider: {
               getBlock: vi.fn().mockResolvedValue(createFakeBlock(2)),
             },

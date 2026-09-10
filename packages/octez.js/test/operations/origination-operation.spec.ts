@@ -74,6 +74,9 @@ describe('Origination operation', () => {
       rpc: {
         getBlock: vi.fn(),
       },
+      readProvider: {
+        getBlock: vi.fn(),
+      },
       config: { ...defaultConfigConfirmation },
       getConfirmationPollingInterval: vi.fn(),
     };
@@ -85,6 +88,13 @@ describe('Origination operation', () => {
         level: 200,
       },
     });
+    fakeContext.readProvider.getBlock.mockImplementation(async (level: number) => ({
+      hash: `BLpastBlockAtLevel${level}`,
+      operations: [[], [], [], []],
+      header: {
+        level,
+      },
+    }));
     fakeContext.getConfirmationPollingInterval.mockResolvedValue(10);
   });
 
