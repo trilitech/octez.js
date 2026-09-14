@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "1.0.0",
+  "version": "25.0.0",
   "description": "Michelson parser, validator, and formatter for octez.js.",
   "keywords": [
     "octez.js",
@@ -26,7 +26,7 @@
   "author": "ECAD Labs Inc <info@ecadlabs.com>",
   "contributors": [
     "Eugene Zagidullin <eugene@ecadlabs.com>",
-    "Jev Bj\u00f6rsell (jevonearth)",
+    "Jev Björsell (jevonearth)",
     "Davis Sawali <davis.sawali@ecadlabs.com>",
     "Roxane Letourneau <roxane@ecadlabs.com>"
   ],
@@ -60,7 +60,7 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-core": "^1.0.0"
+    "@tezos-x/octez.js-core": "^25.0.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.42",

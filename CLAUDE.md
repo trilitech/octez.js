@@ -30,16 +30,32 @@ Package/class names were mechanically renamed `taquito-*` → `octez.js-*` /
   instead of `@taquito/sapling-wasm`. As of this migration there are no remaining `@taquito/*` npm
   dependencies.
 
-## Versioning is intentionally decoupled from Taquito
+## Versioning tracks the Octez node release, not Taquito
 
-- octez.js packages reset to **`1.0.0`** at fork time and version independently. Taquito's own
-  package version (`24.x`, `25.x`) is a **different, unrelated number** — never treat a Taquito
-  version bump as something to mirror here.
+- octez.js packages reset to **`1.0.0`** at fork time (`v0.9.0`, `v1.0.0`, `v1.1.0`, `v1.1.1`) and
+  versioned independently for a while. As of **2026-09**, the policy changed: octez.js version now
+  **tracks the Octez node's release version** (currently `25.0.0`), since this repo is maintained
+  by Nomadic Labs alongside Octez itself and the alignment is deliberate.
+- Taquito's own package version (`24.x`, `25.x`) is a **separate, unrelated number** that happens
+  to overlap numerically with the current Octez line — that overlap is coincidence, not policy
+  drift. **Never treat a Taquito version bump as something to mirror here** — only bump when the
+  Octez node cuts a new release.
 - **Never blindly cherry-pick Taquito's release-sync commits** (version bumps, lockfile
   regeneration, versioned-docs snapshots). They're taquito-version-numbered and don't apply.
-- `packages/octez.js-core/src/version.ts` is auto-generated (`// DO NOT MANUALLY EDIT`) — don't
-  hand-edit it; if it looks stale relative to `package.json`, that's a build/release-tooling gap to
-  flag, not something to patch by hand.
+- To bump the version: use `node scripts/sync-workspace-deps.js <version>` (sets root +
+  every workspace package's `version` and syncs internal `@tezos-x/octez.js-*` cross-deps to the
+  matching `^<version>` range) followed by `npm run version-stamp` (regenerates every
+  `packages/*/src/version.ts`) and an `npm install --package-lock-only` to sync `package-lock.json`.
+  This is the same sequence `release.yml` runs — don't hand-roll a version bump by editing
+  `package.json` files directly.
+- Every `packages/*/src/version.ts` is auto-generated (`// DO NOT MANUALLY EDIT`) via
+  `npm run version-stamp` — don't hand-edit it; if it looks stale relative to `package.json`,
+  regenerate it with the command above rather than patching the value by hand.
+- Watch for local/remote git tag collisions: Taquito's own release tags (`v25.0.0`,
+  `v25.0.0-rc.1`, etc., fetched via the `taquito` remote) live in the same local tag namespace as
+  octez.js's real release tags (`v1.1.1`, and eventually `v25.0.0` of our own). Check
+  `git ls-remote --tags origin` vs `git tag` before creating or pushing a release tag to avoid
+  colliding with a same-named Taquito tag that only exists locally.
 
 ## Backporting from upstream Taquito — mandatory process
 
