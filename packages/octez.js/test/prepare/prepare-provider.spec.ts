@@ -35,12 +35,14 @@ describe('PrepareProvider test', () => {
     getConstants: ReturnType<typeof vi.fn>;
     getManagerKey: ReturnType<typeof vi.fn>;
     forgeOperations: ReturnType<typeof vi.fn>;
+    getMempoolFilter: ReturnType<typeof vi.fn>;
   };
 
   let mockSigner: {
     publicKeyHash: ReturnType<typeof vi.fn>;
     publicKey: ReturnType<typeof vi.fn>;
     sign: ReturnType<typeof vi.fn>;
+    provePossession: ReturnType<typeof vi.fn>;
   };
 
   let context: Context;
@@ -69,12 +71,14 @@ describe('PrepareProvider test', () => {
       getConstants: vi.fn(),
       getManagerKey: vi.fn(),
       forgeOperations: vi.fn(),
+      getMempoolFilter: vi.fn(),
     };
 
     mockSigner = {
       publicKeyHash: vi.fn(),
       publicKey: vi.fn(),
       sign: vi.fn(),
+      provePossession: vi.fn(),
     };
 
     mockRpcClient.getContract.mockResolvedValue({
@@ -122,6 +126,12 @@ describe('PrepareProvider test', () => {
     mockReadProvider.getBlockHash.mockResolvedValue('test_block_hash');
     mockReadProvider.getNextProtocol.mockResolvedValue('test_protocol');
     mockReadProvider.getCounter.mockResolvedValue('0');
+
+    // Unless a test explicitly opts in (see "reveal fee — estimator pricing" below),
+    // `mempool/filter` is unavailable in this harness, so the auto-prepended reveal's
+    // live-fee-params pricing falls back to the static REVEAL_FEE/REVEAL_GAS_LIMIT table,
+    // preserving every pre-existing test's expected reveal fee/gas values.
+    mockRpcClient.getMempoolFilter.mockRejectedValue(new Error('mempool/filter unavailable'));
 
     context = new Context(mockRpcClient as any, mockSigner as any);
     context.readProvider = mockReadProvider as any;
@@ -345,6 +355,119 @@ describe('PrepareProvider test', () => {
           protocol: 'test_protocol',
         },
         counter: 0,
+      });
+    });
+  });
+
+  describe('reveal fee — live mempool/filter pricing', () => {
+    // On a chain with a higher `minimal_nanotez_per_byte` than Tezos L1 (e.g. Tezos X
+    // previewnet: 4000 vs L1's 1000), the reveal fee must scale with the live fee params
+    // instead of the L1-calibrated static table. Computed by hand from the formula in
+    // `Estimate`/`feeParamsFromMempoolFilter`: gasLimit=633 (getRevealGasLimit for this tz1),
+    // opSize=162 (PrepareProvider.REVEAL_OP_SIZE_BYTES), feePerGasMutez=0.1, feePerByteMutez=4,
+    // minimalFeeMutez=100 => suggestedFeeMutez = ceil(633*0.1 + 162*4 + 100*1.2) = 832.
+    const highByteFeeMempoolFilterResponse = {
+      minimal_fees: '100',
+      minimal_nanotez_per_gas_unit: ['100', '1'],
+      minimal_nanotez_per_byte: ['4000', '1'],
+    };
+
+    describe('single-operation prepare (transaction)', () => {
+      it('prices the auto-prepended reveal using live mempool/filter fee params when available', async () => {
+        mockReadProvider.isAccountRevealed.mockResolvedValue(false);
+        mockRpcClient.getMempoolFilter.mockResolvedValue(highByteFeeMempoolFilterResponse);
+
+        const prepared = await prepareProvider.transaction({
+          to: 'tz1QZ6KY7d3BuZDT1d19dUxoQrtFPN2QJ3hn',
+          amount: 2,
+        });
+
+        expect(prepared.opOb.contents[0]).toEqual(
+          expect.objectContaining({
+            kind: 'reveal',
+            fee: '832',
+            // Gas consumption for a reveal is deterministic and unaffected by live fee params;
+            // only the fee changes.
+            gas_limit: '633',
+            storage_limit: '0',
+          })
+        );
+      });
+
+      it('falls back to the static fee/gas table when mempool/filter is unavailable', async () => {
+        mockReadProvider.isAccountRevealed.mockResolvedValue(false);
+        mockRpcClient.getMempoolFilter.mockRejectedValue(new Error('rpc down'));
+
+        const prepared = await prepareProvider.transaction({
+          to: 'tz1QZ6KY7d3BuZDT1d19dUxoQrtFPN2QJ3hn',
+          amount: 2,
+        });
+
+        expect(prepared.opOb.contents[0]).toEqual(
+          expect.objectContaining({
+            kind: 'reveal',
+            fee: '334',
+            gas_limit: '633',
+            storage_limit: '0',
+          })
+        );
+      });
+    });
+
+    describe('BLS account (tz4) — opSize branch', () => {
+      // Same formula, but the BLS opSize (PrepareProvider.REVEAL_OP_SIZE_BLS_BYTES = 311) and
+      // gas limit (getRevealGasLimit for tz4 = round(REVEAL_GAS_LIMIT.TZ4 * 3.7) = 12032) apply
+      // instead of the tz1 ones. Live-fee case: ceil(12032*0.1 + 311*4 + 100*1.2) = 2568.
+      // Fallback case: getRevealFee(tz4) = round(REVEAL_FEE.TZ4 * 1.7 * 1.2) = 1501.
+      const blsPkh = 'tz4EECtMxAuJ9UDLaiMZH7G1GCFYUWsj8HZn';
+
+      beforeEach(() => {
+        mockSigner.publicKeyHash.mockResolvedValue(blsPkh);
+        mockSigner.provePossession.mockResolvedValue({
+          sig: 'sig_test',
+          prefixSig: 'BLsig_test_proof',
+          rawSignature: new Uint8Array(),
+        });
+      });
+
+      it('prices the auto-prepended reveal using live mempool/filter fee params, with the BLS opSize', async () => {
+        mockReadProvider.isAccountRevealed.mockResolvedValue(false);
+        mockRpcClient.getMempoolFilter.mockResolvedValue(highByteFeeMempoolFilterResponse);
+
+        const prepared = await prepareProvider.transaction({
+          to: 'tz1QZ6KY7d3BuZDT1d19dUxoQrtFPN2QJ3hn',
+          amount: 2,
+        });
+
+        expect(prepared.opOb.contents[0]).toEqual(
+          expect.objectContaining({
+            kind: 'reveal',
+            fee: '2568',
+            gas_limit: '12032',
+            storage_limit: '0',
+            proof: 'BLsig_test_proof',
+          })
+        );
+      });
+
+      it('falls back to the static fee/gas table, with the BLS gas limit, when mempool/filter is unavailable', async () => {
+        mockReadProvider.isAccountRevealed.mockResolvedValue(false);
+        mockRpcClient.getMempoolFilter.mockRejectedValue(new Error('rpc down'));
+
+        const prepared = await prepareProvider.transaction({
+          to: 'tz1QZ6KY7d3BuZDT1d19dUxoQrtFPN2QJ3hn',
+          amount: 2,
+        });
+
+        expect(prepared.opOb.contents[0]).toEqual(
+          expect.objectContaining({
+            kind: 'reveal',
+            fee: '1501',
+            gas_limit: '12032',
+            storage_limit: '0',
+            proof: 'BLsig_test_proof',
+          })
+        );
       });
     });
   });

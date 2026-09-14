@@ -67,7 +67,7 @@ import {
   createRegisterDelegateOperation,
   createActivationOperation,
 } from '../contract';
-import { Estimate } from '../estimate';
+import { Estimate, feeParamsFromMempoolFilter } from '../estimate';
 import { ForgeParams } from '@tezos-x/octez.js-local-forging';
 import { Provider } from '../provider';
 import BigNumberJs from 'bignumber.js';
@@ -107,6 +107,13 @@ const mergeLimits = (
  * PrepareProvider is a utility class to output the prepared format of an operation
  */
 export class PrepareProvider extends Provider implements PreparationProvider {
+  // Approximate, fixed forged byte size of a reveal operation, used only as the `opSize` input
+  // to the live-fee-params formula in `getRevealLimits` below (mirrors the values
+  // `RPCEstimateProvider` derives from its own REVEAL_LENGTH/REVEAL_LENGTH_TZ4 constants:
+  // 324/622 hex chars, i.e. 162/311 bytes, for non-BLS vs BLS reveals respectively).
+  private static readonly REVEAL_OP_SIZE_BYTES = 162;
+  private static readonly REVEAL_OP_SIZE_BLS_BYTES = 311;
+
   #counters: { [key: string]: number };
 
   constructor(protected context: Context) {
@@ -223,25 +230,73 @@ export class PrepareProvider extends Provider implements PreparationProvider {
           throw new PublicKeyNotFoundError(pkh);
         }
         const [, pkhPrefix] = b58DecodeAndCheckPrefix(pkh, publicKeyHashPrefixes);
+        const isBls = pkhPrefix === PrefixV2.BLS12_381PublicKeyHash;
+        const proof = isBls ? (await this.signer.provePossession!()).prefixSig : undefined;
+        const { fee, storageLimit, gasLimit } = await this.getRevealLimits(pkh, isBls);
         ops.unshift(
-          await createRevealOperation(
-            {
-              fee: getRevealFee(pkh),
-              storageLimit: REVEAL_STORAGE_LIMIT,
-              gasLimit: getRevealGasLimit(pkh),
-              proof:
-                pkhPrefix === PrefixV2.BLS12_381PublicKeyHash
-                  ? (await this.signer.provePossession!()).prefixSig
-                  : undefined,
-            },
-            publicKeyHash,
-            publicKey
-          )
+          await createRevealOperation({ fee, storageLimit, gasLimit, proof }, publicKeyHash, publicKey)
         );
         return ops;
       }
     }
     return operation;
+  }
+
+  /**
+   * Prices the auto-prepended reveal using live fee parameters read from `mempool/filter`,
+   * combined with the deterministic gas limit and an approximate, fixed op size for a reveal —
+   * needed because chains other than Tezos L1 (e.g. Tezos X) can have a materially different
+   * `minimal_nanotez_per_byte`, and the static REVEAL_FEE table below is calibrated for L1.
+   *
+   * This deliberately does NOT go through `context.estimate.reveal()` (which forges and
+   * simulates the operation against the node). `addRevealOperationIfNeeded`/`batch()` sit on the
+   * hot path of every other prepare method, several of which are themselves invoked, via an
+   * internal PrepareProvider instance, from inside `RPCEstimateProvider`'s own estimate methods
+   * (originate/transfer/batch/registerDelegate/...) purely to build a throwaway operation for a
+   * single shared forge+simulate round trip a moment later. Routing reveal pricing through the
+   * full estimator here would trigger a redundant, nested forge+simulate call that consumes
+   * shared, sequentially-mocked forger/RPC responses meant for that outer round trip (verified
+   * empirically against rpc-estimate-provider.spec.ts / rpc-contract-provider.spec.ts) and
+   * doubles real RPC traffic in production for every reveal-needing estimate/prepare call. A
+   * reveal operation's gas consumption is deterministic (that's why the static table below works
+   * at all) — only the fee formula's live parameters need to be fresh, so a lightweight
+   * `mempool/filter` read is sufficient and avoids simulating. Falls back to the static table
+   * when that read is unavailable (e.g. RPC error), so this never blocks reveal on a healthy
+   * node.
+   */
+  private async getRevealLimits(pkh: string, isBls: boolean) {
+    try {
+      const feeParams = feeParamsFromMempoolFilter(
+        await this.rpc.getMempoolFilter({ include_default: true })
+      );
+      const gasLimit = getRevealGasLimit(pkh);
+      const opSize = isBls
+        ? PrepareProvider.REVEAL_OP_SIZE_BLS_BYTES
+        : PrepareProvider.REVEAL_OP_SIZE_BYTES;
+
+      const estimate = Estimate.createEstimateInstanceFromProperties([
+        {
+          milligasLimit: gasLimit * 1000,
+          storageLimit: REVEAL_STORAGE_LIMIT,
+          opSize,
+          minimalFeePerStorageByteMutez: 0,
+          feeParams,
+        },
+      ]);
+
+      return {
+        fee: estimate.suggestedFeeMutez,
+        gasLimit: estimate.gasLimit,
+        storageLimit: estimate.storageLimit,
+      };
+    } catch {
+      // mempool/filter unavailable — fall back to the static table below.
+    }
+    return {
+      fee: getRevealFee(pkh),
+      gasLimit: getRevealGasLimit(pkh),
+      storageLimit: REVEAL_STORAGE_LIMIT,
+    };
   }
 
   private async getKeys(): Promise<{
@@ -1426,10 +1481,23 @@ export class PrepareProvider extends Provider implements PreparationProvider {
 
     const protocolConstants = await this.context.readProvider.getProtocolConstants('head');
     const revealNeeded = await this.isRevealOpNeeded(batchParams, pkh);
+
+    let revealProof: string | undefined;
+    let revealLimits: { fee: number; gasLimit: number; storageLimit: number } | undefined;
+    if (revealNeeded) {
+      if (!publicKey) {
+        throw new PublicKeyNotFoundError(pkh);
+      }
+      const [, pkhPrefix] = b58DecodeAndCheckPrefix(pkh, publicKeyHashPrefixes);
+      const isBls = pkhPrefix === PrefixV2.BLS12_381PublicKeyHash;
+      revealProof = isBls ? (await this.signer.provePossession!()).prefixSig : undefined;
+      revealLimits = await this.getRevealLimits(pkh, isBls);
+    }
+
     const explicitGasLimitTotal = batchParams.reduce(
       (acc, op) =>
         isOpWithFee(op) && typeof op.gasLimit !== 'undefined' ? acc.plus(op.gasLimit) : acc,
-      revealNeeded ? new BigNumber(getRevealGasLimit(pkh)) : new BigNumber(0)
+      revealNeeded ? new BigNumber(revealLimits!.gasLimit) : new BigNumber(0)
     );
     const DEFAULT_PARAMS = this.getOperationLimits(protocolConstants, {
       opsNeedingGasLimitPatch: batchParams.filter(
@@ -1471,23 +1539,16 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     }
 
     if (revealNeeded) {
-      if (!publicKey) {
-        throw new PublicKeyNotFoundError(pkh);
-      }
-      const [, pkhPrefix] = b58DecodeAndCheckPrefix(pkh, publicKeyHashPrefixes);
       ops.unshift(
         await createRevealOperation(
           {
-            fee: getRevealFee(pkh),
-            storageLimit: REVEAL_STORAGE_LIMIT,
-            gasLimit: getRevealGasLimit(pkh),
-            proof:
-              pkhPrefix === PrefixV2.BLS12_381PublicKeyHash
-                ? (await this.signer.provePossession!()).prefixSig
-                : undefined,
+            fee: revealLimits!.fee,
+            storageLimit: revealLimits!.storageLimit,
+            gasLimit: revealLimits!.gasLimit,
+            proof: revealProof,
           },
           pkh,
-          publicKey
+          publicKey!
         )
       );
       gasLimitPatchableFlags.unshift(false);
