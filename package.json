@@ -1,6 +1,6 @@
 {
   "name": "octez.js-monorepo",
-  "version": "1.0.0",
+  "version": "25.0.0",
   "description": "Canonical monorepo for the octez.js TypeScript SDK for Tezos, maintained by Nomadic Labs.",
   "private": true,
   "author": "ECAD Labs Inc <info@ecadlabs.com>",
@@ -8,7 +8,7 @@
     "Simon Boissonneault-Robert <simon@ecadlabs.com>",
     "Roxane Letourneau <roxane@ecadlabs.com>",
     "Davis Sawali <davis.sawali@ecadlabs.com>",
-    "Jev Bj\u00f6rsell (jevonearth)"
+    "Jev Björsell (jevonearth)"
   ],
   "homepage": "https://octez.js.io/",
   "repository": {

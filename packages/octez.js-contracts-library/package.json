@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "1.0.0",
+  "version": "25.0.0",
   "description": "Static Michelson scripts and entrypoints library for octez.js contract interactions.",
   "keywords": [
     "octez.js",
@@ -22,7 +22,7 @@
   "contributors": [
     "Davis Sawali <davis.sawali@ecadlabs.com>",
     "Roxane Letourneau <roxane@ecadlabs.com>",
-    "Jev Bj\u00f6rsell (jevonearth)"
+    "Jev Björsell (jevonearth)"
   ],
   "homepage": "https://octez.js.io/",
   "repository": {
@@ -57,10 +57,10 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-core": "^1.0.0",
-    "@tezos-x/octez.js-rpc": "^1.0.0",
-    "@tezos-x/octez.js": "^1.0.0",
-    "@tezos-x/octez.js-utils": "^1.0.0",
+    "@tezos-x/octez.js-core": "^25.0.0",
+    "@tezos-x/octez.js-rpc": "^25.0.0",
+    "@tezos-x/octez.js": "^25.0.0",
+    "@tezos-x/octez.js-utils": "^25.0.0",
     "bignumber.js": "^10.0.2"
   },
   "devDependencies": {
