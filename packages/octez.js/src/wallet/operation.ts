@@ -14,6 +14,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import { Context } from '../context';
+import { resolveConfirmationLookBackLevels } from '../constants';
 import { Receipt, receiptFromOperation } from './receipt';
 import { validateOperation, ValidationResult } from '@tezos-x/octez.js-utils';
 import { BlockIdentifier } from '../read-provider/interface';
@@ -80,10 +81,19 @@ export class WalletOperation {
   protected _included = false;
 
   private lastHead: BlockResponse | undefined;
+
+  private get lookBackLevels(): number {
+    return resolveConfirmationLookBackLevels(this.context.config.confirmationLookBackLevels);
+  }
+
   protected newHead$: Observable<BlockResponse> = this._newHead$.pipe(
     switchMap((newHead) => {
-      const prevHead = this.lastHead?.header.level ?? newHead.header.level - 1;
-      return range(prevHead + 1, newHead.header.level - prevHead - 1).pipe(
+      const prevHead =
+        this.lastHead?.header.level ?? newHead.header.level - 1 - this.lookBackLevels;
+      // prevHead can be negative depending on lookBackLevels and on how close
+      // the head is to the beginning of the chain.
+      const from = Math.max(prevHead + 1, 0);
+      return range(from, newHead.header.level - from).pipe(
         concatMap((level) => this.context.readProvider.getBlock(level)),
         endWith(newHead)
       );

@@ -1,10 +1,19 @@
 import { TestScheduler } from 'rxjs/testing';
 import { throwError } from 'rxjs';
 import { BlockResponse } from '@tezos-x/octez.js-rpc';
-import { Context } from '../../src/context';
+import { Context, defaultConfigConfirmation } from '../../src/context';
 import { ConfirmationTimeoutError } from '../../src/errors';
 import { WalletOperation } from '../../src/wallet';
 import { blockResponse } from './data';
+
+// These tests drive the head stream through rxjs virtual time and target
+// confirmation counting and mid-stream gap filling, not the first-head look-back
+// introduced for #62. Disabling the look-back keeps the block reads they assert
+// on unchanged; the look-back itself is covered by confirmation-first-head.spec.ts.
+const noLookBack = (context: Context) => {
+  context.setPartialConfig({ confirmationLookBackLevels: 0 });
+  return context;
+};
 
 describe('WalletOperation', () => {
   let testScheduler: TestScheduler;
@@ -41,7 +50,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          noLookBack(new Context('url')),
           blockObservable
         );
 
@@ -68,7 +77,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          noLookBack(new Context('url')),
           blockObservable
         );
 
@@ -101,7 +110,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          noLookBack(new Context('url')),
           blockObservable
         );
 
@@ -151,7 +160,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context(mockRpcClient as any),
+          noLookBack(new Context(mockRpcClient as any)),
           blockObservable
         );
 
@@ -186,7 +195,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context(mockRpcClient as any),
+          noLookBack(new Context(mockRpcClient as any)),
           blockObservable
         );
 
@@ -222,7 +231,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context(mockRpcClient as any),
+          noLookBack(new Context(mockRpcClient as any)),
           blockObservable
         );
 
@@ -249,7 +258,7 @@ describe('WalletOperation', () => {
       const timeoutError = new ConfirmationTimeoutError('Confirmation polling timed out');
       const op = new WalletOperation(
         'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-        new Context('url'),
+        noLookBack(new Context('url')),
         throwError(() => timeoutError)
       );
 
@@ -268,7 +277,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          noLookBack(new Context('url')),
           blockObservable
         );
 
@@ -298,7 +307,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'oot9JqetdfF5KtZS7VoepGvB18aQENcQVzJ3G7WsQnCfQo3wmms',
-          new Context('url'),
+          noLookBack(new Context('url')),
           blockObservable
         );
 
@@ -329,7 +338,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          noLookBack(new Context('url')),
           blockObservable
         );
 
@@ -351,7 +360,7 @@ describe('WalletOperation', () => {
 
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          noLookBack(new Context('url')),
           blockObservable
         );
 
@@ -370,6 +379,7 @@ describe('WalletOperation', () => {
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
           {
+            config: { ...defaultConfigConfirmation, confirmationLookBackLevels: 0 },
             readProvider: {
               getBlock: vi.fn().mockResolvedValue(createFakeBlock(1)),
             },
@@ -393,6 +403,7 @@ describe('WalletOperation', () => {
         const op = new WalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
           {
+            config: { ...defaultConfigConfirmation, confirmationLookBackLevels: 0 },
             readProvider: {
               getBlock: vi.fn().mockResolvedValue(createFakeBlock(2)),
             },

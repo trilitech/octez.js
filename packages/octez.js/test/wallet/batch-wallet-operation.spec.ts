@@ -24,6 +24,16 @@ const createFakeBlock = (level: number, opHash?: string) => {
   return op;
 };
 
+// These tests drive the head stream directly through rxjs virtual time and are
+// about confirmation counting, not about the look-back introduced for #62.
+// Disabling the look-back keeps them fetching no extra blocks, so no real read
+// provider is needed. Look-back itself is covered by confirmation-first-head.spec.ts.
+const createFakeContext = () => {
+  const context = new Context('url');
+  context.setPartialConfig({ confirmationLookBackLevels: 0 });
+  return context;
+};
+
 describe('BatchWalletOperation', () => {
   let testScheduler: TestScheduler;
   // TODO: investigate how expectSubscription() works
@@ -40,7 +50,7 @@ describe('BatchWalletOperation', () => {
 
       const op = new BatchWalletOperation(
         'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-        new Context('url'),
+        createFakeContext(),
         blockObs
       );
 
@@ -71,7 +81,7 @@ describe('BatchWalletOperation', () => {
 
       const op = new BatchWalletOperation(
         'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-        new Context('url'),
+        createFakeContext(),
         blockObs
       );
 
@@ -104,7 +114,7 @@ describe('BatchWalletOperation', () => {
 
       const op = new BatchWalletOperation(
         'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-        new Context('url'),
+        createFakeContext(),
         blockObs
       );
 
@@ -138,7 +148,7 @@ describe('BatchWalletOperation', () => {
 
         const op = new BatchWalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          createFakeContext(),
           blockObs
         );
 
@@ -159,7 +169,7 @@ describe('BatchWalletOperation', () => {
 
         const op = new BatchWalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          createFakeContext(),
           blockObs
         );
 
@@ -224,7 +234,7 @@ describe('BatchWalletOperation', () => {
 
         const op = new BatchWalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          createFakeContext(),
           blockObs
         );
 
@@ -249,7 +259,7 @@ describe('BatchWalletOperation', () => {
 
         const op = new BatchWalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          createFakeContext(),
           blockObs
         );
 
@@ -274,7 +284,7 @@ describe('BatchWalletOperation', () => {
 
         const op = new BatchWalletOperation(
           'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj',
-          new Context('url'),
+          createFakeContext(),
           blockObs
         );
 

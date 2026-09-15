@@ -152,3 +152,14 @@ export const getRevealFeeInternal = (address: string) => {
  * an operation. Indeed, fast networks can make the application miss some blocks.
  */
 export const DEFAULT_CONFIRMATION_LOOKBACK_LEVELS = 5;
+
+/**
+ * Normalise a user-supplied `confirmationLookBackLevels`, falling back to
+ * {@link DEFAULT_CONFIRMATION_LOOKBACK_LEVELS} when it is absent or not a
+ * usable non-negative number. Shared by `Operation` and `WalletOperation` so
+ * the two confirmation loops cannot drift apart.
+ */
+export const resolveConfirmationLookBackLevels = (configured: number | undefined): number =>
+  typeof configured === 'number' && Number.isFinite(configured) && configured >= 0
+    ? Math.floor(configured)
+    : DEFAULT_CONFIRMATION_LOOKBACK_LEVELS;

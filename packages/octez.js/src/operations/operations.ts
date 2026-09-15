@@ -18,7 +18,7 @@ import {
   timeout,
 } from 'rxjs/operators';
 import { Context } from '../context';
-import { DEFAULT_CONFIRMATION_LOOKBACK_LEVELS } from '../constants';
+import { resolveConfirmationLookBackLevels } from '../constants';
 import { ForgedBytes, hasMetadataWithResult } from './types';
 import { validateOperation, ValidationResult } from '@tezos-x/octez.js-utils';
 import { createObservableFromSubscription } from '../subscribe/create-observable-from-subscription';
@@ -109,10 +109,7 @@ export class Operation {
   protected _includedInBlock = new ReplaySubject<BlockResponse>(1);
 
   private get lookBackLevels(): number {
-    const configured = this.context.config.confirmationLookBackLevels;
-    return typeof configured === 'number' && Number.isFinite(configured) && configured >= 0
-      ? Math.floor(configured)
-      : DEFAULT_CONFIRMATION_LOOKBACK_LEVELS;
+    return resolveConfirmationLookBackLevels(this.context.config.confirmationLookBackLevels);
   }
 
   private currentHead$ = this._pollingConfig$.pipe(
