@@ -30,6 +30,7 @@ describe('OriginationWalletOperation', () => {
         wallet,
         config: {
           defaultConfirmationCount: 1,
+          confirmationLookBackLevels: 0,
         },
       } as any,
       blockObservable
@@ -76,6 +77,7 @@ describe('OriginationWalletOperation', () => {
         wallet,
         config: {
           defaultConfirmationCount: 1,
+          confirmationLookBackLevels: 0,
         },
       } as any,
       blockObservable
@@ -126,6 +128,7 @@ describe('OriginationWalletOperation', () => {
         },
         config: {
           defaultConfirmationCount: 1,
+          confirmationLookBackLevels: 0,
         },
       } as any,
       blockObservable
