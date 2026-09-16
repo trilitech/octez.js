@@ -47,7 +47,7 @@ test('syncWorkspaceDeps only rewrites versions for workspace packages', () => {
       version: '24.2.0',
       dependencies: {
         '@tezos-x/octez.js-core': '^24.2.0',
-        '@taquito/sapling-wasm': '0.2.0',
+        '@tezos-x/sapling-wasm': '1.0.1',
       },
     });
 
@@ -71,8 +71,8 @@ test('syncWorkspaceDeps only rewrites versions for workspace packages', () => {
       '^24.3.0-beta.3'
     );
     assert.equal(
-      readJson(join(root, 'packages', 'octez.js-sapling', 'package.json')).dependencies['@taquito/sapling-wasm'],
-      '0.2.0'
+      readJson(join(root, 'packages', 'octez.js-sapling', 'package.json')).dependencies['@tezos-x/sapling-wasm'],
+      '1.0.1'
     );
   } finally {
     rmSync(root, { recursive: true, force: true });
