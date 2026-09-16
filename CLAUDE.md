@@ -23,9 +23,12 @@ Package/class names were mechanically renamed `taquito-*` → `octez.js-*` /
   deliberate API-stability choices. Check history/intent before renaming public API surface —
   that's a breaking change and should be a conscious decision, not incidental to another task.
 - A few known leftovers exist by design, not by accident (stale `TAQUITO_*` env var prefixes, a
-  couple of `taquito.io` doc URLs, `@taquito/sapling-wasm` as the one remaining real npm
-  dependency on the Taquito org). Don't silently "fix" these without flagging it — they're tracked,
-  not forgotten.
+  couple of `taquito.io` doc URLs). Don't silently "fix" these without flagging it — they're
+  tracked, not forgotten.
+- The Sapling WASM bindings dependency was migrated off the Taquito org: `packages/octez.js-sapling`
+  now depends on `@tezos-x/sapling-wasm` (published from `github.com/trilitech/sapling-sdk`)
+  instead of `@taquito/sapling-wasm`. As of this migration there are no remaining `@taquito/*` npm
+  dependencies.
 
 ## Versioning is intentionally decoupled from Taquito
 
@@ -128,8 +131,8 @@ branch `main`, but the repo default branch is `master` — it will never trigger
 
 - Don't treat this as a greenfield project — when unsure why something looks the way it does,
   assume it's inherited from Taquito or a deliberate fork-time decision before assuming it's a bug.
-- Don't introduce new `@taquito/*` npm dependencies (only `@taquito/sapling-wasm` is an accepted,
-  tracked exception pending republishing).
+- Don't introduce new `@taquito/*` npm dependencies. As of the sapling-wasm migration (see above),
+  there are no accepted exceptions left.
 - Never port, copy, or derive anything from `taquito/main`'s `website/` directory (see the
   mandatory hard stop above) — stop and ask a human instead.
 - Don't bump package versions to match Taquito's version line.
