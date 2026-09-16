@@ -1,4 +1,4 @@
-import { Protocols } from '@tezos-x/octez.js';
+import { DEFAULT_FEE_PARAMS, Protocols } from '@tezos-x/octez.js';
 import { ProtocolsResponse } from '@tezos-x/octez.js-rpc';
 
 interface EstimateLike {
@@ -60,23 +60,39 @@ export const resolveProtocol = (protocols: ProtocolsResponse): Protocols => {
  * full 3-snapshot set too — don't assume a short list stays short.
  *
  * Fee-derived fields (suggestedFeeMutez, minimalFeeMutez, totalCost,
- * usingBaseFeeMutez) are each matched against the *set* of values recorded
- * across all snapshots, exactly like the other fields above — not a
- * continuous min/max band. This changed from an earlier "matched exactly,
- * re-recorded on every drift" policy after weeklynet was observed flipping
- * its live `minimal_fees` mempool-filter value between two states (100 and
- * 102 mutez) multiple times in a single day, shifting every fee-derived
- * field by a uniform +/-2 mutez each time. Chasing that with single-value
- * rebaselines just goes stale again on the next flip (it did, twice, in one
- * morning) — so both observed fee states are now recorded side by side, the
- * same way gas jitter is handled, instead of picking whichever was live at
- * rebaseline time. Widen this list again if a third state is ever observed;
- * don't just replace it — this can still go stale in a way this fix doesn't
- * cover, since weeklynet's own identity (see resolveProtocol above) and
- * behavior can both move again by the time you read this.
+ * usingBaseFeeMutez) are NOT matched against recorded snapshot values. They
+ * used to be (see git history), after weeklynet was observed flipping its
+ * live `minimal_fees` mempool-filter value between two states (100 and 102
+ * mutez) multiple times in a single day, shifting every fee-derived field by
+ * a uniform +/-2 mutez each time — recording both observed states side by
+ * side "fixed" that, until a *third* state (not 100, not 102) showed up and
+ * broke it again. That's because `minimal_fees` isn't actually confined to a
+ * small set of "known" values — it's an operator-controlled live value on
+ * whatever node weeklynet's RPC happens to be backed by at request time, and
+ * can be any integer. A growing enumerated allow-list of observed states
+ * never converges.
+ *
+ * Instead, these four fields are checked for *internal consistency* with
+ * each other and with `estimate.gasLimit` / `estimate.opSize`, using only
+ * the mutez-per-gas-unit and mutez-per-byte rate constants — which, unlike
+ * `minimal_fees`, have not been observed to drift (see
+ * `packages/octez.js/src/estimate/estimate.ts` and
+ * `DEFAULT_FEE_PARAMS`). Concretely: `estimate.minimalFeeMutez` is treated
+ * as the one live-dependent input (the network's current `minimal_fees` is
+ * inferred back out of it), and the other three fields are checked against
+ * the same formula `Estimate` itself uses. This deliberately does NOT
+ * verify that `minimal_fees` itself is any particular value — that's an
+ * operator-controlled, out-of-repo setting, not something octez.js or the
+ * protocol pins — only that the four getters agree with each other for
+ * whatever it currently is. The formula itself (given fixed, mocked inputs)
+ * is covered by `packages/octez.js/test/estimate/estimate.spec.ts`.
+ *
+ * `gasLimit`, `storageLimit`, and `burnFeeMutez` remain matched exactly
+ * against recorded snapshots — those come from the live gas/storage
+ * simulation, not the mempool filter, and are genuine regression signals.
  */
 export const expectEstimate = (
-  estimate: EstimateLike,
+  estimate: EstimateLike & { opSize: number | string },
   protocol: Protocols,
   baselines: Partial<Record<Protocols, EstimateSnapshot[]>>
 ) => {
@@ -87,26 +103,39 @@ export const expectEstimate = (
     );
   }
 
-  const estimateKeys: (keyof EstimateSnapshot)[] = [
+  const networkDerivedKeys: (keyof EstimateSnapshot)[] = [
     'gasLimit',
     'storageLimit',
     'burnFeeMutez',
-    'consumedMilligas',
-    'suggestedFeeMutez',
-    'minimalFeeMutez',
-    'totalCost',
-    'usingBaseFeeMutez',
   ];
 
-  for (const key of estimateKeys) {
+  for (const key of networkDerivedKeys) {
     const values = [...new Set(snapshots.map((snapshot) => snapshot[key]))];
-
-    if (key === 'consumedMilligas') {
-      expect(estimate[key]).toBeGreaterThanOrEqual(Math.min(...values));
-      expect(estimate[key]).toBeLessThanOrEqual(Math.max(...values));
-      continue;
-    }
-
     expect(values).toContain(estimate[key]);
   }
+
+  const consumedMilligasValues = snapshots.map((snapshot) => snapshot.consumedMilligas);
+  expect(estimate.consumedMilligas).toBeGreaterThanOrEqual(Math.min(...consumedMilligasValues));
+  expect(estimate.consumedMilligas).toBeLessThanOrEqual(Math.max(...consumedMilligasValues));
+
+  const operationFeeMutez =
+    estimate.gasLimit * DEFAULT_FEE_PARAMS.feePerGasMutez +
+    Number(estimate.opSize) * DEFAULT_FEE_PARAMS.feePerByteMutez;
+
+  // The live `minimal_fees`, inferred from this same estimate rather than a separate RPC
+  // call, so there's no window for the network to flip between "expected" and "actual".
+  const liveMinimalFeeMutez = estimate.minimalFeeMutez - Math.ceil(operationFeeMutez);
+
+  // Loose sanity bound: catches a genuinely broken/garbage value without caring what
+  // integer minimal_fees happens to currently be.
+  expect(liveMinimalFeeMutez).toBeGreaterThan(0);
+  expect(liveMinimalFeeMutez).toBeLessThan(10_000);
+
+  expect(estimate.suggestedFeeMutez).toEqual(
+    Math.ceil(operationFeeMutez + liveMinimalFeeMutez * 1.2)
+  );
+  expect(estimate.totalCost).toEqual(estimate.minimalFeeMutez + estimate.burnFeeMutez);
+  expect(estimate.usingBaseFeeMutez).toEqual(
+    Math.max(DEFAULT_FEE_PARAMS.minimalFeeMutez, liveMinimalFeeMutez) + Math.ceil(operationFeeMutez)
+  );
 };
