@@ -91,7 +91,7 @@ octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of np
 
 | Package | npm | Source | Description | Notes |
 | --- | --- | --- | --- | --- |
-| `@taquito/sapling-wasm` | [npm](https://www.npmjs.com/package/@taquito/sapling-wasm) | [source](https://github.com/ecadlabs/sapling-wasm/tree/main/packages/sapling-wasm) | Sapling Wasm bindings for octez.js and compatible consumers. | Official octez.js package, published from the separate `ecadlabs/sapling-wasm` repository. |
+| `@tezos-x/sapling-wasm` | [npm](https://www.npmjs.com/package/@tezos-x/sapling-wasm) | [source](https://github.com/trilitech/sapling-sdk) | Sapling Wasm bindings for octez.js and compatible consumers. | Official octez.js package, published from the separate `trilitech/sapling-sdk` repository. |
 <!-- package-catalog:end -->
 
 ## API Documentation
