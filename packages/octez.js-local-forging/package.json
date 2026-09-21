@@ -17,7 +17,9 @@
   "module": "dist/octez.js-local-forging.es6.js",
   "typings": "dist/types/octez.js-local-forging.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"
@@ -51,7 +53,8 @@
     "version-stamp": "node ../octez.js/version-stamping.js",
     "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
     "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w",
-    "build-webpack": "webpack --progress --color"
+    "build-webpack": "webpack --progress --color",
+    "prepack": "node ../../scripts/copy-license-notice.js"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [

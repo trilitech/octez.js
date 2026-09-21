@@ -30,3 +30,5 @@ apps/**/node_modules
 .claude
 test-results/
 local-tarballs/
+packages/*/LICENSE
+packages/*/NOTICE

@@ -15,7 +15,9 @@
   "module": "dist/octez.js-tzip12.es6.js",
   "typings": "dist/types/octez.js-tzip12.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"
@@ -45,7 +47,8 @@
     "test": "vitest run --config ./vitest.config.ts",
     "version-stamp": "node ../octez.js/version-stamping.js",
     "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
-    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w"
+    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w",
+    "prepack": "node ../../scripts/copy-license-notice.js"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [

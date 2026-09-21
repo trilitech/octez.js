@@ -17,7 +17,9 @@
   "module": "dist/octez.js-remote-signer.es6.js",
   "typings": "dist/types/octez.js-remote-signer.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"
@@ -48,7 +50,8 @@
     "prebuild": "rimraf dist",
     "version-stamp": "node ../octez.js/version-stamping.js",
     "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
-    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w"
+    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w",
+    "prepack": "node ../../scripts/copy-license-notice.js"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [

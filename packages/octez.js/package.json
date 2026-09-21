@@ -19,7 +19,9 @@
   "module": "dist/octez.es6.js",
   "typings": "dist/types/octez.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"
@@ -54,7 +56,8 @@
     "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
     "build:release": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs && npm run build:web",
     "build:web": "webpack && node update-readme.js",
-    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w"
+    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w",
+    "prepack": "node ../../scripts/copy-license-notice.js"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
