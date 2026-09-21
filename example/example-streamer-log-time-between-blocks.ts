@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 
 // To run this script, run the following command in the example folder: `npm run example:streamer-block-time`

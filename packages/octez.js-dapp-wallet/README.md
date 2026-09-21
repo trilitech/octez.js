@@ -1,3 +1,9 @@
+<!--
+This file has been modified from its original Taquito source
+(https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+See NOTICE for details.
+-->
+
 # octez.js DApp Wallet package
 
 _Documentation can be found [here](https://octez.js.io/docs/wallet_API)_

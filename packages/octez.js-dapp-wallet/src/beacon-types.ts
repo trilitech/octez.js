@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 // Side-effect-free re-exports from @tezos-x/octez.connect-types.
 // Importing this module does NOT pull in the Beacon DAppClient or trigger
 // any beacon-dapp initialization. Safe for type-only or enum-only usage.

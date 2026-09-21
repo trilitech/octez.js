@@ -1,3 +1,9 @@
+<!--
+This file has been modified from its original Taquito source
+(https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+See NOTICE for details.
+-->
+
 Thank you for your contribution to octez.js.
 
 Before submitting this PR, please make sure:

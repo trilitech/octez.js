@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { OctezJsError } from '@tezos-x/octez.js-core';
 import { TicketDeprecatedTokenSchema } from '../schema/types';
 import { IntToken } from './comparable/int';

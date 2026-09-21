@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
 import { vi, type Mock } from 'vitest';
 import {
   outputsUnshieldedTx,

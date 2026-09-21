@@ -1,3 +1,9 @@
+<!--
+This file has been modified from its original Taquito source
+(https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+See NOTICE for details.
+-->
+
 ## Sapling Parameter Provenance
 
 octez.js now treats the Sapling proving parameters as immutable release artifacts served from the Nomadic-hosted mirror at `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling`, not as vendored package payloads.

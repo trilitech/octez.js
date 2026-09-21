@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 // import sourceMaps from 'rollup-plugin-sourcemaps';
 import camelCase from 'lodash.camelcase';
 import typescript from 'rollup-plugin-typescript2';

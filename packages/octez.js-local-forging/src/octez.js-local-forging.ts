@@ -2,6 +2,11 @@
  * @packageDocumentation
  * @module @tezos-x/octez.js-local-forging
  */
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
 
 import 'fast-text-encoding';
 if (typeof globalThis.TextEncoder === 'undefined') {

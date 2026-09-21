@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS, waitForRpcState } from '../../../config';
 import { ParameterValidationError } from '@tezos-x/octez.js-core';
 import { OpKind } from '@tezos-x/octez.js';

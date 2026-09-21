@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { Context, Extension } from "@tezos-x/octez.js";
 import { Handler, MetadataProvider, MetadataProviderInterface } from "./metadata-provider";
 import { HttpHandler } from "./handlers/http-handler";

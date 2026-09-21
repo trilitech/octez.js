@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
 import { ligoSample, ligoSampleMichelson } from '../../data/ligo-simple-contract';
 import { managerCode } from '../../data/manager_code';

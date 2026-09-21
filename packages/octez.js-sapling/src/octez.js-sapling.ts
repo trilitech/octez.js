@@ -2,6 +2,11 @@
  * @packageDocumentation
  * @module @tezos-x/octez.js-sapling
  */
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
 
 import { Buffer } from 'buffer';
 import BigNumberJs from 'bignumber.js';

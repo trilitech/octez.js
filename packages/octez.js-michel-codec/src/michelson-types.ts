@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
 import { Prim, Expr, IntLiteral, StringLiteral, BytesLiteral, List, Node } from './micheline';
 
 interface Prim0<PT extends string = string> extends Prim<PT> {

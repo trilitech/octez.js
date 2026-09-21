@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS } from '../../config';
 
 // TC-T-009 - Create Ticket - callback case 2 - address and option

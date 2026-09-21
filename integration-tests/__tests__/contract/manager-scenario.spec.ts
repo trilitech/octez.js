@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS, TAQUITO_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
 import { managerCode } from '../../data/manager_code';
 import { DefaultContractType, MANAGER_LAMBDA, OriginationOperation } from '@tezos-x/octez.js';

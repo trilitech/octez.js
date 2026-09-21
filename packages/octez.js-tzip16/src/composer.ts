@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { Context, ContractAbstraction, ContractProvider, Wallet } from '@tezos-x/octez.js';
 import { MetadataContext, Tzip16ContractAbstraction } from './tzip16-contract-abstraction';
 

@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { HttpBackend } from "@tezos-x/octez.js-http-utils";
 import { ContractAbstraction, ContractProvider, Wallet, Context } from "@tezos-x/octez.js";
 import { Handler, Tzip16Uri } from "../metadata-provider";

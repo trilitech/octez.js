@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 // Sets the version in workspace package.json files and syncs cross-workspace
 // dependency ranges without touching external packages that happen to share
 // the @tezos-x scope.

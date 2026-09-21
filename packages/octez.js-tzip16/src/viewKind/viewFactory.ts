@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { RpcClientInterface } from '@tezos-x/octez.js-rpc';
 import { ContractAbstraction, ContractProvider, Wallet, TzReadProvider } from '@tezos-x/octez.js';
 import { ViewImplementation, ViewImplementationType } from '../metadata-interface';

@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 // value is based on octez-client reveal operation gasLimit of each address type in Tallinn Protocol
 const REVEAL_GAS_LIMIT = {
   TZ1: 171,

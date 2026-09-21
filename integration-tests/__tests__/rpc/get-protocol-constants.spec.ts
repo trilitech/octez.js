@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS, NetworkType } from '../../config';
 import BigNumber from 'bignumber.js';
 import { ConstantsResponseProto024, ConstantsResponseProto025 } from '@tezos-x/octez.js-rpc';

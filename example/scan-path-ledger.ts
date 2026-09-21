@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 
 // This example can be flaky as the result depends on the state of the ledger device.
 // Sometimes the transport will fail before all the paths have been scanned

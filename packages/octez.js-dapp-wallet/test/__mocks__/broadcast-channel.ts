@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 // thanks to IsaccoSordo's contribution of https://github.com/trilitech/octez.js/pull/3015
 import { vi } from 'vitest';
 

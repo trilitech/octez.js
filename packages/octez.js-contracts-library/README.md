@@ -1,3 +1,9 @@
+<!--
+This file has been modified from its original Taquito source
+(https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+See NOTICE for details.
+-->
+
 # octez.js Contracts Library package
 
 `@tezos-x/octez.js-contracts-library` allows developers to specify static data related to contracts (i.e., script and entrypoints) avoiding octez.js to fetch them from the network. The `contracts-library` module provide a `ContractsLibrary` class that can be injected as an extension to a TezosToolkit instance in order to increase dApps performance.

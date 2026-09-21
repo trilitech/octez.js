@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { Contract, TezosToolkit } from '@tezos-x/octez.js';
 import { HttpResponseError, STATUS_CODE } from '@tezos-x/octez.js-http-utils';
 import { sleep } from '../../config';

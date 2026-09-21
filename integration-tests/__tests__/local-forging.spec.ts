@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { ProhibitedActionError } from "@tezos-x/octez.js-core";
 import { HttpResponseError } from '@tezos-x/octez.js-http-utils'
 import { CONFIGS } from "../config";

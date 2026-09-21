@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { MichelsonMap, TezosToolkit } from '@tezos-x/octez.js';
 import { tacoContractTzip16 } from "../integration-tests/data/modified-taco-contract"
 import { stringToBytes } from '@tezos-x/octez.js-utils';

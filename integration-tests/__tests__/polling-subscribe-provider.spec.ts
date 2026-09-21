@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS, TAQUITO_MUTEZ, sleep, waitForRpcState } from '../config';
 import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 import { rethrowInfrastructureRpcError } from '../test-helpers/rpc-error-assertions';

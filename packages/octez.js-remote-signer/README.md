@@ -1,3 +1,9 @@
+<!--
+This file has been modified from its original Taquito source
+(https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+See NOTICE for details.
+-->
+
 # octez.js Remote Signer package
 *TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
 

@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS } from "../../config";
 import { tacoContractTzip16 } from "../../data/modified-taco-contract"
 import { MichelsonMap } from "@tezos-x/octez.js";

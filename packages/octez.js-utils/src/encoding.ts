@@ -2,6 +2,11 @@
  * @packageDocumentation
  * @module @tezos-x/octez.js-utils
  */
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
 
 /*
  * Some code in this file is originally from sotez and eztz

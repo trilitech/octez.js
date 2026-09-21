@@ -7,6 +7,13 @@ assignees: ''
 
 ---
 
+<!--
+This file has been modified from its original Taquito source
+(https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+See NOTICE for details.
+-->
+
+
 **As octez.js user, I want to <...>, so that <I can see or avoid this outcome>**
 
 **Use cases:**

@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 import { MichelsonMap, TezosToolkit } from '@tezos-x/octez.js';
 import { fa2Contract } from '../integration-tests/data/fa2_contract';

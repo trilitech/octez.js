@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { Schema } from '../../src/octez.js-michelson-encoder';
 import { createToken } from '../../src/tokens/createToken';
 import { PairToken } from '../../src/tokens/pair';

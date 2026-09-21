@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { ContractAbstraction, ContractProvider, RpcReadAdapter, SaplingStateAbstraction } from '@tezos-x/octez.js';
 import { CONFIGS } from '../../config';
 import { InMemorySpendingKey, SaplingToolkit } from '@tezos-x/octez.js-sapling';

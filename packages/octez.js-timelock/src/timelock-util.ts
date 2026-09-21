@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import bigInt, { BigInteger } from 'big-integer';
 import { blake2b } from '@noble/hashes/blake2.js';
 import { TimelockInit, RNG } from './interface';

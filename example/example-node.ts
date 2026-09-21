@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { BigMapAbstraction, TezosToolkit } from '../packages/octez.js/src/octez';
 import { RpcClient } from '../packages/octez.js-rpc/src/octez.js-rpc';
 import { castToString } from '../packages/octez.js-rpc/src/utils/utils';

@@ -2,6 +2,11 @@
  * @packageDocumentation
  * @module @tezos-x/octez.js-contracts-library
  */
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
 
 import { EntrypointsResponse, ScriptedContracts } from '@tezos-x/octez.js-rpc';
 import { Extension, Context } from '@tezos-x/octez.js';

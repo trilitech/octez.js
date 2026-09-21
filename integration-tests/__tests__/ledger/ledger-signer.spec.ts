@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
 import { LedgerSigner, LedgerTransport, DerivationType } from '@tezos-x/octez.js-ledger-signer';
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";

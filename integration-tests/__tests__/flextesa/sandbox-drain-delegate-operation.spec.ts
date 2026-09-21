@@ -2,6 +2,11 @@
  *  This test is not being run by any runner, 
  *  will keep for future reference if an alternative sandbox is available
  */
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
 
 import { TezosToolkit } from "@tezos-x/octez.js";
 import { CONFIGS, sleep, isSandbox } from "../../config";

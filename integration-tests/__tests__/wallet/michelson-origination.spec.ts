@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { CONFIGS } from "../../config";
 import { idMichelsonCode, idInitData } from "../../data/id-contract";
 import { MichelCodecParser, NoopParser, Context, InvalidCodeParameter } from '@tezos-x/octez.js';

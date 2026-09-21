@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { Estimate } from '@tezos-x/octez.js';
 import { CONFIGS, waitForRpcState } from '../../config';
 CONFIGS().forEach(({ lib, rpc, setup }) => {

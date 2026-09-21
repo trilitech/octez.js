@@ -1,3 +1,9 @@
+/**
+ * This file has been modified from its original Taquito source
+ * (https://github.com/ecadlabs/taquito) as part of the octez.js fork.
+ * See NOTICE for details.
+ */
+
 import { HttpRequestFailed, HttpResponseError } from '@tezos-x/octez.js-http-utils';
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 import { TezosToolkit } from '@tezos-x/octez.js';
