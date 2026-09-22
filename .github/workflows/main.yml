@@ -160,11 +160,12 @@ jobs:
           FAUCET_URL: https://faucet.shadownet.teztnets.com
         run: |
           # Ordered by shard (index 1..4); element 0 is an unused placeholder.
+          # Rotated 2026-09-21 (ci-09-21-testnet-1..4) — shared with weeklynet.
           MASTERS=(_ \
-            tz1Lhwc4sYVNnE6nbaEARZH2CSxL866UqdtF \
-            tz1iSJyGQhn6oTUvc9JHE2y4skG2BVB3uq2w \
-            tz1Xj1voZkomub9QbCiG2aGPCrrx4NUhc9d8 \
-            tz1QhoXceXuKHmy3u9Ab7U1NdSsXynMVi5Rp)
+            tz1TEmNy5iHDKNrabrPKM8himzsjwejn81vX \
+            tz1LDr7y8MK57qvm59WYR4zYGwUrv379XynZ \
+            tz1XyX3rNwPeegAC7JJokhMck7CgPFtMrc39 \
+            tz1bYjFszsVgD5N5aFGfkz2CoKnNMpykFKFF)
           export PKHS="${MASTERS[$SHARD]}"
           node .github/scripts/topup-keygen-masters.mjs
       - name: Wait for keygen service
