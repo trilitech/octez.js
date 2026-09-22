@@ -7,7 +7,7 @@ import { managerCode } from '../../data/manager_code';
 import { InvalidAmountError } from '@tezos-x/octez.js-core';
 import { PrefixV2 } from '@tezos-x/octez.js-utils';
 import { waitForContractAt } from './contract-test-helpers';
-import { expectEstimate, resolveProtocol } from './estimation-test-helpers';
+import { expectEstimate, resolveProtocol, revealFeeMutez } from './estimation-test-helpers';
 
 CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
   const Tezos = lib;
@@ -531,19 +531,28 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
   describe(`Test estimate scenarios with very low balance using: ${rpc}`, () => {
     let LowAmountTez: TezosToolkit;
     let amt = 2000
+    // The margin below is tuned to land exactly on specific edge-case errors
+    // (empty_implicit_contract, subtraction_underflow), so it needs the
+    // *actual* reveal fee this account will be charged, not the static
+    // getRevealFee() table — that table is only a fallback for when
+    // mempool/filter is unavailable (see prepare-provider.ts's
+    // getRevealLimits) and no longer matches what gets charged on a healthy
+    // node since the reveal-pricing fix in cf6e324fa.
+    let lowAmountRevealFeeMutez: number;
 
     beforeAll(async () => {
       await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
       protocol = resolveProtocol(await Tezos.rpc.getProtocols());
       LowAmountTez = await createAddress(PrefixV2.Secp256k1SecretKey);
       const pkh = await LowAmountTez.signer.publicKeyHash();
-      amt += getRevealFee(pkh);
+      lowAmountRevealFeeMutez = await revealFeeMutez(LowAmountTez, pkh);
+      amt += lowAmountRevealFeeMutez;
       const transfer = await Tezos.contract.transfer({ to: pkh, mutez: true, amount: amt });
       await transfer.confirmation();
     });
 
     it('Verify .estimate.transfer to regular address', async () => {
-      let estimate = await LowAmountTez.estimate.transfer({ to: await Tezos.signer.publicKeyHash(), mutez: true, amount: amt - (1382 + getRevealFee(pkh)) });
+      let estimate = await LowAmountTez.estimate.transfer({ to: await Tezos.signer.publicKeyHash(), mutez: true, amount: amt - (1382 + lowAmountRevealFeeMutez) });
       expectEstimate(estimate, protocol, {
         [Protocols.PsUshuai]: [{
           gasLimit: 2101,
@@ -579,7 +588,7 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
 
     it('Estimate transfer to regular address with a fixed fee', async () => {
 
-      const params = { fee: 2000, to: await Tezos.signer.publicKeyHash(), mutez: true, amount: amt - (1382 + getRevealFee(pkh)) };
+      const params = { fee: 2000, to: await Tezos.signer.publicKeyHash(), mutez: true, amount: amt - (1382 + lowAmountRevealFeeMutez) };
       await expect(LowAmountTez.estimate.transfer(params)).rejects.toMatchObject({
         id: expect.stringContaining('empty_implicit_contract'),
       });
@@ -595,7 +604,7 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
 
     it('Estimate transfer to regular address with insufficient balance to pay storage for allocation', async () => {
       await expect(
-        LowAmountTez.estimate.transfer({ to: await (await createAddress()).signer.publicKeyHash(), mutez: true, amount: amt - (1382 + getRevealFee(pkh)) })
+        LowAmountTez.estimate.transfer({ to: await (await createAddress()).signer.publicKeyHash(), mutez: true, amount: amt - (1382 + lowAmountRevealFeeMutez) })
       ).rejects.toEqual(
         expect.objectContaining({
           errors: expect.arrayContaining([expect.objectContaining({ id: expect.stringContaining('cannot_pay_storage_fee') })]),
