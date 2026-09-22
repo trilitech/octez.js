@@ -23,6 +23,14 @@ The default version is `0.9.0`. The `next` version contains unreleased documenta
 - `web3js_taquito` - web3js vs octez.js
 - `fallback_rpc` - Fallback RPC URLs
 
+### Architecture
+- `arch_tezos_toolkit` - Architecture: The TezosToolkit
+- `arch_framework` - Architecture: Framework & Context
+- `arch_entry_points` - Architecture: Packages & Entry Points
+- `arch_operations` - Architecture: Operations
+- `arch_michelson_encoder` - Architecture: Michelson Encoding
+- `arch_runcode_rpc` - Architecture: runCode & RPC
+
 ### octez.js Providers
 - `prepare` - Prepare Provider
 - `estimate` - Estimate Provider
