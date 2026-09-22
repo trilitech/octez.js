@@ -153,20 +153,12 @@ jobs:
       # four shards never contend on a counter. Best-effort (never fails the job).
       - name: Top up this shard's keygen master
         env:
-          SHARD: ${{ matrix.shard }}
           MIN_BALANCE_TEZ: '1200'
           TARGET_TEZ: '1600'
           RPC_URL: https://rpc.shadownet.teztnets.com
           FAUCET_URL: https://faucet.shadownet.teztnets.com
         run: |
-          # Ordered by shard (index 1..4); element 0 is an unused placeholder.
-          # Rotated 2026-09-21 (ci-09-21-testnet-1..4) — shared with weeklynet.
-          MASTERS=(_ \
-            tz1TEmNy5iHDKNrabrPKM8himzsjwejn81vX \
-            tz1LDr7y8MK57qvm59WYR4zYGwUrv379XynZ \
-            tz1XyX3rNwPeegAC7JJokhMck7CgPFtMrc39 \
-            tz1bYjFszsVgD5N5aFGfkz2CoKnNMpykFKFF)
-          export PKHS="${MASTERS[$SHARD]}"
+          export PKHS="$(node .github/scripts/testnet-master-pkh.mjs '${{ matrix.shard }}')"
           node .github/scripts/topup-keygen-masters.mjs
       - name: Wait for keygen service
         run: bash .github/scripts/wait-for-keygen.sh
@@ -374,14 +366,15 @@ jobs:
           ALLOWED_NETWORKS: weeklynet
           RPC_URL: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
           FAUCET_URL: ${{ needs.weeklynet-resolve-rpc.outputs.faucet_url }}
+          MASTER_KEY: ${{ secrets.KEYGEN_MASTER_KEY_1 }}
           DEFAULT_FUND_TEZ: '10'
           FUND_HEADROOM_TEZ: '1'
-          # No MASTER_KEY: a persistent master account would just be wiped by
-          # the next reset too, so this (and the shard matrix below) fund
-          # every key on demand via the faucet's PoW challenge instead of a
-          # pre-funded account, unlike shadownet/ushuaianet. Slower and more
-          # exposed to faucet flakiness — accepted for now; revisit if that
-          # proves too unreliable in practice.
+          # Same master accounts as shadownet (see testnet-master-pkh.mjs),
+          # now funded on weeklynet too: they're baked into weeklynet's
+          # genesis bootstrap on every weekly reset, so — unlike before —
+          # they survive the reset instead of being wiped by it. Runs before
+          # the shard matrix below (via `needs`), so master 1 is never used
+          # concurrently with shard 1's own use of it.
           RECLAIM_ENABLED: 'false'
         ports:
           - 3000:3000
@@ -400,6 +393,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Top up keygen master 1
+        env:
+          MIN_BALANCE_TEZ: '1200'
+          TARGET_TEZ: '1600'
+          RPC_URL: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
+          FAUCET_URL: ${{ needs.weeklynet-resolve-rpc.outputs.faucet_url }}
+        run: |
+          export PKHS="$(node .github/scripts/testnet-master-pkh.mjs 1)"
+          node .github/scripts/topup-keygen-masters.mjs
       - name: Wait for keygen service
         run: bash .github/scripts/wait-for-keygen.sh
       - name: Originate known contracts on weeklynet
@@ -449,12 +451,10 @@ jobs:
       matrix:
         shard: [1, 2, 3, 4]
     runs-on: ubuntu-latest
-    # No MASTER_KEY, unlike the shadownet matrix above: a persistent master
-    # account would be wiped by weeklynet's own Wednesday reset just like any
-    # other account, so every shard funds its ephemeral keys on demand via
-    # the faucet instead. Four shards hitting the same faucet concurrently at
-    # once is untested at this scale — watch for PoW-challenge contention or
-    # latency here first if this lane turns out to be flaky.
+    # Same master accounts as shadownet's matrix above (see
+    # testnet-master-pkh.mjs) — one per shard, funded on weeklynet too and
+    # now baked into its genesis bootstrap on every weekly reset, so they
+    # survive the reset instead of being wiped by it.
     services:
       keygen:
         image: ghcr.io/trilitech/octezjs-keygen:latest
@@ -466,6 +466,7 @@ jobs:
           ALLOWED_NETWORKS: weeklynet
           RPC_URL: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
           FAUCET_URL: ${{ needs.weeklynet-resolve-rpc.outputs.faucet_url }}
+          MASTER_KEY: ${{ secrets[format('KEYGEN_MASTER_KEY_{0}', matrix.shard)] }}
           DEFAULT_FUND_TEZ: '10'
           FUND_HEADROOM_TEZ: '1'
           RECLAIM_ENABLED: 'false'
@@ -479,6 +480,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Top up this shard's keygen master
+        env:
+          MIN_BALANCE_TEZ: '1200'
+          TARGET_TEZ: '1600'
+          RPC_URL: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
+          FAUCET_URL: ${{ needs.weeklynet-resolve-rpc.outputs.faucet_url }}
+        run: |
+          export PKHS="$(node .github/scripts/testnet-master-pkh.mjs '${{ matrix.shard }}')"
+          node .github/scripts/topup-keygen-masters.mjs
       - name: Wait for keygen service
         run: bash .github/scripts/wait-for-keygen.sh
       - id: run-tests
@@ -522,15 +532,13 @@ jobs:
           TEZOS_WEEKLYNET_TICKET_CONTRACT: ${{ needs.weeklynet-originate.outputs.ticket_contract }}
           TAQUITO_KEYGEN_URL: http://localhost:3000
           TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
-          # Higher than shadownet's 3/2: shadownet's master-account funding
-          # basically never fails, so 3 outer attempts is plenty. Weeklynet's
-          # faucet-funded keys occasionally exhaust the keygen's own internal
-          # retry under concurrent load from all 4 shards (observed: ~4-5
-          # exhaustions/shard over a full run, out of ~90-100 transient 500s
-          # that resolved on retry). More outer attempts gives a stuck
-          # acquisition more independent tries spread over more wall-clock
-          # time; a lower prefetch halves each shard's own self-inflicted
-          # concurrent load on the shared faucet.
+          # Higher than shadownet's 3/2, left as-is for now: this was tuned
+          # for weeklynet's old faucet-funded path (observed ~4-5
+          # exhaustions/shard over a full run under 4-shard concurrent load),
+          # which is no longer how these keys are funded now that weeklynet
+          # uses the same master-account funding as shadownet (see
+          # testnet-master-pkh.mjs). Worth revisiting once that's been
+          # observed live — not tightened blindly here.
           TAQUITO_FRESH_KEY_RETRY_MS: '12000'
           TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '6'
           TAQUITO_FRESH_KEY_PREFETCH: '1'
