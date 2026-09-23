@@ -24,7 +24,7 @@ In the following example, we transfer 0.5ꜩ from a `tz1aaYoabvj2DQtpHz74Z83fSNj
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 
-const Tezos = new TezosToolkit('https://rpc.ghostnet.teztnets.com');
+const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
 
 // Use your own private key (get one from a faucet for testnet)
 const privateKey = 'edsk...'; // Your private key here
@@ -36,7 +36,7 @@ const address = 'tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3xY';
 const operation = await Tezos.contract.transfer({ to: address, amount: amount });
 console.log(`Waiting for ${operation.hash} to be confirmed...`);
 await operation.confirmation(1);
-console.log(`Operation injected: https://ghostnet.tzkt.io/${operation.hash}`);
+console.log(`Operation injected: https://shadownet.tzkt.io/${operation.hash}`);
 ```
 
 ## Transfers involving "originated" KT1 addresses

@@ -32,11 +32,6 @@
       "provider": "trilitech"
     },
     {
-      "net": "ghostnet",
-      "url": "https://tezos-ghostnet.octez.io",
-      "provider": "trilitech"
-    },
-    {
       "net": "shadownet",
       "url": "https://tezos-shadownet.octez.io",
       "provider": "trilitech"
@@ -52,18 +47,13 @@
       "provider": "smartpy"
     },
     {
-      "net": "ghostnet",
-      "url": "https://ghostnet.smartpy.io",
+      "net": "shadownet",
+      "url": "https://shadownet.smartpy.io",
       "provider": "smartpy"
     },
     {
       "net": "mainnet",
       "url": "https://rpc.tzbeta.net",
-      "provider": "tezosfoundation"
-    },
-    {
-      "net": "ghostnet",
-      "url": "https://rpc.ghostnet.teztnets.com",
       "provider": "tezosfoundation"
     },
     {
@@ -79,11 +69,6 @@
     {
       "net": "mainnet",
       "url": "https://rpc.tzkt.io/mainnet",
-      "provider": "tzkt"
-    },
-    {
-      "net": "ghostnet",
-      "url": "https://rpc.tzkt.io/ghostnet",
       "provider": "tzkt"
     },
     {
