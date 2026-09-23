@@ -26,6 +26,14 @@ export type OperationStatus = 'pending' | 'unknown' | OperationResultStatusEnum;
 
 const MAX_BRANCH_ANCESTORS = 60;
 const env = typeof process !== 'undefined' ? process.env : undefined;
+
+// TODO: TAQUITO_OP_TRACE* are deprecated; remove once consumers migrate.
+for (const name of ['TAQUITO_OP_TRACE', 'TAQUITO_OP_TRACE_VERBOSE', 'TAQUITO_OP_TRACE_SLOW_MS']) {
+  if (env?.[name] !== undefined) {
+    console.warn(`${name} is deprecated and will be removed in a future release.`);
+  }
+}
+
 const walletOpTraceEnabled = /^(1|true)$/i.test(env?.TAQUITO_OP_TRACE ?? '');
 const walletOpTraceVerbose = /^(1|true)$/i.test(env?.TAQUITO_OP_TRACE_VERBOSE ?? '');
 const parsedWalletOpTraceSlowMs = Number(env?.TAQUITO_OP_TRACE_SLOW_MS ?? '60000');
