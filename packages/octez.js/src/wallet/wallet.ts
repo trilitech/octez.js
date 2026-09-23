@@ -238,6 +238,21 @@ export class Wallet {
     return this._pk;
   }
 
+  /**
+   * Discard the cached PKH and PK so the next `pkh()`/`pk()` re-reads them from the
+   * wallet provider.
+   *
+   * Called by `TezosToolkit.setWalletProvider` when a provider is installed: the cached
+   * identity belongs to whichever provider (and, for a multi-network wallet, whichever
+   * chain) was active when it was read, and is wrong the moment that changes.
+   *
+   * @internal Not part of the supported API — stripped from the published types.
+   */
+  resetIdentityCache() {
+    this._pkh = undefined;
+    this._pk = undefined;
+  }
+
   private walletCommand = <T>(send: () => Promise<T>) => {
     return {
       send,
