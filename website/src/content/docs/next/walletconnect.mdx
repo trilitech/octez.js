@@ -33,7 +33,7 @@ import { NetworkType, PermissionScopeMethods } from "@tezos-x/octez.js-wallet-co
 
 await walletConnect.requestPermissions({
   permissionScope: {
-    networks: [NetworkType.GHOSTNET],
+    networks: [NetworkType.SHADOWNET],
     methods: [
       PermissionScopeMethods.TEZOS_SEND,
       PermissionScopeMethods.TEZOS_SIGN,
@@ -64,7 +64,7 @@ In the same order of ideas, `setActiveNetwork` must be called to specify the act
 Here is a complete example of using wallet connect to perform a transfer operation:
 
 ```js live noConfig
-Tezos.setRpcProvider('https://rpc.ghostnet.teztnets.com');
+Tezos.setRpcProvider('https://rpc.shadownet.teztnets.com');
 
 try {
   const walletConnect = await WalletConnect.init({
@@ -80,7 +80,7 @@ try {
 
   await walletConnect.requestPermissions({
     permissionScope: {
-      networks: [NetworkType.GHOSTNET],
+      networks: [NetworkType.SHADOWNET],
       methods: [PermissionScopeMethods.TEZOS_SEND],
     },
   });
@@ -92,7 +92,7 @@ try {
 
   console.log(`Waiting for ${op.opHash} to be confirmed...`);
   await op.confirmation();
-  console.log(`Operation injected: https://ghostnet.tzkt.io/${op.opHash}`);
+  console.log(`Operation injected: https://shadownet.tzkt.io/${op.opHash}`);
 } catch (error) {
   console.log(error);
 }
