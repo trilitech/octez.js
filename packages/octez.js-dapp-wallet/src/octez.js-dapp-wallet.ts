@@ -60,7 +60,7 @@ export type { DAppClientOptions } from '@tezos-x/octez.connect-dapp';
  * Users can still override specific regions (or the entire list) by passing
  * their own `matrixNodes` in the BeaconWallet constructor options.
  */
-const TAQUITO_CURATED_MATRIX_NODES: NodeDistributions = {
+const OCTEZJS_CURATED_MATRIX_NODES: NodeDistributions = {
   [Regions.EUROPE_WEST]: [
     'beacon-node-1.octez.io',
     'beacon-node-2.octez.io',
@@ -97,7 +97,7 @@ export class BeaconWallet implements WalletProvider {
 
   constructor(options: DAppClientOptions) {
     const matrixNodes: NodeDistributions = {
-      ...TAQUITO_CURATED_MATRIX_NODES,
+      ...OCTEZJS_CURATED_MATRIX_NODES,
       ...(options.matrixNodes ?? {}),
     };
     this.client = getDAppClientInstance({ ...options, matrixNodes });
