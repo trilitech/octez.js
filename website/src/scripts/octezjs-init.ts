@@ -105,7 +105,7 @@ async function init() {
     const { LedgerSigner, DerivationType, HDPathTemplate } = await import('@tezos-x/octez.js-ledger-signer');
     const { WalletConnect, NetworkType, PermissionScopeMethods } = await import("@tezos-x/octez.js-wallet-connect");
 
-    const Tezos = new TezosToolkit('https://rpc.ghostnet.teztnets.com');
+    const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
     window.Tezos = Tezos;
     window.TezosToolkit = TezosToolkit;
     window.InMemorySigner = InMemorySigner;
@@ -153,7 +153,7 @@ async function init() {
     window.contractStorageWithoutAnnot = contractStorageWithoutAnnot;
     window.managerCode = managerCode;
 
-    console.log('octez.js initialized with Ghostnet RPC');
+    console.log('octez.js initialized with Shadownet RPC');
 
     // Resolve the global promise if we created the resolvers
     if (resolveInit) resolveInit();
@@ -220,7 +220,7 @@ window.connectWallet = async function () {
     if (!window.wallet) {
       const options = {
         name: 'octez.js Docs',
-        network: { type: 'ghostnet' as const },
+        network: { type: 'shadownet' as const },
         enableMetrics: true,
       };
       window.wallet = new window.BeaconWallet(options);
