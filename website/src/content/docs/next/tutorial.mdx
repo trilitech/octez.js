@@ -97,7 +97,7 @@ Open the file `index.ts` and replace the code with the following:
 ```ts
 import { TezosToolkit } from "@tezos-x/octez.js";
 
-const Tezos = new TezosToolkit("https://rpc.ghostnet.teztnets.com");
+const Tezos = new TezosToolkit("https://rpc.shadownet.teztnets.com");
 
 Tezos.tz.getBalance("tz1YvE7Sfo92ueEPEdZceNWd5MWNeMNSt16L").then(balance => {
     console.log(balance.toNumber());
@@ -185,7 +185,7 @@ And to implement all these, you need detailed information about different data t
 Returning to our dApp, we now want to send an operation to the blockchain. When reading data from the blockchain we can simply send a read request. When sending an operation, we need to prove that we own the address. To do this we need to sign the operation with the private key of the address.
 
 For the purpose of this section, we are using a pre-defined address that is being shared with everyone else going through this tutorial. **Don't use this address for anything important.** Additionally, there are two possible reasons why the transfer operation may fail:
-1. Other people testing the code have consumed all the ꜩ in the address, so your operation will fail because of insufficient funds. You can head over to the [ghostnet faucet](https://faucet.ghostnet.teztnets.com/) and send some ꜩ to the address for free. Or you can get free Testnet Tez right from your terminal: `npx @oxheadalpha/get-tez <your-address> --amount 25 --network ghostnet`
+1. Other people testing the code have consumed all the ꜩ in the address, so your operation will fail because of insufficient funds. You can head over to the [shadownet faucet](https://faucet.shadownet.teztnets.com/) and send some ꜩ to the address for free. Or you can get free Testnet Tez right from your terminal: `npx @oxheadalpha/get-tez <your-address> --amount 25 --network shadownet`
 2. Another person is sending an operation from this address at the same time as you. One address can only send one operation to each block. This is very unlikely in this case, but if that happens you can simply wait a moment and try again.
 
 <details>
@@ -197,11 +197,11 @@ For the purpose of this section, we are using a pre-defined address that is bein
     docker run --pull always -it --entrypoint sh docker.io/tezos/tezos:latest
 
     # You should now be inside the docker container
-    octez-client -E https://rpc.ghostnet.teztnets.com gen keys mysamplekey -s secp256k1
-    octez-client -E https://rpc.ghostnet.teztnets.com show address mysamplekey -S
+    octez-client -E https://rpc.shadownet.teztnets.com gen keys mysamplekey -s secp256k1
+    octez-client -E https://rpc.shadownet.teztnets.com show address mysamplekey -S
   ```
 
-  The new address you just created will have a balance of zero. For the testnet, You can go to [ghostnet faucet](https://faucet.ghostnet.teztnets.com/) and send some ꜩ to it for free. On mainnet, you need to buy actual Tez on an exchange.
+  The new address you just created will have a balance of zero. For the testnet, You can go to [shadownet faucet](https://faucet.shadownet.teztnets.com/) and send some ꜩ to it for free. On mainnet, you need to buy actual Tez on an exchange.
 </details>
 
 > [!CAUTION]
@@ -222,7 +222,7 @@ import { InMemorySigner } from "@tezos-x/octez.js-signer";
 import { TezosToolkit } from "@tezos-x/octez.js";
 
 const main = async () => {
-    const Tezos = new TezosToolkit("https://rpc.ghostnet.teztnets.com");
+    const Tezos = new TezosToolkit("https://rpc.shadownet.teztnets.com");
 
     // DANGER: FOR DEMONSTRATION ONLY! DO NOT DO THIS IN PRODUCTION, KEEP YOUR SECRETS SAFE!
     const signer = await InMemorySigner.fromSecretKey('spsk29SxqYRjnreqGzsYiAUEqxyhDwD8j2J57pJjaGgGtReZVD2UiD');
@@ -390,7 +390,7 @@ import { BeaconWallet } from "@tezos-x/octez.js-dapp-wallet";
 
 const App = () => {
   const [Tezos] = useState<TezosToolkit>(
-    new TezosToolkit("https://rpc.ghostnet.teztnets.com")
+    new TezosToolkit("https://rpc.shadownet.teztnets.com")
   );
   const [wallet, setWallet] = useState<BeaconWallet | undefined>(undefined);
   const [userAddress, setUserAddress] = useState<string | undefined>(undefined);
@@ -453,8 +453,8 @@ const ConnectButton = ({
 			const wallet = new BeaconWallet({
 				name: "My dApp",
 				network: {
-					type: NetworkType.GHOSTNET,
-					rpcUrl: "https://rpc.ghostnet.teztnets.com",
+					type: NetworkType.SHADOWNET,
+					rpcUrl: "https://rpc.shadownet.teztnets.com",
 				},
 				enableMetrics: true,
 			});
@@ -575,7 +575,7 @@ Make sure that the command `npm run dev` is still running in the terminal and th
 
 In your app you should now see the "Connect Wallet" button in the browser. Clicking on it opens the wallet selection modal where you can choose your favorite wallet and connect to it. Once connected, you should see the "Send" button. You can enter an address and an amount (in Mutez, notice the `mutez: true` in `Transfer.tsx`) and click on the "Send" button to send ꜩ to the address.
 
-If you have not set up a wallet before, clicking on the Kukai wallet opens a page that asks you to create a new wallet. Remember to visit the [ghostnet faucet](https://faucet.ghostnet.teztnets.com/) to fund your wallet with some ꜩ. If you want to use that wallet for real ꜩ, you need to back up the mnemonic phrase. But remember that the mnemonic phrase is a secret. Anyone who has access to it can steal your ꜩ.
+If you have not set up a wallet before, clicking on the Kukai wallet opens a page that asks you to create a new wallet. Remember to visit the [shadownet faucet](https://faucet.shadownet.teztnets.com/) to fund your wallet with some ꜩ. If you want to use that wallet for real ꜩ, you need to back up the mnemonic phrase. But remember that the mnemonic phrase is a secret. Anyone who has access to it can steal your ꜩ.
 
 ### Preparing for Production
 
