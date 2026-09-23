@@ -120,7 +120,7 @@ try {
   console.log(`Waiting for ${operation.hash} to be confirmed...`);
   const hash = await operation.confirmation(1)
 
-  console.log(`Operation injected: https://ghostnet.tzkt.io/${hash}/operations`)
+  console.log(`Operation injected: https://shadownet.tzkt.io/${hash}/operations`)
 } catch (error) {
   console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`);
 }
@@ -148,7 +148,7 @@ try {
   console.log(`Waiting for ${operation.opHash} to be confirmed...`);
   const confirmation = await operation.confirmation(1);  
 
-  console.log(`Operation injected: https://ghostnet.tzkt.io/${confirmation.block.hash}/operations`)
+  console.log(`Operation injected: https://shadownet.tzkt.io/${confirmation.block.hash}/operations`)
 } catch (error) {
   console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`);
 }
@@ -161,7 +161,7 @@ try {
 
 Calling smart contract operations requires a configured signer, as it involves modifying data on the blockchain.
 
-Details about the smart contract used in this example can be found on tzkt.io [here](https://ghostnet.tzkt.io/KT1BJadpDyLCACMH7Tt9xtpx4dQZVKw9cDF7/operations/). To learn more about writing smart contracts, see [SmartPy](https://smartpy.io/) or [Ligo](https://ligolang.org/).
+Details about the smart contract used in this example can be found on tzkt.io [here](https://shadownet.tzkt.io/KT1R7X47cubgJzgbGERdDarhgKHFGZotsjTU/operations/). To learn more about writing smart contracts, see [SmartPy](https://smartpy.io/) or [Ligo](https://ligolang.org/).
 
 <Tabs
 defaultValue="contractAPI"
@@ -173,7 +173,7 @@ values={[
 
 ```js live
 try {
-  const contract = await Tezos.contract.at('KT1BJadpDyLCACMH7Tt9xtpx4dQZVKw9cDF7');
+  const contract = await Tezos.contract.at('KT1R7X47cubgJzgbGERdDarhgKHFGZotsjTU');
 
   console.log(`Incrementing storage value by 7...`);
   const operation = await contract.methodsObject.increment(7).send();
@@ -181,7 +181,7 @@ try {
   console.log(`Waiting for ${operation.hash} to be confirmed...`);
   const hash = await operation.confirmation(1);
 
-  console.log(`Operation injected: https://ghostnet.tzkt.io/${hash}/operations`);
+  console.log(`Operation injected: https://shadownet.tzkt.io/${hash}/operations`);
 } catch (error) {
   console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`);
 }
@@ -198,7 +198,7 @@ Interacting with contracts using with the wallet API is very similar but with a 
 
 ```js live wallet
 try {
-  const contract = await Tezos.wallet.at('KT1BJadpDyLCACMH7Tt9xtpx4dQZVKw9cDF7');
+  const contract = await Tezos.wallet.at('KT1R7X47cubgJzgbGERdDarhgKHFGZotsjTU');
 
   console.log(`Incrementing storage value by 7...`);
   const operation = await contract.methodsObject.increment(7).send();
@@ -206,7 +206,7 @@ try {
   console.log(`Waiting for ${operation.opHash} to be confirmed...`);
   const confirmation = await operation.confirmation(1);
 
-  console.log(`Operation injected: https://ghostnet.tzkt.io/${confirmation.block.hash}/operations`); 
+  console.log(`Operation injected: https://shadownet.tzkt.io/${confirmation.block.hash}/operations`); 
 } catch (error) {
   console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`);
 }
