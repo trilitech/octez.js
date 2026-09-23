@@ -11,6 +11,13 @@ if (typeof globalThis.fetch !== 'function') {
 
 const env = typeof process !== 'undefined' ? process.env : undefined;
 
+// TODO: TAQUITO_HTTP_* are deprecated; remove once consumers migrate.
+for (const name of ['TAQUITO_HTTP_TRACE', 'TAQUITO_HTTP_RETRY_COUNT', 'TAQUITO_HTTP_RETRY_BASE_MS']) {
+  if (env?.[name] !== undefined) {
+    console.warn(`${name} is deprecated and will be removed in a future release.`);
+  }
+}
+
 const httpTraceEnabled =
   /^(1|true)$/i.test(env?.TAQUITO_HTTP_TRACE ?? '') || env?.RUNNER_DEBUG === '1';
 const parsedHttpRetryCount = Number(env?.TAQUITO_HTTP_RETRY_COUNT ?? '1');
@@ -187,9 +194,9 @@ export interface HttpRequestOptions {
  * falling back to exponential backoff with jitter. Configure via environment
  * variables:
  *
- * - `TAQUITO_HTTP_RETRY_COUNT` - max retries (default `1`)
- * - `TAQUITO_HTTP_RETRY_BASE_MS` - base delay in ms (default `100`)
- * - `TAQUITO_HTTP_TRACE` - emit JSON request logs when `true` or `1`
+ * - `TAQUITO_HTTP_RETRY_COUNT` - max retries (default `1`) - **deprecated**
+ * - `TAQUITO_HTTP_RETRY_BASE_MS` - base delay in ms (default `100`) - **deprecated**
+ * - `TAQUITO_HTTP_TRACE` - emit JSON request logs when `true` or `1` - **deprecated**
  */
 export class HttpBackend {
   /**
