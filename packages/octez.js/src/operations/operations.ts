@@ -27,16 +27,27 @@ import { InvalidOperationHashError } from '@tezos-x/octez.js-core';
 
 const env = typeof process !== 'undefined' ? process.env : undefined;
 
-// TODO: TAQUITO_OP_TRACE* are deprecated; remove once consumers migrate.
-for (const name of ['TAQUITO_OP_TRACE', 'TAQUITO_OP_TRACE_VERBOSE', 'TAQUITO_OP_TRACE_SLOW_MS']) {
-  if (env?.[name] !== undefined) {
-    console.warn(`${name} is deprecated and will be removed in a future release.`);
+// TODO: TAQUITO_OP_TRACE* are deprecated in favor of OCTEZJS_OP_TRACE*; remove once consumers migrate.
+const OP_TRACE_ENV_VAR_RENAMES: [old: string, replacement: string][] = [
+  ['TAQUITO_OP_TRACE', 'OCTEZJS_OP_TRACE'],
+  ['TAQUITO_OP_TRACE_VERBOSE', 'OCTEZJS_OP_TRACE_VERBOSE'],
+  ['TAQUITO_OP_TRACE_SLOW_MS', 'OCTEZJS_OP_TRACE_SLOW_MS'],
+];
+for (const [oldName, newName] of OP_TRACE_ENV_VAR_RENAMES) {
+  if (env?.[oldName] !== undefined) {
+    console.warn(
+      `${oldName} is deprecated and will be removed in a future release; use ${newName} instead.`
+    );
   }
 }
 
-const opTraceEnabled = /^(1|true)$/i.test(env?.TAQUITO_OP_TRACE ?? '');
-const opTraceVerbose = /^(1|true)$/i.test(env?.TAQUITO_OP_TRACE_VERBOSE ?? '');
-const parsedOpTraceSlowMs = Number(env?.TAQUITO_OP_TRACE_SLOW_MS ?? '60000');
+const opTraceEnabled = /^(1|true)$/i.test(env?.OCTEZJS_OP_TRACE ?? env?.TAQUITO_OP_TRACE ?? '');
+const opTraceVerbose = /^(1|true)$/i.test(
+  env?.OCTEZJS_OP_TRACE_VERBOSE ?? env?.TAQUITO_OP_TRACE_VERBOSE ?? ''
+);
+const parsedOpTraceSlowMs = Number(
+  env?.OCTEZJS_OP_TRACE_SLOW_MS ?? env?.TAQUITO_OP_TRACE_SLOW_MS ?? '60000'
+);
 const opTraceSlowMs =
   Number.isFinite(parsedOpTraceSlowMs) && parsedOpTraceSlowMs >= 0 ? parsedOpTraceSlowMs : 60000;
 
