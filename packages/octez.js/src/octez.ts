@@ -244,6 +244,9 @@ export class TezosToolkit {
   /**
    * Sets wallet provider on the Tezos octez.js instance
    *
+   * Installing a provider discards any PKH/PK this toolkit had cached, so the next read
+   * comes from the newly installed provider rather than the previous one.
+   *
    * @param wallet wallet to use to interact with the Tezos network
    *
    * @example Tezos.setWalletProvider(...)

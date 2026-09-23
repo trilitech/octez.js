@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.prod.json",
   "compilerOptions": {
     "declarationDir": "./dist/types",
-    "stripInternal": true,
     "outDir": "./dist/lib"
   },
   "include": ["./src/**/*"]

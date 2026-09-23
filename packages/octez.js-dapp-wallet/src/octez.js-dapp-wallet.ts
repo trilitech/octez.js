@@ -5,6 +5,7 @@
 
 import {
   AccountInfo,
+  BeaconEvent,
   DAppClient,
   DAppClientOptions,
   RequestPermissionInput,
@@ -12,12 +13,14 @@ import {
   getDAppClientInstance,
   isValidTezosCaip2,
   normalizeTezosCaip2,
+  RequestPermissionNetwork,
   SigningType,
   NodeDistributions,
   Regions,
   tezosCaip2FromNetworkType,
 } from '@tezos-x/octez.connect-dapp';
 import {
+  BeaconActiveAccountHasNoChainId,
   BeaconInvalidNetwork,
   BeaconNetworkChangedDuringRequest,
   BeaconNetworkRpcUrlUnknown,
@@ -36,6 +39,7 @@ import {
   WalletIncreasePaidStorageParams,
   WalletOriginateParams,
   TezosToolkit,
+  TzReadProvider,
   WalletProvider,
   WalletTransferParams,
   WalletStakeParams,
@@ -51,6 +55,7 @@ import { UnsupportedActionError } from '@tezos-x/octez.js-core';
 
 export { VERSION } from './version';
 export {
+  BeaconActiveAccountHasNoChainId,
   BeaconInvalidNetwork,
   BeaconNetworkChangedDuringRequest,
   BeaconNetworkRpcUrlUnknown,
@@ -63,7 +68,7 @@ export {
 // a direct beacon-dapp dependency. These types live only in beacon-dapp (not in
 // beacon-types), so they come with beacon-dapp's side effects. For side-effect-free
 // beacon types (NetworkType, SigningType, etc.), use '@tezos-x/octez.js-dapp-wallet/types'.
-export { BeaconEvent } from '@tezos-x/octez.connect-dapp';
+export { BeaconEvent };
 export type { DAppClientOptions } from '@tezos-x/octez.connect-dapp';
 
 /**
@@ -106,14 +111,7 @@ const TAQUITO_CURATED_MATRIX_NODES: NodeDistributions = {
  * it is re-declared on every page load by construction, so it survives a reload without
  * anything being persisted.
  */
-export interface BeaconWalletNetwork {
-  /** CAIP-2 chain id, e.g. `tezos:NetXdQprcVkpaWU`. The bare `NetX...` form is accepted. */
-  chainId: string;
-  /** RPC endpoint this dApp uses for the chain. */
-  rpcUrl?: string;
-  /** Human-readable label for the dApp's own UI. */
-  name?: string;
-}
+export type BeaconWalletNetwork = RequestPermissionNetwork;
 
 /**
  * One network granted for the current session, as reported by
@@ -127,9 +125,16 @@ export interface BeaconNetworkInfo {
    */
   chainId?: string;
   name: string;
-  /** The URL that will be used: the dApp's declared one, else the wallet's. */
+  /**
+   * The endpoint this dApp declared for the chain, and the only one
+   * {@link BeaconWallet.setActiveNetwork} will point a toolkit at.
+   */
   rpcUrl?: string;
-  /** What the wallet suggested, kept separate so a dApp can opt into it deliberately. */
+  /**
+   * What the wallet suggested. Never adopted automatically - a peer that chooses the node
+   * the dApp reads from could serve it fabricated state - but readable so a dApp can pass
+   * it back deliberately.
+   */
   walletRpcUrl?: string;
 }
 
@@ -147,7 +152,7 @@ export interface SetActiveNetworkOptions {
    * TezosToolkit exposes no getter for the old one, so a custom provider is otherwise
    * replaced by the default RPC-backed adapter.
    */
-  readProvider?: Parameters<TezosToolkit['setProvider']>[0]['readProvider'];
+  readProvider?: TzReadProvider;
 }
 
 /**
@@ -202,7 +207,46 @@ export class BeaconWallet implements WalletProvider {
 
     // `networks` is octez.js's own option and is not understood by the Beacon client.
     this.client = getDAppClientInstance({ ...clientOptions, matrixNodes });
+    this.watchForWalletDrivenSwitches();
   }
+
+  /**
+   * A wallet can move the active account on its own (a ChangeAccountRequest), without any
+   * call to {@link BeaconWallet.setActiveNetwork}. Nothing re-points the toolkit in that
+   * case, so its RPC - and the PKH it has cached - can be left on the previous chain.
+   *
+   * There is no way to re-point a toolkit this class was never handed, so this reports the
+   * situation rather than papering over it.
+   */
+  private watchForWalletDrivenSwitches() {
+    if (typeof this.client.subscribeToEvent !== 'function') {
+      return;
+    }
+    let lastChainId: string | undefined;
+    void this.client
+      .subscribeToEvent(BeaconEvent.ACTIVE_ACCOUNT_SET, (account?: AccountInfo) => {
+        const chainId = account ? BeaconWallet.chainIdOf(account) : undefined;
+        if (
+          chainId !== lastChainId &&
+          lastChainId !== undefined &&
+          !this.switchInProgress
+        ) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `[BeaconWallet] The wallet moved the active account to "${chainId ?? 'an unknown network'}" ` +
+              'without setActiveNetwork() being called. Any TezosToolkit you wired to this wallet is ' +
+              'still pointed at the previous chain - call setActiveNetwork(chainId, { toolkit }) to realign it.'
+          );
+        }
+        lastChainId = chainId;
+      })
+      .catch(() => {
+        // Subscription is a diagnostic, never a hard dependency of the wallet.
+      });
+  }
+
+  /** Set while this class is driving a switch, so its own moves are not reported as the wallet's. */
+  private switchInProgress = false;
 
   /**
    * Accounts belonging to the current pairing.
@@ -220,11 +264,56 @@ export class BeaconWallet implements WalletProvider {
     return accounts.filter((account) => account.senderId === active.senderId);
   }
 
-  private static chainIdOf(account: AccountInfo): string | undefined {
+  /**
+   * The chain id exactly as the Beacon client sees it - unnormalized, and absent on a
+   * legacy account. Used only for the multi-network predicate, which has to agree with
+   * the client's own (which reads the raw value too).
+   */
+  private static rawChainIdOf(account: AccountInfo): string | undefined {
     const chainId = account.network?.chainId;
-    return typeof chainId === 'string' && chainId.length > 0
-      ? normalizeTezosCaip2(chainId)
-      : undefined;
+    return typeof chainId === 'string' && chainId.length > 0 ? chainId : undefined;
+  }
+
+  /**
+   * The chain id this account can be addressed by, normalized, falling back to the one
+   * implied by its NetworkType on a legacy account that carries none.
+   *
+   * Every accessor that hands a chain id to a caller, and every lookup that accepts one
+   * back, goes through this - otherwise `getNetworks()` would advertise ids that
+   * `setActiveNetwork()` rejects.
+   */
+  private static chainIdOf(account: AccountInfo): string | undefined {
+    const raw = BeaconWallet.rawChainIdOf(account);
+    if (raw !== undefined) {
+      return normalizeTezosCaip2(raw);
+    }
+    return account.network?.type ? tezosCaip2FromNetworkType(account.network.type) : undefined;
+  }
+
+  /**
+   * One read of the session, shared by everything that needs it during a request.
+   *
+   * `getAccounts()` and `getActiveAccount()` are storage reads, so resolving the
+   * predicate, the active account and the active chain id independently would cost three
+   * or four round-trips per operation.
+   */
+  private async snapshotSession(): Promise<{
+    active: AccountInfo | undefined;
+    isMultiNetwork: boolean;
+    activeChainId: string | undefined;
+  }> {
+    const [active, accounts] = await Promise.all([
+      this.client.getActiveAccount(),
+      this.client.getAccounts(),
+    ]);
+    const rawChainIds = new Set(
+      accounts.map((a) => BeaconWallet.rawChainIdOf(a)).filter((c): c is string => c !== undefined)
+    );
+    return {
+      active,
+      isMultiNetwork: rawChainIds.size > 1,
+      activeChainId: active ? BeaconWallet.chainIdOf(active) : undefined,
+    };
   }
 
   /**
@@ -235,11 +324,7 @@ export class BeaconWallet implements WalletProvider {
    * agrees with it even when the dApp has since narrowed its own declared list.
    */
   async isMultiNetwork(): Promise<boolean> {
-    const accounts = await this.client.getAccounts();
-    const chainIds = new Set(
-      accounts.map((a) => BeaconWallet.chainIdOf(a)).filter((c): c is string => c !== undefined)
-    );
-    return chainIds.size > 1;
+    return (await this.snapshotSession()).isMultiNetwork;
   }
 
   /**
@@ -264,7 +349,10 @@ export class BeaconWallet implements WalletProvider {
     }
 
     if (byChainId.size === 0) {
-      const [account] = accounts;
+      // Synthesize from the active account specifically: a legacy store can hold several
+      // accounts for one sender, and the caller means the one in use.
+      const active = await this.client.getActiveAccount();
+      const account = active ?? accounts[0];
       const network = account.network;
       const chainId = network?.type ? tezosCaip2FromNetworkType(network.type) : undefined;
       const declared = chainId ? this.declaredNetworks.get(chainId) : undefined;
@@ -272,7 +360,7 @@ export class BeaconWallet implements WalletProvider {
         {
           ...(chainId ? { chainId } : {}),
           name: declared?.name ?? network?.name ?? network?.type ?? 'tezos',
-          rpcUrl: declared?.rpcUrl ?? network?.rpcUrl,
+          rpcUrl: declared?.rpcUrl,
           walletRpcUrl: network?.rpcUrl,
         },
       ];
@@ -283,7 +371,7 @@ export class BeaconWallet implements WalletProvider {
       return {
         chainId,
         name: declared?.name ?? account.network?.name ?? chainId,
-        rpcUrl: declared?.rpcUrl ?? account.network?.rpcUrl,
+        rpcUrl: declared?.rpcUrl,
         walletRpcUrl: account.network?.rpcUrl,
       };
     });
@@ -298,14 +386,7 @@ export class BeaconWallet implements WalletProvider {
    */
   async getActiveNetwork(): Promise<string | undefined> {
     const active = await this.client.getActiveAccount();
-    if (!active) {
-      return undefined;
-    }
-    const chainId = BeaconWallet.chainIdOf(active);
-    if (chainId !== undefined) {
-      return chainId;
-    }
-    return active.network?.type ? tezosCaip2FromNetworkType(active.network.type) : undefined;
+    return active ? BeaconWallet.chainIdOf(active) : undefined;
   }
 
   /**
@@ -331,6 +412,9 @@ export class BeaconWallet implements WalletProvider {
    * @throws BeaconNetworkSwitchFailed if the wallet did not apply the switch
    */
   async setActiveNetwork(chainId: string, options: SetActiveNetworkOptions = {}) {
+    if (typeof chainId !== 'string' || chainId.length === 0) {
+      throw new BeaconInvalidNetwork(String(chainId));
+    }
     const normalized = normalizeTezosCaip2(chainId);
     if (!isValidTezosCaip2(normalized)) {
       throw new BeaconInvalidNetwork(chainId);
@@ -347,41 +431,72 @@ export class BeaconWallet implements WalletProvider {
       throw new BeaconInvalidNetwork(chainId);
     }
 
-    const rpcUrl = this.declaredNetworks.get(normalized)?.rpcUrl ?? target.network?.rpcUrl;
+    // Only a dApp-declared endpoint is used to re-point the toolkit. A wallet-supplied one
+    // is readable from getNetworks() as `walletRpcUrl`, so a dApp that wants it can pass it
+    // back deliberately - but it is never adopted silently, because a peer that chooses the
+    // node the dApp reads from can serve it fabricated balances and storage.
+    const rpcUrl = this.declaredNetworks.get(normalized)?.rpcUrl;
     if (options.toolkit && !rpcUrl) {
       throw new BeaconNetworkRpcUrlUnknown(normalized);
     }
 
-    // Switching to the chain already in use would otherwise rebuild the toolkit's read
-    // provider - discarding a custom one - for no gain.
-    if (target.accountIdentifier === previous.accountIdentifier) {
+    const alreadyActive = target.accountIdentifier === previous.accountIdentifier;
+
+    if (!alreadyActive) {
+      this.switchInProgress = true;
+      try {
+        await this.client.setActiveAccount(target);
+      } finally {
+        this.switchInProgress = false;
+      }
+
+      // The Beacon client can decline to apply a switch (a session the wallet has already
+      // dropped) without reporting it, which would leave the toolkit re-pointed at a chain
+      // the wallet is not on.
+      const applied = await this.client.getActiveAccount();
+      if (applied === undefined || applied.accountIdentifier !== target.accountIdentifier) {
+        throw new BeaconNetworkSwitchFailed(normalized);
+      }
+    }
+
+    if (!options.toolkit) {
       return;
     }
 
-    await this.client.setActiveAccount(target);
-
-    // The Beacon client can decline to apply a switch (a session the wallet has already
-    // dropped) without reporting it, which would leave the toolkit re-pointed at a chain
-    // the wallet is not on.
-    const applied = await this.client.getActiveAccount();
-    if (applied?.accountIdentifier !== target.accountIdentifier) {
-      throw new BeaconNetworkSwitchFailed(normalized);
+    // Reached on the already-active path too: after a page reload the restored session and
+    // a freshly constructed toolkit routinely disagree, and reconciling that is exactly
+    // what a dApp calls this with its current network for.
+    const toolkit = options.toolkit;
+    let previousRpcUrl: string | undefined;
+    try {
+      previousRpcUrl = toolkit.rpc.getRpcUrl();
+    } catch {
+      previousRpcUrl = undefined;
+    }
+    if (previousRpcUrl === rpcUrl && alreadyActive) {
+      // Nothing to move, and rebuilding the read provider would discard a custom one.
+      return;
     }
 
-    if (options.toolkit) {
-      try {
-        // setProvider, not setRpcProvider: the latter leaves the read provider bound to
-        // the previous RPC client, so reads would stay on the old chain.
-        options.toolkit.setProvider({
-          rpc: rpcUrl,
-          wallet: this,
-          ...(options.readProvider ? { readProvider: options.readProvider } : {}),
-        });
-      } catch (err) {
-        // Best effort: this is itself a switch and can fail the same way.
-        await this.client.setActiveAccount(previous);
-        throw err;
+    try {
+      // setProvider, not setRpcProvider: the latter leaves the read provider bound to the
+      // previous RPC client, so reads would stay on the old chain.
+      toolkit.setProvider({
+        rpc: rpcUrl,
+        wallet: this,
+        ...(options.readProvider ? { readProvider: options.readProvider } : {}),
+      });
+    } catch (err) {
+      if (!alreadyActive) {
+        // Best effort, and it must never mask the original failure: the rollback is itself
+        // a switch and can fail the same way.
+        try {
+          await this.client.setActiveAccount(previous);
+        } catch {
+          // swallowed on purpose - `err` is what the caller needs to see
+        }
       }
+      throw err;
     }
   }
 
@@ -423,6 +538,9 @@ export class BeaconWallet implements WalletProvider {
     const requested = (input?.networks ?? []).map((n) => normalizeTezosCaip2(n.chainId));
     this.ungrantedNetworks = [];
     if (requested.length > 0) {
+      // Resolved ids, matching getNetworks(): computing this from the raw chain id would
+      // report every declared chain as ungranted on a legacy session, contradicting
+      // getNetworks() and firing a spurious warning.
       const granted = new Set(
         (await this.getSessionAccounts())
           .map((a) => BeaconWallet.chainIdOf(a))
@@ -644,44 +762,49 @@ export class BeaconWallet implements WalletProvider {
   }
 
   async sendOperations(params: any[]) {
-    const account = await this.client.getActiveAccount();
-    if (!account) {
+    // One read of the session up front: the account, the predicate and the chain id all
+    // come from the same instant, so nothing can shift between them.
+    const session = await this.snapshotSession();
+    if (!session.active) {
       throw new BeaconWalletNotInitialized();
     }
-    const permissions = account.scopes;
-    this.validateRequiredScopesOrFail(permissions, [PermissionScope.OPERATION_REQUEST]);
+    this.validateRequiredScopesOrFail(session.active.scopes, [PermissionScope.OPERATION_REQUEST]);
 
     // Single-network sessions send exactly what they always sent: the wallet keeps
     // receiving a Network object rather than a CAIP-2 string.
-    if (!(await this.isMultiNetwork())) {
+    if (!session.isMultiNetwork) {
       const { transactionHash } = await this.client.requestOperation({ operationDetails: params });
       return transactionHash;
     }
 
-    const network = await this.getActiveNetwork();
-    if (!network) {
-      throw new BeaconWalletNotInitialized();
+    if (!session.activeChainId) {
+      throw new BeaconActiveAccountHasNoChainId(session.active.network?.name);
     }
-    await this.assertNetworkUnchanged(network);
+    await this.assertAccountUnchanged(session.active);
 
     const { transactionHash } = await this.client.requestOperation({
       operationDetails: params,
-      network,
+      network: session.activeChainId,
     });
     return transactionHash;
   }
 
   /**
-   * Refuse to hand over a request whose target chain moved while it was being prepared -
-   * a user picking another network from a dropdown mid-transfer.
+   * Refuse to hand over a request whose account moved while it was being prepared - a user
+   * picking another network from a dropdown mid-transfer.
    *
-   * The Beacon client reads the active account once, at the top of the request, so
-   * checking immediately before handing over closes the window rather than narrowing it.
+   * Compares the account identity, not just the chain id: the source address is taken from
+   * the active account, so an account change within one chain matters too. The Beacon
+   * client reads the active account once, at the top of the request, so checking here
+   * closes the window rather than narrowing it.
    */
-  private async assertNetworkUnchanged(expected: string) {
-    const current = await this.getActiveNetwork();
-    if (current !== expected) {
-      throw new BeaconNetworkChangedDuringRequest(expected, current);
+  private async assertAccountUnchanged(expected: AccountInfo) {
+    const current = await this.client.getActiveAccount();
+    if (current?.accountIdentifier !== expected.accountIdentifier) {
+      throw new BeaconNetworkChangedDuringRequest(
+        BeaconWallet.chainIdOf(expected) ?? 'unknown',
+        current ? BeaconWallet.chainIdOf(current) : undefined
+      );
     }
   }
 
@@ -696,6 +819,9 @@ export class BeaconWallet implements WalletProvider {
    * reconnect through a new permission request.
    *
    * For switching accounts without a full logout, use {@link clearActiveAccount} instead.
+   *
+   * The networks declared on the constructor are configuration, not session state, so they
+   * survive this and {@link clearActiveAccount}.
    */
   async disconnect() {
     await this.client.disconnect();
@@ -718,8 +844,6 @@ export class BeaconWallet implements WalletProvider {
     await this.client.setActiveAccount();
   }
 
-  // (declaredNetworks is constructor config and deliberately survives both.)
-
   async sign(bytes: string, watermark?: Uint8Array) {
     let bb = hex2buf(bytes);
     if (typeof watermark !== 'undefined') {
@@ -734,7 +858,8 @@ export class BeaconWallet implements WalletProvider {
     }
     // Gated: on a single-network session sign() keeps its existing behaviour exactly,
     // including letting the Beacon client raise "no active account" with its own UI.
-    if (!(await this.isMultiNetwork())) {
+    const session = await this.snapshotSession();
+    if (!session.isMultiNetwork) {
       const { signature } = await this.client.requestSignPayload({
         payload: watermarkedBytes,
         signingType,
@@ -742,22 +867,20 @@ export class BeaconWallet implements WalletProvider {
       return signature;
     }
 
-    const account = await this.client.getActiveAccount();
-    if (!account) {
+    if (!session.active) {
       throw new BeaconWalletNotInitialized();
     }
-    const network = await this.getActiveNetwork();
-    if (!network) {
-      throw new BeaconWalletNotInitialized();
+    if (!session.activeChainId) {
+      throw new BeaconActiveAccountHasNoChainId(session.active.network?.name);
     }
-    await this.assertNetworkUnchanged(network);
+    await this.assertAccountUnchanged(session.active);
 
     // requestSignPayload carries no network, so the account is pinned explicitly rather
     // than left to whichever one is active by the time the wallet reads it.
     const { signature } = await this.client.requestSignPayload({
       payload: watermarkedBytes,
       signingType,
-      sourceAddress: account.address,
+      sourceAddress: session.active.address,
     });
     return signature;
   }

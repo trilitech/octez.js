@@ -94,3 +94,22 @@ export class BeaconNetworkSwitchFailed extends OctezJsError {
       'The wallet may have dropped the session; reconnect before retrying.';
   }
 }
+
+/**
+ *  @category Error
+ *  Error that indicates the active account cannot be addressed by a chain id, so an
+ *  operation on a multi-network session cannot be routed.
+ *
+ *  Distinct from {@link BeaconWalletNotInitialized}: an account IS paired and active, it
+ *  simply carries neither a CAIP-2 chain id nor a network type with a known genesis id.
+ */
+export class BeaconActiveAccountHasNoChainId extends OctezJsError {
+  constructor(public readonly networkName?: string) {
+    super();
+    this.name = 'BeaconActiveAccountHasNoChainId';
+    this.message =
+      `The active account${networkName ? ` (network "${networkName}")` : ''} has no CAIP-2 chain id, ` +
+      'so an operation on this multi-network session cannot be routed. ' +
+      'Call setActiveNetwork() with one of the addressable entries from getNetworks().';
+  }
+}

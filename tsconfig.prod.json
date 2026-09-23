@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "stripInternal": true,
     "moduleResolution": "node",
     "target": "es2020",
     "module": "es2020",

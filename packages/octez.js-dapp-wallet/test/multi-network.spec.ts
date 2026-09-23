@@ -1,5 +1,7 @@
 import { vi } from 'vitest';
+import { TezosToolkit } from '@tezos-x/octez.js';
 import {
+  BeaconActiveAccountHasNoChainId,
   BeaconInvalidNetwork,
   BeaconNetworkChangedDuringRequest,
   BeaconNetworkRpcUrlUnknown,
@@ -41,6 +43,7 @@ vi.mock('@tezos-x/octez.connect-dapp', async () => {
       getActiveAccount: vi.fn(),
       setActiveAccount: vi.fn(),
       getAccounts: vi.fn().mockResolvedValue([]),
+      subscribeToEvent: vi.fn().mockResolvedValue(undefined),
       showPrepare: vi.fn(),
       hideUI: vi.fn(),
       disconnect: vi.fn().mockResolvedValue(undefined),
@@ -248,7 +251,7 @@ describe('BeaconWallet multi-network', () => {
       expect(entry.walletRpcUrl).toEqual('https://wallet-node.example');
     });
 
-    it('falls back to the wallet rpcUrl for a chain the dApp did not declare', async () => {
+    it('exposes the wallet rpcUrl for an undeclared chain without adopting it', async () => {
       const undeclared = account('tezos:NetXnHfVqm9iesp', 'tz1ghost', {
         network: {
           type: 'custom',
@@ -258,7 +261,9 @@ describe('BeaconWallet multi-network', () => {
       });
       const { wallet } = walletWith([undeclared], undeclared);
 
-      expect((await wallet.getNetworks())[0].rpcUrl).toEqual('https://wallet-node.example');
+      const [entry] = await wallet.getNetworks();
+      expect(entry.rpcUrl).toBeUndefined();
+      expect(entry.walletRpcUrl).toEqual('https://wallet-node.example');
     });
 
     it('synthesizes one entry for a legacy session carrying no chain id', async () => {
@@ -372,14 +377,66 @@ describe('BeaconWallet multi-network', () => {
       expect(client.setActiveAccount).toHaveBeenCalledWith(undeclared);
     });
 
-    it('is a no-op when the target chain is already active', async () => {
+    it('does not move the account when the target chain is already active', async () => {
       const { wallet, client } = walletWith([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT], MAINNET_ACCOUNT);
-      const toolkit = toolkitStub();
+
+      await wallet.setActiveNetwork(MAINNET);
+
+      expect(client.setActiveAccount).not.toHaveBeenCalled();
+    });
+
+    it('still reconciles a toolkit sitting on the wrong RPC for the active chain', async () => {
+      // The post-reload case: the wallet restored shadownet, but a freshly built toolkit
+      // is on whatever URL the dApp hardcoded. Reconciling is exactly what the documented
+      // boot line asks for, so it must not be skipped as a no-op.
+      const { wallet, client } = walletWith([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT], SHADOWNET_ACCOUNT);
+      const toolkit = { setProvider: vi.fn(), rpc: { getRpcUrl: () => MAINNET_RPC } } as any;
+
+      await wallet.setActiveNetwork(SHADOWNET, { toolkit });
+
+      expect(client.setActiveAccount).not.toHaveBeenCalled();
+      expect(toolkit.setProvider).toHaveBeenCalledWith({ rpc: SHADOWNET_RPC, wallet });
+    });
+
+    it('leaves an already-aligned toolkit untouched so a custom read provider survives', async () => {
+      const { wallet } = walletWith([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT], MAINNET_ACCOUNT);
+      const toolkit = { setProvider: vi.fn(), rpc: { getRpcUrl: () => MAINNET_RPC } } as any;
 
       await wallet.setActiveNetwork(MAINNET, { toolkit });
 
+      expect(toolkit.setProvider).not.toHaveBeenCalled();
+    });
+
+    it('refuses to point a toolkit at an RPC the wallet chose', async () => {
+      const undeclared = account('tezos:NetXnHfVqm9iesp', 'tz1ghost', {
+        network: {
+          type: 'custom',
+          chainId: 'tezos:NetXnHfVqm9iesp',
+          rpcUrl: 'https://wallet-node.example',
+        },
+      });
+      const { wallet, client } = walletWith([MAINNET_ACCOUNT, undeclared], MAINNET_ACCOUNT);
+      const toolkit = toolkitStub();
+
+      await expect(
+        wallet.setActiveNetwork('tezos:NetXnHfVqm9iesp', { toolkit })
+      ).rejects.toThrow(BeaconNetworkRpcUrlUnknown);
       expect(client.setActiveAccount).not.toHaveBeenCalled();
       expect(toolkit.setProvider).not.toHaveBeenCalled();
+    });
+
+    it('resolves a legacy session by the chain id getNetworks advertises', async () => {
+      const legacy = account(undefined, 'tz1legacy');
+      const { wallet } = walletWith([legacy], legacy);
+
+      const [entry] = await wallet.getNetworks();
+      await expect(wallet.setActiveNetwork(entry.chainId as string)).resolves.toBeUndefined();
+    });
+
+    it('rejects a null-ish chain id with a typed error rather than a TypeError', async () => {
+      const { wallet } = walletWith([MAINNET_ACCOUNT], MAINNET_ACCOUNT);
+
+      await expect(wallet.setActiveNetwork(undefined as any)).rejects.toThrow(BeaconInvalidNetwork);
     });
 
     it('reports a switch the wallet silently declined to apply', async () => {
@@ -445,8 +502,7 @@ describe('BeaconWallet multi-network', () => {
     it('refuses to send when the network moved while the request was being prepared', async () => {
       const { wallet, client } = walletWith([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT], MAINNET_ACCOUNT);
       client.getActiveAccount
-        .mockResolvedValueOnce(MAINNET_ACCOUNT) // sendOperations entry
-        .mockResolvedValueOnce(MAINNET_ACCOUNT) // capture
+        .mockResolvedValueOnce(MAINNET_ACCOUNT) // entry snapshot
         .mockResolvedValue(SHADOWNET_ACCOUNT); // moved before hand-off
 
       await expect(wallet.sendOperations([{ kind: 'transaction' }])).rejects.toThrow(
@@ -462,6 +518,53 @@ describe('BeaconWallet multi-network', () => {
       await expect(wallet.sendOperations([{ kind: 'transaction' }])).rejects.toThrow(
         'Required permissions scopes'
       );
+    });
+  });
+
+  describe('reporting an unaddressable active account', () => {
+    it('does not blame the dApp for a missing pairing when an account is in fact active', async () => {
+      const unmappable = account(undefined, 'tz1tallinn', { network: { type: 'tallinnnet' } });
+      const { wallet } = walletWith([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT, unmappable], unmappable);
+
+      await expect(wallet.sendOperations([{ kind: 'transaction' }])).rejects.toThrow(
+        BeaconActiveAccountHasNoChainId
+      );
+    });
+  });
+
+  describe('not re-asserting the active account after pairing (D13)', () => {
+    it('leaves the wallet\'s choice of initial network alone', async () => {
+      const { wallet, client } = walletWith([], undefined);
+      client.getAccounts.mockResolvedValue([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT]);
+      client.getActiveAccount.mockResolvedValue(SHADOWNET_ACCOUNT);
+
+      await wallet.requestPermissions();
+
+      expect(client.setActiveAccount).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('switching with a real TezosToolkit', () => {
+    it('moves the address, the key and the RPC together', async () => {
+      // The composite guarantee: a stubbed toolkit cannot prove the identity cache moved,
+      // so this one wires a real toolkit and reads back through it.
+      const { wallet, client } = walletWith([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT], MAINNET_ACCOUNT);
+      const toolkit = new TezosToolkit(MAINNET_RPC);
+      toolkit.setWalletProvider(wallet);
+
+      expect(await toolkit.wallet.pkh()).toEqual('tz1mainnet');
+      expect(await (toolkit as any)._context.wallet.pkh()).toEqual('tz1mainnet');
+
+      client.getActiveAccount
+        .mockResolvedValueOnce(MAINNET_ACCOUNT)
+        .mockResolvedValue(SHADOWNET_ACCOUNT);
+      await wallet.setActiveNetwork(SHADOWNET, { toolkit });
+
+      expect(await wallet.getPKH()).toEqual('tz1shadownet');
+      expect(await wallet.getPK()).toEqual('edpk-tz1shadownet');
+      expect(toolkit.rpc.getRpcUrl()).toEqual(SHADOWNET_RPC);
+      expect(await toolkit.wallet.pkh()).toEqual('tz1shadownet');
+      expect(await (toolkit as any)._context.wallet.pkh()).toEqual('tz1shadownet');
     });
   });
 
@@ -487,8 +590,7 @@ describe('BeaconWallet multi-network', () => {
     it('refuses to sign when the network moved while the request was being prepared', async () => {
       const { wallet, client } = walletWith([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT], MAINNET_ACCOUNT);
       client.getActiveAccount
-        .mockResolvedValueOnce(MAINNET_ACCOUNT) // account read
-        .mockResolvedValueOnce(MAINNET_ACCOUNT) // capture
+        .mockResolvedValueOnce(MAINNET_ACCOUNT) // entry snapshot
         .mockResolvedValue(SHADOWNET_ACCOUNT); // moved before hand-off
 
       await expect(wallet.sign('1234', OPERATION_WATERMARK)).rejects.toThrow(

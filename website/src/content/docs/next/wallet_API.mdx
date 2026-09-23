@@ -138,8 +138,13 @@ await wallet.requestPermissions(); // asks for every declared chain
 Chain ids are CAIP-2 (`tezos:<genesis>`); the bare `NetX...` form is accepted too. The
 `rpcUrl` lives on the constructor rather than being passed to `requestPermissions` so it is
 re-declared on every page load, which means nothing has to be persisted for it to survive a
-reload. Your value always wins over one the wallet suggests — a wallet that could choose the
-node your dapp reads from could serve it fabricated balances.
+reload.
+
+Only endpoints you declared are ever used to point a toolkit at a chain. A wallet may suggest
+one of its own; it is readable as `walletRpcUrl` on `getNetworks()` but never adopted
+automatically, because a wallet that chose the node your dapp *reads* from could serve it
+fabricated balances and storage. Switching to a chain you declared no `rpcUrl` for, while
+passing a toolkit, raises `BeaconNetworkRpcUrlUnknown` rather than quietly using the wallet's.
 
 To switch, hand `setActiveNetwork` your toolkit so the wallet and the toolkit move together:
 
@@ -171,12 +176,22 @@ an error — `getUngrantedNetworks()` names those, and a warning is logged when 
 - **A custom read provider is replaced** when the RPC moves. Pass it back through
   `setActiveNetwork(chainId, { toolkit, readProvider })` to keep it.
 - **A pinned protocol is discarded** by the switch; it is fetched again on the next operation.
+- **The wallet can switch accounts on its own.** Some wallets push an account change without
+  the dapp asking. Nothing can re-point a toolkit octez.js was never handed, so this is
+  reported as a console warning — call `setActiveNetwork(chainId, { toolkit })` to realign.
+- **Reverting to a single network needs a disconnect.** Granted accounts are not pruned when
+  you narrow your declared list, so a session that was once multi-network keeps requiring a
+  target chain on every operation. `disconnect()` clears it.
+- **Permission scopes are per session, not per chain.** The wallet grants one set of scopes
+  for the whole pairing, so scope errors cannot distinguish between chains.
+- **Chains the wallet reports with a malformed id are dropped** before they reach `getNetworks()`.
 - **Older wallets degrade quietly.** A wallet that predates multi-network returns a single
   account and no error. Pass `requiredMinimumVersion: '4'` if your dapp cannot work that way.
 - **Switching mid-request is refused.** If the targeted chain moves while an operation or a
   signature is being prepared, the request is not sent and an error is raised instead — you
-  never get a signature against a chain you did not choose. Switching during fee estimation is
-  covered separately: the cached address is discarded whenever the network moves.
+  never get a signature against a chain you did not choose. The cached address is discarded when
+  you switch with `{ toolkit }`; without it the toolkit keeps both the previous RPC and the
+  previous cached address.
 :::
 
 #### Try the Beacon wallet!
