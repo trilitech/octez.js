@@ -27,6 +27,13 @@ import { InvalidOperationHashError } from '@tezos-x/octez.js-core';
 
 const env = typeof process !== 'undefined' ? process.env : undefined;
 
+// TODO: TAQUITO_OP_TRACE* are deprecated; remove once consumers migrate.
+for (const name of ['TAQUITO_OP_TRACE', 'TAQUITO_OP_TRACE_VERBOSE', 'TAQUITO_OP_TRACE_SLOW_MS']) {
+  if (env?.[name] !== undefined) {
+    console.warn(`${name} is deprecated and will be removed in a future release.`);
+  }
+}
+
 const opTraceEnabled = /^(1|true)$/i.test(env?.TAQUITO_OP_TRACE ?? '');
 const opTraceVerbose = /^(1|true)$/i.test(env?.TAQUITO_OP_TRACE_VERBOSE ?? '');
 const parsedOpTraceSlowMs = Number(env?.TAQUITO_OP_TRACE_SLOW_MS ?? '60000');
