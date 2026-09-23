@@ -10,4 +10,7 @@ export type {
   RequestPermissionInput,
   RequestSignPayloadInput,
   NodeDistributions,
+  // The shape a dApp declares its chains with. `export type` only: a value re-export
+  // would pull the whole beacon-dapp graph into this side-effect-free entry point.
+  RequestPermissionNetwork as BeaconWalletNetwork,
 } from '@tezos-x/octez.connect-types';

@@ -247,10 +247,23 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
     );
 
     return {
-      exports: ['BeaconWallet', 'BeaconWalletNotInitialized'],
+      exports: [
+        'BeaconWallet',
+        'BeaconWalletNotInitialized',
+        'BeaconInvalidNetwork',
+        'BeaconNetworkRpcUrlUnknown',
+        'BeaconNetworkChangedDuringRequest',
+        'BeaconNetworkSwitchFailed',
+      ],
       summary: {
         beaconWalletType: typeof beaconWallet.BeaconWallet,
         errorType: typeof beaconWallet.BeaconWalletNotInitialized,
+        networkErrorTypes: [
+          typeof beaconWallet.BeaconInvalidNetwork,
+          typeof beaconWallet.BeaconNetworkRpcUrlUnknown,
+          typeof beaconWallet.BeaconNetworkChangedDuringRequest,
+          typeof beaconWallet.BeaconNetworkSwitchFailed,
+        ].join(','),
       },
     };
   },

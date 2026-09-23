@@ -116,6 +116,69 @@ or
 Tezos.setProvider({ wallet });
 ```
 
+#### Working with several networks
+
+A single pairing can cover several Tezos chains, so a user connects once and the dapp can
+switch which chain it targets without disconnecting. Declare the chains, with the RPC
+endpoint your dapp trusts for each, on the constructor:
+
+```js
+const wallet = new BeaconWallet({
+  name: 'MyAwesomeDapp',
+  network: { type: 'ghostnet' },
+  networks: [
+    { chainId: 'tezos:NetXdQprcVkpaWU', rpcUrl: 'https://tezos-mainnet.octez.io', name: 'Mainnet' },
+    { chainId: 'tezos:NetXsqzbfFenSTS', rpcUrl: 'https://tezos-shadownet.octez.io' },
+  ],
+});
+
+await wallet.requestPermissions(); // asks for every declared chain
+```
+
+Chain ids are CAIP-2 (`tezos:<genesis>`); the bare `NetX...` form is accepted too. The
+`rpcUrl` lives on the constructor rather than being passed to `requestPermissions` so it is
+re-declared on every page load, which means nothing has to be persisted for it to survive a
+reload. Your value always wins over one the wallet suggests — a wallet that could choose the
+node your dapp reads from could serve it fabricated balances.
+
+To switch, hand `setActiveNetwork` your toolkit so the wallet and the toolkit move together:
+
+```js
+await wallet.setActiveNetwork('tezos:NetXsqzbfFenSTS', { toolkit: Tezos });
+```
+
+Skip the `toolkit` argument and only the wallet moves: the toolkit keeps reading from — and
+estimating against — the previous chain, while the wallet signs on the new one.
+
+Which chain is active right after connecting is chosen by the **wallet**, not by the order you
+declared them. Call `setActiveNetwork` once after connecting to land somewhere specific, and do
+the same after a page reload, where the restored session and a freshly constructed toolkit can
+start out on different chains:
+
+```js
+await wallet.setActiveNetwork(await wallet.getActiveNetwork(), { toolkit: Tezos });
+```
+
+`getNetworks()` lists what was actually granted; `isMultiNetwork()` says whether the session
+spans more than one chain. A wallet may grant fewer chains than you asked for without raising
+an error — `getUngrantedNetworks()` names those, and a warning is logged when it happens.
+
+:::note Things worth knowing
+- **One `BeaconWallet` per page.** The underlying Beacon client is a singleton, so a second
+  instance silently reuses the first one's client while keeping its own network list.
+- **Re-acquire contract handles after switching.** A `ContractAbstraction` captures the RPC it
+  was created with, so one obtained before a switch keeps reading the old chain.
+- **A custom read provider is replaced** when the RPC moves. Pass it back through
+  `setActiveNetwork(chainId, { toolkit, readProvider })` to keep it.
+- **A pinned protocol is discarded** by the switch; it is fetched again on the next operation.
+- **Older wallets degrade quietly.** A wallet that predates multi-network returns a single
+  account and no error. Pass `requiredMinimumVersion: '4'` if your dapp cannot work that way.
+- **Switching mid-request is refused.** If the targeted chain moves while an operation or a
+  signature is being prepared, the request is not sent and an error is raised instead — you
+  never get a signature against a chain you did not choose. Switching during fee estimation is
+  covered separately: the cached address is discarded whenever the network moves.
+:::
+
 #### Try the Beacon wallet!
 
 Make sure you have the Beacon browser extension installed (the extension offers minimal features, the BeaconWallet works with any wallet implementing the TZIP-10 standard), the AirGap wallet on your phone, or any TZIP-10 ready wallet like Temple or Kukai.
