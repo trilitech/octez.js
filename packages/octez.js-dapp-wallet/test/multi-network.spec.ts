@@ -578,6 +578,72 @@ describe('BeaconWallet multi-network', () => {
     });
   });
 
+  describe('the whole journey: one pairing, two chains, no reconnect', () => {
+    it('sends on mainnet, switches, and sends on shadownet without re-pairing', async () => {
+      // This is the feature stated as a user journey. Every other test here exercises one
+      // step of it in isolation; this one composes them, which is where an ordering or
+      // state-leak bug between the steps would show up.
+      const wallet = new BeaconWallet({ name: 'Test', networks: declaredNetworks() });
+      const client = wallet.client as any;
+      const toolkit = new TezosToolkit(MAINNET_RPC);
+      toolkit.setWalletProvider(wallet);
+
+      client.getAccounts.mockResolvedValue([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT]);
+      client.getActiveAccount.mockResolvedValue(MAINNET_ACCOUNT);
+
+      // 1. Pair once, for both chains.
+      await wallet.requestPermissions();
+      expect(client.requestPermissions).toHaveBeenCalledTimes(1);
+      expect(wallet.getUngrantedNetworks()).toEqual([]);
+
+      // 2. Send on the chain the wallet put us on.
+      expect(await wallet.getPKH()).toEqual('tz1mainnet');
+      await wallet.sendOperations([{ kind: 'transaction', destination: 'tz1a' }]);
+
+      // 3. Switch. No new pairing, no permission prompt.
+      client.getActiveAccount.mockResolvedValue(SHADOWNET_ACCOUNT);
+      await wallet.setActiveNetwork(SHADOWNET, { toolkit });
+
+      // 4. Send on the other chain.
+      expect(await wallet.getPKH()).toEqual('tz1shadownet');
+      await wallet.sendOperations([{ kind: 'transaction', destination: 'tz1b' }]);
+
+      // The two operations went to different chains...
+      const [first, second] = client.requestOperation.mock.calls.map((c: any[]) => c[0]);
+      expect(first.network).toEqual(MAINNET);
+      expect(second.network).toEqual(SHADOWNET);
+      expect(first.operationDetails[0].destination).toEqual('tz1a');
+      expect(second.operationDetails[0].destination).toEqual('tz1b');
+
+      // ...the toolkit followed the wallet onto the second chain...
+      expect(toolkit.rpc.getRpcUrl()).toEqual(SHADOWNET_RPC);
+      expect(await toolkit.wallet.pkh()).toEqual('tz1shadownet');
+      expect(await (toolkit as any)._context.wallet.pkh()).toEqual('tz1shadownet');
+
+      // ...and at no point did the dApp reconnect.
+      expect(client.requestPermissions).toHaveBeenCalledTimes(1);
+      expect(client.disconnect).not.toHaveBeenCalled();
+    });
+
+    it('keeps signing on the chain in use after a switch', async () => {
+      const wallet = new BeaconWallet({ name: 'Test', networks: declaredNetworks() });
+      const client = wallet.client as any;
+      client.getAccounts.mockResolvedValue([MAINNET_ACCOUNT, SHADOWNET_ACCOUNT]);
+      client.getActiveAccount.mockResolvedValue(MAINNET_ACCOUNT);
+
+      await wallet.requestPermissions();
+      await wallet.sign('1234', new Uint8Array([3]));
+
+      client.getActiveAccount.mockResolvedValue(SHADOWNET_ACCOUNT);
+      await wallet.setActiveNetwork(SHADOWNET);
+      await wallet.sign('5678', new Uint8Array([3]));
+
+      const sources = client.requestSignPayload.mock.calls.map((c: any[]) => c[0].sourceAddress);
+      expect(sources).toEqual(['tz1mainnet', 'tz1shadownet']);
+      expect(client.requestPermissions).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('signing', () => {
     const OPERATION_WATERMARK = new Uint8Array([3]);
 
