@@ -511,14 +511,14 @@ const shadownetSecretKey: Config = {
 const tallinnnetEphemeral: Config = defaultConfig({
   networkName: 'TALLINNNET',
   protocol: Protocols.PtTALLiNt,
-  defaultRpc: 'http://ecad-tezos-tallinnnet-rolling-1.i.ecadinfra.com/',
+  defaultRpc: 'https://rpc.tallinnnet.teztnets.com',
   knownContracts: knownContractsTallinnnet,
   signerConfig: defaultEphemeralConfig('tallinnnet'),
 });
 
 const tallinnnetSecretKey: Config = {
   ...tallinnnetEphemeral,
-  ...{ signerConfig: defaultSecretKey, rpc: 'https://rpc.tallinnnet.teztnets.com' },
+  signerConfig: defaultSecretKey,
 };
 
 const ushuaianetEphemeral: Config = defaultConfig({
