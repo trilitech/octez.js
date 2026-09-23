@@ -521,6 +521,16 @@ describe('BeaconWallet multi-network', () => {
     });
   });
 
+  describe('error messages', () => {
+    it('no longer tells callers to pass a network to requestPermissions', () => {
+      // The old message instructed requestPermissions({network: ...}), which the Beacon
+      // client now throws on outright.
+      const message = new BeaconWalletNotInitialized().message;
+      expect(message).toContain('BeaconWallet needs to be initialized');
+      expect(message).not.toContain('requestPermissions({network');
+    });
+  });
+
   describe('reporting an unaddressable active account', () => {
     it('does not blame the dApp for a missing pairing when an account is in fact active', async () => {
       const unmappable = account(undefined, 'tz1tallinn', { network: { type: 'tallinnnet' } });
