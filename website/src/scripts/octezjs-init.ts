@@ -23,6 +23,7 @@ declare global {
     TezosToolkit: any;
     InMemorySigner: any;
     BeaconWallet: any;
+    BeaconEvent: any;
     wallet: any;
     compose: any;
     Tzip12Module: any;
@@ -93,7 +94,7 @@ async function init() {
     // Dynamic imports
     const { TezosToolkit, compose, MichelsonMap, UnitValue, RpcReadAdapter, getRevealFee } = await import('@tezos-x/octez.js');
     const { InMemorySigner, importKey } = await import('@tezos-x/octez.js-signer');
-    const { BeaconWallet } = await import('@tezos-x/octez.js-dapp-wallet');
+    const { BeaconWallet, BeaconEvent } = await import('@tezos-x/octez.js-dapp-wallet');
     const { Tzip12Module, tzip12 } = await import('@tezos-x/octez.js-tzip12');
     const { Tzip16Module, tzip16, bytesToString, MichelsonStorageView } = await import('@tezos-x/octez.js-tzip16');
     const { stringToBytes, num2PaddedHex } = await import('@tezos-x/octez.js-utils');
@@ -110,6 +111,7 @@ async function init() {
     window.TezosToolkit = TezosToolkit;
     window.InMemorySigner = InMemorySigner;
     window.BeaconWallet = BeaconWallet;
+    window.BeaconEvent = BeaconEvent;
     window.compose = compose;
     window.Tzip12Module = Tzip12Module;
     window.tzip12 = tzip12;
@@ -224,6 +226,30 @@ window.connectWallet = async function () {
         enableMetrics: true,
       };
       window.wallet = new window.BeaconWallet(options);
+
+      // Manual pairing fallback: if no wallet has paired a few seconds after the pairing
+      // request is created (e.g. the wallet picker didn't show up), log the raw P2P pairing
+      // code so it can be pasted into a wallet's manual pairing / sync-code field.
+      // Subscribed once, when the wallet instance is created, so retries don't add listeners.
+      let walletPaired = false;
+      window.wallet.client.subscribeToEvent(window.BeaconEvent.PAIR_SUCCESS, () => {
+        walletPaired = true;
+      });
+      window.wallet.client.subscribeToEvent(window.BeaconEvent.PAIR_INIT, (data: any) => {
+        setTimeout(async () => {
+          if (walletPaired) return;
+          try {
+            const syncCode = await data.p2pPeerInfo;
+            console.log(
+              "[octez.js docs] No wallet has paired yet. If you didn't see a connection " +
+              "prompt, this is the raw P2P pairing code — paste it into your wallet's manual " +
+              "pairing / sync-code field:\n" + syncCode
+            );
+          } catch (e) {
+            console.error("[octez.js docs] Could not read fallback pairing code:", e);
+          }
+        }, 5000);
+      });
     }
 
     // Request permissions - this opens the wallet popup
