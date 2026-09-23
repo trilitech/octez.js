@@ -131,7 +131,7 @@ export const sidebarConfig = [
   },
   {
     name: "Misc",
-    items: ["contract-test-collection", "validators", "ballot"],
+    items: ["contract-test-collection", "ballot"],
   },
 ];
 

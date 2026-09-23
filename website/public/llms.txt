@@ -122,7 +122,6 @@ The default version is `0.9.0`. The `next` version contains unreleased documenta
 
 ### Misc
 - `contract-test-collection` - Smart contract collection
-- `validators` - Validation functions
 - `ballot` - Ballot Operation
 
 ## API Reference
