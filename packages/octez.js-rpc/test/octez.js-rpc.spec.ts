@@ -3811,11 +3811,11 @@ describe('RpcClient test', () => {
 
   describe('getRpcUrl', () => {
     it('should return the RPC Url', () => {
-      const url = 'https://mainnet.tezos.ecadinfra.com/';
+      const url = 'https://tezos-mainnet.octez.io/';
       const rpcUrlMainnet = new RpcClient(url).getRpcUrl();
-      expect(rpcUrlMainnet).toEqual('https://mainnet.tezos.ecadinfra.com/');
-      const rpcUrlShadownet = new RpcClient('https://shadownet.tezos.ecadinfra.com').getRpcUrl();
-      expect(rpcUrlShadownet).toEqual('https://shadownet.tezos.ecadinfra.com');
+      expect(rpcUrlMainnet).toEqual('https://tezos-mainnet.octez.io/');
+      const rpcUrlShadownet = new RpcClient('https://rpc.shadownet.teztnets.com').getRpcUrl();
+      expect(rpcUrlShadownet).toEqual('https://rpc.shadownet.teztnets.com');
     });
   });
 
