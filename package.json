@@ -1,5 +1,8 @@
 {
   "name": "octez.js-monorepo",
+  "maintainers": [
+    "Nomadic Labs <contact@nomadic-labs.com>"
+  ],
   "version": "25.0.0",
   "description": "Canonical monorepo for the octez.js TypeScript SDK for Tezos, maintained by Nomadic Labs.",
   "private": true,

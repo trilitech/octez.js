@@ -1,5 +1,8 @@
 {
   "name": "@tezos-x/octez.js-core",
+  "maintainers": [
+    "Nomadic Labs <contact@nomadic-labs.com>"
+  ],
   "version": "25.0.0",
   "description": "Shared types, interfaces, and primitives for octez.js packages.",
   "keywords": [
