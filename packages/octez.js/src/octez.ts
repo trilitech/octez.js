@@ -244,6 +244,9 @@ export class TezosToolkit {
   /**
    * Sets wallet provider on the Tezos octez.js instance
    *
+   * Installing a provider discards any PKH/PK this toolkit had cached, so the next read
+   * comes from the newly installed provider rather than the previous one.
+   *
    * @param wallet wallet to use to interact with the Tezos network
    *
    * @example Tezos.setWalletProvider(...)
@@ -254,10 +257,30 @@ export class TezosToolkit {
       const w = this.getFactory(LegacyWalletProvider)();
       this._options.wallet = w;
       this._context.walletProvider = w;
+      this.resetWalletIdentityCaches();
     } else if (typeof wallet !== 'undefined') {
       this._options.wallet = wallet;
       this._context.walletProvider = wallet;
+      this.resetWalletIdentityCaches();
     }
+  }
+
+  /**
+   * Discard the PKH/PK cached by both `Wallet` instances.
+   *
+   * There are two: the one exposed as `TezosToolkit.wallet`, and the one owned by the
+   * `Context` (which is what the estimation and preparation paths read). They cache
+   * independently and nothing else invalidates them, so a provider swap - or a
+   * multi-network wallet switching the chain it targets - would otherwise keep serving
+   * the previous account's address.
+   *
+   * Deliberately not conditioned on the incoming provider differing from the installed
+   * one: a wallet that re-installs itself to change networks passes the very same
+   * instance, so a "differs" check would never fire on the one call that needs it.
+   */
+  private resetWalletIdentityCaches() {
+    this._wallet.resetIdentityCache();
+    this._context.wallet.resetIdentityCache();
   }
 
   /**
