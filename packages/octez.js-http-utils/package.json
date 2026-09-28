@@ -19,7 +19,9 @@
   "module": "dist/octez.js-http-utils.es6.js",
   "typings": "dist/types/octez.js-http-utils.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "author": "ECAD Labs Inc <info@ecadlabs.com>",
   "contributors": [

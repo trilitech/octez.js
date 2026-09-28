@@ -18,7 +18,9 @@
   "module": "./dist/octez.js-michel-codec.es6.js",
   "typings": "./dist/types/octez.js-michel-codec.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"

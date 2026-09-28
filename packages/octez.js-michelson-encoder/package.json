@@ -17,7 +17,9 @@
   "module": "dist/octez.js-michelson-encoder.es6.js",
   "typings": "dist/types/octez.js-michelson-encoder.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"

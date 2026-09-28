@@ -19,7 +19,9 @@
   "files": [
     "dist",
     "SAPLING_PARAMS_PROVENANCE.md",
-    "src/sapling-params-manifest.json"
+    "src/sapling-params-manifest.json",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"
