@@ -3,7 +3,13 @@ octez.js - A TypeScript library for Tezos
 Copyright 2026 Nomadic Labs
 Copyright 2023 ECAD Labs Inc.
 
-This project is a fork of Taquito (https://github.com/ecadlabs/taquito)
+This project is a fork of Taquito (https://github.com/ecadlabs/taquito).
+
+In accordance with Section 4(b) of the Apache License, Version 2.0, this
+notice states that files in this repository have been modified from the
+original Taquito source as part of this fork. This notice applies to the
+repository as a whole; the complete, file-by-file record of every change is
+preserved in this repository's public git commit history.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
