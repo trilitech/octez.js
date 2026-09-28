@@ -15,7 +15,9 @@
   "module": "dist/octez.js-tzip12.es6.js",
   "typings": "dist/types/octez.js-tzip12.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"

@@ -17,7 +17,9 @@
   "module": "dist/octez.js-wallet-connect.es6.js",
   "typings": "dist/types/octez.js-wallet-connect.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"

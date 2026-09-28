@@ -18,7 +18,9 @@
   "module": "dist/octez.js-utils.es6.js",
   "typings": "dist/types/octez.js-utils.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"

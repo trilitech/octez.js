@@ -16,7 +16,9 @@
   "module": "./dist/octez.js-timelock.es6.js",
   "typings": "./dist/types/octez.js-timelock.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"

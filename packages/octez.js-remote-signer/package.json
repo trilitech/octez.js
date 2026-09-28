@@ -17,7 +17,9 @@
   "module": "dist/octez.js-remote-signer.es6.js",
   "typings": "dist/types/octez.js-remote-signer.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"
