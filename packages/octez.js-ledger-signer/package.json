@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "25.0.0",
+  "version": "25.0.0-rc.1",
   "description": "Ledger hardware wallet signer integration for octez.js.",
   "keywords": [
     "octez.js",
@@ -55,9 +55,9 @@
   },
   "dependencies": {
     "@ledgerhq/hw-transport": "^6.35.4",
-    "@tezos-x/octez.js-core": "^25.0.0",
-    "@tezos-x/octez.js": "^25.0.0",
-    "@tezos-x/octez.js-utils": "^25.0.0",
+    "@tezos-x/octez.js-core": "^25.0.0-rc.1",
+    "@tezos-x/octez.js": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
     "@noble/hashes": "^2.2.0",
     "buffer": "^6.0.3"
   },

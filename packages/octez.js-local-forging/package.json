@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "25.0.0",
+  "version": "25.0.0-rc.1",
   "description": "Local Tezos operation forging for octez.js.",
   "keywords": [
     "octez.js",
@@ -62,13 +62,13 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-core": "^25.0.0",
-    "@tezos-x/octez.js-utils": "^25.0.0",
+    "@tezos-x/octez.js-core": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
     "bignumber.js": "^10.0.2",
     "fast-text-encoding": "^1.0.6"
   },
   "devDependencies": {
-    "@tezos-x/octez.js-rpc": "^25.0.0",
+    "@tezos-x/octez.js-rpc": "^25.0.0-rc.1",
     "@types/bluebird": "^3.5.42",
     "@types/estree": "^1.0.5",
     "@types/fast-text-encoding": "^1.0.3",

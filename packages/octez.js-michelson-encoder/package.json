@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "25.0.0",
+  "version": "25.0.0-rc.1",
   "description": "Michelson encoding and decoding utilities for octez.js.",
   "keywords": [
     "octez.js",
@@ -61,10 +61,10 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-core": "^25.0.0",
-    "@tezos-x/octez.js-rpc": "^25.0.0",
-    "@tezos-x/octez.js-signer": "^25.0.0",
-    "@tezos-x/octez.js-utils": "^25.0.0",
+    "@tezos-x/octez.js-core": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-rpc": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-signer": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
     "bignumber.js": "^10.0.2",
     "fast-json-stable-stringify": "^2.1.0"
   },

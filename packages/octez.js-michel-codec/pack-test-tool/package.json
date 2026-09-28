@@ -1,6 +1,6 @@
 {
   "name": "pack-test-tool",
-  "version": "25.0.0",
+  "version": "25.0.0-rc.1",
   "description": "Generate pack test data via Tezos RPC",
   "main": "pack-test-tool.js",
   "private": true,
@@ -11,7 +11,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@tezos-x/octez.js-rpc": "^25.0.0",
+    "@tezos-x/octez.js-rpc": "^25.0.0-rc.1",
     "yargs": "^17.7.2"
   }
 }
