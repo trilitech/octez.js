@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { readFileSync, writeFileSync } = require('fs');
+const { existsSync, readFileSync, writeFileSync } = require('fs');
 const { resolve } = require('path');
 
 const version = process.argv[2];
@@ -12,6 +12,11 @@ if (!version) {
 
 const websitePackageJsonPath = resolve(__dirname, '..', 'website', 'package.json');
 const versionsConfigPath = resolve(__dirname, '..', 'website', 'src', 'config', 'versions.mjs');
+
+if (!existsSync(versionsConfigPath)) {
+  console.error(`${versionsConfigPath} does not exist — nothing to sync. Restore it before releasing.`);
+  process.exit(1);
+}
 
 const websitePackage = JSON.parse(readFileSync(websitePackageJsonPath, 'utf8'));
 websitePackage.version = version;
