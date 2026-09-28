@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "25.0.0",
+  "version": "25.0.0-rc.1",
   "description": "Software signer implementations and signing utilities for octez.js.",
   "keywords": [
     "octez.js",
@@ -65,8 +65,8 @@
     "@scure/bip39": "^2.2.0",
     "@noble/hashes": "^2.2.0",
     "@stablelib/nacl": "^1.0.4",
-    "@tezos-x/octez.js-core": "^25.0.0",
-    "@tezos-x/octez.js-utils": "^25.0.0",
+    "@tezos-x/octez.js-core": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
     "@types/bn.js": "^5.1.5",
     "bn.js": "^5.2.2",
     "typedarray-to-buffer": "^4.0.0"

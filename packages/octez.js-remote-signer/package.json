@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "25.0.0",
+  "version": "25.0.0-rc.1",
   "description": "Remote signer client for octez.js, designed to work with services such as Signatory.",
   "keywords": [
     "octez.js",
@@ -59,10 +59,10 @@
     ]
   },
   "dependencies": {
-    "@tezos-x/octez.js-core": "^25.0.0",
-    "@tezos-x/octez.js-http-utils": "^25.0.0",
-    "@tezos-x/octez.js": "^25.0.0",
-    "@tezos-x/octez.js-utils": "^25.0.0",
+    "@tezos-x/octez.js-core": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-http-utils": "^25.0.0-rc.1",
+    "@tezos-x/octez.js": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
     "typedarray-to-buffer": "^4.0.0"
   },
   "devDependencies": {
