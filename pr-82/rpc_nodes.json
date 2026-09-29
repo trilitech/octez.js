@@ -47,6 +47,11 @@
       "provider": "smartpy"
     },
     {
+      "net": "shadownet",
+      "url": "https://shadownet.smartpy.io",
+      "provider": "smartpy"
+    },
+    {
       "net": "mainnet",
       "url": "https://rpc.tzbeta.net",
       "provider": "tezosfoundation"
