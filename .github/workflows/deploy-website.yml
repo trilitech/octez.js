@@ -19,6 +19,11 @@ concurrency:
   group: deploy-${{ github.event.inputs.environment || 'staging' }}
   cancel-in-progress: true
 
+# Least privilege: the deploy authenticates to AWS with static keys, so the
+# GITHUB_TOKEN only needs to read the repo (checkout).
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
