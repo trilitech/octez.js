@@ -1,0 +1,38 @@
+name: Pages Root Redirect
+
+# The GitHub Pages root (trilitech.github.io/octez.js/) used to serve an old
+# staging build. The real site is deployed to S3/CloudFront by deploy-website.yml,
+# so the root only redirects there. PR previews (pr-<N>/, see pr-preview.yml) live
+# on the same gh-pages branch, hence keep_files: true and no force_orphan.
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/pages-root/**
+      - .github/workflows/pages-root-redirect.yml
+  workflow_dispatch:
+
+concurrency:
+  group: pages-root-redirect
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Publish redirect to the Pages root
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./.github/pages-root
+          keep_files: true
+          commit_message: 'pages: redirect root to octez-js.tezos.com'
