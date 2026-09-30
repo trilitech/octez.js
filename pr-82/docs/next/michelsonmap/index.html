@@ -20,7 +20,7 @@ latest stable version
 <li><em>The key/value methods</em>: they allow you to manipulate the keys and values in the map</li>
 <li><em>The update methods</em>: they transform the map itself, for example, by deleting elements or clearing out the map entirely.</li>
 </ul>
-<p>This tutorial uses a <a href="https://better-call.dev/ghostnet/KT1M5C76aSjpWXdoBvuzRdi3UJoC3jEzrSUW/operations">simple smart contract deployed on ghostnet</a> with a map that contains addresses as keys and tez as values. We will use all the methods available in octez.js’s <code>MichelsonMap</code> to check the map, extract values and modify them!</p>
+<p>This tutorial uses a <a href="https://better-call.dev/shadownet/KT1UVVPYNctW8NEtwgBhwGwXocm3crPzzNiD/operations">simple smart contract deployed on shadownet</a> with a map that contains addresses as keys and tez as values. We will use all the methods available in octez.js’s <code>MichelsonMap</code> to check the map, extract values and modify them!</p>
 <blockquote>
 <p>Note: octez.js is written in TypeScript; we will also use TypeScript to interact with the contract storage.</p>
 </blockquote>
@@ -29,9 +29,9 @@ latest stable version
 <pre><code class="language-ts">import { TezosToolkit, MichelsonMap } from &#39;@tezos-x/octez.js&#39;;
 import { BigNumber } from &#39;bignumber.js&#39;;
 
-const contractAddress: string = &#39;KT1M5C76aSjpWXdoBvuzRdi3UJoC3jEzrSUW&#39;;
+const contractAddress: string = &#39;KT1UVVPYNctW8NEtwgBhwGwXocm3crPzzNiD&#39;;
 
-const Tezos = new TezosToolkit(&#39;https://rpc.ghostnet.teztnets.com&#39;);
+const Tezos = new TezosToolkit(&#39;https://rpc.shadownet.teztnets.com&#39;);
 
 const contract = await Tezos.contract.at(contractAddress);
 const storage: MichelsonMap&lt;string, BigNumber&gt; = await contract.storage();

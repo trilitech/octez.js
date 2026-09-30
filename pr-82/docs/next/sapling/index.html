@@ -51,9 +51,9 @@ Sapling was introduced in Tezos in the Edo protocol. Refer to the Tezos document
 import { SaplingToolkit } from &#39;@tezos-x/octez.js-sapling&#39;;
 import { RpcClient } from &#39;@tezos-x/octez.js-rpc&#39;;
 
-const tezos = new TezosToolkit(&#39;https://rpc.ghostnet.teztnets.com&#39;);
+const tezos = new TezosToolkit(&#39;https://rpc.shadownet.teztnets.com&#39;);
 const readProvider = new RpcReadAdapter(new RpcClient(&#39;https://YOUR_PREFERRED_RPC_URL&#39;));
-const saplingContract = await tezos.contract.at(&#39;KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf&#39;);
+const saplingContract = await tezos.contract.at(&#39;KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek&#39;);
 
 const inMemorySpendingKey = await InMemorySpendingKey.fromMnemonic(&#39;YOUR_MNEMONIC&#39;);
 
@@ -77,11 +77,11 @@ const aliceSk = &#39;sask27SLmU9herddHz4qFJBLMjWYMbJF8RtS579w9ej9mfCYK7VUdyCJPHK
 
 const inMemorySpendingKey = new InMemorySpendingKey(aliceSk);
 
-const readProvider = new RpcReadAdapter(new RpcClient(&#39;https://rpc.ghostnet.teztnets.com&#39;));
+const readProvider = new RpcReadAdapter(new RpcClient(&#39;https://rpc.shadownet.teztnets.com&#39;));
 
 const saplingToolkit = new SaplingToolkit(
     { saplingSigner: inMemorySpendingKey },
-    { contractAddress: &#39;KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf&#39;, memoSize: 8 },
+    { contractAddress: &#39;KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek&#39;, memoSize: 8 },
     readProvider
 );
 
@@ -105,11 +105,11 @@ const aliceSk = &#39;sask27SLmU9herddHz4qFJBLMjWYMbJF8RtS579w9ej9mfCYK7VUdyCJPHK
 
 const inMemorySpendingKey = new InMemorySpendingKey(aliceSk);
 
-const readProvider = new RpcReadAdapter(new RpcClient(&#39;https://rpc.ghostnet.teztnets.com&#39;));
+const readProvider = new RpcReadAdapter(new RpcClient(&#39;https://rpc.shadownet.teztnets.com&#39;));
 
 const saplingToolkit = new SaplingToolkit(
     { saplingSigner: inMemorySpendingKey },
-    { contractAddress: &#39;KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf&#39;, memoSize: 8 },
+    { contractAddress: &#39;KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek&#39;, memoSize: 8 },
     readProvider
 );
 
@@ -136,8 +136,8 @@ saplingToolkit.getSaplingTransactionViewer()
 // import { SaplingToolkit, InMemorySpendingKey } from &#39;@tezos-x/octez.js-sapling&#39;;
 // import { RpcClient } from &#39;@tezos-x/octez.js-rpc&#39;;
 
-const saplingContractAddress = &#39;KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf&#39;
-const rpcUrl = &#39;https://rpc.ghostnet.teztnets.com&#39;;
+const saplingContractAddress = &#39;KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek&#39;
+const rpcUrl = &#39;https://rpc.shadownet.teztnets.com&#39;;
 const readProvider = new RpcReadAdapter(new RpcClient(rpcUrl));
 // const Tezos = new TezosToolkit(rpcUrl);
 // Note: you need to set up your signer on the TezosToolkit as usual
@@ -180,7 +180,7 @@ inMemorySpendingKey.getSaplingViewingKeyProvider()
         console.log(`Waiting for ${op.hash} to be confirmed...`);
         return op.confirmation(1).then(() =&gt; op.hash);
     })
-    .then((hash) =&gt; console.log(`Operation injected: https://ghost.tzstats.com/${hash}`))
+    .then((hash) =&gt; console.log(`Operation injected: https://shadownet.tzkt.io/${hash}`))
   })
   .catch((error) =&gt; console.log(`Error: ${(error)}`));
 </code></pre>
@@ -200,8 +200,8 @@ inMemorySpendingKey.getSaplingViewingKeyProvider()
 // import { SaplingToolkit, InMemorySpendingKey } from &#39;@tezos-x/octez.js-sapling&#39;;
 // import { RpcClient } from &#39;@tezos-x/octez.js-rpc&#39;;
 
-const saplingContractAddress = &#39;KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf&#39;
-const rpcUrl = &#39;https://rpc.ghostnet.teztnets.com&#39;;
+const saplingContractAddress = &#39;KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek&#39;
+const rpcUrl = &#39;https://rpc.shadownet.teztnets.com&#39;;
 const readProvider = new RpcReadAdapter(new RpcClient(rpcUrl));
 // const Tezos = new TezosToolkit(rpcUrl);
 // Note: you need to set up your signer on the TezosToolkit as usual
@@ -235,7 +235,7 @@ saplingToolkit.prepareSaplingTransaction([{
         console.log(`Waiting for ${op.hash} to be confirmed...`);
         return op.confirmation(1).then(() =&gt; op.hash);
     })
-    .then((hash) =&gt; console.log(`Operation injected: https://ghost.tzstats.com/${hash}`))
+    .then((hash) =&gt; console.log(`Operation injected: https://shadownet.tzkt.io/${hash}`))
 })
 .catch((error) =&gt; console.log(`Error: ${(error)}`));
 </code></pre>
@@ -253,8 +253,8 @@ saplingToolkit.prepareSaplingTransaction([{
 // import { SaplingToolkit, InMemorySpendingKey } from &#39;@tezos-x/octez.js-sapling&#39;;
 // import { RpcClient } from &#39;@tezos-x/octez.js-rpc&#39;;
 
-const saplingContractAddress = &#39;KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf&#39;
-const rpcUrl = &#39;https://rpc.ghostnet.teztnets.com&#39;;
+const saplingContractAddress = &#39;KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek&#39;
+const rpcUrl = &#39;https://rpc.shadownet.teztnets.com&#39;;
 const readProvider = new RpcReadAdapter(new RpcClient(rpcUrl));
 // const Tezos = new TezosToolkit(rpcUrl);
 // Note: you need to set up your signer on the TezosToolkit as usual
@@ -287,7 +287,7 @@ saplingToolkit.prepareUnshieldedTransaction({
         console.log(`Waiting for ${op.hash} to be confirmed...`);
         return op.confirmation(1).then(() =&gt; op.hash);
     })
-    .then((hash) =&gt; console.log(`Operation injected: https://ghost.tzstats.com/${hash}`))
+    .then((hash) =&gt; console.log(`Operation injected: https://shadownet.tzkt.io/${hash}`))
 })
 .catch((error) =&gt; console.log(`Error: ${(error)}`));
 </code></pre>
@@ -309,9 +309,9 @@ import { InMemoryViewingKey } from &#39;@tezos-x/octez.js-sapling&#39;;
 import { RpcClient } from &#39;@tezos-x/octez.js-rpc&#39;;
 
 const readProvider = new RpcReadAdapter(new RpcClient(&#39;https://YOUR_PREFERRED_RPC_URL&#39;));
-const tezos = new TezosToolkit(&#39;https://rpc.ghostnet.teztnets.com&#39;);
+const tezos = new TezosToolkit(&#39;https://rpc.shadownet.teztnets.com&#39;);
 
-const saplingContract = await tezos.contract.at(&#39;KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf&#39;);
+const saplingContract = await tezos.contract.at(&#39;KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek&#39;);
 
 const inMemoryViewingKey = new InMemoryViewingKey(
     &#39;000000000000000000977d725fc96387e8ec1e603e7ae60c6e63529fb84e36e126770e9db9899d7f2344259fd700dc80120d3c9ca65d698f6064043b048b079caa4f198aed96271740b1d6fd523d71b15cd0b3d75644afbe9abfedb6883e299165665ab692c14ca5c835c61a0e53de553a751c78fbc42d5e7eca807fd441206651c84bf88de803efba837583145a5f338b1a7af8a5f9bec4783054f9d063d365f2352f72cbced95e0a&#39;
