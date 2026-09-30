@@ -35,8 +35,8 @@ jobs:
       - name: Build website for PR preview
         run: npm run build -w website
         env:
-          SITE_URL: https://effective-chainsaw-r6861q1.pages.github.io
-          BASE_PATH: /pr-${{ github.event.pull_request.number }}
+          SITE_URL: https://trilitech.github.io
+          BASE_PATH: /octez.js/pr-${{ github.event.pull_request.number }}
 
       - name: Deploy PR preview
         uses: peaceiris/actions-gh-pages@v4
@@ -51,7 +51,7 @@ jobs:
         with:
           script: |
             const prNumber = context.payload.pull_request.number;
-            const previewUrl = `https://effective-chainsaw-r6861q1.pages.github.io/pr-${prNumber}/`;
+            const previewUrl = `https://trilitech.github.io/octez.js/pr-${prNumber}/`;
 
             // Check if we already commented
             const comments = await github.rest.issues.listComments({
