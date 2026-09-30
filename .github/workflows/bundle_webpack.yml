@@ -11,6 +11,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/master' || github.run_number }}
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
+# Least privilege: checkout + artifact upload only.
+permissions:
+  contents: read
+
 jobs:
   bundle-webpack:
     runs-on: ubuntu-latest
