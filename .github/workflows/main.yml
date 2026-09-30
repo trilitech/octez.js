@@ -130,7 +130,7 @@ jobs:
           KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
           ALLOWED_NETWORKS: shadownet
           RPC_URL: https://rpc.shadownet.teztnets.com
-          MASTER_KEY: ${{ secrets[format('KEYGEN_MASTER_KEY_{0}', matrix.shard)] }}
+          MASTER_KEY: ${{ matrix.shard == 1 && secrets.KEYGEN_MASTER_KEY_1 || matrix.shard == 2 && secrets.KEYGEN_MASTER_KEY_2 || matrix.shard == 3 && secrets.KEYGEN_MASTER_KEY_3 || matrix.shard == 4 && secrets.KEYGEN_MASTER_KEY_4 }}
           DEFAULT_FUND_TEZ: '10'
           FUND_HEADROOM_TEZ: '1'
           # Reclaim disabled: its TTL sweep raced still-running tests (emptied a
@@ -466,7 +466,7 @@ jobs:
           ALLOWED_NETWORKS: weeklynet
           RPC_URL: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
           FAUCET_URL: ${{ needs.weeklynet-resolve-rpc.outputs.faucet_url }}
-          MASTER_KEY: ${{ secrets[format('KEYGEN_MASTER_KEY_{0}', matrix.shard)] }}
+          MASTER_KEY: ${{ matrix.shard == 1 && secrets.KEYGEN_MASTER_KEY_1 || matrix.shard == 2 && secrets.KEYGEN_MASTER_KEY_2 || matrix.shard == 3 && secrets.KEYGEN_MASTER_KEY_3 || matrix.shard == 4 && secrets.KEYGEN_MASTER_KEY_4 }}
           DEFAULT_FUND_TEZ: '10'
           FUND_HEADROOM_TEZ: '1'
           RECLAIM_ENABLED: 'false'
