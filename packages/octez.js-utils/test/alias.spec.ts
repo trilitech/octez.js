@@ -1,4 +1,4 @@
-import { b58Encode, getEthereumAlias, PrefixV2 } from '../src/octez.js-utils';
+import { b58Encode, getEthereumAlias, getTezosAlias, PrefixV2 } from '../src/octez.js-utils';
 import { InvalidAddressError, ValidationResult } from '@tezos-x/octez.js-core';
 
 describe('getEthereumAlias', () => {
@@ -52,5 +52,33 @@ describe('getEthereumAlias', () => {
     expect(() => getEthereumAlias('0xccef676171871a48bbd6e2be75bbcc09d38830c5')).toThrow(
       InvalidAddressError
     );
+  });
+});
+
+describe('getTezosAlias', () => {
+  it('Should compute the alias of an Ethereum address', () => {
+    expect(getTezosAlias('0xccef676171871a48bbd6e2be75bbcc09d38830c5')).toEqual(
+      'KT1TLraR9PboPAvxLKYQs9eU4n75rGFJTbWk'
+    );
+  });
+
+  it('Should ignore letter case, as the node lowercases the address', () => {
+    expect(getTezosAlias('0xCCEF676171871A48BBD6E2BE75BBCC09D38830C5')).toEqual(
+      'KT1TLraR9PboPAvxLKYQs9eU4n75rGFJTbWk'
+    );
+    expect(getTezosAlias('0xCcEf676171871a48bBD6e2be75BbCC09d38830C5')).toEqual(
+      'KT1TLraR9PboPAvxLKYQs9eU4n75rGFJTbWk'
+    );
+  });
+
+  it('Should reject malformed Ethereum addresses', () => {
+    [
+      'ccef676171871a48bbd6e2be75bbcc09d38830c5',
+      '0xccef676171871a48bbd6e2be75bbcc09d38830',
+      '0xccef676171871a48bbd6e2be75bbcc09d38830c5ff',
+      '0xzcef676171871a48bbd6e2be75bbcc09d38830c5',
+      'tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
+      '',
+    ].forEach((address) => expect(() => getTezosAlias(address)).toThrow(InvalidAddressError));
   });
 });

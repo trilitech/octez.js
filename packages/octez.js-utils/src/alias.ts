@@ -19,6 +19,8 @@ import { InvalidAddressError, ParameterValidationError } from '@tezos-x/octez.js
 
 const tezosAliasablePrefixes = [...publicKeyHashPrefixes, PrefixV2.ContractHash];
 
+const ethereumAddressRegex = /^0x[0-9a-fA-F]{40}$/;
+
 const utf8 = (value: string): Uint8Array => new TextEncoder().encode(value);
 
 /**
@@ -41,4 +43,21 @@ export function getEthereumAlias(address: string): string {
     throw err;
   }
   return '0x' + buf2hex(keccak_256(utf8(address)).subarray(0, 20));
+}
+
+/**
+ * Computes the Michelson runtime alias of an EVM address: the originated (KT1) address
+ * whose hash is the 20-byte Blake2b hash of the lowercase `0x`-prefixed hex address.
+ *
+ * @param address A `0x`-prefixed 20-byte hex Ethereum address, in any letter case
+ * @returns The alias as a KT1 address, as returned by the EVM node's
+ * `tez_getEthereumTezosAddress` RPC
+ * @throws {@link InvalidAddressError} if `address` is not a `0x`-prefixed 20-byte hex string
+ * @example getTezosAlias('0xccef676171871a48bbd6e2be75bbcc09d38830c5') // returns 'KT1TLraR9PboPAvxLKYQs9eU4n75rGFJTbWk'
+ */
+export function getTezosAlias(address: string): string {
+  if (!ethereumAddressRegex.test(address)) {
+    throw new InvalidAddressError(address, 'expecting a 0x-prefixed 20-byte hex Ethereum address');
+  }
+  return b58Encode(blake2b(utf8(address.toLowerCase()), { dkLen: 20 }), PrefixV2.ContractHash);
 }
