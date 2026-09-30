@@ -7,6 +7,8 @@
 export * from './encoding';
 // Re-export everything from validators
 export * from './validators';
+// Re-export cross-runtime alias computation
+export * from './alias';
 // Re-export version
 export { VERSION } from './version';
 // Re-export constants
