@@ -10,9 +10,9 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     // Single source of truth for the metadata URL: assertions build the expected
     // metadata.uri from this same constant instead of a duplicated literal, so a
-    // future bucket-path change (like the tzip-16 -> tezos-linux-repo/octez-js/tz16
+    // future bucket-path change (like the tzip-16 -> tezos-linux-protected-repo/octez-js/tz16
     // move) can't silently desync the origination URL from what the test expects.
-    const urlPercentEncoded = encodeURIComponent('//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json');
+    const urlPercentEncoded = encodeURIComponent('//storage.googleapis.com/tezos-linux-protected-repo/octez-js/tz16/taco-shop-metadata.json');
 
     const originateContractWithShaUri = async (metadataSha256: string) => {
         const url = 'sha256://' + metadataSha256 + '/https:' + urlPercentEncoded;
