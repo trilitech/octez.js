@@ -1,16 +1,16 @@
 ## Sapling Parameter Provenance
 
-octez.js now treats the Sapling proving parameters as immutable release artifacts served from the Nomadic-hosted mirror at `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling`, not as vendored package payloads.
+octez.js now treats the Sapling proving parameters as immutable release artifacts served from the Nomadic-hosted mirror at `https://storage.googleapis.com/tezos-linux-protected-repo/octez-js/sapling`, not as vendored package payloads.
 
 Original source:
 - `https://download.z.cash/downloads/sapling-spend.params`
 - `https://download.z.cash/downloads/sapling-output.params`
 
 Hosted release paths:
-- `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1/spend.params`
-- `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1/output.params`
+- `https://storage.googleapis.com/tezos-linux-protected-repo/octez-js/sapling/groth16-mainnet-1/spend.params`
+- `https://storage.googleapis.com/tezos-linux-protected-repo/octez-js/sapling/groth16-mainnet-1/output.params`
 
-The mirror holds only the two parameter objects. `https://storage.googleapis.com/tezos-linux-repo/octez-js/sapling/groth16-mainnet-1.json` is not
+The mirror holds only the two parameter objects. `https://storage.googleapis.com/tezos-linux-protected-repo/octez-js/sapling/groth16-mainnet-1.json` is not
 published: nothing fetches a manifest at runtime — `src/sapling-params-loader.ts` imports the
 pinned manifest from this package instead.
 
@@ -30,8 +30,14 @@ Release source of truth:
 Operational note:
 - upload only immutable, versioned objects
 - verify the public bytes against the pinned hashes after upload
-- the mirror is a GCS bucket (`gs://tezos-linux-repo`, project `nl-gitlab-runner`), whose
+- the mirror is a GCS bucket (`gs://tezos-linux-protected-repo`, project `nl-gitlab-runner`), whose
   objects are world-readable; uploads are verified against the pinned hashes over the public
   URL after upload
+- until 2026-10-01 the mirror was `gs://tezos-linux-repo`. That bucket no longer allows
+  anonymous reads, so versions published before this change, which hard-code its URL, can no
+  longer fetch the default parameters
+  ([#96](https://github.com/trilitech/octez.js/issues/96))
+- `gs://tezos-linux-protected-repo` has no CORS policy yet, so browser fetches of the default
+  URLs fail until one is added; Node is unaffected
 - `docs/infra/sapling-cloudflare-r2-rollout.md` describes the earlier Cloudflare R2 plan and
   no longer matches where the parameters are hosted
