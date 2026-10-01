@@ -92,6 +92,10 @@ jobs:
   cleanup:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
+    # Serialize gh-pages pushes with pages-root-redirect.yml.
+    concurrency:
+      group: gh-pages-push
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:

@@ -14,16 +14,16 @@ on:
       - .github/workflows/pages-root-redirect.yml
   workflow_dispatch:
 
-concurrency:
-  group: pages-root-redirect
-  cancel-in-progress: false
-
 permissions:
   contents: read
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Serialize gh-pages pushes with the cleanup job in pr-preview.yml.
+    concurrency:
+      group: gh-pages-push
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:
