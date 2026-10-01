@@ -11,14 +11,33 @@ if (typeof globalThis.fetch !== 'function') {
 
 const env = typeof process !== 'undefined' ? process.env : undefined;
 
+// TODO: TAQUITO_HTTP_* are deprecated in favor of OCTEZJS_HTTP_*; remove once consumers migrate.
+const HTTP_ENV_VAR_RENAMES: [old: string, replacement: string][] = [
+  ['TAQUITO_HTTP_TRACE', 'OCTEZJS_HTTP_TRACE'],
+  ['TAQUITO_HTTP_RETRY_COUNT', 'OCTEZJS_HTTP_RETRY_COUNT'],
+  ['TAQUITO_HTTP_RETRY_BASE_MS', 'OCTEZJS_HTTP_RETRY_BASE_MS'],
+];
+for (const [oldName, newName] of HTTP_ENV_VAR_RENAMES) {
+  if (env?.[oldName] !== undefined) {
+    console.warn(
+      `${oldName} is deprecated and will be removed in a future release; use ${newName} instead.`
+    );
+  }
+}
+
 const httpTraceEnabled =
-  /^(1|true)$/i.test(env?.TAQUITO_HTTP_TRACE ?? '') || env?.RUNNER_DEBUG === '1';
-const parsedHttpRetryCount = Number(env?.TAQUITO_HTTP_RETRY_COUNT ?? '1');
+  /^(1|true)$/i.test(env?.OCTEZJS_HTTP_TRACE ?? env?.TAQUITO_HTTP_TRACE ?? '') ||
+  env?.RUNNER_DEBUG === '1';
+const parsedHttpRetryCount = Number(
+  env?.OCTEZJS_HTTP_RETRY_COUNT ?? env?.TAQUITO_HTTP_RETRY_COUNT ?? '1'
+);
 const httpRetryCount =
   Number.isFinite(parsedHttpRetryCount) && parsedHttpRetryCount >= 0
     ? Math.floor(parsedHttpRetryCount)
     : 1;
-const parsedHttpRetryBaseMs = Number(env?.TAQUITO_HTTP_RETRY_BASE_MS ?? '100');
+const parsedHttpRetryBaseMs = Number(
+  env?.OCTEZJS_HTTP_RETRY_BASE_MS ?? env?.TAQUITO_HTTP_RETRY_BASE_MS ?? '100'
+);
 const httpRetryBaseMs =
   Number.isFinite(parsedHttpRetryBaseMs) && parsedHttpRetryBaseMs >= 0
     ? parsedHttpRetryBaseMs
@@ -187,9 +206,11 @@ export interface HttpRequestOptions {
  * falling back to exponential backoff with jitter. Configure via environment
  * variables:
  *
- * - `TAQUITO_HTTP_RETRY_COUNT` - max retries (default `1`)
- * - `TAQUITO_HTTP_RETRY_BASE_MS` - base delay in ms (default `100`)
- * - `TAQUITO_HTTP_TRACE` - emit JSON request logs when `true` or `1`
+ * - `OCTEZJS_HTTP_RETRY_COUNT` - max retries (default `1`)
+ * - `OCTEZJS_HTTP_RETRY_BASE_MS` - base delay in ms (default `100`)
+ * - `OCTEZJS_HTTP_TRACE` - emit JSON request logs when `true` or `1`
+ * - `TAQUITO_HTTP_RETRY_COUNT` / `TAQUITO_HTTP_RETRY_BASE_MS` / `TAQUITO_HTTP_TRACE` -
+ *   deprecated aliases for the above, still honored when the `OCTEZJS_*` name is unset
  */
 export class HttpBackend {
   /**

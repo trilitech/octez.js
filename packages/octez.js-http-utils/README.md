@@ -43,11 +43,14 @@ octez.js uses the built-in `globalThis.fetch` (requires Node.js >= 22 or a brows
 
 For diagnostics, you can emit request timing logs with:
 
-`TAQUITO_HTTP_TRACE=true`
+`OCTEZJS_HTTP_TRACE=true`
 
 Optionally adjust the slow-request threshold (milliseconds):
 
-`TAQUITO_HTTP_TRACE_SLOW_MS=1500`
+`OCTEZJS_HTTP_TRACE_SLOW_MS=1500`
+
+(`TAQUITO_HTTP_TRACE` / `TAQUITO_HTTP_TRACE_SLOW_MS` are deprecated aliases for the above,
+still honored when the `OCTEZJS_*` name is unset, and will be removed in a future release.)
 
 See the top-level https://github.com/trilitech/octez.js file for details on reporting issues, contributing, and versioning.
 
