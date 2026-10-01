@@ -50,7 +50,7 @@ async function example() {
 				'9990000'
 			);
 
-			const url = 'https://storage.googleapis.com/tezos-linux-protected-repo/octez-js/tz16/fa2-token-factory.json';
+			const url = 'https://storage.googleapis.com/octez-js-assets/tz16/fa2-token-factory.json';
 			const bytesUrl = stringToBytes(url);
 			const metadata = new MichelsonMap();
 			metadata.set('', bytesUrl);
