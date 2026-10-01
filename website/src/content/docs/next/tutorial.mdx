@@ -32,7 +32,7 @@ We need a development machine with the following software installed:
 This tutorial should work on Windows, Linux, and macOS. On other systems like a Chromebook or a tablet, you might need additional setup not covered in this tutorial.
 
 > [!NOTE]
-> If you are using windows, there are two ways to run the commands in this tutorial: inside a WSL2 terminal, or inside the PowerShell. 
+> If you are using windows, there are two ways to run the commands in this tutorial: inside a WSL2 terminal, or inside the PowerShell.
 >
 > Generally, WSL2 is recommended for programming. But if you prefer, you can still use PowerShell. If you use WSL2, you can use the same commands as Linux. For PowerShell, we will provide commands in a separate tab **only when they are different from Linux**.
 
@@ -97,7 +97,7 @@ Open the file `index.ts` and replace the code with the following:
 ```ts
 import { TezosToolkit } from "@tezos-x/octez.js";
 
-const Tezos = new TezosToolkit("https://rpc.ghostnet.teztnets.com");
+const Tezos = new TezosToolkit("https://rpc.shadownet.teztnets.com");
 
 Tezos.tz.getBalance("tz1YvE7Sfo92ueEPEdZceNWd5MWNeMNSt16L").then(balance => {
     console.log(balance.toNumber());
@@ -185,7 +185,7 @@ And to implement all these, you need detailed information about different data t
 Returning to our dApp, we now want to send an operation to the blockchain. When reading data from the blockchain we can simply send a read request. When sending an operation, we need to prove that we own the address. To do this we need to sign the operation with the private key of the address.
 
 For the purpose of this section, we are using a pre-defined address that is being shared with everyone else going through this tutorial. **Don't use this address for anything important.** Additionally, there are two possible reasons why the transfer operation may fail:
-1. Other people testing the code have consumed all the ꜩ in the address, so your operation will fail because of insufficient funds. You can head over to the [ghostnet faucet](https://faucet.ghostnet.teztnets.com/) and send some ꜩ to the address for free. Or you can get free Testnet Tez right from your terminal: `npx @oxheadalpha/get-tez <your-address> --amount 25 --network ghostnet`
+1. Other people testing the code have consumed all the ꜩ in the address, so your operation will fail because of insufficient funds. You can head over to the [shadownet faucet](https://faucet.shadownet.teztnets.com/) and send some ꜩ to the address for free. Or you can get free Testnet Tez right from your terminal: `npx @oxheadalpha/get-tez <your-address> --amount 25 --network shadownet`
 2. Another person is sending an operation from this address at the same time as you. One address can only send one operation to each block. This is very unlikely in this case, but if that happens you can simply wait a moment and try again.
 
 <details>
@@ -197,11 +197,11 @@ For the purpose of this section, we are using a pre-defined address that is bein
     docker run --pull always -it --entrypoint sh docker.io/tezos/tezos:latest
 
     # You should now be inside the docker container
-    octez-client -E https://rpc.ghostnet.teztnets.com gen keys mysamplekey -s secp256k1
-    octez-client -E https://rpc.ghostnet.teztnets.com show address mysamplekey -S
+    octez-client -E https://rpc.shadownet.teztnets.com gen keys mysamplekey -s secp256k1
+    octez-client -E https://rpc.shadownet.teztnets.com show address mysamplekey -S
   ```
 
-  The new address you just created will have a balance of zero. For the testnet, You can go to [ghostnet faucet](https://faucet.ghostnet.teztnets.com/) and send some ꜩ to it for free. On mainnet, you need to buy actual Tez on an exchange.
+  The new address you just created will have a balance of zero. For the testnet, You can go to [shadownet faucet](https://faucet.shadownet.teztnets.com/) and send some ꜩ to it for free. On mainnet, you need to buy actual Tez on an exchange.
 </details>
 
 > [!CAUTION]
@@ -222,7 +222,7 @@ import { InMemorySigner } from "@tezos-x/octez.js-signer";
 import { TezosToolkit } from "@tezos-x/octez.js";
 
 const main = async () => {
-    const Tezos = new TezosToolkit("https://rpc.ghostnet.teztnets.com");
+    const Tezos = new TezosToolkit("https://rpc.shadownet.teztnets.com");
 
     // DANGER: FOR DEMONSTRATION ONLY! DO NOT DO THIS IN PRODUCTION, KEEP YOUR SECRETS SAFE!
     const signer = await InMemorySigner.fromSecretKey('spsk29SxqYRjnreqGzsYiAUEqxyhDwD8j2J57pJjaGgGtReZVD2UiD');
@@ -265,7 +265,7 @@ Congratulations! You have just sent an operation to the Tezos blockchain using o
 
 ## Interacting with a smart contract using octez.js
 
-Next we will interact with a smart contract using octez.js. We will mint an NFT on the ghostnet version of [objkt.com](https://objkt.com), an NFT marketplace.
+Next we will interact with a smart contract using octez.js. We will mint an NFT on the shadownet version of [objkt.com](https://objkt.com), an NFT marketplace.
 
 The concepts you learn here are not limited to objkt.com or NFTs. You can use the same concepts to interact with any smart contract on the Tezos blockchain.
 
@@ -273,23 +273,23 @@ Most dApps interact with smart contracts. You can think of a smart contract as a
 
 In Tezos, smart contracts are written using one of the high-level languages (like Ligo), and compiled to Michelson. Then the contract is originated (deployed) to the blockchain. During origination, an address prefixed with `KT1` is created for the contract. You can then interact with the smart contract by sending operations to this address.
 
-On objkt.com, any user can create a number of collections and then mint NFTs in any of these collections. For this tutorial, we have a collection made and our test address (`tz2DZLWLuDRKUuR4BrWetimZ1C6Pg6pPAo3n`) is an operator of said collection, allowing it to mint NFTs. You can find the collection [here](https://ghostnet.objkt.com/collection/KT1XmD31NdBrTcL7bPF3md6i5g4BbE6s2YLv).
+On objkt.com, any user can create a number of collections and then mint NFTs in any of these collections. For this tutorial, we have a collection made and our test address (`tz1PUorEUCkyMqys2JXLoMzx9joGiKDzCmJV`) is an operator of said collection, allowing it to mint NFTs. You can find the collection [here](https://shadownet.objkt.com/collections/KT1A1Pqrg3gAdiewr3RRkWgmJ6RB5vcStNwp).
 
 Open the file `index.ts` and change the `main` function to the following:
 
 ```ts
 const main = async () => {
-    const Tezos = new TezosToolkit("https://rpc.ghostnet.teztnets.com");
+    const Tezos = new TezosToolkit("https://rpc.shadownet.teztnets.com");
 
-    const signer = await InMemorySigner.fromSecretKey('spsk29SxqYRjnreqGzsYiAUEqxyhDwD8j2J57pJjaGgGtReZVD2UiD');
+    const signer = await InMemorySigner.fromSecretKey('edsk38dzuSFyb3zGzBGsqKYGZcPEhupT7whxfqvhdQZuC2vFW3vLST');
     Tezos.setProvider({ signer });
 
-    const contract = await Tezos.contract.at('KT1JarALvhDLjtFhraeTMGGoeNLUkuL6jGtM');
+    const contract = await Tezos.contract.at('KT1QzpqckWse9964dCh2FVWheRWF2SZNg9V4');
     const op = await contract.methodsObject.mint_artist({
-        collection_id: 71947,
+        collection_id: 112544,
         editions: 1,
-        metadata_cid: '697066733a2f2f516d52325672336775713467594d45366268676b47474a34714656647652786867766e47516d7a6672346d364635',
-        target: 'tz2DZLWLuDRKUuR4BrWetimZ1C6Pg6pPAo3n'
+        metadata_cid: '697066733a2f2f6261666b7265696472716f76656e6d6267756a6d727133376b6a766a686d73767a636e657162757a62356a726836367264756b7a6b6c6a6d687a65',
+        target: 'tz1PUorEUCkyMqys2JXLoMzx9joGiKDzCmJV'
     }).send();
 
     await op.confirmation();
@@ -299,12 +299,12 @@ const main = async () => {
 
 What happens here? Let's break it down:
 1. We set up the Tezos Toolkit and signer as before.
-2. We get the contract metadata from the blockchain. This metadata contains information about the contract, including its entrypoints.
+2. We get the contract metadata from the blockchain. This metadata contains information about the contract managing all collections and NFTs, including its entrypoints.
 3. We call the `mint_artist` entrypoint of the contract. We need to provide the data it expects, which is provided as a JavaScript object. octez.js will automatically encode this data to be sent to the contract.
 4. We wait for the confirmation and print the hash as before.
 
 Now, if you run your code, you should be able to see the hash of the operation in the terminal.
-After about a minute, you should be able to see the new NFT in [the collection](https://ghostnet.objkt.com/collection/KT1XmD31NdBrTcL7bPF3md6i5g4BbE6s2YLv). Because everyone following this tutorial is minting NFTs with the same metadata, all the NFTs in this collection will look the same. However, the number of tokens in the collection should increase by one.
+After about a minute, you should be able to see the new NFT in [the collection](https://shadownet.objkt.com/collections/KT1A1Pqrg3gAdiewr3RRkWgmJ6RB5vcStNwp). Because everyone following this tutorial is minting NFTs with the same metadata, all the NFTs in this collection will look the same. However, the number of tokens in the collection should increase by one.
 
 Congratulations! You have just interacted with a smart contract using octez.js. Additionally, you programmatically minted an NFT.
 
@@ -316,7 +316,7 @@ Luckily for us, there is an elegant solution to this problem.
 
 ## dApps and Crypto Wallets
 
-A "wallet" is a program that stores the users secrets (like private keys) and signs operations on behalf of the user. The wallet is not part of the dApp, but rather a separate program such as a browser extension, separate website, mobile app, or hardware device. 
+A "wallet" is a program that stores the users secrets (like private keys) and signs operations on behalf of the user. The wallet is not part of the dApp, but rather a separate program such as a browser extension, separate website, mobile app, or hardware device.
 
 The wallet is also responsible for showing the operations to the user and asking them to approve the operation. The user only needs to fully trust the wallet, as the dApp cannot make any write operations to the blockchain unless it is signed by the wallet. This moves most of the responsibility off the developer of the dApp and on to the developer of the wallet, creating a simpler and more cohesive ecosystem for the user.
 
@@ -390,7 +390,7 @@ import { BeaconWallet } from "@tezos-x/octez.js-dapp-wallet";
 
 const App = () => {
   const [Tezos] = useState<TezosToolkit>(
-    new TezosToolkit("https://rpc.ghostnet.teztnets.com")
+    new TezosToolkit("https://rpc.shadownet.teztnets.com")
   );
   const [wallet, setWallet] = useState<BeaconWallet | undefined>(undefined);
   const [userAddress, setUserAddress] = useState<string | undefined>(undefined);
@@ -453,8 +453,8 @@ const ConnectButton = ({
 			const wallet = new BeaconWallet({
 				name: "My dApp",
 				network: {
-					type: NetworkType.GHOSTNET,
-					rpcUrl: "https://rpc.ghostnet.teztnets.com",
+					type: NetworkType.SHADOWNET,
+					rpcUrl: "https://rpc.shadownet.teztnets.com",
 				},
 				enableMetrics: true,
 			});
@@ -575,7 +575,7 @@ Make sure that the command `npm run dev` is still running in the terminal and th
 
 In your app you should now see the "Connect Wallet" button in the browser. Clicking on it opens the wallet selection modal where you can choose your favorite wallet and connect to it. Once connected, you should see the "Send" button. You can enter an address and an amount (in Mutez, notice the `mutez: true` in `Transfer.tsx`) and click on the "Send" button to send ꜩ to the address.
 
-If you have not set up a wallet before, clicking on the Kukai wallet opens a page that asks you to create a new wallet. Remember to visit the [ghostnet faucet](https://faucet.ghostnet.teztnets.com/) to fund your wallet with some ꜩ. If you want to use that wallet for real ꜩ, you need to back up the mnemonic phrase. But remember that the mnemonic phrase is a secret. Anyone who has access to it can steal your ꜩ.
+If you have not set up a wallet before, clicking on the Kukai wallet opens a page that asks you to create a new wallet. Remember to visit the [shadownet faucet](https://faucet.shadownet.teztnets.com/) to fund your wallet with some ꜩ. If you want to use that wallet for real ꜩ, you need to back up the mnemonic phrase. But remember that the mnemonic phrase is a secret. Anyone who has access to it can steal your ꜩ.
 
 ### Preparing for Production
 

@@ -55,9 +55,9 @@ import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
 import { SaplingToolkit } from '@tezos-x/octez.js-sapling';
 import { RpcClient } from '@tezos-x/octez.js-rpc';
 
-const tezos = new TezosToolkit('https://rpc.ghostnet.teztnets.com');
+const tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
 const readProvider = new RpcReadAdapter(new RpcClient('https://YOUR_PREFERRED_RPC_URL'));
-const saplingContract = await tezos.contract.at('KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf');
+const saplingContract = await tezos.contract.at('KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek');
 
 const inMemorySpendingKey = await InMemorySpendingKey.fromMnemonic('YOUR_MNEMONIC');
 
@@ -88,11 +88,11 @@ const aliceSk = 'sask27SLmU9herddHz4qFJBLMjWYMbJF8RtS579w9ej9mfCYK7VUdyCJPHK8AzW
 
 const inMemorySpendingKey = new InMemorySpendingKey(aliceSk);
 
-const readProvider = new RpcReadAdapter(new RpcClient('https://rpc.ghostnet.teztnets.com'));
+const readProvider = new RpcReadAdapter(new RpcClient('https://rpc.shadownet.teztnets.com'));
 
 const saplingToolkit = new SaplingToolkit(
     { saplingSigner: inMemorySpendingKey },
-    { contractAddress: 'KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf', memoSize: 8 },
+    { contractAddress: 'KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek', memoSize: 8 },
     readProvider
 );
 
@@ -121,11 +121,11 @@ const aliceSk = 'sask27SLmU9herddHz4qFJBLMjWYMbJF8RtS579w9ej9mfCYK7VUdyCJPHK8AzW
 
 const inMemorySpendingKey = new InMemorySpendingKey(aliceSk);
 
-const readProvider = new RpcReadAdapter(new RpcClient('https://rpc.ghostnet.teztnets.com'));
+const readProvider = new RpcReadAdapter(new RpcClient('https://rpc.shadownet.teztnets.com'));
 
 const saplingToolkit = new SaplingToolkit(
     { saplingSigner: inMemorySpendingKey },
-    { contractAddress: 'KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf', memoSize: 8 },
+    { contractAddress: 'KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek', memoSize: 8 },
     readProvider
 );
 
@@ -157,8 +157,8 @@ Here is an example of how to prepare and inject a shielded transaction using oct
 // import { SaplingToolkit, InMemorySpendingKey } from '@tezos-x/octez.js-sapling';
 // import { RpcClient } from '@tezos-x/octez.js-rpc';
 
-const saplingContractAddress = 'KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf'
-const rpcUrl = 'https://rpc.ghostnet.teztnets.com';
+const saplingContractAddress = 'KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek'
+const rpcUrl = 'https://rpc.shadownet.teztnets.com';
 const readProvider = new RpcReadAdapter(new RpcClient(rpcUrl));
 // const Tezos = new TezosToolkit(rpcUrl);
 // Note: you need to set up your signer on the TezosToolkit as usual
@@ -201,7 +201,7 @@ inMemorySpendingKey.getSaplingViewingKeyProvider()
         console.log(`Waiting for ${op.hash} to be confirmed...`);
         return op.confirmation(1).then(() => op.hash);
     })
-    .then((hash) => console.log(`Operation injected: https://ghost.tzstats.com/${hash}`))
+    .then((hash) => console.log(`Operation injected: https://shadownet.tzkt.io/${hash}`))
   })
   .catch((error) => console.log(`Error: ${(error)}`));
 ```
@@ -228,8 +228,8 @@ Here is an example of how to prepare and inject a Sapling transaction using octe
 // import { SaplingToolkit, InMemorySpendingKey } from '@tezos-x/octez.js-sapling';
 // import { RpcClient } from '@tezos-x/octez.js-rpc';
 
-const saplingContractAddress = 'KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf'
-const rpcUrl = 'https://rpc.ghostnet.teztnets.com';
+const saplingContractAddress = 'KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek'
+const rpcUrl = 'https://rpc.shadownet.teztnets.com';
 const readProvider = new RpcReadAdapter(new RpcClient(rpcUrl));
 // const Tezos = new TezosToolkit(rpcUrl);
 // Note: you need to set up your signer on the TezosToolkit as usual
@@ -263,7 +263,7 @@ saplingToolkit.prepareSaplingTransaction([{
         console.log(`Waiting for ${op.hash} to be confirmed...`);
         return op.confirmation(1).then(() => op.hash);
     })
-    .then((hash) => console.log(`Operation injected: https://ghost.tzstats.com/${hash}`))
+    .then((hash) => console.log(`Operation injected: https://shadownet.tzkt.io/${hash}`))
 })
 .catch((error) => console.log(`Error: ${(error)}`));
 ```
@@ -286,8 +286,8 @@ Here is an example of how to prepare and inject an unshielded transaction using 
 // import { SaplingToolkit, InMemorySpendingKey } from '@tezos-x/octez.js-sapling';
 // import { RpcClient } from '@tezos-x/octez.js-rpc';
 
-const saplingContractAddress = 'KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf'
-const rpcUrl = 'https://rpc.ghostnet.teztnets.com';
+const saplingContractAddress = 'KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek'
+const rpcUrl = 'https://rpc.shadownet.teztnets.com';
 const readProvider = new RpcReadAdapter(new RpcClient(rpcUrl));
 // const Tezos = new TezosToolkit(rpcUrl);
 // Note: you need to set up your signer on the TezosToolkit as usual
@@ -320,7 +320,7 @@ saplingToolkit.prepareUnshieldedTransaction({
         console.log(`Waiting for ${op.hash} to be confirmed...`);
         return op.confirmation(1).then(() => op.hash);
     })
-    .then((hash) => console.log(`Operation injected: https://ghost.tzstats.com/${hash}`))
+    .then((hash) => console.log(`Operation injected: https://shadownet.tzkt.io/${hash}`))
 })
 .catch((error) => console.log(`Error: ${(error)}`));
 ```
@@ -343,9 +343,9 @@ import { InMemoryViewingKey } from '@tezos-x/octez.js-sapling';
 import { RpcClient } from '@tezos-x/octez.js-rpc';
 
 const readProvider = new RpcReadAdapter(new RpcClient('https://YOUR_PREFERRED_RPC_URL'));
-const tezos = new TezosToolkit('https://rpc.ghostnet.teztnets.com');
+const tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
 
-const saplingContract = await tezos.contract.at('KT1ToBD7bovonshNrxs3i4KMFuZ8PE2LUmQf');
+const saplingContract = await tezos.contract.at('KT1QgisDGyaduybmvX6ShbsUNf5JA2DH14Ek');
 
 const inMemoryViewingKey = new InMemoryViewingKey(
     '000000000000000000977d725fc96387e8ec1e603e7ae60c6e63529fb84e36e126770e9db9899d7f2344259fd700dc80120d3c9ca65d698f6064043b048b079caa4f198aed96271740b1d6fd523d71b15cd0b3d75644afbe9abfedb6883e299165665ab692c14ca5c835c61a0e53de553a751c78fbc42d5e7eca807fd441206651c84bf88de803efba837583145a5f338b1a7af8a5f9bec4783054f9d063d365f2352f72cbced95e0a'
