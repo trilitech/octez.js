@@ -31,6 +31,8 @@ declare global {
     Tzip16Module: any;
     tzip16: any;
     bytesToString: any;
+    IpfsHttpHandler: any;
+    MetadataProvider: any;
     BigNumber: any;
     MichelsonMap: any;
     MichelsonStorageView: any;
@@ -96,8 +98,8 @@ async function init() {
     const { InMemorySigner } = await import('@tezos-x/octez.js-signer');
     const { BeaconWallet, BeaconEvent } = await import('@tezos-x/octez.js-dapp-wallet');
     const { Tzip12Module, tzip12 } = await import('@tezos-x/octez.js-tzip12');
-    const { Tzip16Module, tzip16, bytesToString, MichelsonStorageView } = await import('@tezos-x/octez.js-tzip16');
-    const { stringToBytes, num2PaddedHex } = await import('@tezos-x/octez.js-utils');
+    const { Tzip16Module, tzip16, MichelsonStorageView, IpfsHttpHandler, MetadataProvider } = await import('@tezos-x/octez.js-tzip16');
+    const { stringToBytes, num2PaddedHex, bytesToString } = await import('@tezos-x/octez.js-utils');
     const { BigNumber } = await import('bignumber.js');
     const { SigningType } = await import('@tezos-x/octez.connect-dapp')
     const { Parser, packDataBytes, emitMicheline } = await import('@tezos-x/octez.js-michel-codec');
@@ -118,6 +120,8 @@ async function init() {
     window.Tzip16Module = Tzip16Module;
     window.tzip16 = tzip16;
     window.bytesToString = bytesToString;
+    window.IpfsHttpHandler = IpfsHttpHandler;
+    window.MetadataProvider = MetadataProvider;
     window.BigNumber = BigNumber;
     window.MichelsonMap = MichelsonMap;
     window.MichelsonStorageView = MichelsonStorageView;
