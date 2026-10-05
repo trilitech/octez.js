@@ -30,6 +30,7 @@
     "@tezos-x/octez.js-wallet-connect": "^25.0.0-rc.1",
     "astro": "^5.16.10",
     "astro-auto-import": "^0.4.5",
+    "bignumber.js": "^10.0.2",
     "buffer": "^6.0.3",
     "fuse.js": "^7.1.0",
     "lottie-web": "^5.13.0",
