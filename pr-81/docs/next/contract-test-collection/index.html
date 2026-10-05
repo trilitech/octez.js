@@ -80,7 +80,7 @@ latest stable version
 <li><code>decrement</code></li>
 <li><code>increment</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-b7jx62n78" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage int
+<div class="tabs-container" data-tabs-id="tabs-pcztxctii" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage int
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: 1;
 </code></pre> </div>  </div> </div>  <script type="module">document.querySelectorAll(".tabs-container").forEach(s=>{const c=s.querySelectorAll(".tab-button"),b=s.querySelectorAll("[data-tab-item]"),o=a=>{c.forEach(e=>{const t=e;t.dataset.tab===a?t.classList.add("active"):t.classList.remove("active")}),b.forEach(e=>{const t=e;t.dataset.tabItem===a?t.style.display="block":t.style.display="none"})};c.forEach(a=>{a.addEventListener("click",()=>{const t=a.dataset.tab;t&&o(t)})});const l=s.querySelector(".tab-button.active");l?.dataset.tab&&o(l.dataset.tab)});</script>
 <h2 id="michelsonmapcontract">MichelsonMapContract</h2>
@@ -92,7 +92,7 @@ latest stable version
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-vuhvmx1n0" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map address mutez);
+<div class="tabs-container" data-tabs-id="tabs-g750smcky" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map address mutez);
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: MichelsonMap&lt;string, BigNumber&gt;
 </code></pre> </div>  </div> </div>  
 <h2 id="genericmultisigcontract">GenericMultisigContract</h2>
@@ -102,7 +102,7 @@ latest stable version
 <li><code>default</code></li>
 <li><code>main</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-7odhi7rb9" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (nat %stored_counter) (pair (nat %threshold) (list %keys key)));
+<div class="tabs-container" data-tabs-id="tabs-xf962c696" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (nat %stored_counter) (pair (nat %threshold) (list %keys key)));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">        storage: {
           stored_counter: 0,
           threshold: 2,
@@ -123,7 +123,7 @@ latest stable version
 <li><code>mint</code></li>
 <li><code>transfer</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-zkobmq4uu" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+<div class="tabs-container" data-tabs-id="tabs-t7bxtowuo" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
           (pair
             (big_map %ledger address (pair (map %allowances address nat) (nat %balance)))
             (address %owner))
@@ -150,7 +150,7 @@ latest stable version
 <li><code>transfer</code></li>
 <li><code>update_operators</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-flb1n6a9c" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+<div class="tabs-container" data-tabs-id="tabs-3sy62bt6v" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
           (pair
             (big_map %ledger address (pair (set %allowances address) (nat %balance)))
             (big_map %token_metadata nat
@@ -204,7 +204,7 @@ const op = await tezos.contract.originate({
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-lb4a0457r" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+<div class="tabs-container" data-tabs-id="tabs-sius3kfrr" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
           (pair (address %theAddress)
                 (map %theMap (pair nat address) (pair (mutez %amount) (int %quantity))))
           (int %theNumber));
@@ -249,7 +249,7 @@ const op = await tezos.contract.originate({
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-j7m98w7i0" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map
+<div class="tabs-container" data-tabs-id="tabs-5k61s7qqe" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map
           (pair int
                 (pair nat
                       (pair string
@@ -301,7 +301,7 @@ const op = await tezos.contract.originate({
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-ynjzrpa3p" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map nat (pair (nat %current_stock) (mutez %max_price)));
+<div class="tabs-container" data-tabs-id="tabs-m9a6cifoo" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (map nat (pair (nat %current_stock) (mutez %max_price)));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const storageMap = new MichelsonMap();
 storageMap.set(&#39;1&#39;, { current_stock: &#39;10000&#39;, max_price: &#39;50&#39; });
 storageMap.set(&#39;2&#39;, { current_stock: &#39;120&#39;, max_price: &#39;20&#39; });
@@ -313,7 +313,7 @@ storageMap.set(&#39;3&#39;, { current_stock: &#39;50&#39;, max_price: &#39;60&#3
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-blyylf5yf" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %thebigmap (pair nat address) int)
+<div class="tabs-container" data-tabs-id="tabs-vws5a0mj3" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %thebigmap (pair nat address) int)
               (map %themap (pair nat address) int));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">Tezos.contract
   .at(&#39;KT1RBE127YSA96FwCYrA8sazvr8pt1TYaThS&#39;)
@@ -360,7 +360,7 @@ storageMap.set(&#39;3&#39;, { current_stock: &#39;50&#39;, max_price: &#39;60&#3
 <li><code>setPause</code></li>
 <li><code>transfer</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-fda93y4n9" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map address (pair nat (map address nat)))
+<div class="tabs-container" data-tabs-id="tabs-jg91rq9nz" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map address (pair nat (map address nat)))
               (pair address (pair bool nat)));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const bigMapInit = new MichelsonMap();
 bigMapInit.set(signer, { 0: &#39;1&#39;, 1: new MichelsonMap() });
@@ -388,7 +388,7 @@ const op = await tezos.contract.originate({
 <li><code>set_child_record</code></li>
 <li><code>update_record</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-freqgl05k" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+<div class="tabs-container" data-tabs-id="tabs-r02gtya80" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
           (pair (address %owner)
                 (big_map %records bytes
                                   (pair
@@ -454,7 +454,7 @@ const op = await tezos.contract.originate({
 <li><code>setPause</code></li>
 <li><code>transfer</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-g0ffgt07n" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+<div class="tabs-container" data-tabs-id="tabs-q2g1qqlhw" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
           (pair
             (big_map %ledger address (pair (map %allowances address nat) (nat %balance)))
             (address %owner))
@@ -481,7 +481,7 @@ const opknownBigMapContract = await tezos.contract.originate({
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-x2hx61o8l" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map nat string));
+<div class="tabs-container" data-tabs-id="tabs-5ii1tu9lg" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map nat string));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const bigmap = new MichelsonMap();
 
 for (let i = 1; i &lt;= 410; i++) {
@@ -505,7 +505,7 @@ const op = await tezos.contract.originate({
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-molkhqoz9" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage nat
+<div class="tabs-container" data-tabs-id="tabs-scr6j9n9h" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage nat
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: 1;
 </code></pre> </div>  </div> </div>  
 <h2 id="contracttoplevelviews">ContractTopLevelViews</h2>
@@ -517,7 +517,7 @@ const op = await tezos.contract.originate({
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-y9weddwus" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage nat
+<div class="tabs-container" data-tabs-id="tabs-3n53ab9au" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage nat
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: 1;
 </code></pre> </div>  </div> </div>  
 <h1 id="tzip-7-contracts">Tzip-7 Contracts</h1>
@@ -542,7 +542,7 @@ const op = await tezos.contract.originate({
 <li><code>setPause</code></li>
 <li><code>transfer</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-cq4g9bp0o" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map address (pair nat (map address nat)))
+<div class="tabs-container" data-tabs-id="tabs-g41akyk6c" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map address (pair nat (map address nat)))
               (pair address (pair bool nat)));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const pkh = await Tezos.signer.publicKeyHash();
 const bigMap = new MichelsonMap();
@@ -574,7 +574,7 @@ storage: {
 <li><code>transfer</code></li>
 <li><code>update_operators</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-tkhy3r2q0" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
+<div class="tabs-container" data-tabs-id="tabs-8qplosw9j" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair
           (pair (address %administrator)
                 (pair (nat %all_tokens) (big_map %ledger (pair address nat) nat)))
           (pair
@@ -602,7 +602,7 @@ ledger.set(
   &#39;20000&#39;
 );
 
-const url = &#39;https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/fa2-views.json&#39;;
+const url = &#39;https://storage.googleapis.com/octez-js-assets/tz16/fa2-views.json&#39;;
 const bytesUrl = stringToBytes(url);
 const metadata = new MichelsonMap();
 metadata.set(&#39;&#39;, bytesUrl);
@@ -611,7 +611,7 @@ const operators = new MichelsonMap();
 
 const tokens = new MichelsonMap();
 const metadataMap0 = new MichelsonMap();
-metadataMap0.set(&#39;&#39;, stringToBytes(&#39;https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/token-metadata.json&#39;));
+metadataMap0.set(&#39;&#39;, stringToBytes(&#39;https://storage.googleapis.com/octez-js-assets/tz16/token-metadata.json&#39;));
 metadataMap0.set(&#39;name&#39;, stringToBytes(&#39;Name from URI is prioritized!&#39;));
 const metadataMap1 = new MichelsonMap();
 metadataMap1.set(&#39;name&#39;, stringToBytes(&#39;AliceToken&#39;));
@@ -661,7 +661,7 @@ interfaces: TZIP-012
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-vg16zrlgt" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
+<div class="tabs-container" data-tabs-id="tabs-d3l3jlopc" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
               (map %taco_shop_storage nat (pair (nat %current_stock) (mutez %max_price))));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const metadataJSON = {
   name: &#39;test&#39;,
@@ -698,9 +698,9 @@ homepage: https://octez.js.dev/
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-1tdp63p3q" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
+<div class="tabs-container" data-tabs-id="tabs-49vy8mppx" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
               (map %taco_shop_storage nat (pair (nat %current_stock) (mutez %max_price))));
-</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const url = &#39;https://storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json&#39;;
+</code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const url = &#39;https://storage.googleapis.com/octez-js-assets/tz16/taco-shop-metadata.json&#39;;
 const bytesUrl = stringToBytes(url);
 
 const metadataBigMap = new MichelsonMap();
@@ -728,10 +728,10 @@ homepage: https://github.com/trilitech/octez.js
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-12nyhg7q3" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
+<div class="tabs-container" data-tabs-id="tabs-f9rqgabev" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
               (map %taco_shop_storage nat (pair (nat %current_stock) (mutez %max_price))));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const urlPercentEncoded = encodeURIComponent(
-  &#39;//storage.googleapis.com/tezos-linux-repo/octez-js/tz16/taco-shop-metadata.json&#39;
+  &#39;//storage.googleapis.com/octez-js-assets/tz16/taco-shop-metadata.json&#39;
 );
 const metadataSha256 = &#39;0x7e99ecf3a4490e3044ccdf319898d77380a2fc20aae36b6e40327d678399d17b&#39;;
 const url = &#39;sha256://&#39; + metadataSha256 + &#39;/https:&#39; + urlPercentEncoded;
@@ -762,7 +762,7 @@ homepage: https://github.com/trilitech/octez.js
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-hne125qmc" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
+<div class="tabs-container" data-tabs-id="tabs-5x6soyv9i" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (big_map %metadata string bytes)
               (map %taco_shop_storage nat (pair (nat %current_stock) (mutez %max_price))));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const uri = &#39;ipfs://QmXnASUptTDnfhmcoznFqz3S1Mxu7X1zqo2YwbTN3nW52V&#39;;
 const bytesUrl = stringToBytes(uri);
@@ -791,7 +791,7 @@ homepage: https://github.com/trilitech/octez.jsj
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-4i79yrtie" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map %metadata string bytes));
+<div class="tabs-container" data-tabs-id="tabs-aeftqog4n" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map %metadata string bytes));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const metadataBigMAp = new MichelsonMap();
 metadataBigMAp.set(&#39;&#39;, stringToBytes(&#39;tezos-storage:here&#39;));
 metadataBigMAp.set(&#39;here&#39;, stringToBytes(JSON.stringify(metadataViewsExample1)));
@@ -812,7 +812,7 @@ license: MIT
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-6iujz4fne" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map %metadata string bytes));
+<div class="tabs-container" data-tabs-id="tabs-nr7wuvjgr" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button><button class="tab-button " data-tab="metadata" type="button" data-astro-cid-xlvzfuxv> Metadata </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair nat (big_map %metadata string bytes));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">const metadataBigMAp = new MichelsonMap();
 metadataBigMAp.set(&#39;&#39;, stringToBytes(&#39;tezos-storage:here&#39;));
 metadataBigMAp.set(&#39;here&#39;, stringToBytes(JSON.stringify(metadataViewsExample2)));
@@ -839,7 +839,7 @@ license: MIT
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-jrvmobft9" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage int
+<div class="tabs-container" data-tabs-id="tabs-mp6ijowep" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage int
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage: 1;
 </code></pre> </div>  </div> </div>  
 <h2 id="walletareyoutherecontract">WalletAreYouThereContract</h2>
@@ -852,7 +852,7 @@ license: MIT
 <li><code>decrement</code></li>
 <li><code>increment</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-clh495rti" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (pair (bool %areyouthere) (int %integer))
+<div class="tabs-container" data-tabs-id="tabs-sdi2pimfz" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (pair (pair (bool %areyouthere) (int %integer))
               (pair (string %message) (map %names address string)));
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">        init: `(Pair (Pair True 0)
       (Pair &quot;&quot;
@@ -867,7 +867,7 @@ A sapling_state is represented by an integer value in the contract storage.</p>
 <ul>
 <li><code>default</code></li>
 </ul>
-<div class="tabs-container" data-tabs-id="tabs-tbcw91r7d" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (sapling_state 8)
+<div class="tabs-container" data-tabs-id="tabs-sn5ie5g2t" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="michelson" type="button" data-astro-cid-xlvzfuxv> Michelson Storage </button><button class="tab-button " data-tab="octez.js" type="button" data-astro-cid-xlvzfuxv> octez.js Storage </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="michelson" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">storage (sapling_state 8)
 </code></pre> </div> <div data-tab-item="octez.js" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-js">import { SaplingStateValue } from @tezos-x/octez.js-michelson-encoder
 storage: SaplingStateValue
 </code></pre> </div>  </div> </div>  
