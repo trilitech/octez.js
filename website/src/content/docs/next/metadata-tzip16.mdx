@@ -242,6 +242,8 @@ try {
 
 #### IPFS example
 
+The IPFS handler fetches the metadata through an HTTP gateway. The default one (`ipfs.io`) has stopped serving the legacy path-style format, so this example configures the `IpfsHttpHandler` with another public gateway (see [the custom metadata provider](#how-to-use-the-tzip16-package) above).
+
 <Tabs
 defaultValue="contractAPI"
 values={[
@@ -252,10 +254,13 @@ values={[
 
 ```js live
 // import { TezosToolkit } from '@tezos-x/octez.js';
-// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// import { Tzip16Module, tzip16, IpfsHttpHandler, MetadataProvider } from "@tezos-x/octez.js-tzip16";
 // const Tezos = new TezosToolkit('rpc_url');
 
-Tezos.addExtension(new Tzip16Module());
+// The default IPFS gateway (ipfs.io) no longer serves the legacy path-style /ipfs/<CID> URLs over HTTP,
+// so we give the metadata provider a handler that uses another gateway.
+const handlers = new Map([['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')]]);
+Tezos.addExtension(new Tzip16Module(new MetadataProvider(handlers)));
 
 const contractAddress = 'KT1Ach5BFD1nREMgySGQHKM2pgxRG8XCpUgu';
 
@@ -274,10 +279,13 @@ try {
 
 ```js live
 // import { TezosToolkit } from '@tezos-x/octez.js';
-// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// import { Tzip16Module, tzip16, IpfsHttpHandler, MetadataProvider } from "@tezos-x/octez.js-tzip16";
 // const Tezos = new TezosToolkit('rpc_url');
 
-Tezos.addExtension(new Tzip16Module());
+// The default IPFS gateway (ipfs.io) no longer serves the legacy path-style /ipfs/<CID> URLs over HTTP,
+// so we give the metadata provider a handler that uses another gateway.
+const handlers = new Map([['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')]]);
+Tezos.addExtension(new Tzip16Module(new MetadataProvider(handlers)));
 
 const contractAddress = 'KT1Ach5BFD1nREMgySGQHKM2pgxRG8XCpUgu';
 
