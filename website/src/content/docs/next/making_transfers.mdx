@@ -87,14 +87,14 @@ export const transferImplicit = (key: string, mutez: number) => {
 
 ## Transfer 0.000001 (1 mutez) tokens from a KT1 address to a KT1 address
 
-Sending 1 mutez to `KT1KLbEeEgW5h1QLkPuPvqdgurHx6v4hGyic` from `KT1...`
+Sending 1 mutez to `KT1AYJqJsD7SUaiYvapvaThmRXzFL3zxebcV` from `KT1...`
 
 ### Example for Babylon/Proto005 or higher
 
 ```js
 const contract = await Tezos.contract.at('KT1...');
 await contract.methodsObject
-  .do(transferToContract('KT1KLbEeEgW5h1QLkPuPvqdgurHx6v4hGyic', 1))
+  .do(transferToContract('KT1AYJqJsD7SUaiYvapvaThmRXzFL3zxebcV', 1))
   .send({ amount: 0 });
 ```
 

@@ -298,7 +298,7 @@ The `transfer` method takes an object with only two required properties: the `to
 ```js live wallet
 try {
   const op = await Tezos.wallet
-    .transfer({ to: 'KT1TBxaaeikEUcVN2qdQY7n9Q21ykcX1NLzY', amount: 0.2 })
+    .transfer({ to: 'KT1AYJqJsD7SUaiYvapvaThmRXzFL3zxebcV', amount: 0.2 })
     .send();
 
   console.log(`Waiting for ${op.opHash} to be confirmed...`);
@@ -319,7 +319,7 @@ Sending a transaction to a smart contract to update its storage will be a differ
 Fortunately, octez.js will make this operation go like a breeze! First, you need the contract abstraction created with the address of the smart contract you are targeting:
 
 ```js
-const contract = await Tezos.wallet.at('KT1TBxaaeikEUcVN2qdQY7n9Q21ykcX1NLzY');
+const contract = await Tezos.wallet.at('KT1AYJqJsD7SUaiYvapvaThmRXzFL3zxebcV');
 ```
 
 This line creates a contract abstraction with multiple methods named after the contract entrypoints. For example, if you have a `transfer` entrypoint in your contract, you will also have a `.transfer()` method in the `contract` object. Each method accepts parameters required by the contract entrypoint.
@@ -334,7 +334,7 @@ Most of the time, the process is simple: you take the contract abstraction you c
 
 ```js live wallet
 try {
-  const contract = await Tezos.wallet.at('KT1SHiNUNmqBFGNysX9pmh1DC2tQ5pGmRagC');
+  const contract = await Tezos.wallet.at('KT1JrvLkVrWNUhi9FtpXQNquCnVd5t3Jd98P');
   const op = await contract.methodsObject.areYouThere(true).send();
 
   console.log(`Hash: ${op.opHash}`);
@@ -357,7 +357,7 @@ In the case of multiple arguments (for example if the entrypoint expects a pair)
 
 ```js live wallet
 try {
-  const contract = await Tezos.wallet.at('KT1SHiNUNmqBFGNysX9pmh1DC2tQ5pGmRagC');
+  const contract = await Tezos.wallet.at('KT1JrvLkVrWNUhi9FtpXQNquCnVd5t3Jd98P');
   const op = await contract.methodsObject.addName({0: 'tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb', 1: 'Alice'}).send();
 
   console.log(`Hash: ${op.opHash}`);
@@ -680,7 +680,7 @@ The Tezos singleton object exposes a _wallet_ property in the same fashion it ex
 We have already seen the `at` method of the Wallet instance earlier in order to create the contract abstraction:
 
 ```js
-const contract = await Tezos.wallet.at('KT1HNgQQEUb7mDmnmLKy4xcq1xdPw3ieoKzv');
+const contract = await Tezos.wallet.at('KT1JrvLkVrWNUhi9FtpXQNquCnVd5t3Jd98P');
 ```
 
 The method is a promise that expects the contract's address for which you want to create the abstraction.
