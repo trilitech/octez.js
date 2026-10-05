@@ -52,7 +52,7 @@ Here is an example of how to instantiate a `SaplingToolkit`:
 
 ```ts
 import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
-import { SaplingToolkit } from '@tezos-x/octez.js-sapling';
+import { SaplingToolkit, InMemorySpendingKey } from '@tezos-x/octez.js-sapling';
 import { RpcClient } from '@tezos-x/octez.js-rpc';
 
 const tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
@@ -339,7 +339,7 @@ Here is an example of how to instantiate a `SaplingTransactionViewer`:
 
 ```ts
 import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
-import { InMemoryViewingKey } from '@tezos-x/octez.js-sapling';
+import { InMemoryViewingKey, SaplingTransactionViewer } from '@tezos-x/octez.js-sapling';
 import { RpcClient } from '@tezos-x/octez.js-rpc';
 
 const readProvider = new RpcReadAdapter(new RpcClient('https://YOUR_PREFERRED_RPC_URL'));
