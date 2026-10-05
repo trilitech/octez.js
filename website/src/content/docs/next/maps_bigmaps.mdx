@@ -167,7 +167,7 @@ values={[
 
 ```js live
 try {
-  const myContract = await Tezos.contract.at('KT1B3SpFJ1iHagwdkd1utVYP18RyYgZXeGio');
+  const myContract = await Tezos.contract.at('KT1D7YgkWbWKED5aiUDbzZ8iGrbcFaTh4LzS');
   let myStorage = await myContract.storage();
 
   //We want to see the value of the key "1"
@@ -202,7 +202,7 @@ try {
 
 ```js live
 try {
-  const myContract = await Tezos.wallet.at('KT1B3SpFJ1iHagwdkd1utVYP18RyYgZXeGio');
+  const myContract = await Tezos.wallet.at('KT1D7YgkWbWKED5aiUDbzZ8iGrbcFaTh4LzS');
   let myStorage = await myContract.storage();
 
   //We want to see the value of the key "1"
@@ -388,7 +388,7 @@ values={[
 
 ```js live
 try {
-  const myContract = await Tezos.contract.at('KT1JDDU888CaVWFey2BYxpDzPBaYYn65Q4o3');
+  const myContract = await Tezos.contract.at('KT1KP2BVkA6NeAGHuNPNTQnQBtWPvsQGRbpD');
   const myStorage = await myContract.storage();
   const value = myStorage['theMap'].get({
     0: '2', //nat
@@ -406,7 +406,7 @@ try {
 
 ```js live
 try {
-  const myContract = await Tezos.wallet.at('KT1JDDU888CaVWFey2BYxpDzPBaYYn65Q4o3');
+  const myContract = await Tezos.wallet.at('KT1KP2BVkA6NeAGHuNPNTQnQBtWPvsQGRbpD');
   const myStorage = await myContract.storage();
   const value = myStorage['theMap'].get({
     0: '2', //nat
@@ -570,7 +570,7 @@ values={[
 
 ```js live
 try {
-  const myContract = await Tezos.contract.at('KT1PBDZULVwbDW7BqEANmyEJGWuzjk43hDJG');
+  const myContract = await Tezos.contract.at('KT1Ub38nf46cdxTQ7qohaXVHqp8HZCVDwrA4');
   const myStorage = await myContract.storage();
   const value = myStorage.get({
     0: '1', // int
@@ -594,7 +594,7 @@ try {
 
 ```js live
 try {
-  const myContract = await Tezos.wallet.at('KT1PBDZULVwbDW7BqEANmyEJGWuzjk43hDJG');
+  const myContract = await Tezos.wallet.at('KT1Ub38nf46cdxTQ7qohaXVHqp8HZCVDwrA4');
   const myStorage = await myContract.storage();
   const value = myStorage.get({
     0: '1', // int
@@ -763,7 +763,7 @@ values={[
 
 ```js live
 try {
-  const myContract = await Tezos.contract.at('KT1PZb8sEVvsKQGzLwusyQRkJpSCDQ7WFfny');
+  const myContract = await Tezos.contract.at('KT1A64E5xvNv7hUP1AYxkz4SRAqT9LkTWyxY');
   let myStorage = await myContract.storage();
 
   //When called on a map, the get method returns the value directly
@@ -790,7 +790,7 @@ try {
 
 ```js live
 try {
-  const myContract = await Tezos.wallet.at('KT1PZb8sEVvsKQGzLwusyQRkJpSCDQ7WFfny');
+  const myContract = await Tezos.wallet.at('KT1A64E5xvNv7hUP1AYxkz4SRAqT9LkTWyxY');
   let myStorage = await myContract.storage();
 
   //When called on a map, the get method returns the value directly
@@ -857,7 +857,7 @@ values={[
 // const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
 
 try {
-  const contract = await Tezos.contract.at('KT1LPdW47Aba3kVpNMpRt7sx5yM1M4A8XmAW');
+  const contract = await Tezos.contract.at('KT1NbhrW7SAPGXFLM88BSTPDrPzh5zkhWas2');
   console.log('Fetching the storage of the contract...');
   const storage = await contract.storage();
   console.log('Fetching the big map values...\n');
@@ -883,7 +883,7 @@ try {
 // const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
 
 try {
-  const contract = await Tezos.wallet.at('KT1LPdW47Aba3kVpNMpRt7sx5yM1M4A8XmAW');
+  const contract = await Tezos.wallet.at('KT1NbhrW7SAPGXFLM88BSTPDrPzh5zkhWas2');
   console.log('Fetching the storage of the contract...');
   const storage = await contract.storage();
   console.log('Fetching the big map values...\n');

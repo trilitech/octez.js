@@ -74,7 +74,7 @@ values={[
 
 ```js live
 try {
-  const contract = await Tezos.contract.at('KT1KAUbe1gsdw5BeVQfgjh9xZFrHrKVs8ApD');
+  const contract = await Tezos.contract.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
   const methods = contract.parameterSchema.ExtractSignatures();
   console.log(JSON.stringify(methods, null, 2));
 } catch (error) {
@@ -87,7 +87,7 @@ try {
 
 ```js live wallet
 try {
-  const contract = await Tezos.wallet.at('KT1KAUbe1gsdw5BeVQfgjh9xZFrHrKVs8ApD');
+  const contract = await Tezos.wallet.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
   const methods = contract.parameterSchema.ExtractSignatures();
   console.log(JSON.stringify(methods, null, 2));
 } catch (error) {
@@ -118,7 +118,7 @@ values={[
 
 ```js live
 try {
-  const contract = await Tezos.contract.at('KT1KAUbe1gsdw5BeVQfgjh9xZFrHrKVs8ApD');
+  const contract = await Tezos.contract.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
   const incrementParams = contract.methodsObject.increment(2).toTransferParams();
   console.log(JSON.stringify(incrementParams, null, 2));
 } catch (error) {
@@ -130,7 +130,7 @@ try {
 
 ```js live wallet
 try {
-  const contract = await Tezos.wallet.at('KT1KAUbe1gsdw5BeVQfgjh9xZFrHrKVs8ApD');
+  const contract = await Tezos.wallet.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
   const incrementParams = contract.methodsObject.increment(2).toTransferParams();
   console.log(JSON.stringify(incrementParams, null, 2));
 } catch (error) {
@@ -158,7 +158,7 @@ values={[
 
 ```js live
 try {
-  const contract = await Tezos.contract.at('KT1KAUbe1gsdw5BeVQfgjh9xZFrHrKVs8ApD');
+  const contract = await Tezos.contract.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
 
   console.log(`Incrementing storage value by 7...`);
   const operation = await contract.methodsObject.increment(7).send();
@@ -176,7 +176,7 @@ try {
 
 ```js live wallet
 try {
-  const contract = await Tezos.wallet.at('KT1KAUbe1gsdw5BeVQfgjh9xZFrHrKVs8ApD');
+  const contract = await Tezos.wallet.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
 
   console.log(`Incrementing storage value by 7...`);
   const operation = await contract.methodsObject.increment(7).send();
@@ -215,7 +215,7 @@ In the following example, a contract's `set_child_record` method will be called 
 
 ```js live
 try {
-  const contract = await Tezos.contract.at('KT1B2exfRrGMjfZqWK1bDemr3nBFhHsUWQuN');
+  const contract = await Tezos.contract.at('KT1CGxKMFGxMKP6oMZAnuLjj9LmMojehAhYA');
   console.log(`List all contract methods: ${Object.keys(contract.methodsObject)}\n`);
   console.log(
     `Inspect the signature of the 'set_child_record' contract method: ${JSON.stringify(
@@ -234,7 +234,7 @@ The preceding example returns an object giving indication on how to structure th
 ```js live
 try {
   await importKey(Tezos, secretKey);
-  const contract = await Tezos.contract.at('KT1B2exfRrGMjfZqWK1bDemr3nBFhHsUWQuN');
+  const contract = await Tezos.contract.at('KT1CGxKMFGxMKP6oMZAnuLjj9LmMojehAhYA');
 
   const operation = await contract.methodsObject
     .set_child_record({
@@ -261,7 +261,7 @@ In the following example, a contract's `set_child_record` method will be called 
 
 ```js live
 try {
-  const contract = await Tezos.contract.at('KT1B2exfRrGMjfZqWK1bDemr3nBFhHsUWQuN');
+  const contract = await Tezos.contract.at('KT1CGxKMFGxMKP6oMZAnuLjj9LmMojehAhYA');
   console.log(`List all contract methods: ${Object.keys(contract.methodsObject)}\n`);
   console.log(
     `Inspect the signature of the 'set_child_record' contract method: ${JSON.stringify(
@@ -280,7 +280,7 @@ The preceding example returns an array which contains the different possible sig
 ```js live
 try {
   await importKey(Tezos, secretKey);
-  const contract = await Tezos.contract.at('KT1B2exfRrGMjfZqWK1bDemr3nBFhHsUWQuN');
+  const contract = await Tezos.contract.at('KT1CGxKMFGxMKP6oMZAnuLjj9LmMojehAhYA');
 
   const operation = await contract.methods
     .set_child_record(

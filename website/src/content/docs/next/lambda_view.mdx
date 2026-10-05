@@ -53,7 +53,7 @@ Parameters must not include the callback parameter
 Then we call the `read()` method. (Note that we have no longer need a lambda contract)
 ```js live
 try {
-  const contract = await Tezos.contract.at('KT1MhfAnNbg2oACFBP4VDU5bNY5MZUXdeDWs');
+  const contract = await Tezos.contract.at('KT1FnjTH1xxMWCzvkyKFNhUXAwXjrtCBCBdy');
   const response = await contract.views.getTotalSupply(UnitValue).read();
   console.log(response);
 } catch (error) {
@@ -65,7 +65,7 @@ try {
 
 ```js live
 try {
-  const contract = await Tezos.contract.at('KT1Ccr6ZMeB1mp9yJAqJTHK7F4xoFV9uc11T');
+  const contract = await Tezos.contract.at('KT1Ubs7KUv17VT5475vGUEHeqP7F4dEWGzPV');
   const response = await contract.views
     .balance_of([{ owner: 'tz1c1X8vD4pKV9TgV1cyosR7qdnkc8FTEyM1', token_id: '0' }])
     .read();
