@@ -174,7 +174,7 @@ The user can create an instance of `ContractAbstraction` using the `at` method o
 
 If the view takes multiple arguments, the view parameter is expected in an object format and not flattened arguments.
 
-*Note for reference, the flattened arguments are the expected format when calling a contract entry point using the `methods` member, but we plan to move away from this format in favor the object one, which is also used for the storage when deploying a contract [see the difference between `methodsObject` and `methods` members of the `ContractAbstraction`](smartcontracts.md#choosing-between-the-methods-or-methodsobject-members-to-interact-with-smart-contracts).*
+*Note for reference, entrypoints are called with the `methodsObject` member, which also takes its parameter in an object format, like the storage when deploying a contract ([see Calling entrypoints with `methodsObject`](smartcontracts#calling-entrypoints-with-methodsobject)).*
 
 A method named `getSignature` on the `OnChainView` class allows inspecting the parameter and the returned type of the view.
 
