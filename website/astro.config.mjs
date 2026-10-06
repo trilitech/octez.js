@@ -6,6 +6,7 @@ import { remarkLiveCode } from './src/utils/remark-live-code.mjs';
 import { remarkCallouts } from './src/utils/remark-callouts.mjs';
 import { remarkRelativeLinks } from './src/utils/remark-relative-links.mjs';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import tailwindcss from "@tailwindcss/vite";
 import { DEFAULT_VERSION } from './src/config/versions.mjs';
@@ -42,16 +43,22 @@ function polyfillShimsResolver() {
 const basePath = process.env.BASE_PATH || '/';
 const normalizedBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
 
+// One redirect per page of the default docs version: /docs/<page> -> /docs/<DEFAULT_VERSION>/<page>
+const docRedirects = Object.fromEntries(
+  fs.readdirSync(fileURLToPath(new URL(`./src/content/docs/${DEFAULT_VERSION}`, import.meta.url)))
+    .filter((file) => /\.mdx?$/.test(file))
+    .map((file) => file.replace(/\.mdx?$/, ''))
+    .map((page) => [`/docs/${page}`, `/docs/${DEFAULT_VERSION}/${page}`])
+);
+
 // https://astro.build/config
 export default defineConfig({
   site: process.env.SITE_URL || 'https://octez-js.tezos.com',
   base: normalizedBase,
   trailingSlash: 'never',
-  // Stable, unversioned entry point (e.g. for the README); follows DEFAULT_VERSION,
+  // Stable, unversioned URLs (e.g. for READMEs): /docs/<page> follows DEFAULT_VERSION,
   // which the release workflow bumps.
-  redirects: {
-    '/docs/quick_start': `/docs/${DEFAULT_VERSION}/quick_start`,
-  },
+  redirects: docRedirects,
   integrations: [AutoImport({
     imports: [
       './src/components/SimpleCodeRunner.astro',
