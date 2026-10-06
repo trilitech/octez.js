@@ -216,7 +216,8 @@ const payload = {
   signingType: SigningType.RAW,
   payload: magicByte + bytes
 }
-wallet.client.requestSignPayload(payload).then(signed => console.log(JSON.stringify(signed, null, 2)))
+const signed = await wallet.client.requestSignPayload(payload);
+console.log(JSON.stringify(signed, null, 2));
 ```
 
   </TabItem>
