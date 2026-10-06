@@ -17,3 +17,5 @@ export { verifySignature, BLS12_381_DST, POP_DST } from './verify-signature';
 export * from './errors';
 // Re-export format
 export { format } from './format';
+// Re-export Tezos X cross-runtime helpers
+export * from './tezosx';
