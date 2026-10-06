@@ -11,7 +11,7 @@ This documentation is for an <strong>unreleased version</strong> of octez.js.
 latest stable version
 </a>
 .
-</p> </div> </div> <div class="mb-4"> <h1 class="text-text-secondary text-5xl font-bold">Tezos X cross-runtime calls</h1>  </div> <div class="markdown-body flex-1 min-w-0 pb-8">  <div class="callout callout-warning"><div class="callout-title"><span class="callout-icon callout-icon-alert-triangle"></span>Warning</div><div class="callout-content"><p>This feature is a work in progress and might go through refinements in the near future. The NAC gateway address used by default is the one of the Tezos X previewnet.</p></div></div>
+</p> </div> </div> <div class="mb-4"> <h1 class="text-text-secondary text-5xl font-bold">Tezos X cross-runtime calls</h1>  </div> <div class="markdown-body flex-1 min-w-0 pb-8">  <div class="callout callout-warning"><div class="callout-title"><span class="callout-icon callout-icon-alert-triangle"></span>Warning</div><div class="callout-content"><p>This feature is a work in progress and might go through refinements in the near future.</p></div></div>
 <p>Tezos X runs two runtimes side by side: the Michelson runtime and the EVM runtime. An account of one runtime can reach the other one through the NAC (Native Account Contract):</p>
 <ul>
 <li>on the Michelson runtime, through the <strong>NAC gateway</strong> contract (<code>%call</code> and <code>%call_evm</code> entrypoints);</li>
@@ -38,9 +38,9 @@ await op.confirmation();
 </code></pre>
 <ul>
 <li>A transaction without calldata is a native transfer, sent through the <code>%call</code> entrypoint.</li>
-<li>A transaction with calldata is an EVM contract call, sent through the <code>%call_evm</code> entrypoint. The gateway needs the ABI signature of the called method: pass it as <code>methodSignature</code> (it must match the calldata selector), or let the package look the selector up in <code>DEFAULT_KNOWN_SIGNATURES</code> or in your own <code>knownSignatures</code>.</li>
+<li>A transaction with calldata is an EVM contract call, sent through the <code>%call_evm</code> entrypoint. The gateway needs the ABI signature of the called method: pass it as <code>methodSignature</code> (it is sent in its canonical form, e.g. <code>transfer(address,uint256)</code>, which must match the calldata selector), or let the package look the selector up in <code>DEFAULT_KNOWN_SIGNATURES</code> or in your own <code>knownSignatures</code>.</li>
 <li>The value must be a whole number of mutez (a multiple of 10¹² wei): a <code>SubMutezPrecisionError</code> is thrown otherwise, so that no amount is silently lost.</li>
-<li>On another network, pass the NAC gateway address as the <code>gatewayAddress</code> option.</li>
+<li>The NAC gateway address defaults to <code>NAC_GATEWAY</code>; pass the <code>gatewayAddress</code> option to use another gateway.</li>
 </ul>
 <pre><code class="language-js">const call = buildMichelsonToEvmCall({
   to: &#39;0x…&#39;, // ERC-20 contract
