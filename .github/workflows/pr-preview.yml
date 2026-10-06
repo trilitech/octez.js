@@ -10,12 +10,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
 
@@ -38,11 +35,50 @@ jobs:
           SITE_URL: https://trilitech.github.io
           BASE_PATH: /octez.js/pr-${{ github.event.pull_request.number }}
 
+      - name: Upload preview build
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-dist
+          path: website/dist
+          retention-days: 1
+
+  deploy:
+    needs: build
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    # Serialize gh-pages pushes across all PRs, the cleanup job below and
+    # pages-root-redirect.yml. Only the push is serialized, not the build.
+    concurrency:
+      group: gh-pages-push
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Download preview build
+        uses: actions/download-artifact@v4
+        with:
+          name: preview-dist
+          path: dist
+
       - name: Deploy PR preview
+        id: deploy
+        uses: peaceiris/actions-gh-pages@v4
+        continue-on-error: true
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: pr-${{ github.event.pull_request.number }}
+          keep_files: true
+
+      # Retry once, e.g. after a transient GitHub error on the push. The action
+      # clones gh-pages again, so a non-fast-forward rejection is also recovered.
+      - name: Deploy PR preview (retry)
+        if: steps.deploy.outcome == 'failure'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./website/dist
+          publish_dir: ./dist
           destination_dir: pr-${{ github.event.pull_request.number }}
           keep_files: true
 
@@ -92,7 +128,7 @@ jobs:
   cleanup:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
-    # Serialize gh-pages pushes with pages-root-redirect.yml.
+    # Serialize gh-pages pushes with the deploy job above and pages-root-redirect.yml.
     concurrency:
       group: gh-pages-push
       cancel-in-progress: false
