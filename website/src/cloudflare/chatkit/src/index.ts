@@ -9,6 +9,7 @@ const RATE_LIMIT_WINDOW = 60; // seconds
 
 const ALLOWED_ORIGINS = [
   "https://octez.js.dev",
+  "https://octez-js.tezos.com",
   "https://octez-js.pages.dev",
 ];
 
