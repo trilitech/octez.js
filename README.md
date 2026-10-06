@@ -7,7 +7,7 @@
 </p>
 
 [![Node.js CI](https://github.com/trilitech/octez.js/workflows/Node.js%20CI/badge.svg)](https://github.com/trilitech/octez.js/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/trilitech/octez.js/branch/main/graph/badge.svg)](https://codecov.io/gh/trilitech/octez.js)
+[![codecov](https://codecov.io/gh/trilitech/octez.js/branch/master/graph/badge.svg)](https://codecov.io/gh/trilitech/octez.js)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3204/badge)](https://bestpractices.coreinfrastructure.org/projects/3204)
 [![npm version](https://badge.fury.io/js/%40tezos-x%2Foctez.js.svg)](https://badge.fury.io/js/%40tezos-x%2Foctez.js)
 
