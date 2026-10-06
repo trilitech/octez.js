@@ -26,6 +26,11 @@
   },
   {
     "pattern": "*",
+    "file": "packages/*/NOTICE",
+    "reason": "Per-package NOTICE files carry the same Apache-2.0 §4 fork attribution to Taquito / ECAD Labs as the root NOTICE. Legally/compliance-sensitive per CLAUDE.md; any change needs human review regardless of this allowlist entry."
+  },
+  {
+    "pattern": "*",
     "file": ".github/scripts/taquito-sync.mjs",
     "reason": "This tool's entire job is tracking upstream ecadlabs/taquito for backport parity (see CLAUDE.md, 'Backporting from upstream Taquito'); TAQUITO_REPO_URL/TAQUITO_BRANCH are its own intentional config var names, not leftovers."
   },
@@ -56,11 +61,6 @@
   },
   {
     "pattern": "taquito-scope",
-    "file": "packages/octez.js-sapling/rollup.config.ts",
-    "reason": "Bundler config references the tracked @taquito/sapling-wasm dependency (UMD global name and external declaration)."
-  },
-  {
-    "pattern": "taquito-scope",
     "file": "browser-tests/vite.config.mts",
     "reason": "Vite optimizeDeps exclusion for the tracked @taquito/sapling-wasm dependency."
   },
@@ -78,16 +78,6 @@
     "pattern": "ecadlabs",
     "file": "website/src/pages/changelog.mdx",
     "reason": "Changelog documents historical, pre-fork Taquito releases; those entries inherently reference ecadlabs/taquito."
-  },
-  {
-    "pattern": "ecadlabs",
-    "file": "README.md",
-    "reason": "Package catalog row for @taquito/sapling-wasm links to its source repo under github.com/ecadlabs/sapling-wasm; tracked exception per CLAUDE.md."
-  },
-  {
-    "pattern": "ecadlabs",
-    "file": "scripts/package-catalog-data.js",
-    "reason": "Source data behind the README package-catalog row for @taquito/sapling-wasm; same reason as the README entry."
   },
   {
     "pattern": "ecadlabs",
@@ -121,16 +111,6 @@
   },
   {
     "pattern": "taquito-scope",
-    "file": "packages/octez.js-sapling/package.json",
-    "reason": "@taquito/sapling-wasm is the one remaining real npm dependency on the Taquito org, accepted pending republishing (see CLAUDE.md)."
-  },
-  {
-    "pattern": "taquito-scope",
-    "file": "packages/octez.js-sapling/src/sapling-wasm.ts",
-    "reason": "Imports from @taquito/sapling-wasm, the tracked accepted dependency (see CLAUDE.md)."
-  },
-  {
-    "pattern": "taquito-scope",
     "file": "website/src/content/docs/*/migration_from_taquito.mdx",
     "reason": "Migration guide for Taquito users; the whole point of the page is documenting the old @taquito/* package names."
   },
@@ -138,36 +118,6 @@
     "pattern": "taquito-scope",
     "file": "website/src/pages/changelog.mdx",
     "reason": "Changelog documents historical, pre-fork Taquito releases under their original @taquito/* package names."
-  },
-  {
-    "pattern": "taquito-scope",
-    "file": "README.md",
-    "reason": "Package catalog row names the @taquito/sapling-wasm dependency itself; tracked exception per CLAUDE.md."
-  },
-  {
-    "pattern": "taquito-scope",
-    "file": "scripts/package-catalog-data.js",
-    "reason": "Source data behind the README package-catalog row naming the @taquito/sapling-wasm dependency; same reason as the README entry."
-  },
-  {
-    "pattern": "taquito-scope",
-    "file": "scripts/sync-workspace-deps.test.js",
-    "reason": "Test fixture using the tracked @taquito/sapling-wasm dependency name/version to verify workspace-dependency syncing."
-  },
-  {
-    "pattern": "taquito-scope",
-    "file": "package-lock.json",
-    "reason": "npm lockfile entries mechanically generated from the tracked @taquito/sapling-wasm dependency; regenerate via npm install, don't hand-edit."
-  },
-  {
-    "pattern": "taquito-scope",
-    "file": ".github/workflows/release.yml",
-    "reason": "Release workflow checks the tracked @taquito/sapling-wasm dependency's version before publishing."
-  },
-  {
-    "pattern": "taquito-scope",
-    "file": ".github/workflows/release_rehearsal.yml",
-    "reason": "Release rehearsal workflow checks the tracked @taquito/sapling-wasm dependency's version, mirroring release.yml."
   },
   {
     "pattern": "taquito-env-prefix",
@@ -187,11 +137,6 @@
   {
     "pattern": "taquito-env-prefix",
     "file": "packages/octez.js/src/wallet/operation.ts",
-    "reason": "Stale TAQUITO_* env var prefix kept for backward compatibility with existing consumers; renaming is a breaking change (tracked per CLAUDE.md)."
-  },
-  {
-    "pattern": "taquito-env-prefix",
-    "file": "packages/octez.js-dapp-wallet/src/octez.js-dapp-wallet.ts",
     "reason": "Stale TAQUITO_* env var prefix kept for backward compatibility with existing consumers; renaming is a breaking change (tracked per CLAUDE.md)."
   },
   {
