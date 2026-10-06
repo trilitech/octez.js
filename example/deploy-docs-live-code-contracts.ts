@@ -3,8 +3,7 @@
 ///   for the testnet in use. The script will first check if addresses used in the script are funded,
 ///   and top them up if needed. The script will then originate each contract needed for Live Code
 ///   examples in octez.js Docs and produce a JSON file with each Contract Identifier and its PKH.
-///   Use the testpad script Docs Live Code Contract Origination (in https://ecadlabs.ontestpad.com/project/18/)
-///   with the desired chain (e.g. kathmandu) to match the originated scripts with their locations in the Docs.
+///   Match the originated scripts with their locations in the Docs using the chain you ran this against (e.g. kathmandu).
 ///   The script will also print to console a json file of contracts to use in the code examples in octez.js/examples
 ///   Execute this script with
 ///     node -r ts-node/register deploy-docs-live-code-contracts.ts

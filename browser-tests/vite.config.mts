@@ -7,7 +7,7 @@ const browserTestsDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(browserTestsDir, '..');
 const packagesDir = join(repoRoot, 'packages');
 
-const taquitoAliases = Object.fromEntries(
+const octezAliases = Object.fromEntries(
   readdirSync(packagesDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => join(packagesDir, entry.name, 'package.json'))
@@ -34,7 +34,7 @@ export default defineConfig({
   define: {
     __RAW_PACKAGE_URLS__: JSON.stringify(
       Object.fromEntries(
-        Object.entries(taquitoAliases).map(([packageName, packagePath]) => [
+        Object.entries(octezAliases).map(([packageName, packagePath]) => [
           packageName,
           `/@fs/${packagePath}`,
         ])
@@ -43,7 +43,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      ...taquitoAliases,
+      ...octezAliases,
     },
   },
   optimizeDeps: {
