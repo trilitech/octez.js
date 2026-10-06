@@ -1,0 +1,87 @@
+---
+title: Tezos X cross-runtime calls
+---
+
+:::warning
+This feature is a work in progress and might go through refinements in the near future.
+:::
+
+Tezos X runs two runtimes side by side: the Michelson runtime and the EVM runtime. An account of one runtime can reach the other one through the NAC (Native Account Contract):
+
+- on the Michelson runtime, through the **NAC gateway** contract (`%call` and `%call_evm` entrypoints);
+- on the EVM runtime, through the **NAC precompile** at `0xff00000000000000000000000000000000000007` (`call` and `callMichelson` methods).
+
+The `@tezos-x/octez.js-utils` package provides helpers that wrap an operation of one runtime into the NAC call to sign and send on the other runtime.
+
+```
+npm i --save @tezos-x/octez.js-utils
+```
+
+## Michelson → EVM
+
+`buildMichelsonToEvmCall` turns an EVM transaction (`to`, `value` in wei, `data`) into a call to the NAC gateway. `toTransferParams` turns that call into parameters for `Tezos.contract.transfer` or `Tezos.wallet.transfer`.
+
+```js
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { buildMichelsonToEvmCall, toTransferParams } from '@tezos-x/octez.js-utils';
+
+const Tezos = new TezosToolkit('https://michelson.previewnet.tezosx.nomadic-labs.com');
+// Tezos.setSignerProvider(...)
+
+// Send 1 tez (10^18 wei) to an EVM account
+const call = buildMichelsonToEvmCall({
+  to: '0xdEAD000000000000000042000000000000000000',
+  value: 10n ** 18n,
+});
+const op = await Tezos.contract.transfer(toTransferParams(call));
+await op.confirmation();
+```
+
+- `to` must be a valid EVM address; a mixed-case address must carry a valid EIP-55 checksum.
+- A transaction without calldata is a native transfer, sent through the `%call` entrypoint.
+- A transaction with calldata is an EVM contract call, sent through the `%call_evm` entrypoint. The gateway needs the ABI signature of the called method: pass it as `methodSignature` (it is sent in its canonical form, e.g. `transfer(address,uint256)`, which must match the calldata selector), or let the package look the selector up in `DEFAULT_KNOWN_SIGNATURES` or in your own `knownSignatures`. A `methodSignature` without calldata is rejected.
+- Amounts are given as a `bigint`, a safe integer `number` or a decimal / `0x` hex string. The value must be a whole number of mutez (a multiple of 10¹² wei): a `SubMutezPrecisionError` is thrown otherwise, so that no amount is silently lost.
+- The NAC gateway address defaults to `NAC_GATEWAY`; pass the `gatewayAddress` option to use another gateway.
+
+```js
+const call = buildMichelsonToEvmCall({
+  to: '0x…', // ERC-20 contract
+  data: '0xa9059cbb…',
+  methodSignature: 'transfer(address,uint256)',
+});
+```
+
+## EVM → Michelson
+
+`buildEvmToMichelsonCall` turns an operation of the Michelson runtime into an unsigned EVM transaction to the NAC precompile (`to`, `data`, `value` in wei, `gasLimit`). Sign and send it with your EVM library.
+
+```js
+import { buildEvmToMichelsonCall } from '@tezos-x/octez.js-utils';
+
+// Send 1000 mutez to a Michelson account
+const transfer = buildEvmToMichelsonCall({
+  kind: 'transfer',
+  destination: 'tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb',
+  amount: 1000n,
+});
+
+// Call a Michelson contract
+const call = buildEvmToMichelsonCall({
+  kind: 'call-michelson',
+  destination: 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn',
+  entrypoint: 'set',
+  parameter: { value: { prim: 'Pair', args: [{ int: '1' }, { string: 'a' }] } },
+});
+
+// e.g. with viem
+await walletClient.sendTransaction({
+  to: call.to,
+  data: call.data,
+  value: call.value,
+  gas: call.gasLimit,
+});
+```
+
+A `transfer` can credit an implicit account (`tz…`) or a contract (`KT1…`); a `call-michelson` targets a `KT1…` contract and an entrypoint name given without its `%` prefix. Amounts are in mutez.
+
+The `parameter` of a `call-michelson` is either binary Micheline (hex, without the `05` pack prefix) or a Michelson expression with an optional `type`, packed with `@tezos-x/octez.js-michel-codec`.

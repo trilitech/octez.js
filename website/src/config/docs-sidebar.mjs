@@ -83,6 +83,10 @@ export const sidebarConfig = [
     items: ["signing", "inmemory_signer", "ledger_signer"],
   },
   {
+    name: "Tezos X",
+    items: ["tezosx_cross_runtime"],
+  },
+  {
     name: "Packages",
     items: [
       "rpc_package",
