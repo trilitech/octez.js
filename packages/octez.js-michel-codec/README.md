@@ -167,7 +167,7 @@ const data = unpackDataBytes(src);
 
 ## API Documentation
 
-TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)
+TypeDoc style documentation is available on-line [here](https://octez-js.tezos.com/typedoc/)
 
 ## Disclaimer
 

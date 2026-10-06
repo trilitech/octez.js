@@ -1,6 +1,6 @@
 # octez.js high-level functions
 
-*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
+*TypeDoc style documentation is available on-line [here](https://octez-js.tezos.com/typedoc/)*
 
 The `@tezos-x/octez.js` package contains higher-level functionality that builds upon the other packages in the Tezos Typescript Library Suite.
 

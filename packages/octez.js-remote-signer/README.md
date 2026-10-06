@@ -1,5 +1,5 @@
 # octez.js Remote Signer package
-*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
+*TypeDoc style documentation is available on-line [here](https://octez-js.tezos.com/typedoc/)*
 
 `@tezos-x/octez.js-remote-signer` is an npm package that provides developers with remote signing functionality for octez.js. 
 

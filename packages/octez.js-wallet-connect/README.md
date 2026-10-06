@@ -4,7 +4,7 @@
 This feature is a work in progress, and might be refined in the near future. We encourage octez.js users to try this feature and reach out to us if you have any issues or concerns.
 :::
 
-_Documentation can be found [here](https://octez.js.io/docs/walletconnect)_
+_Documentation can be found [here](https://octez-js.tezos.com/docs/walletconnect)_
 
 ## General Information
 
