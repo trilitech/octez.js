@@ -49,7 +49,7 @@ const beaconTypesConfig = {
   output: [
     {
       file: 'dist/beacon-types.umd.js',
-      name: 'taquitoBeaconTypes',
+      name: 'octezBeaconTypes',
       format: 'umd',
       sourcemap: true,
       globals: {
