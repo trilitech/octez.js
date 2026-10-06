@@ -42,7 +42,7 @@ const entries = await new Promise((resolve, reject) => {
 First, we create a new promise to wrap the Observable.
 Then, we declare an array to save every confirmation returned by the Observable.
 Next, we set up the Observable. The operation we created earlier has a `confirmationObservable` method that takes as a parameter the number of confirmations you want to wait for and returns an object with a `subscribe` method to start waiting for confirmations. This method takes 3 arguments:
-- the function to run when a confirmation is received with a parameter holding [different properties](https://octez.js.dev/typedoc/classes/_octez_js.walletoperation.html#confirmationobservable), for example, details about the current block or the confirmation status
+- the function to run when a confirmation is received with a parameter holding [different properties](https://octez-js.tezos.com/typedoc/classes/_tezos-x_octez.js.WalletOperation.html#confirmationobservable), for example, details about the current block or the confirmation status
 - the function to run if the promise is rejected
 - the function to run if the promise is resolved
 
