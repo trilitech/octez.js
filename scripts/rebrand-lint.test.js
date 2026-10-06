@@ -15,6 +15,28 @@ function withTempRepo(fn) {
   }
 }
 
+test('scanForRebrandLeftovers flags ecadinfra hosts and ecad-tezos-* node names', () => {
+  withTempRepo((root) => {
+    mkdirSync(join(root, 'src'), { recursive: true });
+    writeFileSync(
+      join(root, 'src', 'file.ts'),
+      "const a = 'https://rpc.tezos.ecadinfra.com';\nconst b = 'ecad-tezos-mainnet-1.i.ecadinfra.com';\n"
+    );
+
+    const { violations } = scanForRebrandLeftovers({
+      rootDir: root,
+      files: ['src/file.ts'],
+      patterns: PATTERNS,
+      allowlist: [],
+    });
+
+    assert.deepEqual(
+      violations.map((v) => `${v.line}:${v.patternId}`).sort(),
+      ['1:ecadinfra', '2:ecad-tezos-node', '2:ecadinfra']
+    );
+  });
+});
+
 test('scanForRebrandLeftovers flags an unreviewed ecadlabs mention', () => {
   withTempRepo((root) => {
     mkdirSync(join(root, 'src'), { recursive: true });

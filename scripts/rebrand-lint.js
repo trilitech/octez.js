@@ -3,7 +3,7 @@
 // Local linter for the taquito -> octez.js rebrand (see CLAUDE.md, "Naming: the
 // rename is comprehensive but not 100% finished"). Greps every git-tracked file
 // for known leftover patterns (ecadlabs mentions, taquito.io URLs, stale
-// @taquito/* package scopes, stale TAQUITO_* env var prefixes, stale
+// @taquito/* package scopes, ecadinfra RPC/infra hostnames, stale TAQUITO_* env var prefixes, stale
 // Taquito-branded identifiers like `TaquitoError`) and fails if it finds one
 // that isn't already accounted for in rebrand-lint.allowlist.json.
 //
@@ -28,6 +28,16 @@ const PATTERNS = [
     id: 'ecadlabs',
     regex: /ecadlabs/gi,
     label: 'ecadlabs org/brand reference',
+  },
+  {
+    id: 'ecadinfra',
+    regex: /ecadinfra/gi,
+    label: 'ecadinfra host (decommissioned or internal-only ECAD infra)',
+  },
+  {
+    id: 'ecad-tezos-node',
+    regex: /ecad-tezos-/g,
+    label: 'ecad-tezos-* internal node name',
   },
   {
     id: 'taquito-io',

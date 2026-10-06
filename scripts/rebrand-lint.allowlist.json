@@ -203,5 +203,25 @@
     "pattern": "taquito-env-prefix",
     "file": ".github/**",
     "reason": "CI workflows configure the same long-standing TAQUITO_* env var convention used by integration-tests infra; tracked per CLAUDE.md, not a stray rebrand miss."
+  },
+  {
+    "pattern": "ecadinfra",
+    "file": "website/src/pages/changelog.mdx",
+    "reason": "Changelog documents historical, pre-fork Taquito releases; entries reference ecadinfra hosts/status pages as they existed at the time."
+  },
+  {
+    "pattern": "ecadinfra",
+    "file": "integration-tests/__tests__/http-backend-request-error-handling.spec.ts",
+    "reason": "Comment explaining why the test moved off ecadinfra's decommissioned mainnet node; historical context, not a live reference."
+  },
+  {
+    "pattern": "ecadinfra",
+    "file": "integration-tests/__tests__/rpc/get-protocol-constants.spec.ts",
+    "reason": "Comment explaining why the test moved off ecadinfra's decommissioned mainnet node; historical context, not a live reference."
+  },
+  {
+    "pattern": "ecadinfra",
+    "file": "integration-tests/config.ts",
+    "reason": "Comments documenting why ecadinfra-internal hosts and the legacy taquito-example id are not usable; historical context, not live references."
   }
 ]
