@@ -18,9 +18,9 @@ async function example() {
       "version": "0.1",
       "license": "MIT",
       "authors": [
-        "octez.js <https://octez.js.io/>"
+        "octez.js <https://octez-js.tezos.com/>"
       ],
-      "homepage": "https://octez.js.io/"
+      "homepage": "https://octez-js.tezos.com/"
     };
 
     const metadataBigMap = new MichelsonMap();

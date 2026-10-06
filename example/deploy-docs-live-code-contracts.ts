@@ -577,8 +577,8 @@ async function originateTzip16Storage() {
       description: 'A metadata test',
       version: '0.1',
       license: 'MIT',
-      authors: ['octez.js <https://octez.js.io/>'],
-      homepage: 'https://octez.js.io/',
+      authors: ['octez.js <https://octez-js.tezos.com/>'],
+      homepage: 'https://octez-js.tezos.com/',
     };
 
     const metadataBigMap = new MichelsonMap();
