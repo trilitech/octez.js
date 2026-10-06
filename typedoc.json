@@ -32,18 +32,18 @@
   ],
   "name": "octez.js TypeDocs",
   "navigationLinks": {
-    "octez.js.io": "https://octez.js.io"
+    "octez-js.tezos.com": "https://octez-js.tezos.com"
   },
   "excludePrivate": true,
   "externalSymbolLinkMappings": {
     "@tezos-x/octez.js-signer": {
-      "ToBeImplemented": "https://octez.js.io",
-      "InvalidCurveError": "https://octez.js.io",
-      "InvalidSeedLengthError": "https://octez.js.io"
+      "ToBeImplemented": "https://octez-js.tezos.com",
+      "InvalidCurveError": "https://octez-js.tezos.com",
+      "InvalidSeedLengthError": "https://octez-js.tezos.com"
     },
     "@tezos-x/octez.js-core": {
-      "InvalidSignatureError": "https://octez.js.io",
-      "InvalidMessageError": "https://octez.js.io"
+      "InvalidSignatureError": "https://octez-js.tezos.com",
+      "InvalidMessageError": "https://octez-js.tezos.com"
     }
   },
   "customCss": "./typedoc-custom.css",
