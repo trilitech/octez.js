@@ -8,6 +8,7 @@ import { remarkRelativeLinks } from './src/utils/remark-relative-links.mjs';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { fileURLToPath } from 'node:url';
 import tailwindcss from "@tailwindcss/vite";
+import { DEFAULT_VERSION } from './src/config/versions.mjs';
 
 import sitemap from '@astrojs/sitemap';
 
@@ -46,6 +47,11 @@ export default defineConfig({
   site: process.env.SITE_URL || 'https://octez.js.dev',
   base: normalizedBase,
   trailingSlash: 'never',
+  // Stable, unversioned entry point (e.g. for the README); follows DEFAULT_VERSION,
+  // which the release workflow bumps.
+  redirects: {
+    '/docs/quick_start': `/docs/${DEFAULT_VERSION}/quick_start`,
+  },
   integrations: [AutoImport({
     imports: [
       './src/components/SimpleCodeRunner.astro',
