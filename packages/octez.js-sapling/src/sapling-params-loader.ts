@@ -8,13 +8,13 @@ type SaplingParamsManifest = {
   spendParams: {
     sha256: string;
     bytes: number;
-    taquitoUrl: string;
+    octezUrl: string;
     zcashUrl: string;
   };
   outputParams: {
     sha256: string;
     bytes: number;
-    taquitoUrl: string;
+    octezUrl: string;
     zcashUrl: string;
   };
 };
@@ -249,14 +249,14 @@ function resolveSaplingParamsSource(
         url:
           source === 'zcash'
             ? DEFAULT_SAPLING_PARAMS_MANIFEST.spendParams.zcashUrl
-            : DEFAULT_SAPLING_PARAMS_MANIFEST.spendParams.taquitoUrl,
+            : DEFAULT_SAPLING_PARAMS_MANIFEST.spendParams.octezUrl,
         sha256: DEFAULT_SAPLING_PARAMS_MANIFEST.spendParams.sha256,
       },
       output: {
         url:
           source === 'zcash'
             ? DEFAULT_SAPLING_PARAMS_MANIFEST.outputParams.zcashUrl
-            : DEFAULT_SAPLING_PARAMS_MANIFEST.outputParams.taquitoUrl,
+            : DEFAULT_SAPLING_PARAMS_MANIFEST.outputParams.octezUrl,
         sha256: DEFAULT_SAPLING_PARAMS_MANIFEST.outputParams.sha256,
       },
     };
