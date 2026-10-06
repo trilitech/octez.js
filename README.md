@@ -33,7 +33,7 @@ octez.js provides convenient abstractions for a multitude of common operations, 
 
 ## Ok, I'm Ready!
 
-To get started with octez.js quickly, visit the [octez.js QuickStart](https://octez.js.io/docs/quick_start).
+To get started with octez.js quickly, visit the [octez.js QuickStart](https://octez-js.tezos.com/docs/quick_start/).
 
 If you prefer a skeleton project, check out our [octez.js React Template](https://github.com/trilitech/octez.js-react-template).
 
@@ -239,5 +239,5 @@ Special thanks to these libraries, which have been excellent references for octe
 
 [discord]: https://discord.com/channels/934567382700146739/939205889901092874
 [stackexchange]: https://tezos.stackexchange.com/questions/tagged/octez.js
-[4]: https://octez.js.io
+[4]: https://octez-js.tezos.com
 [5]: https://astro.build/
