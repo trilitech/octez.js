@@ -55,6 +55,11 @@ jobs:
         env:
           SITE_URL: https://octez-js.tezos.com
 
+      # Must run after the website build: astro empties website/dist, and
+      # typedoc.json writes its output to website/dist/typedoc.
+      - name: Build TypeDoc API docs
+        run: npm run build-docs
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
