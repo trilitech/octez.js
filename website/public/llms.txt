@@ -20,7 +20,7 @@ The default version is `0.9.0`. The `next` version contains unreleased documenta
 - `tutorial` - Building Your First dApp
 - `operation_flow` - Operation Flow
 - `rpc_nodes` - RPC nodes
-- `web3js_taquito` - web3js vs octez.js
+- `web3js_vs_octez` - web3js vs octez.js
 - `fallback_rpc` - Fallback RPC URLs
 
 ### Architecture
@@ -85,7 +85,7 @@ The default version is `0.9.0`. The `next` version contains unreleased documenta
 - `michel_codec` - Michel Codec
 - `contracts-library` - Contracts Library
 - `timelock` - Timelock (BETA)
-- `taquito_utils` - octez.js Utils
+- `utils` - octez.js Utils
 - **Sapling**
   - `sapling` - Sapling Toolkit
   - `sapling_in_memory_spending_key` - InMemorySpendingKey
