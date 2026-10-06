@@ -1,7 +1,7 @@
 # octez.js DApp Wallet package
 
-_Documentation can be found [here](https://octez.js.io/docs/wallet_API)_
-_TypeDoc style documentation is available [here](https://octez.js.io/typedoc/)_
+_Documentation can be found [here](https://octez-js.tezos.com/docs/wallet_API)_
+_TypeDoc style documentation is available [here](https://octez-js.tezos.com/typedoc/)_
 
 ## General Information
 
@@ -25,7 +25,7 @@ import { BeaconWallet } from '@tezos-x/octez.js-dapp-wallet';
 
 const options = {
   name: 'MyAwesomeDapp',
-  iconUrl: 'https://octez.js.io/favicon.ico',
+  iconUrl: 'https://octez-js.tezos.com/favicon.ico',
   network: { type: 'shadownet' },
   enableMetrics: true,
 };

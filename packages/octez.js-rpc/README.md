@@ -1,6 +1,6 @@
 # octez.js RPC package
-*Documentation can be found [here](https://octez.js.io/docs/rpc_package)*  
-*TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)*
+*Documentation can be found [here](https://octez-js.tezos.com/docs/rpc_package)*  
+*TypeDoc style documentation is available on-line [here](https://octez-js.tezos.com/typedoc/)*
 
 `@tezos-x/octez.js-rpc` is an npm package that provides low-level methods and types to invoke RPC calls from a Nomadic Tezos RPC node.
 

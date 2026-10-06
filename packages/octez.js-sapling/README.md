@@ -1,7 +1,7 @@
 # octez.js Sapling package
 
-_Documentation can be found [here](https://octez.js.io/docs/next/sapling)_
-_TypeDoc style documentation is available on-line [here](https://octez.js.io/typedoc/)_
+_Documentation can be found [here](https://octez-js.tezos.com/docs/next/sapling)_
+_TypeDoc style documentation is available on-line [here](https://octez-js.tezos.com/typedoc/)_
 
 ## General Information
 
@@ -82,7 +82,7 @@ const op = await saplingContract.methodsObject.default([shieldedTx]).send({ amou
 await op.confirmation();
 ```
 
-Refer to the website documentation for further examples and information: https://octez.js.io/docs/next/sapling
+Refer to the website documentation for further examples and information: https://octez-js.tezos.com/docs/next/sapling
 
 ## Additional info
 
