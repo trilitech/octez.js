@@ -12,6 +12,7 @@ export const sidebarConfig = [
       "tutorial",
       "operation_flow",
       "rpc_nodes",
+      "web3js_vs_octez",
       "web3js_taquito",
       "fallback_rpc",
     ],
@@ -89,6 +90,7 @@ export const sidebarConfig = [
       "michel_codec",
       "contracts-library",
       "timelock",
+      "utils",
       "taquito_utils",
       {
         title: "Sapling",
