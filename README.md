@@ -1,8 +1,10 @@
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="website/src/images/octez-logo-dark.png">
-  <img alt="octez.js Logo" src="website/src/images/octez-logo-light.png" width="300">
-</picture>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="website/src/images/octez-logo-dark.png">
+    <img alt="octez.js Logo" src="website/src/images/octez-logo-light.png" width="300">
+  </picture>
+</p>
 
 [![Node.js CI](https://github.com/trilitech/octez.js/workflows/Node.js%20CI/badge.svg)](https://github.com/trilitech/octez.js/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/trilitech/octez.js/branch/main/graph/badge.svg)](https://codecov.io/gh/trilitech/octez.js)
