@@ -44,7 +44,7 @@ const normalizedBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
 
 // https://astro.build/config
 export default defineConfig({
-  site: process.env.SITE_URL || 'https://octez.js.dev',
+  site: process.env.SITE_URL || 'https://octez-js.tezos.com',
   base: normalizedBase,
   trailingSlash: 'never',
   // Stable, unversioned entry point (e.g. for the README); follows DEFAULT_VERSION,
