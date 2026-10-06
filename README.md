@@ -101,7 +101,7 @@ octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of np
 
 ## API Documentation
 
-TypeDoc API documentation for octez.js is [available here](https://octez.js.io/typedoc).
+TypeDoc API documentation for octez.js is [available here](https://octez-js.tezos.com/typedoc/).
 
 ## Versioning Strategy
 
