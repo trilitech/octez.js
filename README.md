@@ -8,7 +8,7 @@
 
 [![Node.js CI](https://github.com/trilitech/octez.js/workflows/Node.js%20CI/badge.svg)](https://github.com/trilitech/octez.js/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/trilitech/octez.js/branch/master/graph/badge.svg)](https://codecov.io/gh/trilitech/octez.js)
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3204/badge)](https://bestpractices.coreinfrastructure.org/projects/3204)
+[![OpenSSF Best Practices](https://img.shields.io/badge/OpenSSF_Best_Practices-pending-lightgrey)](https://github.com/trilitech/octez.js/issues/110)
 [![npm version](https://badge.fury.io/js/%40tezos-x%2Foctez.js.svg)](https://badge.fury.io/js/%40tezos-x%2Foctez.js)
 
 Welcome, Web3 developer!
