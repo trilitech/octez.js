@@ -21,7 +21,7 @@ CONFIGS().forEach(
     createAddress,
   }) => {
     const Tezos = lib;
-    const isUnrestricted = rpc.includes("teztnets.com") || rpc.includes("net-rolling-1.i.ecadinfra.com") ? true : false;
+    const isUnrestricted = rpc.includes("teztnets.com") ? true : false;
     // Destination-index (INDEX_ADDRESS / GET_ADDRESS_INDEX) and attestation-rights
     // shapes were introduced in Tallinn, so they exist on any lane running Tallinn
     // or later — tallinnnet, shadownet/ushuaianet on Ushuaia, and alpha (weeklynet).
