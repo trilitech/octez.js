@@ -15,7 +15,7 @@ into **4 shards** (`--shard=N/4`) that run as parallel jobs, plus a separate
 `beforeAll`.
 
 ### 2. `config.ts` — network + signer configuration
-Defines, per network (shadownet, tallinnnet, …): the RPC URL, known contracts,
+Defines, per network (shadownet, ushuaianet, …): the RPC URL, known contracts,
 and a **signer config**. Two signer modes (`SignerType`):
 - **`EPHEMERAL_KEY`** — acquire a fresh key from the keygen (the default for the
   testnet suite; `preferFreshKey: true`).

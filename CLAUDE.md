@@ -120,7 +120,7 @@ resolve this ambiguity yourself, and do not silently skip it either — say so e
      decommissioned mainnet RPC endpoint; Taquito's overlapping fix would collide),
    - it bundles an infra/CI-topology decision (e.g. retiring a testnet lane) that must be *this
      repo's own call*, not inherited just because upstream made it.
-4. **CI lane decisions are independent.** octez.js may keep testnets (e.g. tallinnnet/ushuaianet)
+4. **CI lane decisions are independent.** octez.js may keep testnets (e.g. ushuaianet/weeklynet)
    active that Taquito has retired, or vice versa — this is a maintainer decision based on this
    repo's actual funded-key/infra access, never something to copy from upstream's CI file as-is.
 5. When a cherry-pick *is* appropriate, keep the original `Co-Authored-By` trailer and do the
