@@ -23,7 +23,7 @@ export enum NetworkType {
   SHADOWNET = 'shadownet',
   WEEKLYNET = 'weeklynet',
   TEZLINK_SHADOWNET = 'tezlink_shadownet',
-  TALLINNNET = 'tallinnnet',
+  USHUAIANET = 'ushuaianet',
   CUSTOM = 'custom',
 }
 
