@@ -22,17 +22,17 @@ import { knownContractsTezlinkshadownet } from './known-contracts-tezlinkshadown
 import { knownContractsUshuaianet } from './known-contracts-ushuaianet';
 
 const integrationDiagnosticsEnabled = /^(1|true)$/i.test(
-  process.env['TAQUITO_ITEST_DIAGNOSTICS'] ?? ''
+  process.env['OCTEZJS_ITEST_DIAGNOSTICS'] ?? ''
 );
 const parsedLowBalanceWarnMutez = Number(
-  process.env['TAQUITO_DIAG_BALANCE_WARN_MUTEZ'] ?? '9000000'
+  process.env['OCTEZJS_DIAG_BALANCE_WARN_MUTEZ'] ?? '9000000'
 );
-const parsedFreshKeyMaxAttempts = Number(process.env['TAQUITO_FRESH_KEY_MAX_ATTEMPTS'] ?? '');
-const parsedFreshKeyRetryMs = Number(process.env['TAQUITO_FRESH_KEY_RETRY_MS'] ?? '0');
+const parsedFreshKeyMaxAttempts = Number(process.env['OCTEZJS_FRESH_KEY_MAX_ATTEMPTS'] ?? '');
+const parsedFreshKeyRetryMs = Number(process.env['OCTEZJS_FRESH_KEY_RETRY_MS'] ?? '0');
 const parsedKeygenRequestTimeoutMs = Number(
-  process.env['TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS'] ?? '30000'
+  process.env['OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS'] ?? '30000'
 );
-const parsedFreshKeyPrefetch = Number(process.env['TAQUITO_FRESH_KEY_PREFETCH'] ?? '2');
+const parsedFreshKeyPrefetch = Number(process.env['OCTEZJS_FRESH_KEY_PREFETCH'] ?? '2');
 const lowBalanceWarnMutez =
   Number.isFinite(parsedLowBalanceWarnMutez) && parsedLowBalanceWarnMutez > 0
     ? parsedLowBalanceWarnMutez
@@ -59,7 +59,7 @@ export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // "taq" in two-digit alphabet positions: t=20, a=01, q=17 → 200_117 mutez → 0.200117 tez
 export const TAQUITO_MUTEZ = 200_117;
 export const TEST_FUNDS_RECOVERY_ADDRESS =
-  process.env['TAQUITO_TEST_FUNDS_RECOVERY_ADDRESS'] || 'tz1bRt6Lo9KRNEUF9voCwkjR2pkMU9xJuYMB';
+  process.env['OCTEZJS_TEST_FUNDS_RECOVERY_ADDRESS'] || 'tz1bRt6Lo9KRNEUF9voCwkjR2pkMU9xJuYMB';
 
 enum ForgerType {
   LOCAL = 'local',
@@ -282,13 +282,13 @@ export const defaultSecretKey: SecretKeyConfig = {
 };
 
 // The keygen is self-hosted: CI runs ghcr.io/trilitech/octezjs-keygen as a service
-// container and sets TAQUITO_KEYGEN_URL explicitly, and the README's `docker run
+// container and sets OCTEZJS_KEYGEN_URL explicitly, and the README's `docker run
 // -p 3000:3000 ghcr.io/trilitech/octezjs-keygen:latest` gives a local run the same
 // address. The previous defaults were ECAD-operated hosts, one of which
 // (keygen-direct.ecadinfra.com) was only reachable from inside their network.
 const defaultKeygenBaseUrl = 'http://localhost:3000';
 
-const keygenBaseUrl = (process.env['TAQUITO_KEYGEN_URL'] || defaultKeygenBaseUrl).replace(
+const keygenBaseUrl = (process.env['OCTEZJS_KEYGEN_URL'] || defaultKeygenBaseUrl).replace(
   /\/+$/,
   ''
 );
@@ -297,7 +297,7 @@ const keygenBaseUrl = (process.env['TAQUITO_KEYGEN_URL'] || defaultKeygenBaseUrl
 // Overridable so a deployment that registers a different account (e.g.
 // ecadinfra still knows the legacy `taquito-example`) can be targeted without
 // a code change.
-const keygenToken = process.env['TAQUITO_KEYGEN_TOKEN'] || 'octez.js-example';
+const keygenToken = process.env['OCTEZJS_KEYGEN_TOKEN'] || 'octez.js-example';
 
 const defaultEphemeralConfig = (networkPath: string): EphemeralConfig => ({
   type: SignerType.EPHEMERAL_KEY as SignerType.EPHEMERAL_KEY,
@@ -314,7 +314,7 @@ const freshKeyPools = new Map<string, AsyncPrefetchBuffer<FreshKeyCandidate>>();
 // Done in test teardown (afterAll, via vitest.setup), i.e. AFTER the test is
 // finished with the key — so, unlike a keygen-side TTL sweep, it never races a
 // running test. Best-effort: failures are swallowed and never fail a test.
-const reclaimEnabled = process.env['TAQUITO_KEYGEN_RECLAIM'] !== 'false';
+const reclaimEnabled = process.env['OCTEZJS_KEYGEN_RECLAIM'] !== 'false';
 interface ReclaimEntry {
   secretKey: string;
   pkh: string;

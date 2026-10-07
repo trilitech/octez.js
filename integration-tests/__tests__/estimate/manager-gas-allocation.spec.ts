@@ -41,7 +41,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker }) => {
     // In secret-key mode the shared SECRET_KEY is already revealed, so getManagerKey() never
     // returns null and these tests always fail.  Re-enable once the keygen Cloudflare Worker
     // described in docs/keygen-requirements.md (or equivalent) is deployed and
-    // TAQUITO_KEYGEN_URL / TAQUITO_KEYGEN_TOKEN are wired into CI.
+    // OCTEZJS_KEYGEN_URL / OCTEZJS_KEYGEN_TOKEN are wired into CI.
     it.skip('estimates a simple transfer for an unrevealed signer when manager gas limits are equal', async () => {
       if (!(await hasEqualManagerGasLimits(Tezos))) {
         return;

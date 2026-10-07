@@ -194,8 +194,8 @@ jobs:
 
           exit "$test_exit_code"
         env:
-          TAQUITO_KEYGEN_URL: http://localhost:3000
-          TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          OCTEZJS_KEYGEN_URL: http://localhost:3000
+          OCTEZJS_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
           # The keygen funds from a master account and waits for confirmation, so
           # returned keys are baked. The request timeout MUST exceed the time the
           # keygen spends waiting for a funding op to confirm: if the client gives
@@ -204,8 +204,8 @@ jobs:
           # confirmation regularly exceeded the old 60s, so a single slow shard
           # orphaned dozens of keys (each client retry funds a NEW key), draining
           # ~1000 tez/run. Longer timeout + fewer attempts caps that leak.
-          TAQUITO_FRESH_KEY_RETRY_MS: '12000'
-          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '3'
+          OCTEZJS_FRESH_KEY_RETRY_MS: '12000'
+          OCTEZJS_FRESH_KEY_MAX_ATTEMPTS: '3'
           # 2, not the previous 1: each distinct min-balance bucket gets its own
           # prefetch buffer, and a buffered-but-never-consumed key is a second,
           # narrower version of the leak above (funded, delivered, but no test
@@ -213,17 +213,17 @@ jobs:
           # test actually received). 2 is taquito's own client-side default;
           # ushuaianet.yml already runs 4. Watch keygen container logs for
           # balance warnings before raising further.
-          TAQUITO_FRESH_KEY_PREFETCH: '2'
-          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+          OCTEZJS_FRESH_KEY_PREFETCH: '2'
+          OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
           # Retry transient shadownet RPC gateway errors (502/503/504) on
           # idempotent calls; the default is 1 retry.
-          TAQUITO_HTTP_RETRY_COUNT: '4'
+          OCTEZJS_HTTP_RETRY_COUNT: '4'
           SHARD: ${{ matrix.shard }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
           COMMIT_SHA: ${{ github.sha }}
-          TAQUITO_ITEST_DIAGNOSTICS: 'true'
-          TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
+          OCTEZJS_ITEST_DIAGNOSTICS: 'true'
+          OCTEZJS_DIAG_BALANCE_WARN_MUTEZ: '9000000'
       - name: Keygen container logs
         if: always()
         run: docker logs "${{ job.services.keygen.id }}" 2>&1 | tail -300 || true
@@ -308,8 +308,8 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
           COMMIT_SHA: ${{ github.sha }}
-          TAQUITO_ITEST_DIAGNOSTICS: 'true'
-          TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
+          OCTEZJS_ITEST_DIAGNOSTICS: 'true'
+          OCTEZJS_DIAG_BALANCE_WARN_MUTEZ: '9000000'
           SAPLING_SPEND_PARAMS_PATH: ${{ github.workspace }}/packages/octez.js-sapling/params/spend.params
           SAPLING_OUTPUT_PARAMS_PATH: ${{ github.workspace }}/packages/octez.js-sapling/params/output.params
       - name: Upload timing artifact
@@ -409,9 +409,9 @@ jobs:
         env:
           WEEKLYNET: 'true'
           TEZOS_RPC_WEEKLYNET: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
-          TAQUITO_KEYGEN_URL: http://localhost:3000
-          TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
-          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+          OCTEZJS_KEYGEN_URL: http://localhost:3000
+          OCTEZJS_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
           # Never set before, because this step never used to check balance
           # at all (that was 403fcfa22's bug). Now that it does: each retry
           # attempt pulls a brand-new candidate key from the prefetch pool
@@ -420,8 +420,8 @@ jobs:
           # them), every candidate got discarded for a fresh one before its
           # funding tx had any chance to confirm. Same fix the shard jobs
           # below already needed for the same reason; matching their values.
-          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '8'
-          TAQUITO_FRESH_KEY_RETRY_MS: '12000'
+          OCTEZJS_FRESH_KEY_MAX_ATTEMPTS: '8'
+          OCTEZJS_FRESH_KEY_RETRY_MS: '12000'
       - id: addresses
         name: Read originated addresses
         run: node .github/scripts/read-known-contracts.mjs weeklynet
@@ -530,8 +530,8 @@ jobs:
           TEZOS_WEEKLYNET_SAPLINGCONTRACT_ADDRESS: ${{ needs.weeklynet-originate.outputs.sapling_contract }}
           TEZOS_WEEKLYNET_ON_CHAIN_VIEW_CONTRACT: ${{ needs.weeklynet-originate.outputs.view_contract }}
           TEZOS_WEEKLYNET_TICKET_CONTRACT: ${{ needs.weeklynet-originate.outputs.ticket_contract }}
-          TAQUITO_KEYGEN_URL: http://localhost:3000
-          TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          OCTEZJS_KEYGEN_URL: http://localhost:3000
+          OCTEZJS_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
           # Higher than shadownet's 3/2, left as-is for now: this was tuned
           # for weeklynet's old faucet-funded path (observed ~4-5
           # exhaustions/shard over a full run under 4-shard concurrent load),
@@ -539,17 +539,17 @@ jobs:
           # uses the same master-account funding as shadownet (see
           # testnet-master-pkh.mjs). Worth revisiting once that's been
           # observed live — not tightened blindly here.
-          TAQUITO_FRESH_KEY_RETRY_MS: '12000'
-          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '6'
-          TAQUITO_FRESH_KEY_PREFETCH: '1'
-          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
-          TAQUITO_HTTP_RETRY_COUNT: '4'
+          OCTEZJS_FRESH_KEY_RETRY_MS: '12000'
+          OCTEZJS_FRESH_KEY_MAX_ATTEMPTS: '6'
+          OCTEZJS_FRESH_KEY_PREFETCH: '1'
+          OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+          OCTEZJS_HTTP_RETRY_COUNT: '4'
           SHARD: ${{ matrix.shard }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
           COMMIT_SHA: ${{ github.sha }}
-          TAQUITO_ITEST_DIAGNOSTICS: 'true'
-          TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
+          OCTEZJS_ITEST_DIAGNOSTICS: 'true'
+          OCTEZJS_DIAG_BALANCE_WARN_MUTEZ: '9000000'
       - name: Keygen container logs
         if: always()
         run: docker logs "${{ job.services.keygen.id }}" 2>&1 | tail -300 || true

@@ -48,11 +48,11 @@ Refer to the `octez.js/integration-tests/config.ts` file for details on test con
 
 ### Common CI Reliability Variables
 
-- `TAQUITO_KEYGEN_URL`: overrides the Keygen API base URL (default: `http://localhost:3000`, i.e. a keygen you run yourself — see `trilitech/octez.js-keygen`, whose image is `ghcr.io/trilitech/octezjs-keygen`)
-- `TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS`: fail-fast timeout (in ms) for Keygen API HTTP requests (default: `30000`)
-- `TAQUITO_FRESH_KEY_MAX_ATTEMPTS`: max attempts when selecting a fresh key (default: `5`)
-- `TAQUITO_FRESH_KEY_RETRY_MS`: delay between fresh-key retry attempts in ms (default: `0`)
-- `TAQUITO_ITEST_DIAGNOSTICS=true`: enables structured setup/key selection diagnostics in test logs
+- `OCTEZJS_KEYGEN_URL`: overrides the Keygen API base URL (default: `http://localhost:3000`, i.e. a keygen you run yourself — see `trilitech/octez.js-keygen`, whose image is `ghcr.io/trilitech/octezjs-keygen`)
+- `OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS`: fail-fast timeout (in ms) for Keygen API HTTP requests (default: `30000`)
+- `OCTEZJS_FRESH_KEY_MAX_ATTEMPTS`: max attempts when selecting a fresh key (default: `5`)
+- `OCTEZJS_FRESH_KEY_RETRY_MS`: delay between fresh-key retry attempts in ms (default: `0`)
+- `OCTEZJS_ITEST_DIAGNOSTICS=true`: enables structured setup/key selection diagnostics in test logs
 
 
 ## CLI Options
