@@ -24,10 +24,10 @@ CONFIGS().forEach(
     const isUnrestricted = rpc.includes("teztnets.com") ? true : false;
     // Destination-index (INDEX_ADDRESS / GET_ADDRESS_INDEX) and attestation-rights
     // shapes were introduced in Tallinn, so they exist on any lane running Tallinn
-    // or later — tallinnnet, shadownet/ushuaianet on Ushuaia, and alpha (weeklynet).
-    // Gating on PtTALLiNt alone silently skipped these on every lane that has since
-    // migrated to Ushuaia, which is all of the ones CI actually runs.
-    const isTallinnOrLater = protocol === Protocols.PtTALLiNt || protocol === Protocols.PsUshuai || protocol === Protocols.ProtoALpha;
+    // or later — shadownet/ushuaianet on Ushuaia, and alpha (weeklynet).
+    // Gating on a single protocol silently skips these on every lane that has since
+    // migrated, so keep this list in step with the lanes CI actually runs.
+    const isTallinnOrLater = protocol === Protocols.PsUshuai || protocol === Protocols.ProtoALpha;
     const unrestrictedNode = isUnrestricted ? test : test.skip;
     const unrestrictedTallinnOrLater = isTallinnOrLater && isUnrestricted ? test : test.skip;
     const tallinnOrLater = isTallinnOrLater ? test : test.skip;
