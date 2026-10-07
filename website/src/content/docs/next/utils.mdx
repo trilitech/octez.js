@@ -199,6 +199,20 @@ const invalidValidation = validateProtocol(invalidProtocol);
 console.log(`Calling the validateProtocol function with ${invalidProtocol} returns ${invalidValidation}.`);
 ```
 
+## Tezos X cross-runtime address aliases
+
+On Tezos X, every address of the Michelson runtime has a deterministic alias in the EVM runtime, and vice versa. `getEthereumAlias` computes the EVM alias of an implicit (tz1–tz5) or originated (KT1) address, and `getTezosAlias` computes the KT1 alias of an Ethereum address. Both are computed offline and throw an `InvalidAddressError` on malformed input.
+
+```js
+import { getEthereumAlias, getTezosAlias } from '@tezos-x/octez.js-utils';
+
+const ethereumAlias = getEthereumAlias('tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx');
+console.log(ethereumAlias); // 0xccef676171871a48bbd6e2be75bbcc09d38830c5
+
+const tezosAlias = getTezosAlias('0xccef676171871a48bbd6e2be75bbcc09d38830c5');
+console.log(tezosAlias); // KT1TLraR9PboPAvxLKYQs9eU4n75rGFJTbWk
+```
+
 # Verification of a signature
 
 octez.js provides a function named `verifySignature` that allows verifying signatures of payloads. The function takes a message, a public key, and a signature as parameters and returns a boolean indicating if the signature matches.
