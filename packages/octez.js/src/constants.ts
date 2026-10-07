@@ -4,10 +4,10 @@ const REVEAL_GAS_LIMIT = {
   TZ2: 157,
   TZ3: 447,
   TZ4: 3252,
-  // PROVISIONAL fallback for tz5 (ML-DSA-44, U025). ML-DSA verification + the 1312-byte
-  // public key make reveals heavier than tz4; this is an estimate to avoid throwing when
-  // the dynamic node estimate is unavailable. CALIBRATE against a live U025 node.
-  TZ5: 5000,
+  // tz5 (ML-DSA-44): measured on weeklynet (alpha, 2026-10-07) via run_operation, 211380
+  // milligas -> 212 gas, +1 margin like the other types. tz5 is disabled in U025
+  // (tz5_account_enable=false on mainnet and ushuaianet), so re-check once it is enabled.
+  TZ5: 213,
 };
 // value is based on octez-client reveal operation fee of each address type in Ushuaia Protocol
 const REVEAL_FEE = {
@@ -15,8 +15,11 @@ const REVEAL_FEE = {
   TZ2: 277,
   TZ3: 306,
   TZ4: 736,
-  // PROVISIONAL fallback for tz5 (ML-DSA-44, U025) — see REVEAL_GAS_LIMIT.TZ5 note. CALIBRATE.
-  TZ5: 1500,
+  // tz5 (ML-DSA-44): derived, not injected. Minimal fee = 100 + 0.1*gas + 1*size mutez, which
+  // reproduces the tz1/tz4 values above. Size = 1376 bytes forged (1312-byte public key) plus an
+  // ASSUMED 2420-byte ML-DSA-44 signature = 3796 bytes -> 3918, minus the 1 mutez margin used above.
+  // Note: RpcEstimateProvider sizes operations with a fake 64-byte signature, so its tz5 fee is too low.
+  TZ5: 3917,
 };
 // value is based on octez-client reveal operation storageLimit of all address type in Ushuaia Protocol
 export const REVEAL_STORAGE_LIMIT = 0;
