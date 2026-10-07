@@ -52,9 +52,9 @@ export const sessionMultipleChains = {
         'tezos:shadownet:tz2AJ8DYxeRSUWr8zS5DcFfJYzTSNYzALxSh',
         'tezos:shadownet:tz2BxqkU3UvZrqA22vbEaSGyjR9bEQwc4k2G',
         'tezos:shadownet:tz2JobFgDoJ5HZ1jAoMgZCyNdbBEdAstkytV',
-        'tezos:tallinnnet:tz2AJ8DYxeRSUWr8zS5DcFfJYzTSNYzALxSh',
-        'tezos:tallinnnet:tz2BxqkU3UvZrqA22vbEaSGyjR9bEQwc4k2G',
-        'tezos:tallinnnet:tz2JobFgDoJ5HZ1jAoMgZCyNdbBEdAstkytV',
+        'tezos:ushuaianet:tz2AJ8DYxeRSUWr8zS5DcFfJYzTSNYzALxSh',
+        'tezos:ushuaianet:tz2BxqkU3UvZrqA22vbEaSGyjR9bEQwc4k2G',
+        'tezos:ushuaianet:tz2JobFgDoJ5HZ1jAoMgZCyNdbBEdAstkytV',
       ],
       methods: ['tezos_sign'],
       events: [],
@@ -83,7 +83,7 @@ export const sessionMultipleChains = {
   requiredNamespaces: {
     tezos: {
       methods: ['tezos_sign'],
-      chains: ['tezos:shadownet', 'tezos:tallinnnet'],
+      chains: ['tezos:shadownet', 'tezos:ushuaianet'],
       events: [],
     },
   },
