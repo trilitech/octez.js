@@ -23,7 +23,7 @@ octez.js is primarily targeted at Front-End Web3 developers, so it comes with ba
 
 ## Who uses octez.js?
 
-octez.js is used by **over 80% of DApps** in the Tezos ecosystem. It is easy to use, [proven secure](https://bestpractices.coreinfrastructure.org/en/projects/3204#security), and [tested continuously](https://github.com/trilitech/octez.js/actions/workflows/main.yml) against current versions of Tezos (both Mainnet *and* Testnets).
+octez.js is used by **over 80% of DApps** in the Tezos ecosystem. It is easy to use and [tested continuously](https://github.com/trilitech/octez.js/actions/workflows/main.yml) against current versions of Tezos (both Mainnet *and* Testnets).
 
 ## Why should I use octez.js?
 
