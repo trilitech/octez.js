@@ -1,4 +1,4 @@
-import { CONFIGS, TAQUITO_MUTEZ, sleep, waitForRpcState } from '../config';
+import { CONFIGS, OCTEZJS_MUTEZ, sleep, waitForRpcState } from '../config';
 import { PollingSubscribeProvider, TezosToolkit } from '@tezos-x/octez.js';
 import { rethrowInfrastructureRpcError } from '../test-helpers/rpc-error-assertions';
 
@@ -111,12 +111,12 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
 
       secondUser = await createAddress();
       const secondUserAddress = await secondUser.signer.publicKeyHash();
-      const transfer = await Tezos.contract.transfer({ to: secondUserAddress, amount: TAQUITO_MUTEZ, mutez: true });
+      const transfer = await Tezos.contract.transfer({ to: secondUserAddress, amount: OCTEZJS_MUTEZ, mutez: true });
       await transfer.confirmation();
       await waitForRpcState(
         Tezos,
         () => Tezos.rpc.getBalance(secondUserAddress),
-        (balance) => Number(balance.toString()) >= TAQUITO_MUTEZ,
+        (balance) => Number(balance.toString()) >= OCTEZJS_MUTEZ,
         { description: `funding ${secondUserAddress}` }
       );
 

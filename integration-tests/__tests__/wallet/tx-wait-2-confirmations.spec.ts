@@ -1,4 +1,4 @@
-import { CONFIGS, TAQUITO_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from "../../config";
+import { CONFIGS, OCTEZJS_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from "../../config";
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
   const Tezos = lib;
@@ -8,7 +8,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
       await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 })
     })
     it('Verify wallet.transfer for 2 XTZ to an address and wait for 2 confirmations', async () => {
-      const op = await Tezos.wallet.transfer({ to: TEST_FUNDS_RECOVERY_ADDRESS, amount: TAQUITO_MUTEZ, mutez: true }).send();
+      const op = await Tezos.wallet.transfer({ to: TEST_FUNDS_RECOVERY_ADDRESS, amount: OCTEZJS_MUTEZ, mutez: true }).send();
       await op.confirmation()
       const [first, second] = await Promise.all([op.confirmation(), op.confirmation(2)])
       expect(first).toBeDefined();

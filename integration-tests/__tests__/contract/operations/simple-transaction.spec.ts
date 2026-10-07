@@ -1,4 +1,4 @@
-import { CONFIGS, TAQUITO_MUTEZ } from '../../../config';
+import { CONFIGS, OCTEZJS_MUTEZ } from '../../../config';
 import { InvalidAmountError } from '@tezos-x/octez.js-core';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
@@ -11,7 +11,7 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
 
     it('should be able to send to a tz4 address', async () => {
       const op = await Tezos.contract.transfer({
-        amount: TAQUITO_MUTEZ, mutez: true,
+        amount: OCTEZJS_MUTEZ, mutez: true,
         to: 'tz4HQ8VeXAyrZMhES1qLMJAc9uAVXjbMpS8u'
       });
 

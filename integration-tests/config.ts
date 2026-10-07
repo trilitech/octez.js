@@ -57,7 +57,7 @@ const freshKeyPrefetch =
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // "taq" in two-digit alphabet positions: t=20, a=01, q=17 → 200_117 mutez → 0.200117 tez
-export const TAQUITO_MUTEZ = 200_117;
+export const OCTEZJS_MUTEZ = 200_117;
 export const TEST_FUNDS_RECOVERY_ADDRESS =
   process.env['OCTEZJS_TEST_FUNDS_RECOVERY_ADDRESS'] || 'tz1bRt6Lo9KRNEUF9voCwkjR2pkMU9xJuYMB';
 

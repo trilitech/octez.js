@@ -1,4 +1,4 @@
-import { CONFIGS, TAQUITO_MUTEZ } from '../../config';
+import { CONFIGS, OCTEZJS_MUTEZ } from '../../config';
 
 /**
  * TC-002/003 This test case originates a contract with a "payout" entrypoint. When calling the payout entrypoint, a contract can transfer
@@ -71,7 +71,7 @@ CONFIGS().forEach(({ lib, rpc, setup, networkName }) => {
       expect(await vestingContract.storage()).toBeTruthy();
 
       const publicKeyHash = await Tezos.signer.publicKeyHash();
-      const opTransfer = await Tezos.contract.transfer({ to: publicKeyHash, amount: TAQUITO_MUTEZ, mutez: true });
+      const opTransfer = await Tezos.contract.transfer({ to: publicKeyHash, amount: OCTEZJS_MUTEZ, mutez: true });
       await opTransfer.confirmation();
 
       const attackContractOp = await Tezos.contract.originate({
