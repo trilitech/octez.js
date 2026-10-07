@@ -15,10 +15,10 @@ const REVEAL_FEE = {
   TZ2: 277,
   TZ3: 306,
   TZ4: 736,
-  // tz5 (ML-DSA-44): derived, not injected. Minimal fee = 100 + 0.1*gas + 1*size mutez, which
-  // reproduces the tz1/tz4 values above. Size = 1376 bytes forged (1312-byte public key) plus an
-  // ASSUMED 2420-byte ML-DSA-44 signature = 3796 bytes -> 3918, minus the 1 mutez margin used above.
-  // Note: RpcEstimateProvider sizes operations with a fake 64-byte signature, so its tz5 fee is too low.
+  // tz5 (ML-DSA-44): verified on weeklynet (alpha, 2026-10-07) by injecting signed reveals: fee 3917
+  // (gas 213) was included in ~4s, fee 3000 was never included. Signed wire size is 3797 bytes (1375
+  // forged + 0xFF + 0x04 + 2356-byte signature prefix + 64-byte suffix); the exact minimum was not
+  // bisected (between 3000 and 3917). Note: RpcEstimateProvider mis-sizes tz5 ops (octez.js#119).
   TZ5: 3917,
 };
 // value is based on octez-client reveal operation storageLimit of all address type in Ushuaia Protocol
