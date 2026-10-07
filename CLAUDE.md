@@ -22,9 +22,10 @@ Package/class names were mechanically renamed `taquito-*` → `octez.js-*` /
 - **Don't assume a `Taquito*` symbol you find is legacy cruft to "clean up" on sight.** Some are
   deliberate API-stability choices. Check history/intent before renaming public API surface —
   that's a breaking change and should be a conscious decision, not incidental to another task.
-- A few known leftovers exist by design, not by accident (stale `TAQUITO_*` env var prefixes, a
-  couple of `taquito.io` doc URLs). Don't silently "fix" these without flagging it — they're
-  tracked, not forgotten.
+- A few known leftovers exist by design, not by accident (the deprecated `TAQUITO_HTTP_*` and
+  `TAQUITO_OP_TRACE*` env var aliases, kept for backward compatibility until a planned removal —
+  `OCTEZJS_*` is the supported prefix; a couple of `taquito.io` doc URLs). Don't silently "fix"
+  these without flagging it — they're tracked, not forgotten.
 - The Sapling WASM bindings dependency was migrated off the Taquito org: `packages/octez.js-sapling`
   now depends on `@tezos-x/sapling-wasm` (published from `github.com/trilitech/sapling-sdk`)
   instead of `@taquito/sapling-wasm`. As of this migration there are no remaining `@taquito/*` npm
