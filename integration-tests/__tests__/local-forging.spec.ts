@@ -10,9 +10,9 @@ CONFIGS().forEach(({ rpc, protocol }) => {
   const Tezos = new TezosToolkit(rpc);
   // INDEX_ADDRESS / GET_ADDRESS_INDEX ops (tallinnCases) exist from Tallinn
   // onward, so they're exercised on any lane running Tallinn or later
-  // (tallinnnet and shadownet/ushuaianet-on-Ushuaia are both still active here).
+  // (shadownet/ushuaianet on Ushuaia and weeklynet on alpha are the active lanes here).
   const indexAddressProtocols =
-    protocol === Protocols.PtTALLiNt || protocol === Protocols.PsUshuai || protocol === Protocols.ProtoALpha ? test : test.skip;
+    protocol === Protocols.PsUshuai || protocol === Protocols.ProtoALpha ? test : test.skip;
 
   describe(`Test local forger: ${rpc}`, () => {
     // all protocols
