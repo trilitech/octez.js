@@ -137,11 +137,11 @@ jobs:
         env:
           WEEKLYNET: 'true'
           TEZOS_RPC_WEEKLYNET: ${{ needs.weeklynet-resolve-rpc.outputs.rpc_url }}
-          TAQUITO_KEYGEN_URL: http://localhost:3000
-          TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
-          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
-          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '8'
-          TAQUITO_FRESH_KEY_RETRY_MS: '12000'
+          OCTEZJS_KEYGEN_URL: http://localhost:3000
+          OCTEZJS_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+          OCTEZJS_FRESH_KEY_MAX_ATTEMPTS: '8'
+          OCTEZJS_FRESH_KEY_RETRY_MS: '12000'
       - id: addresses
         name: Read originated addresses
         run: node .github/scripts/read-known-contracts.mjs weeklynet
@@ -245,19 +245,19 @@ jobs:
           TEZOS_WEEKLYNET_SAPLINGCONTRACT_ADDRESS: ${{ needs.weeklynet-originate.outputs.sapling_contract }}
           TEZOS_WEEKLYNET_ON_CHAIN_VIEW_CONTRACT: ${{ needs.weeklynet-originate.outputs.view_contract }}
           TEZOS_WEEKLYNET_TICKET_CONTRACT: ${{ needs.weeklynet-originate.outputs.ticket_contract }}
-          TAQUITO_KEYGEN_URL: http://localhost:3000
-          TAQUITO_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
-          TAQUITO_FRESH_KEY_RETRY_MS: '12000'
-          TAQUITO_FRESH_KEY_MAX_ATTEMPTS: '6'
-          TAQUITO_FRESH_KEY_PREFETCH: '1'
-          TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
-          TAQUITO_HTTP_RETRY_COUNT: '4'
+          OCTEZJS_KEYGEN_URL: http://localhost:3000
+          OCTEZJS_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          OCTEZJS_FRESH_KEY_RETRY_MS: '12000'
+          OCTEZJS_FRESH_KEY_MAX_ATTEMPTS: '6'
+          OCTEZJS_FRESH_KEY_PREFETCH: '1'
+          OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+          OCTEZJS_HTTP_RETRY_COUNT: '4'
           SHARD: ${{ matrix.shard }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
           COMMIT_SHA: ${{ github.sha }}
-          TAQUITO_ITEST_DIAGNOSTICS: 'true'
-          TAQUITO_DIAG_BALANCE_WARN_MUTEZ: '9000000'
+          OCTEZJS_ITEST_DIAGNOSTICS: 'true'
+          OCTEZJS_DIAG_BALANCE_WARN_MUTEZ: '9000000'
       - name: Keygen container logs
         if: always()
         run: docker logs "${{ job.services.keygen.id }}" 2>&1 | tail -300 || true

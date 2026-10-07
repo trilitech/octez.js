@@ -38,7 +38,7 @@ lease endpoints are not exercised by this suite.
 
 ### 4. Prefetch buffer (`async-prefetch-buffer.ts`)
 A small background buffer pre-acquires a few keys ahead of demand so keygen
-latency is hidden between specs. Size is `TAQUITO_FRESH_KEY_PREFETCH`.
+latency is hidden between specs. Size is `OCTEZJS_FRESH_KEY_PREFETCH`.
 
 ### 5. The keygen service ([`trilitech/octez.js-keygen`](https://github.com/trilitech/octez.js-keygen))
 A small HTTP service. `POST /v2/:network` (Bearer-authorized) generates a fresh
@@ -117,7 +117,7 @@ unreliable running four shards concurrently against the faucet.
 
 Each shard job (either network) runs `ghcr.io/trilitech/octezjs-keygen:latest`
 as a **service container** reachable at `http://localhost:3000`
-(`TAQUITO_KEYGEN_URL`). Shadownet's four shards each use a **distinct** master
+(`OCTEZJS_KEYGEN_URL`). Shadownet's four shards each use a **distinct** master
 account (`MASTER_KEY` = `KEYGEN_MASTER_KEY_<shard>`) so the four keygen
 processes don't collide on a shared master's operation counter; weeklynet's
 shards have no `MASTER_KEY` at all, so the keygen falls back to faucet mode
@@ -128,13 +128,13 @@ per key. A "Keygen container logs" step dumps the container's stdout/stderr
 
 | Variable | Purpose | CI value |
 |---|---|---|
-| `TAQUITO_KEYGEN_URL` | keygen base URL | `http://localhost:3000` (service container) |
-| `TAQUITO_KEYGEN_TOKEN` | Bearer token the keygen authorizes | repo secret `KEYGEN_TOKEN` |
-| `TAQUITO_FRESH_KEY_PREFETCH` | prefetch buffer size | `2` |
-| `TAQUITO_FRESH_KEY_MAX_ATTEMPTS` | acquire retries per setup | `8` (default `5`) |
-| `TAQUITO_FRESH_KEY_RETRY_MS` | delay between acquire retries | `12000` (default `0`) |
-| `TAQUITO_KEYGEN_REQUEST_TIMEOUT_MS` | per keygen HTTP request timeout | `60000` |
-| `TAQUITO_ITEST_DIAGNOSTICS` | emit `[itest:diag]` setup JSON lines | `true` |
+| `OCTEZJS_KEYGEN_URL` | keygen base URL | `http://localhost:3000` (service container) |
+| `OCTEZJS_KEYGEN_TOKEN` | Bearer token the keygen authorizes | repo secret `KEYGEN_TOKEN` |
+| `OCTEZJS_FRESH_KEY_PREFETCH` | prefetch buffer size | `2` |
+| `OCTEZJS_FRESH_KEY_MAX_ATTEMPTS` | acquire retries per setup | `8` (default `5`) |
+| `OCTEZJS_FRESH_KEY_RETRY_MS` | delay between acquire retries | `12000` (default `0`) |
+| `OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS` | per keygen HTTP request timeout | `60000` |
+| `OCTEZJS_ITEST_DIAGNOSTICS` | emit `[itest:diag]` setup JSON lines | `true` |
 
 Keygen-side env (set on the service container): `KEYGEN_TOKEN`, `ALLOWED_NETWORKS`,
 `RPC_URL`, `MASTER_KEY`, `DEFAULT_FUND_TEZ`, `FUND_HEADROOM_TEZ` (or `FAUCET_URL`
