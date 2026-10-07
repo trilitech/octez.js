@@ -103,7 +103,6 @@ export enum ChainIds {
   QUEBECNET = 'NetXuTeGinLEqxp',
   RIONET = 'NetXPdgaoabtBth',
   SEOULNET = 'NetXd56aBs1aeW3',
-  TALLINNNET = 'NetXe8DbhW9A1eS',
   USHUAIANET = 'NetXpX8WSZkAZZA',
 }
 
