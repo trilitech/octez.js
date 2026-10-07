@@ -15,6 +15,32 @@ jobs:
     name: integration-tests-ushuaianet-push
     runs-on: ubuntu-latest
     continue-on-error: true
+    # One keygen master account (KEYGEN_MASTER_KEY_1) funds this job, so two
+    # concurrent pushes would collide on its counter: serialize them.
+    concurrency:
+      group: ushuaianet-keygen-master-1
+      cancel-in-progress: false
+    # Keygen runs as a service container alongside the job (reachable on
+    # localhost:3000), exactly like the shadownet/weeklynet jobs in main.yml:
+    # each worker gets a fresh funded key from the master account over RPC.
+    services:
+      keygen:
+        image: ghcr.io/trilitech/octezjs-keygen:latest
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PULL_TOKEN }}
+        env:
+          KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          ALLOWED_NETWORKS: ushuaianet
+          RPC_URL: https://rpc.ushuaianet.teztnets.com
+          MASTER_KEY: ${{ secrets.KEYGEN_MASTER_KEY_1 }}
+          DEFAULT_FUND_TEZ: '10'
+          FUND_HEADROOM_TEZ: '1'
+          # Reclaim disabled for the same reason as in main.yml: its TTL sweep
+          # raced still-running tests (emptied a key mid-test).
+          RECLAIM_ENABLED: 'false'
+        ports:
+          - 3000:3000
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -23,8 +49,33 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # The CI master accounts are funded on shadownet and weeklynet, not on
+      # ushuaianet: fund master 1 by address through the ushuaianet faucet
+      # (idempotent, best-effort; a healthy master is a fast no-op).
+      - name: Top up the keygen master
+        env:
+          MIN_BALANCE_TEZ: '1200'
+          TARGET_TEZ: '1600'
+          RPC_URL: https://rpc.ushuaianet.teztnets.com
+          FAUCET_URL: https://faucet.ushuaianet.teztnets.com
+        run: |
+          export PKHS="$(node .github/scripts/testnet-master-pkh.mjs 1)"
+          node .github/scripts/topup-keygen-masters.mjs
+      - name: Wait for keygen service
+        run: bash .github/scripts/wait-for-keygen.sh
       - if: always()
         id: integration-tests-ushuaianet
         run: npm -w integration-tests run test:ushuaianet -- --maxWorkers=4 --exclude='**/sapling/**' --exclude='**/ledger/**'
         env:
+          OCTEZJS_KEYGEN_URL: http://localhost:3000
+          OCTEZJS_KEYGEN_TOKEN: ${{ secrets.KEYGEN_TOKEN }}
+          # The request timeout MUST exceed the time the keygen spends waiting for
+          # a funding op to confirm, otherwise a funded key is never returned and
+          # is orphaned (see the matching comment in main.yml).
+          OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
+          OCTEZJS_FRESH_KEY_RETRY_MS: '12000'
+          OCTEZJS_FRESH_KEY_MAX_ATTEMPTS: '3'
           OCTEZJS_FRESH_KEY_PREFETCH: '4'
+          OCTEZJS_HTTP_RETRY_COUNT: '4'
+          OCTEZJS_ITEST_DIAGNOSTICS: 'true'
+          OCTEZJS_DIAG_BALANCE_WARN_MUTEZ: '9000000'
