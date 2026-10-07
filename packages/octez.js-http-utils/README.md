@@ -41,15 +41,15 @@ const response = httpBackend.createRequest<string>({
 ## Additional Info
 octez.js uses the built-in `globalThis.fetch` (requires Node.js >= 22 or a browser environment).
 
-For diagnostics, you can emit request timing logs with:
+### Configuration through environment variables
 
-`OCTEZJS_HTTP_TRACE=true`
+| Variable | Effect | Default |
+| --- | --- | --- |
+| `OCTEZJS_HTTP_TRACE` | Emit one JSON log line per request (prefixed `[octez.js:http-trace]`) when `true` or `1` | off |
+| `OCTEZJS_HTTP_RETRY_COUNT` | Maximum number of retries for transient failures and rate-limited (`429`) requests | `1` |
+| `OCTEZJS_HTTP_RETRY_BASE_MS` | Base delay in milliseconds for the exponential backoff (a `Retry-After` header takes precedence) | `100` |
 
-Optionally adjust the slow-request threshold (milliseconds):
-
-`OCTEZJS_HTTP_TRACE_SLOW_MS=1500`
-
-(`TAQUITO_HTTP_TRACE` / `TAQUITO_HTTP_TRACE_SLOW_MS` are deprecated aliases for the above,
+(`TAQUITO_HTTP_TRACE`, `TAQUITO_HTTP_RETRY_COUNT` and `TAQUITO_HTTP_RETRY_BASE_MS` are deprecated aliases for the above,
 still honored when the `OCTEZJS_*` name is unset, and will be removed in a future release.)
 
 See the top-level https://github.com/trilitech/octez.js file for details on reporting issues, contributing, and versioning.
