@@ -144,6 +144,20 @@ const sub = tezos.stream.subscribeOperation({
 sub.on('data', console.log)
 ```
 
+## Diagnostics
+
+Operation confirmation tracing can be enabled with environment variables (Node.js, or any environment exposing `process.env`). Trace lines are JSON, prefixed with `[octez.js:op-trace]`, which makes them easy to grep in CI logs:
+
+| Variable | Effect | Default |
+| --- | --- | --- |
+| `OCTEZJS_OP_TRACE` | Enable operation tracing when `true` or `1` | off |
+| `OCTEZJS_OP_TRACE_VERBOSE` | Trace every confirmation, not only slow or failed ones, when `true` or `1` | off |
+| `OCTEZJS_OP_TRACE_SLOW_MS` | Confirmations that take at least this many milliseconds are always traced | `60000` |
+
+(`TAQUITO_OP_TRACE`, `TAQUITO_OP_TRACE_VERBOSE` and `TAQUITO_OP_TRACE_SLOW_MS` are deprecated aliases for the above, still honored when the `OCTEZJS_*` name is unset, and will be removed in a future release.)
+
+HTTP-level tracing and retry settings are documented in the [`@tezos-x/octez.js-http-utils`](../octez.js-http-utils) package.
+
 ## Additional info
 
 See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
