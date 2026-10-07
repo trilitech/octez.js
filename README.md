@@ -19,7 +19,7 @@ octez.js is a fast and lightweight [TypeScript](https://www.typescriptlang.org/)
 
 ## What is Included in octez.js?
 
-octez.js is primarily targeted at Front-End Web3 developers, so it comes with batteries included, such as a [React Template Project](https://github.com/trilitech/octez.js-react-template), an extensible framework, and many helpful utilities. It can be used in *many* environments, including Serverless, Node.js, Deno, and Electron, and has minimal dependencies.
+octez.js is primarily targeted at Front-End Web3 developers, so it comes with batteries included, such as an extensible framework and many helpful utilities. It can be used in *many* environments, including Serverless, Node.js, Deno, and Electron, and has minimal dependencies.
 
 ## Who uses octez.js?
 
@@ -34,8 +34,6 @@ octez.js provides convenient abstractions for a multitude of common operations, 
 ## Ok, I'm Ready!
 
 To get started with octez.js quickly, visit the [octez.js QuickStart](https://octez-js.tezos.com/docs/quick_start/).
-
-If you prefer a skeleton project, check out our [octez.js React Template](https://github.com/trilitech/octez.js-react-template).
 
 Do you wish to contribute to octez.js? See [Contributors Getting Started](#contributors-getting-started) below.
 
