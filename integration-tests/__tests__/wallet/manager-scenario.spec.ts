@@ -1,4 +1,4 @@
-import { CONFIGS, TAQUITO_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
+import { CONFIGS, OCTEZJS_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
 import { managerCode } from '../../data/manager_code';
 import { DefaultWalletType, MANAGER_LAMBDA, OriginationWalletOperation } from '@tezos-x/octez.js';
 
@@ -24,7 +24,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, knownContract }) => {
     it('should be able to transfer to originated account', async () => {
       // Transfer from implicit account (tz1) to contract (kt1_alice)
       // A regular transfer operation is made. No smart contract calls required for this scenario.
-      const op = await Tezos.wallet.transfer({ to: contract.address, amount: TAQUITO_MUTEZ, mutez: true }).send();
+      const op = await Tezos.wallet.transfer({ to: contract.address, amount: OCTEZJS_MUTEZ, mutez: true }).send();
       await op.confirmation();
       expect(await op.status()).toBe('applied');
 

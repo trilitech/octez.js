@@ -1,4 +1,4 @@
-import { CONFIGS, TAQUITO_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
+import { CONFIGS, OCTEZJS_MUTEZ, TEST_FUNDS_RECOVERY_ADDRESS } from '../../config';
 import { managerCode } from '../../data/manager_code';
 import { DefaultContractType, MANAGER_LAMBDA, OriginationOperation } from '@tezos-x/octez.js';
 
@@ -24,7 +24,7 @@ CONFIGS().forEach(({ lib, rpc, setup, knownBaker, knownContract }) => {
     it('should be able to transfer from implicit to originated contracts', async () => {
       // Transfer from implicit account (tz1) to contract (kt1_alice)
       // A regular transfer operation is made. No smart contract calls required for this scenario.
-      const op = await Tezos.contract.transfer({ to: contract.address, amount: TAQUITO_MUTEZ, mutez: true });
+      const op = await Tezos.contract.transfer({ to: contract.address, amount: OCTEZJS_MUTEZ, mutez: true });
       await op.confirmation();
       expect(op.status).toEqual('applied');
     });

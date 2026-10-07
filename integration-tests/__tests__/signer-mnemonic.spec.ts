@@ -1,6 +1,6 @@
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 import { TezosToolkit } from '@tezos-x/octez.js';
-import { CONFIGS, TAQUITO_MUTEZ } from '../config';
+import { CONFIGS, OCTEZJS_MUTEZ } from '../config';
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english.js';
 
@@ -58,21 +58,21 @@ CONFIGS().forEach(({ lib, rpc, setup }) => {
     });
 
     it('should create a signer instance (ed25519) using the fromMnemonic method and successfully sign an op', async () => {
-      const op = await Tez1.contract.transfer({ to: funderPKH, amount: TAQUITO_MUTEZ, mutez: true });
+      const op = await Tez1.contract.transfer({ to: funderPKH, amount: OCTEZJS_MUTEZ, mutez: true });
       await op.confirmation();
 
       expect(op.hash).toBeDefined();
     });
 
     it('should create a signer instance (secp256k1) using the fromMnemonic method and successfully sign an op', async () => {
-      const op = await Tez2.contract.transfer({ to: funderPKH, amount: TAQUITO_MUTEZ, mutez: true });
+      const op = await Tez2.contract.transfer({ to: funderPKH, amount: OCTEZJS_MUTEZ, mutez: true });
       await op.confirmation();
 
       expect(op.hash).toBeDefined();
     });
 
     it('should create a signer instance (p256) using the fromMnemonic method and successfully sign an op', async () => {
-      const op = await Tez3.contract.transfer({ to: funderPKH, amount: TAQUITO_MUTEZ, mutez: true });
+      const op = await Tez3.contract.transfer({ to: funderPKH, amount: OCTEZJS_MUTEZ, mutez: true });
       await op.confirmation();
 
       expect(op.hash).toBeDefined();
