@@ -1,4 +1,4 @@
-// value is based on octez-client reveal operation gasLimit of each address type in Tallinn Protocol
+// value is based on octez-client reveal operation gasLimit of each address type in Ushuaia Protocol
 const REVEAL_GAS_LIMIT = {
   TZ1: 171,
   TZ2: 157,
@@ -9,7 +9,7 @@ const REVEAL_GAS_LIMIT = {
   // the dynamic node estimate is unavailable. CALIBRATE against a live U025 node.
   TZ5: 5000,
 };
-// value is based on octez-client reveal operation fee of each address type in Tallinn Protocol
+// value is based on octez-client reveal operation fee of each address type in Ushuaia Protocol
 const REVEAL_FEE = {
   TZ1: 278,
   TZ2: 277,
@@ -18,7 +18,7 @@ const REVEAL_FEE = {
   // PROVISIONAL fallback for tz5 (ML-DSA-44, U025) — see REVEAL_GAS_LIMIT.TZ5 note. CALIBRATE.
   TZ5: 1500,
 };
-// value is based on octez-client reveal operation storageLimit of all address type in Tallinn Protocol
+// value is based on octez-client reveal operation storageLimit of all address type in Ushuaia Protocol
 export const REVEAL_STORAGE_LIMIT = 0;
 // protocol constants in Ushuaia Protocol
 // NOTE: When updating constants here, also check:
