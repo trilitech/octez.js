@@ -9,6 +9,8 @@ layout: ../layouts/MarkdownLayout.astro
 ### Breaking changes
 
 - **`@tezos-x/octez.js-dapp-wallet`: the `beacon-types` UMD global is now `octezBeaconTypes`** (was `taquitoBeaconTypes`). Only `<script>`-tag consumers of `dist/beacon-types.umd.js` are affected; update any `window.taquitoBeaconTypes` reference.
+- **`@tezos-x/octez.js`: `ChainIds.TALLINNNET` is removed.** The Tallinn (U024) testnet is shut down. Use `ChainIds.USHUAIANET` or `ChainIds.MAINNET`.
+- **`@tezos-x/octez.js-wallet-connect`: `NetworkType.TALLINNNET` is replaced by `NetworkType.USHUAIANET`** (`'tallinnnet'` → `'ushuaianet'`). Update any code or stored sessions that reference the old network.
 
 ---
 
