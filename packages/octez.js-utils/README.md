@@ -265,6 +265,26 @@ console.log(getPkhfromPk(publicKey));
 // output: 'tz2Gsf1Q857wUzkNGzHsJNC98z881UutMwjg
 ```
 
+### Tezos X cross-runtime calls
+
+On Tezos X, an account reaches the other runtime through the NAC (Native Account Contract). These helpers wrap an operation of one runtime into the NAC call to sign and send on the other runtime. See the [documentation](https://octez-js.tezos.com/docs/tezosx_cross_runtime) for details.
+
+**Michelson → EVM:** wrap an EVM transaction into a call to the NAC gateway contract
+```ts
+import { buildMichelsonToEvmCall, toTransferParams } from '@tezos-x/octez.js-utils';
+
+const call = buildMichelsonToEvmCall({ to: '0xdEAD000000000000000042000000000000000000', value: 10n ** 18n });
+const op = await Tezos.contract.transfer(toTransferParams(call));
+```
+
+**EVM → Michelson:** wrap a Michelson runtime operation into an unsigned EVM transaction to the NAC precompile
+```ts
+import { buildEvmToMichelsonCall } from '@tezos-x/octez.js-utils';
+
+const call = buildEvmToMichelsonCall({ kind: 'transfer', destination: 'tz1…', amount: 1000n });
+await walletClient.sendTransaction({ to: call.to, data: call.data, value: call.value, gas: call.gasLimit });
+```
+
 ## Additional info
 
 See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing, and versioning.
