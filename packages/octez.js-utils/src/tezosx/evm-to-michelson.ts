@@ -3,6 +3,11 @@ import {
   InvalidContractAddressError,
   ValidationResult,
 } from '@tezos-x/octez.js-core';
+import {
+  packDataBytes,
+  type MichelsonData,
+  type MichelsonType,
+} from '@tezos-x/octez.js-michel-codec';
 import { validateContractAddress, validateKeyHash } from '../validators';
 import { encodeNacCall, encodeNacCallMichelson } from './abi';
 import { mutezToWei, parseAmount } from './amount';
@@ -43,6 +48,22 @@ function validateContractCall(destination: string, entrypoint: string) {
 }
 
 /**
+ * Binary Micheline of an entrypoint parameter, without the `05` pack prefix.
+ */
+function toBinaryMicheline(
+  parameter: Extract<EvmToMichelsonIntent, { kind: 'call-michelson' }>['parameter']
+): string {
+  if (typeof parameter === 'string') {
+    return parseHexBytes(parameter, 1);
+  }
+  const { bytes } = packDataBytes(
+    parameter.value as MichelsonData,
+    parameter.type as MichelsonType | undefined
+  );
+  return bytes.slice(2);
+}
+
+/**
  * Wrap a Michelson runtime operation into a call to the NAC precompile, so that it can
  * be signed and sent on the EVM runtime.
  *
@@ -80,7 +101,7 @@ export function buildEvmToMichelsonCall(intent: EvmToMichelsonIntent): Precompil
         data: encodeNacCallMichelson(
           intent.destination,
           intent.entrypoint,
-          parseHexBytes(intent.parameter, 1)
+          toBinaryMicheline(intent.parameter)
         ),
         gasLimit: NAC_RECOMMENDED_GAS.callMichelson,
       };

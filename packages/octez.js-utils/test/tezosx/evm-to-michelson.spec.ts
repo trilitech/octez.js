@@ -63,6 +63,29 @@ describe('buildEvmToMichelsonCall', () => {
     expect(call.value).toBe(0n);
   });
 
+  it('packs a Michelson expression parameter without the 05 prefix', () => {
+    const call = buildEvmToMichelsonCall({
+      kind: 'call-michelson',
+      destination: KT1,
+      entrypoint: 'set',
+      parameter: { value: { prim: 'Pair', args: [{ int: '1' }, { string: 'a' }] } },
+    });
+    // Pair (int 1) (string "a"): 07 07 | 00 01 | 01 00000001 61
+    expect(decode(call.data).args).toEqual([KT1, 'set', '0x07070001010000000161']);
+  });
+
+  it('packs a typed Michelson expression parameter in its optimized form', () => {
+    const call = buildEvmToMichelsonCall({
+      kind: 'call-michelson',
+      destination: KT1,
+      entrypoint: 'default',
+      parameter: { value: { string: TZ1 }, type: { prim: 'address' } },
+    });
+    const [, , data] = decode(call.data).args as [string, string, string];
+    // address packed as bytes: 0a | 00000016 | 22-byte address
+    expect(data.startsWith('0x0a00000016')).toBe(true);
+  });
+
   it('rejects a binary Micheline parameter that is not a non-empty hex string', () => {
     for (const parameter of ['0a00zz', '0a0', '', '0x']) {
       expect(() =>

@@ -123,8 +123,11 @@ export type EvmToMichelsonIntent =
       destination: string;
       /** Entrypoint name, without the `%` prefix */
       entrypoint: string;
-      /** Entrypoint parameter as binary Micheline (hex, without the `05` pack prefix) */
-      parameter: string;
+      /**
+       * Entrypoint parameter, either as binary Micheline (hex, without the `05` pack
+       * prefix) or as a Michelson expression with an optional type.
+       */
+      parameter: string | { value: MichelineExpression; type?: MichelineExpression };
       /** Amount in mutez. Defaults to 0 */
       amount?: AmountLike;
     };
