@@ -5,24 +5,19 @@ import {
   REVEAL_STORAGE_LIMIT,
   TezosToolkit,
   feeParamsFromMempoolFilter,
+  getRevealFee,
   getRevealGasLimit,
+  getRevealOperationSize,
 } from '@tezos-x/octez.js';
 import { ProtocolsResponse } from '@tezos-x/octez.js-rpc';
-
-// Forged byte size of a reveal operation. Mirrors the private constants in
-// PrepareProvider (REVEAL_OP_SIZE_BYTES / REVEAL_OP_SIZE_BLS_BYTES), which in
-// turn mirror RPCEstimateProvider's REVEAL_LENGTH / REVEAL_LENGTH_TZ4
-// (324/622 hex chars). None of those are exported, so this is a fourth copy —
-// if reveal pricing moves again, `revealFeeMutez` below is what goes stale.
-const REVEAL_OP_SIZE_BYTES = 162;
-const REVEAL_OP_SIZE_BLS_BYTES = 311;
 
 /**
  * The fee the auto-prepended reveal will actually be charged for `pkh`.
  *
  * Deliberately mirrors `PrepareProvider.getRevealLimits` — the code path that
  * actually prices the reveal prepended before a fresh account's first
- * operation — rather than calling `estimate.reveal()`. Two reasons that API is
+ * operation: the static `getRevealFee()` on a node with default prices, the
+ * live fee formula otherwise — rather than calling `estimate.reveal()`. Two reasons that API is
  * the wrong source of truth here:
  *
  *  - it runs a real `simulate_operation`, which a zero-balance account can't
@@ -40,11 +35,22 @@ export const revealFeeMutez = async (toolkit: TezosToolkit, pkh: string): Promis
     await toolkit.rpc.getMempoolFilter({ include_default: true })
   );
 
+  if (
+    feeParams.minimalFeeMutez === DEFAULT_FEE_PARAMS.minimalFeeMutez &&
+    feeParams.feePerGasMutez === DEFAULT_FEE_PARAMS.feePerGasMutez &&
+    feeParams.feePerByteMutez === DEFAULT_FEE_PARAMS.feePerByteMutez
+  ) {
+    // On a node with the default (Tezos L1) prices the auto-prepend path charges the exact
+    // static fee, so that callers can drain an account to 0. Same condition as
+    // `PrepareProvider.getRevealLimits`.
+    return getRevealFee(pkh);
+  }
+
   return Estimate.createEstimateInstanceFromProperties([
     {
       milligasLimit: getRevealGasLimit(pkh) * 1000,
       storageLimit: REVEAL_STORAGE_LIMIT,
-      opSize: pkh.startsWith('tz4') ? REVEAL_OP_SIZE_BLS_BYTES : REVEAL_OP_SIZE_BYTES,
+      opSize: getRevealOperationSize(pkh),
       minimalFeePerStorageByteMutez: 0,
       feeParams,
     },

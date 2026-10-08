@@ -534,10 +534,8 @@ CONFIGS().forEach(({ lib, setup, knownBaker, createAddress, rpc }) => {
     // The margin below is tuned to land exactly on specific edge-case errors
     // (empty_implicit_contract, subtraction_underflow), so it needs the
     // *actual* reveal fee this account will be charged, not the static
-    // getRevealFee() table — that table is only a fallback for when
-    // mempool/filter is unavailable (see prepare-provider.ts's
-    // getRevealLimits) and no longer matches what gets charged on a healthy
-    // node since the reveal-pricing fix in cf6e324fa.
+    // getRevealFee() table, which only matches what gets charged on a node
+    // with default prices (see prepare-provider.ts's getRevealLimits).
     let lowAmountRevealFeeMutez: number;
 
     beforeAll(async () => {
