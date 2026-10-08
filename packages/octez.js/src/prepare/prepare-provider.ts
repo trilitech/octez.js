@@ -49,7 +49,6 @@ import {
   InvalidProofError,
   ProhibitedActionError,
 } from '@tezos-x/octez.js-core';
-import { Context } from '../context';
 import { ContractMethodObject } from '../contract/contract-methods/contract-method-object-param';
 import { ContractProvider } from '../contract/interface';
 import {
@@ -113,13 +112,6 @@ const mergeLimits = (
  * PrepareProvider is a utility class to output the prepared format of an operation
  */
 export class PrepareProvider extends Provider implements PreparationProvider {
-  #counters: { [key: string]: number };
-
-  constructor(protected context: Context) {
-    super(context);
-    this.#counters = {};
-  }
-
   private async getBlockHash(block?: BlockIdentifier) {
     return this.context.readProvider.getBlockHash(block ?? 'head~2');
   }
@@ -202,14 +194,9 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     });
   }
 
-  private getFee(op: RPCOpWithFee, pkh: string, headCounter: number) {
-    if (!this.#counters[pkh] || this.#counters[pkh] < headCounter) {
-      this.#counters[pkh] = headCounter;
-    }
-    const opCounter = ++this.#counters[pkh];
-
+  private getFee(op: RPCOpWithFee, counter: number) {
     return {
-      counter: `${opCounter}`,
+      counter: `${counter}`,
       fee: typeof op.fee === 'undefined' ? '0' : `${op.fee}`,
       gas_limit: typeof op.gas_limit === 'undefined' ? '0' : `${op.gas_limit}`,
       storage_limit: typeof op.storage_limit === 'undefined' ? '0' : `${op.storage_limit}`,
@@ -371,6 +358,8 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     source?: string | undefined,
     currentVotingPeriod?: VotingPeriodBlockResult
   ): OperationContents[] {
+    // Each preparation owns its counter sequence, including any automatic reveal.
+    let counter = headCounter;
     return ops.map((op: RPCOperation) => {
       switch (op.kind) {
         case OpKind.ACTIVATION:
@@ -383,14 +372,14 @@ export class PrepareProvider extends Provider implements PreparationProvider {
             ...op,
             balance: typeof op.balance !== 'undefined' ? `${op.balance}` : '0',
             ...this.getSource(op, pkh, source),
-            ...this.getFee(op, pkh, headCounter),
+            ...this.getFee(op, ++counter),
           };
         case OpKind.TRANSACTION: {
           const cops = {
             ...op,
             amount: typeof op.amount !== 'undefined' ? `${op.amount}` : '0',
             ...this.getSource(op, pkh, source),
-            ...this.getFee(op, pkh, headCounter),
+            ...this.getFee(op, ++counter),
           };
           if (cops.source.toLowerCase().startsWith('kt1')) {
             throw new DeprecationError(
@@ -410,21 +399,21 @@ export class PrepareProvider extends Provider implements PreparationProvider {
           return {
             ...op,
             ...this.getSource(op, pkh, source),
-            ...this.getFee(op, pkh, headCounter),
+            ...this.getFee(op, ++counter),
           };
         case OpKind.TRANSFER_TICKET:
           return {
             ...op,
             ticket_amount: `${op.ticket_amount}`,
             ...this.getSource(op, pkh, source),
-            ...this.getFee(op, pkh, headCounter),
+            ...this.getFee(op, ++counter),
           };
         case OpKind.INCREASE_PAID_STORAGE:
           return {
             ...op,
             amount: `${op.amount}`,
             ...this.getSource(op, pkh, source),
-            ...this.getFee(op, pkh, headCounter),
+            ...this.getFee(op, ++counter),
           };
         case OpKind.BALLOT:
           if (currentVotingPeriod === undefined) {
@@ -465,7 +454,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
     const contents = this.constructOpContents(ops, headCounter, pkh);
 
@@ -526,7 +514,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh);
@@ -576,7 +563,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, source);
@@ -627,7 +613,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
@@ -680,7 +665,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
 
@@ -735,7 +719,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
 
@@ -792,7 +775,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
 
@@ -843,7 +825,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
@@ -899,7 +880,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, source);
@@ -951,7 +931,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
@@ -1014,7 +993,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, source);
@@ -1072,7 +1050,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, source);
@@ -1124,7 +1101,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
@@ -1161,7 +1137,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     let currentVotingPeriod: VotingPeriodBlockResult;
@@ -1210,7 +1185,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     let currentVotingPeriod: VotingPeriodBlockResult;
@@ -1259,7 +1233,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, source);
@@ -1308,7 +1281,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
@@ -1360,7 +1332,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
 
@@ -1411,7 +1382,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
 
@@ -1462,7 +1432,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
     const contents = this.constructOpContents(ops, headCounter, pkh, rest.source);
 
@@ -1568,7 +1537,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     const hash = await this.getBlockHash();
     const protocol = await this.getProtocolHash();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const contents = this.constructOpContents(ops, headCounter, pkh);
@@ -1605,7 +1573,6 @@ export class PrepareProvider extends Provider implements PreparationProvider {
 
     const { pkh } = await this.getKeys();
 
-    this.#counters = {};
     const headCounter = parseInt(await this.getHeadCounter(pkh), 10);
 
     const params = contractMethod.toTransferParams();
