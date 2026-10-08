@@ -22,6 +22,10 @@ values={[
 
 The constructor of the `Tzip16Module` takes an optional `MetadataProvider` as a parameter. When none is passed, the default `MetadataProvider` of octez.js is instantiated and the default handlers (`HttpHandler`, `IpfsHandler`, and `TezosStorageHandler`) are used.
 
+:::caution
+For production applications that retrieve IPFS metadata, configure a reliable gateway. The default IPFS gateway, `ipfs.filebase.io`, is a shared public gateway provided for convenience: it may be rate-limited or unavailable. Use a dedicated or application-controlled gateway that can retrieve your content and that supports CORS if your application runs in a browser. See [the custom metadata provider](#how-to-use-the-tzip16-package) below.
+:::
+
 ```js
 import { TezosToolkit } from '@tezos-x/octez.js';
 import { Tzip16Module, tzip16 } from '@tezos-x/octez.js-tzip16';
@@ -33,7 +37,7 @@ Tezos.addExtension(new Tzip16Module());
   </TabItem>
   <TabItem value="customMetadataProvider">
 
-In some cases, we may want to use a customized metadata provider. The constructor of the `Tzip16Module` class takes an optional metadata provider as a parameter. This allows to inject a custom metadata provider with custom protocol handlers if desired. For example, if we want to use a different IPFS gateway than the default one, which is `ipfs.io`, or if we want to use a different HTTP handler to support authentication or custom headers. Here is an example:
+In some cases, we may want to use a customized metadata provider. The constructor of the `Tzip16Module` class takes an optional metadata provider as a parameter. This allows to inject a custom metadata provider with custom protocol handlers if desired. For example, if we want to use a different IPFS gateway than the default one, which is `ipfs.filebase.io`, or if we want to use a different HTTP handler to support authentication or custom headers. Here is an example:
 
 ```js
 import { Handler, IpfsHttpHandler, TezosStorageHandler, MetadataProvider, Tzip16Module, tzip16 } from '@tezos-x/octez.js-tzip16';
@@ -42,7 +46,7 @@ const Tezos = new TezosToolkit('rpcUrl');
 
 // The constructor of the `MetadataProvider` class takes a `Map<string, Handler>` as a parameter.
 const customHandler = new Map<string, Handler>([
-  ['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')], // Constructor of IpfsHttpHandler takes an optional gateway; dweb.link/ipfs.io are deprecating the legacy path-style gateway format
+  ['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')], // The optional argument of IpfsHttpHandler is the gateway hostname, without `https://` or `/ipfs/`
   ['http', 'customHttpHandler'], // Custom HTTP(S) handler
   ['https', 'customHttpHandler'],
   ['tezos-storage', new TezosStorageHandler()],
@@ -53,6 +57,12 @@ Tezos.addExtension(new Tzip16Module(customMetadataProvider));
 ```
 
 A list of public gateways is accessible [here](https://ipfs.github.io/public-gateway-checker/).
+
+Overriding the IPFS gateway only changes the retrieval of `ipfs://` metadata: HTTP(S) URLs stored in a contract, or URLs inside the returned metadata, are not rewritten.
+
+To keep the other default handlers, copy `DEFAULT_HANDLERS` and replace only the `ipfs` entry: `const handlers = new Map(DEFAULT_HANDLERS); handlers.set('ipfs', new IpfsHttpHandler('your-gateway-hostname'));`
+
+octez.js does not switch to another gateway when a request fails. Transient HTTP 429 and 5xx responses are retried only as configured for `@tezos-x/octez.js-http-utils` (`OCTEZJS_HTTP_RETRY_COUNT`, 1 by default).
 
   </TabItem>
 </Tabs>
@@ -79,6 +89,14 @@ All other methods of the `ContractAbstraction` class can be called as usual on t
 The `getMetadata` method returns an object which contains the URI, the metadata in JSON format, an optional SHA256 hash of the metadata and an optional integrity check result.
 
 A sequence diagram can be found [here](./tzip16-sequence-diagram#get-the-metadata).
+
+### Handling retrieval errors
+
+When the metadata cannot be retrieved, `getMetadata` rejects with one of the errors of `@tezos-x/octez.js-http-utils`: `HttpResponseError` (the gateway answered with an error status), `HttpRequestFailed` (network or transport failure), or `HttpTimeoutError`. For IPFS, the error message names the gateway URL that failed and recalls how to configure another gateway; the status, URL, timeout and cause fields remain available on their respective error types.
+
+If the response is not valid JSON, `getMetadata` rejects with an `InvalidContractMetadataError` whose message contains the metadata URI (for IPFS, the original `ipfs://` address) and whose `invalidMetadata` property holds the response text. For IPFS this often means the gateway returned an HTML error or service-worker page instead of the metadata. Prefer checking the error type and its fields over matching the message text.
+
+Applications should catch these errors and let users retry, or display that the metadata is temporarily unavailable.
 
 #### Tezos-storage example
 
@@ -242,7 +260,7 @@ try {
 
 #### IPFS example
 
-The IPFS handler fetches the metadata through an HTTP gateway. The default one (`ipfs.io`) has stopped serving the legacy path-style format, so this example configures the `IpfsHttpHandler` with another public gateway (see [the custom metadata provider](#how-to-use-the-tzip16-package) above).
+The IPFS handler fetches the metadata through an HTTP gateway. The default one (`ipfs.filebase.io`) is a shared public gateway that may be rate-limited, so this example explicitly configures the `IpfsHttpHandler` with another public gateway, as you would do with your own gateway in production (see [the custom metadata provider](#how-to-use-the-tzip16-package) above).
 
 <Tabs
 defaultValue="contractAPI"
@@ -257,8 +275,8 @@ values={[
 // import { Tzip16Module, tzip16, IpfsHttpHandler, MetadataProvider } from "@tezos-x/octez.js-tzip16";
 // const Tezos = new TezosToolkit('rpc_url');
 
-// The default IPFS gateway (ipfs.io) no longer serves the legacy path-style /ipfs/<CID> URLs over HTTP,
-// so we give the metadata provider a handler that uses another gateway.
+// The default IPFS gateway is shared and may be rate-limited: we give the metadata provider
+// a handler that uses an explicitly chosen gateway.
 const handlers = new Map([['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')]]);
 Tezos.addExtension(new Tzip16Module(new MetadataProvider(handlers)));
 
@@ -282,8 +300,8 @@ try {
 // import { Tzip16Module, tzip16, IpfsHttpHandler, MetadataProvider } from "@tezos-x/octez.js-tzip16";
 // const Tezos = new TezosToolkit('rpc_url');
 
-// The default IPFS gateway (ipfs.io) no longer serves the legacy path-style /ipfs/<CID> URLs over HTTP,
-// so we give the metadata provider a handler that uses another gateway.
+// The default IPFS gateway is shared and may be rate-limited: we give the metadata provider
+// a handler that uses an explicitly chosen gateway.
 const handlers = new Map([['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')]]);
 Tezos.addExtension(new Tzip16Module(new MetadataProvider(handlers)));
 
