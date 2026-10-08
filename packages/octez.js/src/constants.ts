@@ -83,6 +83,9 @@ export const protocols = {
   '025': [Protocols.PsUshuai],
 };
 
+// Chain ids of Tezos networks. Only MAINNET, SHADOWNET and USHUAIANET are live;
+// every other entry is a retired testnet, kept only so existing code that
+// references them keeps compiling.
 export enum ChainIds {
   MAINNET = 'NetXdQprcVkpaWU',
   GHOSTNET = 'NetXnHfVqm9iesp',
