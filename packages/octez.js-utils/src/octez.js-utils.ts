@@ -21,3 +21,5 @@ export * from './errors';
 export * from './operation-hash';
 // Re-export format
 export { format } from './format';
+// Re-export Tezos X cross-runtime helpers
+export * from './tezosx';
