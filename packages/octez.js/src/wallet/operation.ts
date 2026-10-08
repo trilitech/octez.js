@@ -9,7 +9,6 @@ import {
   first,
   map,
   share,
-  switchMap,
   takeWhile,
   tap,
 } from 'rxjs/operators';
@@ -108,13 +107,14 @@ export class WalletOperation {
   }
 
   protected newHead$: Observable<BlockResponse> = this._newHead$.pipe(
-    switchMap((newHead) => {
+    // Finish each backfill even when another head arrives before its reads complete.
+    concatMap((newHead) => {
       const prevHead =
         this.lastHead?.header.level ?? newHead.header.level - 1 - this.lookBackLevels;
       // prevHead can be negative depending on lookBackLevels and on how close
       // the head is to the beginning of the chain.
       const from = Math.max(prevHead + 1, 0);
-      return range(from, newHead.header.level - from).pipe(
+      return range(from, Math.max(0, newHead.header.level - from)).pipe(
         concatMap((level) => this.context.readProvider.getBlock(level)),
         endWith(newHead)
       );
