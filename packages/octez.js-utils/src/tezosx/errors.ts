@@ -1,4 +1,4 @@
-import { ParameterValidationError } from '@tezos-x/octez.js-core';
+import { OctezJsError, ParameterValidationError } from '@tezos-x/octez.js-core';
 
 /**
  *  @category Error
@@ -89,5 +89,16 @@ export class UnsafeMutezAmountError extends ParameterValidationError {
   constructor(public readonly mutezAmount: bigint) {
     super(`Amount ${mutezAmount} mutez is larger than Number.MAX_SAFE_INTEGER.`);
     this.name = 'UnsafeMutezAmountError';
+  }
+}
+
+/**
+ *  @category Error
+ *  Error that indicates a cross-runtime intent that cannot be built
+ */
+export class UnsupportedCrossRuntimeIntentError extends OctezJsError {
+  constructor(public readonly kind: string) {
+    super(`Cannot build an EVM → Michelson call for intent kind "${kind}".`);
+    this.name = 'UnsupportedCrossRuntimeIntentError';
   }
 }

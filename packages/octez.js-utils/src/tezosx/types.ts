@@ -88,3 +88,31 @@ export interface GatewayTransferParams {
     value: MichelineExpression;
   };
 }
+
+/**
+ * An EVM → Michelson call: an unsigned EVM transaction to the NAC precompile, to be
+ * completed (nonce, chain id, fees), signed and sent with an EVM library.
+ */
+export interface PrecompileCall {
+  direction: 'evm-to-michelson';
+  to: `0x${string}`;
+  data: `0x${string}`;
+  /** Value sent along with the call, in wei */
+  value: bigint;
+  gasLimit: bigint;
+}
+
+export type CrossRuntimeCall = GatewayCall | PrecompileCall;
+
+export type CrossRuntimeDirection = CrossRuntimeCall['direction'];
+
+/**
+ * A Michelson runtime operation to wrap into an EVM → Michelson call.
+ */
+export type EvmToMichelsonIntent = {
+  kind: 'transfer';
+  /** Destination account on the Michelson runtime (implicit tz… account or KT1) */
+  destination: string;
+  /** Amount in mutez */
+  amount: AmountLike;
+};
