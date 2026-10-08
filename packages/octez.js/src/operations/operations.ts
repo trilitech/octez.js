@@ -19,6 +19,7 @@ import {
 } from 'rxjs/operators';
 import { Context } from '../context';
 import { resolveConfirmationLookBackLevels } from '../constants';
+import { isBlockHashIdentifier } from '../read-provider/interface';
 import { ForgedBytes, hasMetadataWithResult } from './types';
 import { validateOperation, ValidationResult } from '@tezos-x/octez.js-utils';
 import { createObservableFromSubscription } from '../subscribe/create-observable-from-subscription';
@@ -144,21 +145,37 @@ export class Operation {
       return defer(() =>
         createObservableFromSubscription(this.context.stream.subscribeBlock('head'))
       ).pipe(
-        switchMap((newHead) => {
-          const prevHead =
-            this.lastHead?.header.level ?? newHead.header.level - 1 - this.lookBackLevels;
-          // prevHead can be negative depending on lookBackLevels and on how
-          // close the head is to the beginning of the chain.
-          const from = Math.max(prevHead + 1, 0);
-          return range(from, newHead.header.level - from).pipe(
-            concatMap((level) => this.context.readProvider.getBlock(level)),
-            endWith(newHead)
-          );
-        }),
+        // Finish each backfill before handling another head, even when reads take longer than a block.
+        concatMap((newHead) =>
+          defer(async () => {
+            if (this.lastHead) {
+              return this.lastHead.header.level;
+            }
+
+            // Inclusion must follow the forged branch, which predates injection and observation.
+            const branch = this.raw.opOb?.branch;
+            if (branch && isBlockHashIdentifier(branch)) {
+              return this.context.readProvider.getBlockLevel(branch);
+            }
+
+            // Nothing to anchor on: scan the configured number of levels below the first head.
+            return newHead.header.level - 1 - this.lookBackLevels;
+          }).pipe(
+            concatMap((prevHead) => {
+              // prevHead can be negative depending on lookBackLevels and on how
+              // close the head is to the beginning of the chain.
+              const from = Math.max(prevHead + 1, 0);
+              return range(from, Math.max(0, newHead.header.level - from)).pipe(
+                concatMap((level) => this.context.readProvider.getBlock(level)),
+                endWith(newHead)
+              );
+            })
+          )
+        ),
         tap((newHead) => (this.lastHead = newHead))
       );
     }),
-    shareReplay({ refCount: true })
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   // Observable that emit once operation is seen in a block
