@@ -55,3 +55,14 @@ export class SelectorMismatchError extends ParameterValidationError {
     this.name = 'SelectorMismatchError';
   }
 }
+
+/**
+ *  @category Error
+ *  Error that indicates an invalid EVM address
+ */
+export class InvalidEvmAddressError extends ParameterValidationError {
+  constructor(public readonly address: string) {
+    super(`Invalid EVM address "${address}"`);
+    this.name = 'InvalidEvmAddressError';
+  }
+}
