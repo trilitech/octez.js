@@ -16,3 +16,14 @@ export class SubMutezPrecisionError extends ParameterValidationError {
     this.name = 'SubMutezPrecisionError';
   }
 }
+
+/**
+ *  @category Error
+ *  Error that indicates a string that is not a valid ABI function signature
+ */
+export class InvalidMethodSignatureError extends ParameterValidationError {
+  constructor(public readonly methodSignature: string) {
+    super(`Invalid ABI function signature "${methodSignature}"`);
+    this.name = 'InvalidMethodSignatureError';
+  }
+}
