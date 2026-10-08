@@ -29,7 +29,13 @@ export const NAC_TEZOS_RUNTIME_URL = 'http://tezos/';
 /** URL prefix targeting an account of the EVM runtime (Michelson → EVM). */
 export const NAC_ETHEREUM_RUNTIME_URL = 'http://ethereum/';
 
-/** Recommended EVM gas limits for calls to the NAC precompile. */
+/**
+ * Default EVM gas limits for calls to the NAC precompile. They are rough defaults, with
+ * headroom over the gas used on previewnet by simple calls: about 2.6M for a transfer to an
+ * implicit account and 2.4M for a call to a contract entrypoint that does nothing. A call to
+ * a contract that does more work can need more: estimate the gas (`eth_estimateGas`) and
+ * replace `gasLimit` before signing when in doubt.
+ */
 export const NAC_RECOMMENDED_GAS = {
   call: BigInt(3_000_000),
   callMichelson: BigInt(5_000_000),
