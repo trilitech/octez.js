@@ -41,7 +41,6 @@ CONFIGS().forEach(({ lib, rpc, networkType }) => {
   const Tezos = lib;
   const weeklynet = (networkType == NetworkType.TESTNET && rpc.includes('weekly')) ? test : test.skip;
   const shadownet = (networkType == NetworkType.TESTNET && rpc.includes('shadow')) ? test : test.skip;
-  const ghostnet = (networkType == NetworkType.TESTNET && rpc.includes('ghost')) ? test : test.skip;
   const ushuaianet = (networkType == NetworkType.TESTNET && rpc.includes('ushuaia')) ? test : test.skip;
 
   describe('Test fetching constants for all protocols on Mainnet', () => {

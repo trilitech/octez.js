@@ -584,8 +584,6 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
       });
 
       it('Verify that Fa2 contract view can be executed', async () => {
-         // edonet: KT1XKs56Z8iXpYAD3pzfyXC3B4maJciob74X
-
          const contractAbstraction = await Tezos.wallet.at(contractAddress, tzip16);
          const metadataViews = await contractAbstraction.tzip16().metadataViews();
 
