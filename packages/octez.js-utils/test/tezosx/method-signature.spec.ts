@@ -1,4 +1,5 @@
-import { toCanonicalSignature } from '../../src/tezosx/method-signature';
+import { toFunctionSelector } from 'viem';
+import { DEFAULT_KNOWN_SIGNATURES, toCanonicalSignature } from '../../src/tezosx/method-signature';
 import { InvalidMethodSignatureError } from '../../src/tezosx/errors';
 
 describe('toCanonicalSignature', () => {
@@ -25,6 +26,15 @@ describe('toCanonicalSignature', () => {
       '',
     ]) {
       expect(() => toCanonicalSignature(methodSignature)).toThrow(InvalidMethodSignatureError);
+    }
+  });
+});
+
+describe('DEFAULT_KNOWN_SIGNATURES', () => {
+  it('indexes canonical signatures by their selector', () => {
+    for (const [selector, signature] of Object.entries(DEFAULT_KNOWN_SIGNATURES)) {
+      expect(toFunctionSelector(signature)).toBe(`0x${selector}`);
+      expect(toCanonicalSignature(signature)).toBe(signature);
     }
   });
 });
