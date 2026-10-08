@@ -1,3 +1,4 @@
 export * from './constants';
 export * from './types';
-export { parseAmount } from './amount';
+export * from './errors';
+export { parseAmount, weiToMutezExact } from './amount';
