@@ -70,9 +70,16 @@ async function getBalanceMutez(pkh) {
 
 async function fundCycle(pkh, amount) {
   let data = await post('/challenge', { address: pkh, amount });
+  let usedChallenge = false;
   while (data && data.challenge) {
+    usedChallenge = true;
     const { nonce, solution } = solveChallenge(data.challenge, data.difficulty);
     data = await post('/verify', { address: pkh, amount, nonce, solution });
+  }
+  // Faucets with challenges disabled (weeklynet, ushuaianet) answer /challenge
+  // without a `challenge`: call /verify directly instead of giving up.
+  if (!usedChallenge && data && !data.txHash && !data.challenge) {
+    data = await post('/verify', { address: pkh, amount });
   }
   if (!data || !data.txHash) throw new Error('no txHash');
   return data.txHash;
