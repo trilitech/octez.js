@@ -1,6 +1,10 @@
-import { InvalidAddressError, ValidationResult } from '@tezos-x/octez.js-core';
+import {
+  InvalidAddressError,
+  InvalidContractAddressError,
+  ValidationResult,
+} from '@tezos-x/octez.js-core';
 import { validateContractAddress, validateKeyHash } from '../validators';
-import { encodeNacCall } from './abi';
+import { encodeNacCall, encodeNacCallMichelson } from './abi';
 import { mutezToWei, parseAmount } from './amount';
 import {
   NAC_HTTP_POST,
@@ -8,8 +12,13 @@ import {
   NAC_RECOMMENDED_GAS,
   NAC_TEZOS_RUNTIME_URL,
 } from './constants';
-import { UnsupportedCrossRuntimeIntentError } from './errors';
+import { InvalidEntrypointNameError, UnsupportedCrossRuntimeIntentError } from './errors';
+import { parseHexBytes } from './hex';
 import type { EvmToMichelsonIntent, PrecompileCall } from './types';
+
+// Entrypoint names are made of Michelson annotation characters, are at most 31
+// characters long and are given without their leading `%`
+const ENTRYPOINT_RE = /^[a-zA-Z0-9_.@][a-zA-Z0-9_.%@]{0,30}$/;
 
 /**
  * A transfer can credit an implicit account (tz…) or a contract (KT1).
@@ -20,6 +29,16 @@ function validateTransferDestination(destination: string) {
     validateContractAddress(destination) !== ValidationResult.VALID
   ) {
     throw new InvalidAddressError(destination, validateKeyHash(destination));
+  }
+}
+
+function validateContractCall(destination: string, entrypoint: string) {
+  const validation = validateContractAddress(destination);
+  if (validation !== ValidationResult.VALID) {
+    throw new InvalidContractAddressError(destination, validation);
+  }
+  if (!ENTRYPOINT_RE.test(entrypoint)) {
+    throw new InvalidEntrypointNameError(entrypoint);
   }
 }
 
@@ -51,6 +70,19 @@ export function buildEvmToMichelsonCall(intent: EvmToMichelsonIntent): Precompil
           NAC_HTTP_POST
         ),
         gasLimit: NAC_RECOMMENDED_GAS.call,
+      };
+    case 'call-michelson':
+      validateContractCall(intent.destination, intent.entrypoint);
+      return {
+        direction: 'evm-to-michelson',
+        to: NAC_PRECOMPILE_ADDRESS,
+        value: mutezToWei(parseAmount(intent.amount ?? BigInt(0))),
+        data: encodeNacCallMichelson(
+          intent.destination,
+          intent.entrypoint,
+          parseHexBytes(intent.parameter, 1)
+        ),
+        gasLimit: NAC_RECOMMENDED_GAS.callMichelson,
       };
     default:
       throw new UnsupportedCrossRuntimeIntentError((intent as { kind: string }).kind);
