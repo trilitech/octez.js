@@ -37,8 +37,8 @@
       "provider": "trilitech"
     },
     {
-      "net": "tallinnnet",
-      "url": "https://tezos-tallinnnet.octez.io",
+      "net": "ushuaianet",
+      "url": "https://tezos-ushuaianet.octez.io",
       "provider": "trilitech"
     },
     {
@@ -62,8 +62,8 @@
       "provider": "tezosfoundation"
     },
     {
-      "net": "tallinnnet",
-      "url": "https://rpc.tallinnnet.teztnets.com",
+      "net": "ushuaianet",
+      "url": "https://rpc.ushuaianet.teztnets.com",
       "provider": "tezosfoundation"
     },
     {
@@ -77,8 +77,8 @@
       "provider": "tzkt"
     },
     {
-      "net": "tallinnnet",
-      "url": "https://rpc.tzkt.io/tallinnnet",
+      "net": "ushuaianet",
+      "url": "https://rpc.tzkt.io/ushuaianet",
       "provider": "tzkt"
     }
   ]
