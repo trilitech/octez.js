@@ -1,23 +1,13 @@
 import { CONFIGS } from '../../config';
 import { tacoContractTzip16 } from '../../data/modified-taco-contract';
 import { MichelsonMap } from '@tezos-x/octez.js';
-import { tzip16, Tzip16Module, IpfsHttpHandler, Handler, MetadataProvider } from '@tezos-x/octez.js-tzip16';
+import { tzip16, Tzip16Module } from '@tezos-x/octez.js-tzip16';
 import { stringToBytes } from '@tezos-x/octez.js-utils';
 
 CONFIGS().forEach(({ lib, rpc, setup }) => {
     const Tezos = lib;
 
-    const customHandler = new Map<string, Handler>([
-        // dweb.link and ipfs.io are both Protocol Labs infra, both deprecating the
-        // legacy path-style /ipfs/<CID> gateway format ("This IPFS gateway is
-        // switching to a service worker gateway only") -- an independent provider
-        // avoids that specific shutoff, not just another host in the same family.
-        ['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')]
-    ]);
-
-    const customMetadataProvider = new MetadataProvider(customHandler);
-
-    Tezos.addExtension(new Tzip16Module(customMetadataProvider));
+    Tezos.addExtension(new Tzip16Module());
 
     let contractAddress: string;
 
