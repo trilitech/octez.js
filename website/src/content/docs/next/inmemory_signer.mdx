@@ -141,6 +141,34 @@ try {
 ```
 
 
+### Loading an ML-DSA-44 (tz5) private key
+
+`InMemorySigner.fromSecretKey` also accepts the post-quantum ML-DSA-44 keys produced by Octez: `mdsk` secret keys, and `mdesk` encrypted secret keys together with their passphrase. The signer then exposes the corresponding `mdpk` public key and `tz5` address.
+
+```js
+import { InMemorySigner } from '@tezos-x/octez.js-signer';
+import { TezosToolkit } from '@tezos-x/octez.js';
+
+const Tezos = new TezosToolkit('https://YOUR_PREFERRED_RPC_URL');
+
+// Unencrypted key
+Tezos.setProvider({ signer: await InMemorySigner.fromSecretKey('your_mdsk_secret_key') });
+
+// Encrypted key
+Tezos.setProvider({
+  signer: await InMemorySigner.fromSecretKey('your_mdesk_encrypted_key', 'your_passphrase'),
+});
+
+console.log(await Tezos.signer.publicKeyHash()); // tz5...
+```
+
+Things to know when using ML-DSA-44 keys:
+
+- Keys cannot be generated from a mnemonic, and HD derivation does not support ML-DSA: load an existing `mdsk` or `mdesk` key.
+- For this scheme, both `sig` and `prefixSig` of the sign result use the `mdsig` prefix. `sbytes` includes the `ff04` marker followed by the full 2420-byte signature. Watermarks follow the existing signer API.
+- The proof of possession used when revealing a key remains specific to BLS keys.
+- Sending operations from a `tz5` account requires a protocol where `tz5_account_enable` is turned on. The support has been validated against an isolated Octez 25.2 Ushuaia sandbox (see the [local conformance suite](https://github.com/trilitech/octez.js/blob/master/integration-tests/tz5/README.md)); it does not imply that tz5 accounts are enabled on mainnet.
+
 ### Loading a mnemonic
 
 The `fromMnemonic` method takes the mnemonic, password, derivationPath, and curve as parameters. Here is an example of an instantiation of an `InMemorySigner.fromMnemonic`

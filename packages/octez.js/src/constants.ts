@@ -4,9 +4,10 @@ const REVEAL_GAS_LIMIT = {
   TZ2: 157,
   TZ3: 447,
   TZ4: 3252,
-  // tz5 (ML-DSA-44): measured on weeklynet (alpha, 2026-10-07) via run_operation, 211380
-  // milligas -> 212 gas, +1 margin like the other types. tz5 is disabled in U025
-  // (tz5_account_enable=false on mainnet and ushuaianet), so re-check once it is enabled.
+  // tz5 (ML-DSA-44): measured twice, 211380 milligas on weeklynet (alpha, 2026-10-07, via
+  // run_operation) and 211.313 gas on an Octez 25.2 Ushuaia sandbox: both give 212 gas, +1 margin
+  // like the other types. tz5 is disabled in U025 (tz5_account_enable=false on mainnet and
+  // ushuaianet), so re-check once it is enabled.
   TZ5: 213,
 };
 // value is based on octez-client reveal operation fee of each address type in Ushuaia Protocol
@@ -15,11 +16,6 @@ const REVEAL_FEE = {
   TZ2: 277,
   TZ3: 306,
   TZ4: 736,
-  // tz5 (ML-DSA-44): verified on weeklynet (alpha, 2026-10-07) by injecting signed reveals: fee 3917
-  // (gas 213) was included in ~4s, fee 3000 was never included. Signed wire size is 3797 bytes (1375
-  // forged + 0xFF + 0x04 + 2356-byte signature prefix + 64-byte suffix); the exact minimum was not
-  // bisected (between 3000 and 3917). Note: RpcEstimateProvider mis-sizes tz5 ops (octez.js#119).
-  TZ5: 3917,
 };
 // value is based on octez-client reveal operation storageLimit of all address type in Ushuaia Protocol
 export const REVEAL_STORAGE_LIMIT = 0;
@@ -116,7 +112,14 @@ export const getRevealGasLimit = (address: string) =>
   Math.round((getRevealGasLimitInternal(address) * 37) / 10);
 
 /** Signed standalone reveal size allowance used when allocating estimated operation bytes. */
-export const getRevealOperationSize = (address: string) => (address.startsWith('tz4') ? 311 : 162);
+export const getRevealOperationSize = (address: string) => {
+  if (address.startsWith('tz5')) {
+    // Branch + manager fields + 1313-byte tagged key + proof option + 2422-byte
+    // tagged signature, with room for the variable-width fee, counter and limits.
+    return 3808;
+  }
+  return address.startsWith('tz4') ? 311 : 162;
+};
 
 const getRevealGasLimitInternal = (address: string) => {
   switch (address.substring(0, 3)) {
@@ -135,8 +138,11 @@ const getRevealGasLimitInternal = (address: string) => {
   }
 };
 
-export const getRevealFee = (address: string) =>
-  Math.round((getRevealFeeInternal(address) * 12) / 10);
+export const getRevealFee = (address: string) => {
+  const fee = getRevealFeeInternal(address);
+  // Keep a fixed buffer for tz5 instead of a percentage on its large byte fee.
+  return address.startsWith('tz5') ? fee + 20 : Math.round((fee * 12) / 10);
+};
 
 export const getRevealFeeInternal = (address: string) => {
   switch (address.substring(0, 3)) {
@@ -149,7 +155,11 @@ export const getRevealFeeInternal = (address: string) => {
     case 'tz4':
       return REVEAL_FEE.TZ4 * 1.7;
     case 'tz5':
-      return REVEAL_FEE.TZ5;
+      // Default node prices: 1 mutez/byte, 0.1 mutez/gas, 100 mutez base fee. The result (3987
+      // before the buffer added by getRevealFee) stays above the 3917 verified on weeklynet
+      // (alpha, 2026-10-07) by injecting signed reveals: 3917 was included in ~4s, 3000 never
+      // was (the exact minimum was not bisected).
+      return Math.ceil(getRevealOperationSize(address) + getRevealGasLimit(address) / 10 + 100);
     default:
       throw new Error(`Cannot estimate reveal fee for ${address}`);
   }

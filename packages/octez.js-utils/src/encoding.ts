@@ -69,6 +69,7 @@ export const signaturePrefixes = [
   PrefixV2.Secp256k1Signature,
   PrefixV2.Ed25519Signature,
   PrefixV2.BLS12_381Signature,
+  PrefixV2.MLDSA44Signature,
   PrefixV2.GenericSignature,
 ];
 
