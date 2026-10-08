@@ -17,5 +17,7 @@ export { PrefixV2, payloadLength } from './constants';
 export { verifySignature, BLS12_381_DST, POP_DST } from './verify-signature';
 // Re-export errors
 export * from './errors';
+// Re-export cross-runtime operation hash computation
+export * from './operation-hash';
 // Re-export format
 export { format } from './format';
