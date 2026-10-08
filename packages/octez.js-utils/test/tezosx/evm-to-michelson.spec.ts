@@ -1,4 +1,9 @@
-import { InvalidAddressError, InvalidAmountError } from '@tezos-x/octez.js-core';
+import {
+  InvalidAddressError,
+  InvalidAmountError,
+  InvalidContractAddressError,
+  InvalidHexStringError,
+} from '@tezos-x/octez.js-core';
 import { decodeFunctionData } from 'viem';
 import { buildEvmToMichelsonCall } from '../../src/tezosx/evm-to-michelson';
 import { NAC_PRECOMPILE_ABI } from '../../src/tezosx/abi';
@@ -7,7 +12,10 @@ import {
   NAC_RECOMMENDED_GAS,
   WEI_PER_MUTEZ,
 } from '../../src/tezosx/constants';
-import { UnsupportedCrossRuntimeIntentError } from '../../src/tezosx/errors';
+import {
+  InvalidEntrypointNameError,
+  UnsupportedCrossRuntimeIntentError,
+} from '../../src/tezosx/errors';
 import type { EvmToMichelsonIntent } from '../../src/tezosx/types';
 
 const TZ1 = 'tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb';
@@ -26,6 +34,56 @@ describe('buildEvmToMichelsonCall', () => {
       functionName: 'call',
       args: [`http://tezos/${TZ1}`, [], '0x', 1],
     });
+  });
+
+  it('wraps a contract call into a NAC `callMichelson` with binary Micheline', () => {
+    const call = buildEvmToMichelsonCall({
+      kind: 'call-michelson',
+      destination: KT1,
+      entrypoint: 'default',
+      parameter: '0x0A0000000401020304',
+      amount: 3,
+    });
+    expect(call.to).toBe(NAC_PRECOMPILE_ADDRESS);
+    expect(call.value).toBe(3n * WEI_PER_MUTEZ);
+    expect(call.gasLimit).toBe(NAC_RECOMMENDED_GAS.callMichelson);
+    expect(decode(call.data)).toEqual({
+      functionName: 'callMichelson',
+      args: [KT1, 'default', '0x0a0000000401020304'],
+    });
+  });
+
+  it('defaults the amount of a contract call to 0', () => {
+    const call = buildEvmToMichelsonCall({
+      kind: 'call-michelson',
+      destination: KT1,
+      entrypoint: 'default',
+      parameter: '00',
+    });
+    expect(call.value).toBe(0n);
+  });
+
+  it('rejects a binary Micheline parameter that is not a non-empty hex string', () => {
+    for (const parameter of ['0a00zz', '0a0', '', '0x']) {
+      expect(() =>
+        buildEvmToMichelsonCall({
+          kind: 'call-michelson',
+          destination: KT1,
+          entrypoint: 'default',
+          parameter,
+        })
+      ).toThrow(InvalidHexStringError);
+    }
+  });
+
+  it('only calls KT1 contracts with a valid entrypoint name', () => {
+    const call = (destination: string, entrypoint: string) => () =>
+      buildEvmToMichelsonCall({ kind: 'call-michelson', destination, entrypoint, parameter: '00' });
+    expect(call(TZ1, 'default')).toThrow(InvalidContractAddressError);
+    expect(call(KT1, 'set_value.v2')).not.toThrow();
+    for (const entrypoint of ['', '%default', 'has space', 'a'.repeat(32)]) {
+      expect(call(KT1, entrypoint)).toThrow(InvalidEntrypointNameError);
+    }
   });
 
   it('accepts implicit accounts, contracts and any amount type for a transfer', () => {

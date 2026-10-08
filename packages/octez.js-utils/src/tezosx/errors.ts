@@ -94,6 +94,17 @@ export class UnsafeMutezAmountError extends ParameterValidationError {
 
 /**
  *  @category Error
+ *  Error that indicates an invalid Michelson entrypoint name
+ */
+export class InvalidEntrypointNameError extends ParameterValidationError {
+  constructor(public readonly entrypoint: string) {
+    super(`Invalid entrypoint name "${entrypoint}"`);
+    this.name = 'InvalidEntrypointNameError';
+  }
+}
+
+/**
+ *  @category Error
  *  Error that indicates a cross-runtime intent that cannot be built
  */
 export class UnsupportedCrossRuntimeIntentError extends OctezJsError {

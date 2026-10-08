@@ -109,10 +109,22 @@ export type CrossRuntimeDirection = CrossRuntimeCall['direction'];
 /**
  * A Michelson runtime operation to wrap into an EVM → Michelson call.
  */
-export type EvmToMichelsonIntent = {
-  kind: 'transfer';
-  /** Destination account on the Michelson runtime (implicit tz… account or KT1) */
-  destination: string;
-  /** Amount in mutez */
-  amount: AmountLike;
-};
+export type EvmToMichelsonIntent =
+  | {
+      kind: 'transfer';
+      /** Destination account on the Michelson runtime (implicit tz… account or KT1) */
+      destination: string;
+      /** Amount in mutez */
+      amount: AmountLike;
+    }
+  | {
+      kind: 'call-michelson';
+      /** Destination contract on the Michelson runtime (KT1) */
+      destination: string;
+      /** Entrypoint name, without the `%` prefix */
+      entrypoint: string;
+      /** Entrypoint parameter as binary Micheline (hex, without the `05` pack prefix) */
+      parameter: string;
+      /** Amount in mutez. Defaults to 0 */
+      amount?: AmountLike;
+    };
