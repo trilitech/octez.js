@@ -112,10 +112,11 @@ describe('TZIP-16 IPFS HTTP handler', () => {
     'explains an IPFS HTTP %s failure and preserves its response details',
     async (status) => {
       const url = `https://gateway.example.com/ipfs/${cid}/`;
+      // A fresh Response per call: octez.js-http-utils retries transient 429/503 and a Response body can be read once.
       const fetch = vi
         .spyOn(globalThis, 'fetch')
-        .mockResolvedValue(
-          new Response('Gateway response', { status, statusText: 'Gateway failure' })
+        .mockImplementation(
+          async () => new Response('Gateway response', { status, statusText: 'Gateway failure' })
         );
       const result = new IpfsHttpHandler('gateway.example.com').getMetadata(contract, uri, context);
 
@@ -137,7 +138,12 @@ describe('TZIP-16 IPFS HTTP handler', () => {
         'message',
         expect.stringContaining(String(status))
       );
-      expect(fetch).toHaveBeenCalledTimes(1);
+      // 404 is final; 429/503 may be retried by octez.js-http-utils (OCTEZJS_HTTP_RETRY_COUNT).
+      if (status === STATUS_CODE.NOT_FOUND) {
+        expect(fetch).toHaveBeenCalledTimes(1);
+      } else {
+        expect(fetch).toHaveBeenCalled();
+      }
     }
   );
 

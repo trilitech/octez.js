@@ -154,7 +154,8 @@ export const getRevealFeeInternal = (address: string) => {
 
 /**
  * Default number of blocks below the first observed head to scan when confirming
- * an operation. Indeed, fast networks can make the application miss some blocks.
+ * an operation that has no better anchor (an `Operation` without a forged branch,
+ * or a `WalletOperation`). Indeed, fast networks can make the application miss some blocks.
  */
 export const DEFAULT_CONFIRMATION_LOOKBACK_LEVELS = 5;
 
