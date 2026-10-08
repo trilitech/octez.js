@@ -16,7 +16,7 @@ latest stable version
 <p>Before Staking, the only way for Tez holders to participate in the network was by delegating their tokens to a baker. Delegated funds contributed to a delegate’s voting and baking power, but were not subject to staking: they could not be slashed in case the baker misbehaved. This is a useful feature for many users, but limits the total amount of staked tez to the amount of tez that bakers themselves hold. In other words, participating in the “Proof of Stake” mechanism required setting up and maintaining a baker, which is a significant barrier to entry for many users.</p>
 <p>Staking changes this by allowing any user to participate in the “Proof of Stake” mechanism without setting up a baker. Users can now stake their tokens to their delegates, and their staked tokens will be subject to slashing in case of delegate/baker’s misbehaviour. This allows the total amount of staked Tez to be much higher than the amount of tez that bakers themselves hold, which in turn increases the security of the network.</p>
 <p>Users can control their staked funds using the <code>stake</code>, <code>unstake</code>, and <code>finalize_unstake</code> operations. These are implemented as pseudo-entrypoints, and the parameters are passed to a transfer operation with the same destination as the sender.</p>
-<p>To accept staked funds, a delegate needs to have opted in to staking. This is done by <code>set_delegate_parameters</code>. This part is not supported by octez.js, as it is not a dApp operation. More information <a href="https://octez.tezos.com/docs/ushuaia/staking.html#staking-policy-configuration">here</a>.</p>
+<p>To accept staked funds, a delegate needs to have opted in to staking. This is done by <code>set_delegate_parameters</code>. This part is not supported by octez.js, as it is not a dApp operation. More information <a href="https://octez.tezos.com/docs/active/staking.html#staking-policy-configuration">here</a>.</p>
 <h1 id="staking-funds">Staking Funds</h1>
 <p>To stake your funds, you need to call the <code>stake</code> operation.
 Before you can stake your funds, two conditions should be met:</p>
@@ -24,7 +24,7 @@ Before you can stake your funds, two conditions should be met:</p>
 <li>You need yor have delegated your funds to a delegate before you can stake them (by calling <a href="#set_delegate"><code>setDelegate</code></a>)</li>
 <li>Your delegate should accept staking by calling <code>set_delegate_parameters</code></li>
 </ol>
-<div class="tabs-container" data-tabs-id="tabs-1arfgvovg" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contract" type="button" data-astro-cid-xlvzfuxv> Contract Api </button><button class="tab-button " data-tab="wallet" type="button" data-astro-cid-xlvzfuxv> Wallet Api </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contract" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-javascript">
+<div class="tabs-container" data-tabs-id="tabs-a1wgr6hyj" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contract" type="button" data-astro-cid-xlvzfuxv> Contract Api </button><button class="tab-button " data-tab="wallet" type="button" data-astro-cid-xlvzfuxv> Wallet Api </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contract" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-javascript">
 const op = await Tezos.contract.stake({
         amount: 100,
         mutez: false
@@ -42,7 +42,7 @@ const op = await Tezos.wallet.stake({
 <h1 id="unstaking-funds">Unstaking Funds</h1>
 <p>To unstake your funds, you need to call the <code>unstake</code> operation. This will change your fund’s status to “Unstaked + Frozen”
 The unstaked funds will still be frozen (and subject to slashing for 4 cycles). After that, your funds will be in “Unstaked + Finalizable” state.</p>
-<div class="tabs-container" data-tabs-id="tabs-fqz2di9eq" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contract" type="button" data-astro-cid-xlvzfuxv> Contract Api </button><button class="tab-button " data-tab="wallet" type="button" data-astro-cid-xlvzfuxv> Wallet Api </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contract" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-javascript">
+<div class="tabs-container" data-tabs-id="tabs-dchtv98wg" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contract" type="button" data-astro-cid-xlvzfuxv> Contract Api </button><button class="tab-button " data-tab="wallet" type="button" data-astro-cid-xlvzfuxv> Wallet Api </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contract" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-javascript">
 const op = await Tezos.contract.unstake({
         amount: 50,
         mutez: false
@@ -59,7 +59,7 @@ const op = await Tezos.wallet.unstake({
 </code></pre> </div>  </div> </div>  
 <h1 id="finalizing-unstake">Finalizing Unstake</h1>
 <p>To finalize your unstaked funds, you need to call the <code>finalize_unstake</code> operation. This will change your fund’s status back to “spendable”.</p>
-<div class="tabs-container" data-tabs-id="tabs-ur12bnlr1" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contract" type="button" data-astro-cid-xlvzfuxv> Contract Api </button><button class="tab-button " data-tab="wallet" type="button" data-astro-cid-xlvzfuxv> Wallet Api </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contract" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-javascript">
+<div class="tabs-container" data-tabs-id="tabs-61yefj2uw" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contract" type="button" data-astro-cid-xlvzfuxv> Contract Api </button><button class="tab-button " data-tab="wallet" type="button" data-astro-cid-xlvzfuxv> Wallet Api </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contract" class="tab-item" data-astro-cid-r7gez2uh> <pre><code class="language-javascript">
 const op = await Tezos.contract.finalizeUnstake();
       await op.confirmation();
 
