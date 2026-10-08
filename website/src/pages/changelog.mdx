@@ -13,6 +13,10 @@ layout: ../layouts/MarkdownLayout.astro
 - **`@tezos-x/octez.js-wallet-connect`: `NetworkType.GHOSTNET` is removed.** Ghostnet is shut down.
 - **`@tezos-x/octez.js-wallet-connect`: `NetworkType.TALLINNNET` is replaced by `NetworkType.USHUAIANET`** (`'tallinnnet'` → `'ushuaianet'`). Update any code or stored sessions that reference the old network.
 
+### New features
+
+- **`tz5` (ML-DSA-44) accounts are supported**, for use on protocols where `tz5_account_enable` is turned on (it is not on mainnet or ushuaianet today). `InMemorySigner.fromSecretKey` accepts `mdsk` secret keys and `mdesk` encrypted secret keys; mnemonic generation and HD derivation do not support ML-DSA. `@tezos-x/octez.js-utils` knows the `tz5`, `mdpk`, `mdsk`, `mdesk` and `mdsig` prefixes and verifies ML-DSA-44 signatures, and the local forger, Michelson codec and encoder handle the new key, key hash and signature types. Reveal gas, fee and size estimation account for tz5. The support is validated against an isolated Octez 25.2 sandbox (`npm run test:tz5:local`). `@tezos-x/octez.js-utils` and `@tezos-x/octez.js-signer` now depend on `@noble/post-quantum`.
+
 ---
 
 # octez.js v1.1.0

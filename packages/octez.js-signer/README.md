@@ -52,6 +52,20 @@ Tezos.setProvider({
 
 The following link can be used to fund an address on the different testnets: https://teztnets.com/.
 
+### ML-DSA-44 (tz5)
+
+`InMemorySigner.fromSecretKey` accepts Octez `mdsk` secret keys and `mdesk`
+encrypted secret keys. It exposes the corresponding `mdpk` public key and `tz5`
+address. Key generation from mnemonics and HD derivation do not support ML-DSA.
+
+For this scheme, both `SignResult.sig` and `SignResult.prefixSig` use `mdsig`.
+`SignResult.sbytes` includes Octez's `ff04` marker and the full 2420-byte signature.
+Watermarks follow the existing signer API; proof of possession remains BLS-only.
+
+Sending operations requires a protocol with `tz5_account_enable` enabled. This
+support is validated against an isolated Octez 25.2 Ushuaia sandbox, and does not
+imply activation on mainnet. See the [local conformance suite](../../integration-tests/tz5/README.md).
+
 ## Additional info
 
 See the top-level [https://github.com/trilitech/octez.js](https://github.com/trilitech/octez.js) file for details on reporting issues, contributing and versioning.
