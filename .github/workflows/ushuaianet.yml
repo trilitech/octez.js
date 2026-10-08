@@ -51,11 +51,17 @@ jobs:
       - run: npm run build
       # The CI master accounts are funded on shadownet and weeklynet, not on
       # ushuaianet: fund master 1 by address through the ushuaianet faucet
-      # (idempotent, best-effort; a healthy master is a fast no-op).
+      # (idempotent; a healthy master is a fast no-op). Sized for one full run on a
+      # single master (~6,500 tez observed on 2026-10-07: the whole suite with
+      # --maxWorkers=4, not a quarter per shard as on shadownet). The faucet grants
+      # up to 40,000 tez per request. REQUIRE_MIN_BALANCE makes the job fail here,
+      # clearly, if the master is still under the minimum, instead of a suite of
+      # opaque "Failed to generate or fund key" errors.
       - name: Top up the keygen master
         env:
-          MIN_BALANCE_TEZ: '1200'
-          TARGET_TEZ: '1600'
+          MIN_BALANCE_TEZ: '7000'
+          TARGET_TEZ: '8000'
+          REQUIRE_MIN_BALANCE: 'true'
           RPC_URL: https://rpc.ushuaianet.teztnets.com
           FAUCET_URL: https://faucet.ushuaianet.teztnets.com
         run: |
@@ -63,8 +69,13 @@ jobs:
           node .github/scripts/topup-keygen-masters.mjs
       - name: Wait for keygen service
         run: bash .github/scripts/wait-for-keygen.sh
-      - if: always()
-        id: integration-tests-ushuaianet
+      - name: Record keygen master balance (before tests)
+        run: |
+          pkh="$(node .github/scripts/testnet-master-pkh.mjs 1)"
+          before="$(curl -fsS "https://rpc.ushuaianet.teztnets.com/chains/main/blocks/head/context/contracts/${pkh}/balance" | tr -d '"')"
+          echo "MASTER_PKH=${pkh}" >> "$GITHUB_ENV"
+          echo "MASTER_BEFORE_MUTEZ=${before}" >> "$GITHUB_ENV"
+      - id: integration-tests-ushuaianet
         run: npm -w integration-tests run test:ushuaianet -- --maxWorkers=4 --exclude='**/sapling/**' --exclude='**/ledger/**'
         env:
           OCTEZJS_KEYGEN_URL: http://localhost:3000
@@ -75,7 +86,22 @@ jobs:
           OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS: '180000'
           OCTEZJS_FRESH_KEY_RETRY_MS: '12000'
           OCTEZJS_FRESH_KEY_MAX_ATTEMPTS: '3'
-          OCTEZJS_FRESH_KEY_PREFETCH: '4'
+          # 2, as in main.yml: each buffered-but-never-consumed key is funded tez
+          # that is never used (orphaned), and 4 contributed to this lane's cost.
+          OCTEZJS_FRESH_KEY_PREFETCH: '2'
           OCTEZJS_HTTP_RETRY_COUNT: '4'
           OCTEZJS_ITEST_DIAGNOSTICS: 'true'
           OCTEZJS_DIAG_BALANCE_WARN_MUTEZ: '9000000'
+      # How much one run really costs, to tune the amounts above (also shown in
+      # the job summary). Runs even when the tests fail.
+      - name: Report keygen master spend
+        if: ${{ always() && env.MASTER_BEFORE_MUTEZ != '' }}
+        run: |
+          after="$(curl -fsS "https://rpc.ushuaianet.teztnets.com/chains/main/blocks/head/context/contracts/${MASTER_PKH}/balance" | tr -d '"')"
+          spent_tez=$(( (MASTER_BEFORE_MUTEZ - after) / 1000000 ))
+          {
+            echo "### Ushuaianet keygen master spend"
+            echo "- master: ${MASTER_PKH}"
+            echo "- before: $(( MASTER_BEFORE_MUTEZ / 1000000 )) tez, after: $(( after / 1000000 )) tez"
+            echo "- spent by this run: ${spent_tez} tez"
+          } | tee -a "$GITHUB_STEP_SUMMARY"

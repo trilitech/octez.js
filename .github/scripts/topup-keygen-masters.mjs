@@ -15,6 +15,11 @@
 // Best-effort: a master that can't be topped up logs a warning but does not fail
 // the job (tests still attempt; that shard may fall short). Exit code is always 0
 // unless misconfigured, so a transient faucet outage never blocks the test run.
+//
+// Strict mode (REQUIRE_MIN_BALANCE=true): exit 1 when a master is still below
+// MIN_BALANCE_TEZ after the retries (or its balance can't be read). For lanes where
+// an empty master makes the whole suite fail with hundreds of opaque keygen 500s,
+// failing here gives one clear error instead.
 import { createHash } from 'node:crypto';
 
 const {
@@ -24,6 +29,7 @@ const {
   FAUCET_URL = 'https://faucet.shadownet.teztnets.com',
   RPC_URL = 'https://rpc.shadownet.teztnets.com',
   MAX_CYCLE_RETRIES = '12',
+  REQUIRE_MIN_BALANCE = 'false',
 } = process.env;
 
 const pkhs = PKHS.split(',').map((s) => s.trim()).filter(Boolean);
@@ -118,12 +124,14 @@ async function main() {
     `Top-up check: ${pkhs.length} master(s), min=${MIN_BALANCE_TEZ} tez, target=${targetTez} tez. ` +
       `RPC=${RPC_URL} faucet=${FAUCET_URL}`,
   );
+  const shortfalls = [];
   for (const pkh of pkhs) {
     let bal;
     try {
       bal = await getBalanceMutez(pkh);
     } catch (err) {
       console.warn(`! ${pkh}: balance check failed (${err.message}); skipping`);
+      shortfalls.push(pkh);
       continue;
     }
     if (bal >= minMutez) {
@@ -135,11 +143,20 @@ async function main() {
       const after = await topUp(pkh);
       if (after >= targetMutez) console.log(`+ ${pkh}: topped up to ${after / 1e6} tez`);
       else console.warn(`! ${pkh}: still short after retries (${after / 1e6} tez) — tests may fall short`);
+      if (after < minMutez) shortfalls.push(pkh);
     } catch (err) {
       console.warn(`! ${pkh}: top-up failed (${err.message}) — tests may fall short`);
+      shortfalls.push(pkh);
     }
   }
   console.log('Top-up check complete.');
+  if (REQUIRE_MIN_BALANCE === 'true' && shortfalls.length) {
+    console.error(
+      `::error::keygen master(s) below ${MIN_BALANCE_TEZ} tez after the top-up (or balance unreadable): ${shortfalls.join(', ')}. ` +
+        'Fund them by hand (the tests cannot get funded keys otherwise).',
+    );
+    process.exitCode = 1;
+  }
 }
 
 main().catch((err) => {
