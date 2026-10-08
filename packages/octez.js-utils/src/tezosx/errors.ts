@@ -66,3 +66,17 @@ export class InvalidEvmAddressError extends ParameterValidationError {
     this.name = 'InvalidEvmAddressError';
   }
 }
+
+/**
+ *  @category Error
+ *  Error that indicates a method signature given without the calldata of the call
+ */
+export class MissingCalldataError extends ParameterValidationError {
+  constructor(public readonly methodSignature: string) {
+    super(
+      `Method signature "${methodSignature}" given without calldata. Pass the ABI-encoded ` +
+        'call (at least its 4-byte selector) as `data`.'
+    );
+    this.name = 'MissingCalldataError';
+  }
+}

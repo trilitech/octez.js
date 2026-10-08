@@ -49,9 +49,28 @@ export interface EvmTransactionRequest {
   to: string;
   /** Value in wei. Defaults to 0 */
   value?: AmountLike;
+  /**
+   * Calldata (hex). Empty or missing for a bare native transfer, otherwise at least
+   * the 4-byte function selector
+   */
+  data?: string;
+  /**
+   * ABI signature of the called method (e.g. `transfer(address,uint256)` or
+   * `function transfer(address to, uint256 amount)`). It is sent to the gateway in its
+   * canonical form, which must match the selector of `data`, so it requires `data`.
+   * When missing, the selector is looked up in the known signatures.
+   */
+  methodSignature?: string;
 }
 
 export interface BuildMichelsonToEvmCallOptions {
   /** Address of the NAC gateway contract. Defaults to {@link NAC_GATEWAY} */
   gatewayAddress?: string;
+  /** Callback of the `call_evm` entrypoint. Defaults to `None` */
+  callback?: MichelineExpression;
+  /**
+   * Selector (8 hex chars, with or without 0x, any case) → ABI signature map used
+   * when `methodSignature` is not given. Defaults to {@link DEFAULT_KNOWN_SIGNATURES}
+   */
+  knownSignatures?: Record<string, string>;
 }
