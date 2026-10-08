@@ -63,6 +63,7 @@
     "@noble/curves": "^1.9.7",
     "@noble/hashes": "^2.2.0",
     "@tezos-x/octez.js-core": "^25.0.0-rc.1",
+    "@tezos-x/octez.js-michel-codec": "^25.0.0-rc.1",
     "@types/bs58check": "^2.1.2",
     "bignumber.js": "^10.0.2",
     "blakejs": "^1.2.1",
