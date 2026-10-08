@@ -7,11 +7,16 @@ import { isAddress } from 'viem';
 import { validateContractAddress } from '../validators';
 import { parseAmount, weiToMutezExact } from './amount';
 import { NAC_ETHEREUM_RUNTIME_URL, NAC_GATEWAY } from './constants';
-import { InvalidEvmAddressError, MissingCalldataError } from './errors';
+import { InvalidEvmAddressError, MissingCalldataError, UnsafeMutezAmountError } from './errors';
 import { buildCallEvmParameter, buildHttpCallParameter } from './gateway-parameters';
 import { parseHexBytes } from './hex';
 import { DEFAULT_KNOWN_SIGNATURES, resolveCalldataSignature } from './method-signature';
-import type { BuildMichelsonToEvmCallOptions, EvmTransactionRequest, GatewayCall } from './types';
+import type {
+  BuildMichelsonToEvmCallOptions,
+  EvmTransactionRequest,
+  GatewayCall,
+  GatewayTransferParams,
+} from './types';
 
 /**
  * Wrap an EVM transaction into a call to the NAC gateway contract, so that it can be
@@ -23,6 +28,7 @@ import type { BuildMichelsonToEvmCallOptions, EvmTransactionRequest, GatewayCall
  * @example
  * ```
  * const call = buildMichelsonToEvmCall({ to: '0x…', value: 10n ** 15n });
+ * await Tezos.contract.transfer(toTransferParams(call));
  * ```
  */
 export function buildMichelsonToEvmCall(
@@ -77,5 +83,26 @@ export function buildMichelsonToEvmCall(
     ),
     mutezAmount,
     methodSignature,
+  };
+}
+
+/**
+ * Turn a gateway call into transfer parameters for `Tezos.contract.transfer` or
+ * `Tezos.wallet.transfer`.
+ *
+ * @throws {@link UnsafeMutezAmountError} if the amount does not fit in a JavaScript number
+ */
+export function toTransferParams(call: GatewayCall): GatewayTransferParams {
+  if (call.mutezAmount > BigInt(Number.MAX_SAFE_INTEGER)) {
+    throw new UnsafeMutezAmountError(call.mutezAmount);
+  }
+  return {
+    to: call.contractAddress,
+    amount: Number(call.mutezAmount),
+    mutez: true,
+    parameter: {
+      entrypoint: call.entrypoint,
+      value: call.parameter,
+    },
   };
 }

@@ -74,3 +74,17 @@ export interface BuildMichelsonToEvmCallOptions {
    */
   knownSignatures?: Record<string, string>;
 }
+
+/**
+ * Transfer parameters for a gateway call, compatible with the `TransferParams` of
+ * `@tezos-x/octez.js` (`Tezos.contract.transfer` / `Tezos.wallet.transfer`).
+ */
+export interface GatewayTransferParams {
+  to: string;
+  amount: number;
+  mutez: true;
+  parameter: {
+    entrypoint: string;
+    value: MichelineExpression;
+  };
+}

@@ -3,7 +3,7 @@ import {
   InvalidContractAddressError,
   InvalidHexStringError,
 } from '@tezos-x/octez.js-core';
-import { buildMichelsonToEvmCall } from '../../src/tezosx/michelson-to-evm';
+import { buildMichelsonToEvmCall, toTransferParams } from '../../src/tezosx/michelson-to-evm';
 import { NAC_GATEWAY } from '../../src/tezosx/constants';
 import {
   InvalidEvmAddressError,
@@ -12,6 +12,7 @@ import {
   SelectorMismatchError,
   SubMutezPrecisionError,
   UnknownSelectorError,
+  UnsafeMutezAmountError,
 } from '../../src/tezosx/errors';
 import { buildCallEvmParameter, buildHttpCallParameter } from '../../src/tezosx/gateway-parameters';
 
@@ -165,5 +166,24 @@ describe('buildMichelsonToEvmCall', () => {
     expect(() => buildMichelsonToEvmCall({ to: TO }, { gatewayAddress: 'tz1abc' })).toThrow(
       InvalidContractAddressError
     );
+  });
+});
+
+describe('toTransferParams', () => {
+  it('builds transfer parameters for the gateway call', () => {
+    const call = buildMichelsonToEvmCall({ to: TO, value: 10n ** 15n });
+    expect(toTransferParams(call)).toEqual({
+      to: NAC_GATEWAY,
+      amount: 1000,
+      mutez: true,
+      parameter: { entrypoint: 'call', value: call.parameter },
+    });
+  });
+
+  it('rejects amounts that do not fit in a JavaScript number', () => {
+    const call = buildMichelsonToEvmCall({ to: TO });
+    expect(() =>
+      toTransferParams({ ...call, mutezAmount: BigInt(Number.MAX_SAFE_INTEGER) + 1n })
+    ).toThrow(UnsafeMutezAmountError);
   });
 });
