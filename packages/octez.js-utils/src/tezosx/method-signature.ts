@@ -1,5 +1,6 @@
-import { parseAbiItem, toFunctionSignature, type AbiItem } from 'viem';
-import { InvalidMethodSignatureError } from './errors';
+import { parseAbiItem, toFunctionSelector, toFunctionSignature, type AbiItem } from 'viem';
+import { stripHexPrefix } from '../encoding';
+import { InvalidMethodSignatureError, SelectorMismatchError, UnknownSelectorError } from './errors';
 
 /**
  * ABI signatures of common EVM methods, indexed by selector. Used to resolve the
@@ -44,4 +45,46 @@ export function toCanonicalSignature(methodSignature: string): string {
     throw new InvalidMethodSignatureError(methodSignature);
   }
   return toFunctionSignature(item);
+}
+
+function lookUpSignature(
+  selector: string,
+  knownSignatures: Readonly<Record<string, string>>
+): string | undefined {
+  const entry = Object.entries(knownSignatures).find(
+    ([key]) => stripHexPrefix(key).toLowerCase() === selector
+  );
+  return entry?.[1];
+}
+
+/**
+ * Canonical signature to send to the NAC gateway in a `%call_evm` for an EVM calldata.
+ *
+ * The gateway receives this signature and the ABI parameters (the calldata without its
+ * selector), and re-derives the selector of the EVM call by hashing the signature. The
+ * signature must therefore hash back to the calldata selector, otherwise the gateway
+ * would call a different method.
+ *
+ * @param selector 4-byte selector of the calldata (8 lowercase hex chars, no 0x)
+ * @param methodSignature signature given by the caller for this calldata, if any. It is
+ * canonicalized and checked against `selector`
+ * @param knownSignatures selector → signature map used when no `methodSignature` is
+ * given. Its keys are matched regardless of case and 0x prefix
+ * @throws {@link UnknownSelectorError} if no signature is given or known for `selector`
+ * @throws {@link SelectorMismatchError} if the signature does not match `selector`
+ */
+export function resolveCalldataSignature(
+  selector: string,
+  methodSignature: string | undefined,
+  knownSignatures: Readonly<Record<string, string>>
+): string {
+  const signature = methodSignature ?? lookUpSignature(selector, knownSignatures);
+  if (signature === undefined) {
+    throw new UnknownSelectorError(selector);
+  }
+  const canonical = toCanonicalSignature(signature);
+  if (stripHexPrefix(toFunctionSelector(canonical)) !== selector) {
+    throw new SelectorMismatchError(signature, selector);
+  }
+  return canonical;
 }

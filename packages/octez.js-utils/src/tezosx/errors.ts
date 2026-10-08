@@ -27,3 +27,31 @@ export class InvalidMethodSignatureError extends ParameterValidationError {
     this.name = 'InvalidMethodSignatureError';
   }
 }
+
+/**
+ *  @category Error
+ *  Error that indicates a function selector with no known ABI signature
+ */
+export class UnknownSelectorError extends ParameterValidationError {
+  constructor(public readonly selector: string) {
+    super(
+      `Unknown function selector 0x${selector}. Pass its ABI signature as ` +
+        '`methodSignature` or in `knownSignatures`.'
+    );
+    this.name = 'UnknownSelectorError';
+  }
+}
+
+/**
+ *  @category Error
+ *  Error that indicates an ABI signature that does not match the calldata selector
+ */
+export class SelectorMismatchError extends ParameterValidationError {
+  constructor(
+    public readonly methodSignature: string,
+    public readonly selector: string
+  ) {
+    super(`ABI signature "${methodSignature}" does not match the calldata selector 0x${selector}.`);
+    this.name = 'SelectorMismatchError';
+  }
+}
