@@ -19,11 +19,9 @@ CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
       const pkh = await LocalTez.signer.publicKeyHash();
       const balance = await Tezos.tz.getBalance(pkh);
       // The actual reveal fee this account will be charged, not the static
-      // getRevealFee() table — that table is only a fallback for when
-      // mempool/filter is unavailable (see prepare-provider.ts's
-      // getRevealLimits) and no longer matches what gets charged on a
-      // healthy node since the reveal-pricing fix in cf6e324fa. This test
-      // relies on emptying the account to exactly 0, so it needs the real
+      // getRevealFee() table, which only matches what gets charged on a node
+      // with default prices (see prepare-provider.ts's getRevealLimits). This
+      // test relies on emptying the account to exactly 0, so it needs the real
       // value.
       const revealFee = await revealFeeMutez(LocalTez, pkh);
       const estimate = await LocalTez.estimate.transfer({

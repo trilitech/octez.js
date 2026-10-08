@@ -34,7 +34,13 @@ import {
   FinalizeUnstakeParams,
 } from '../operations/types';
 import { PreparationProvider, PreparedOperation } from './interface';
-import { REVEAL_STORAGE_LIMIT, Protocols, getRevealFee, getRevealGasLimit } from '../constants';
+import {
+  REVEAL_STORAGE_LIMIT,
+  Protocols,
+  getRevealFee,
+  getRevealGasLimit,
+  getRevealOperationSize,
+} from '../constants';
 import { RPCResponseError } from '../errors';
 import {
   PublicKeyNotFoundError,
@@ -67,7 +73,7 @@ import {
   createRegisterDelegateOperation,
   createActivationOperation,
 } from '../contract';
-import { Estimate, feeParamsFromMempoolFilter } from '../estimate';
+import { DEFAULT_FEE_PARAMS, Estimate, feeParamsFromMempoolFilter } from '../estimate';
 import { ForgeParams } from '@tezos-x/octez.js-local-forging';
 import { Provider } from '../provider';
 import BigNumberJs from 'bignumber.js';
@@ -107,13 +113,6 @@ const mergeLimits = (
  * PrepareProvider is a utility class to output the prepared format of an operation
  */
 export class PrepareProvider extends Provider implements PreparationProvider {
-  // Approximate, fixed forged byte size of a reveal operation, used only as the `opSize` input
-  // to the live-fee-params formula in `getRevealLimits` below (mirrors the values
-  // `RPCEstimateProvider` derives from its own REVEAL_LENGTH/REVEAL_LENGTH_TZ4 constants:
-  // 324/622 hex chars, i.e. 162/311 bytes, for non-BLS vs BLS reveals respectively).
-  private static readonly REVEAL_OP_SIZE_BYTES = 162;
-  private static readonly REVEAL_OP_SIZE_BLS_BYTES = 311;
-
   #counters: { [key: string]: number };
 
   constructor(protected context: Context) {
@@ -232,7 +231,7 @@ export class PrepareProvider extends Provider implements PreparationProvider {
         const [, pkhPrefix] = b58DecodeAndCheckPrefix(pkh, publicKeyHashPrefixes);
         const isBls = pkhPrefix === PrefixV2.BLS12_381PublicKeyHash;
         const proof = isBls ? (await this.signer.provePossession!()).prefixSig : undefined;
-        const { fee, storageLimit, gasLimit } = await this.getRevealLimits(pkh, isBls);
+        const { fee, storageLimit, gasLimit } = await this.getRevealLimits(pkh);
         ops.unshift(
           await createRevealOperation({ fee, storageLimit, gasLimit, proof }, publicKeyHash, publicKey)
         );
@@ -264,15 +263,27 @@ export class PrepareProvider extends Provider implements PreparationProvider {
    * when that read is unavailable (e.g. RPC error), so this never blocks reveal on a healthy
    * node.
    */
-  private async getRevealLimits(pkh: string, isBls: boolean) {
+  private async getRevealLimits(pkh: string) {
     try {
       const feeParams = feeParamsFromMempoolFilter(
         await this.rpc.getMempoolFilter({ include_default: true })
       );
+      if (
+        feeParams.minimalFeeMutez === DEFAULT_FEE_PARAMS.minimalFeeMutez &&
+        feeParams.feePerGasMutez === DEFAULT_FEE_PARAMS.feePerGasMutez &&
+        feeParams.feePerByteMutez === DEFAULT_FEE_PARAMS.feePerByteMutez
+      ) {
+        // Default-L1 callers use getRevealFee to reserve the exact fee when draining an account.
+        return {
+          fee: getRevealFee(pkh),
+          gasLimit: getRevealGasLimit(pkh),
+          storageLimit: REVEAL_STORAGE_LIMIT,
+        };
+      }
+
+      // Price the gas budget we will actually send, rather than a separately simulated limit.
       const gasLimit = getRevealGasLimit(pkh);
-      const opSize = isBls
-        ? PrepareProvider.REVEAL_OP_SIZE_BLS_BYTES
-        : PrepareProvider.REVEAL_OP_SIZE_BYTES;
+      const opSize = getRevealOperationSize(pkh);
 
       const estimate = Estimate.createEstimateInstanceFromProperties([
         {
@@ -1491,7 +1502,7 @@ export class PrepareProvider extends Provider implements PreparationProvider {
       const [, pkhPrefix] = b58DecodeAndCheckPrefix(pkh, publicKeyHashPrefixes);
       const isBls = pkhPrefix === PrefixV2.BLS12_381PublicKeyHash;
       revealProof = isBls ? (await this.signer.provePossession!()).prefixSig : undefined;
-      revealLimits = await this.getRevealLimits(pkh, isBls);
+      revealLimits = await this.getRevealLimits(pkh);
     }
 
     const explicitGasLimitTotal = batchParams.reduce(
