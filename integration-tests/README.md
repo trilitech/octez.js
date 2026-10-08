@@ -110,14 +110,6 @@ If running the test with a configured secret key, ensure that the account balanc
 Vitest prints the test summary directly in the terminal. Coverage artifacts are written under the integration test coverage output directory when coverage is enabled.
 
 
-## octez.js Integration Tests with Flextesa
-
-:::warning
-Due to the discontinuation of Flextesa support from Protocol Oxford onwards, we unfortunately will not be testing against sandboxes anymore.
-
-The only sandbox tests we're running points to the latest Nairobibox to specifically test for the `ballot` and `drain_delegate` operation.
-:::
-
 ## The Keygen API
 
 The Keygen API in octez.js is specifically designed for testing purposes. It allows developers to generate and manage key pairs (public and private keys) for Tezos accounts during the testing phase of their applications. This is useful for simulating various scenarios, such as transactions, smart contract interactions, and other on-chain operations, without the need to use real Tezos accounts or real funds.
