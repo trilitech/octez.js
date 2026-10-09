@@ -55,3 +55,39 @@ export class SelectorMismatchError extends ParameterValidationError {
     this.name = 'SelectorMismatchError';
   }
 }
+
+/**
+ *  @category Error
+ *  Error that indicates an invalid EVM address
+ */
+export class InvalidEvmAddressError extends ParameterValidationError {
+  constructor(public readonly address: string) {
+    super(`Invalid EVM address "${address}"`);
+    this.name = 'InvalidEvmAddressError';
+  }
+}
+
+/**
+ *  @category Error
+ *  Error that indicates a method signature given without the calldata of the call
+ */
+export class MissingCalldataError extends ParameterValidationError {
+  constructor(public readonly methodSignature: string) {
+    super(
+      `Method signature "${methodSignature}" given without calldata. Pass the ABI-encoded ` +
+        'call (at least its 4-byte selector) as `data`.'
+    );
+    this.name = 'MissingCalldataError';
+  }
+}
+
+/**
+ *  @category Error
+ *  Error that indicates a mutez amount that does not fit in a JavaScript number
+ */
+export class UnsafeMutezAmountError extends ParameterValidationError {
+  constructor(public readonly mutezAmount: bigint) {
+    super(`Amount ${mutezAmount} mutez is larger than Number.MAX_SAFE_INTEGER.`);
+    this.name = 'UnsafeMutezAmountError';
+  }
+}
