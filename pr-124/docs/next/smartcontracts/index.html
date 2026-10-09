@@ -51,7 +51,7 @@ latest stable version
 <p>To load the contract from the Tezos Blockchain, we use the <code>Tezos.contract.at</code> method.
 We can inspect the contract methods and data types using the <code>c.parameterSchema.ExtractSignatures()</code> method.</p>
 <p>The following example shows how to load the contract and view the methods on that contract.</p>
-<div class="tabs-container" data-tabs-id="tabs-lpary0ipo" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="try {
+<div class="tabs-container" data-tabs-id="tabs-mtt5if3cr" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="try {
   const contract = await Tezos.contract.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
   const methods = contract.parameterSchema.ExtractSignatures();
   console.log(JSON.stringify(methods, null, 2));
@@ -88,7 +88,7 @@ Run Code
 </ul>
 <p>In Tezos, to call an entrypoint on a contract, one must send a transfer operation. In the counter contract case, the transfer value can be <code>0</code> as the contract does not expect to receive any tokens. The transfer must have the appropriate Michelson values specified as “params” to call the <code>increment</code> entrypoint.</p>
 <p>We can inspect the transfer params produced by octez.js using the <code>toTransferParams()</code> method:</p>
-<div class="tabs-container" data-tabs-id="tabs-w9bt9acts" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="try {
+<div class="tabs-container" data-tabs-id="tabs-av361kgm8" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="try {
   const contract = await Tezos.contract.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
   const incrementParams = contract.methodsObject.increment(2).toTransferParams();
   console.log(JSON.stringify(incrementParams, null, 2));
@@ -121,7 +121,7 @@ Run Code
 <p>In the next example, we call the <code>send()</code> method. This example requires a different ceremony for getting a temporary key for signing.</p>
 <p>We call the <code>send()</code> method on the <code>increment()</code> method. octez.js then forges this operation into a transfer operation (with a transfer value of zero), signs the operation with our testing key, and injects or broadcasts the operation to the Tezos RPC node.</p>
 <p>Then we wait for the <code>confirmation(3)</code> to complete. The <code>3</code> number tells octez.js how many confirmations to wait for before resolving the promise. <code>3</code> is a good value for this type of demonstration, but we recommend a higher value if you are dealing with mainnet transactions.</p>
-<div class="tabs-container" data-tabs-id="tabs-jbsx2fvy1" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="try {
+<div class="tabs-container" data-tabs-id="tabs-w25svotj6" data-astro-cid-xlvzfuxv> <div class="tabs-buttons" data-astro-cid-xlvzfuxv> <button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-xlvzfuxv> Contract API </button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-xlvzfuxv> Wallet API </button> </div> <div class="tabs-content" data-astro-cid-xlvzfuxv> <div data-tab-item="contractAPI" class="tab-item" data-astro-cid-r7gez2uh> <live-code-runner data-code="try {
   const contract = await Tezos.contract.at('KT1J34ANCFtpnFX26djxvQRNytgKh6UJrCTN');
 
   console.log(`Incrementing storage value by 7...`);
