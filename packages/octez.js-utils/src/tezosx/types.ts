@@ -20,3 +20,38 @@ declare const amountBrand: unique symbol;
  * runtime.
  */
 export type Amount = bigint & { readonly [amountBrand]: true };
+
+/**
+ * A Michelson → EVM call: a contract call to the NAC gateway on the Michelson runtime.
+ */
+export interface GatewayCall {
+  direction: 'michelson-to-evm';
+  /** Address of the NAC gateway contract */
+  contractAddress: string;
+  /** `call` for a bare native transfer, `call_evm` for an EVM contract call */
+  entrypoint: 'call' | 'call_evm';
+  /** Parameter of the gateway entrypoint */
+  parameter: MichelineExpression;
+  /** Amount sent along with the call, in mutez */
+  mutezAmount: bigint;
+  /**
+   * Canonical ABI signature of the called EVM method (e.g. `transfer(address,uint256)`).
+   * Only set for `call_evm`.
+   */
+  methodSignature?: string;
+}
+
+/**
+ * An EVM transaction to wrap into a Michelson → EVM call.
+ */
+export interface EvmTransactionRequest {
+  /** Destination EVM address (0x-prefixed, 20 bytes, EIP-55 checksummed if mixed-case) */
+  to: string;
+  /** Value in wei. Defaults to 0 */
+  value?: AmountLike;
+}
+
+export interface BuildMichelsonToEvmCallOptions {
+  /** Address of the NAC gateway contract. Defaults to {@link NAC_GATEWAY} */
+  gatewayAddress?: string;
+}
