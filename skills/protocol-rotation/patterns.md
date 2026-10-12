@@ -33,6 +33,7 @@ Scope: git-tracked files; docs only under `website/src/content/docs/next/`; skip
 | `{net, url, provider}` entries | `website/public/rpc_nodes.json` | substitute net+host for all providers; verify each answers |
 | `<TabItem value="<p>net">`, `Tabs values=[…]`, `<BlockLevel network=…>` | `next/rpc_nodes.mdx` | substitute (keep table shape) |
 | network union strings `'mainnet' \| '<p>net' \| …` / prose lists | `next/wallet_API.mdx` | substitute / add NEW |
+| retired networks in prose/lists (`'seoulnet' \| 'mondaynet'`, "domains on florencenet", "Daily net") | `next/*.mdx`, READMEs | delete the retired entry/sentence |
 | polling interval by network name | `website/src/scripts/rpc-block-controller.ts` | substitute |
 
 ## C — Semantic / historical (decide per hit)
