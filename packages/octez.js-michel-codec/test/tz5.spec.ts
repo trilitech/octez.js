@@ -1,3 +1,4 @@
+import { b58Encode, hex2buf, PrefixV2 } from '@tezos-x/octez.js-utils';
 import { tz5 } from '../../../test-fixtures/tz5';
 import {
   assertDataValid,
@@ -57,4 +58,19 @@ it.each([
   },
 ])('continues to accept a legacy $length-byte Michelson signature', ({ bytes }) => {
   expect(() => assertDataValid({ bytes }, { prim: 'signature' })).not.toThrow();
+});
+
+describe('unpacking an optimized signature picks its Base58 prefix from the byte length', () => {
+  const blsSignature =
+    '82bf090a8a48ee7f0ea80ec4efafd159d8fbd84c6b08f41399d907388ddc0225e8417da9605649529ef1fac9bb83073a0493ef702b967996cadd8b5304a0f6dad6768017a9ca2cb5fd51c4ff7f4b85e4c95b063deeacab666b93e3aa7d50a6f1';
+
+  it.each([
+    { name: 'BLS (96 bytes)', hex: blsSignature, prefix: PrefixV2.BLS12_381Signature },
+    { name: 'generic (64 bytes)', hex: '00'.repeat(64), prefix: PrefixV2.GenericSignature },
+  ])('unpacks a $name signature', ({ hex, prefix }) => {
+    const packed = `050a${(hex.length / 2).toString(16).padStart(8, '0')}${hex}`;
+    expect(unpackDataBytes({ bytes: packed }, { prim: 'signature' })).toEqual({
+      string: b58Encode(hex2buf(hex), prefix),
+    });
+  });
 });
