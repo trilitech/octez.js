@@ -1349,6 +1349,130 @@ describe('RPCEstimateProvider test signer', () => {
       expect(estimate).toBeInstanceOf(Estimate);
     });
   });
+
+  describe('estimates of an unrevealed account', () => {
+    const source = 'tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM';
+    const forgedBytes = 224;
+    const signatureBytes = 64;
+    const revealSize = 162;
+
+    const contractCallMethod = () => {
+      const rpcContractProvider = new RpcContractProvider(context, {} as any);
+      const contractAbs = new ContractAbstraction(
+        'contractAddress',
+        { code: genericMultisig, storage: {} },
+        rpcContractProvider,
+        rpcContractProvider,
+        entrypointsGenericMultisig,
+        mockRpcClient as any,
+        {} as any
+      );
+      return contractAbs.methodsObject.main({
+        payload: {
+          counter: 2,
+          action: {
+            change_keys: {
+              threshold: 2,
+              keys: ['edpkvS5QFv7KRGfa3b87gg9DBpxSm3NpSwnjhUjNBQrRUUR66F7C9g'],
+            },
+          },
+        },
+        sigs: [
+          'sigb1FKPeiRgPApxqBMpyBSMpwgnbzhaMcqQcTVwMz82MSzNLBrmRUuVZVgWTBFGcoWQcjTyhfJaxjFtfvB6GGHkfwpxBkFd',
+        ],
+      });
+    };
+
+    const cases: { name: string; estimate: () => Promise<Estimate> }[] = [
+      { name: 'stake', estimate: () => estimateProvider.stake({ amount: 2 }) },
+      { name: 'unstake', estimate: () => estimateProvider.unstake({ amount: 2 }) },
+      { name: 'finalizeUnstake', estimate: () => estimateProvider.finalizeUnstake({}) },
+      {
+        name: 'increasePaidStorage',
+        estimate: () =>
+          estimateProvider.increasePaidStorage({
+            amount: 10,
+            destination: 'KT1AL8we1Bfajn2M7i3gQM5PJEuyD36sXaYb',
+          }),
+      },
+      {
+        name: 'updateConsensusKey',
+        estimate: () =>
+          estimateProvider.updateConsensusKey({
+            pk: 'edpkti5K5JbdLpp2dCqiTLoLQqs5wqzeVhfHVnNhsSCuoU8zdHYoY7',
+          }),
+      },
+      {
+        name: 'updateCompanionKey',
+        estimate: () =>
+          estimateProvider.updateCompanionKey({
+            pk: 'BLpk1wMU34nS7N96D2owyejLxQtwZwLARLg6tdTFMP5N8fz6yCiLogfFXkYo9ZHnZ95Kba3D3cvt',
+            proof:
+              'BLsig9cW2ffM82s8cZWNDQTmecxHPHmJcTUh5DF2dVP7GV7oUmmptd4JpxBvSyE1VDeLtGyV68KaTuaEM1qiSUELMqkdwCLJFDQYGL6ZZLZDEUAfyu3Vu3ivs66jhV8ANwt3tKg6qABoqx',
+          }),
+      },
+      {
+        name: 'smartRollupAddMessages',
+        estimate: () =>
+          estimateProvider.smartRollupAddMessages({
+            message: [
+              '0000000031010000000b48656c6c6f20776f726c6401cc9e352a850d7475bf9b6cf103aa17ca404bc9dd000000000764656661756c74',
+            ],
+          }),
+      },
+      {
+        name: 'smartRollupOriginate',
+        estimate: () =>
+          estimateProvider.smartRollupOriginate({
+            pvmKind: PvmKind.WASM2,
+            kernel: '0061736d01000000',
+            parametersType: { prim: 'bytes' },
+          }),
+      },
+      { name: 'contractCall', estimate: () => estimateProvider.contractCall(contractCallMethod()) },
+    ];
+
+    it.each(cases)(
+      '$name leaves out the reveal gas and the reveal bytes of the estimate',
+      async ({ estimate }) => {
+        mockRpcClient.getConstants.mockResolvedValue({
+          hard_gas_limit_per_operation: new BigNumber(1040000),
+          hard_storage_limit_per_operation: new BigNumber(60000),
+          hard_gas_limit_per_block: new BigNumber(5200000),
+          cost_per_byte: new BigNumber(1000),
+          smart_rollup_origination_size: new BigNumber(6314),
+        });
+        mockForger.forge.mockReturnValue('aa'.repeat(forgedBytes));
+        const operation = {
+          kind: 'transaction',
+          source,
+          fee: 10000,
+          metadata: { operation_result: { consumed_milligas: 1000000 } },
+        };
+        const reveal = {
+          kind: 'reveal',
+          source,
+          fee: 10000,
+          metadata: { operation_result: { consumed_milligas: 200000 } },
+        };
+
+        mockRpcClient.simulateOperation.mockResolvedValue({ contents: [{ ...operation }] });
+        const revealed = await estimate();
+
+        mockRpcClient.getManagerKey.mockResolvedValue(null);
+        mockRpcClient.simulateOperation.mockResolvedValue({
+          contents: [{ ...reveal }, { ...operation }],
+        });
+        const unrevealed = await estimate();
+
+        // Characterizes the size model: the reveal estimate is dropped and its signed standalone
+        // size (162 bytes for tz1) is taken off the operation, whose forged bytes include it.
+        expect(unrevealed.gasLimit).toBe(revealed.gasLimit);
+        expect(revealed.opSize).toBe(forgedBytes + signatureBytes);
+        expect(unrevealed.opSize).toBe(forgedBytes + signatureBytes - revealSize);
+      }
+    );
+  });
 });
 
 describe('RPCEstimateProvider test wallet', () => {
