@@ -21,6 +21,7 @@ Scope: git-tracked files; docs only under `website/src/content/docs/next/`; skip
 | OLD-pinned exhaustive fixture block (`<p>net(...)` + `ConstantsResponseProtoNNN`) | `__tests__/rpc/get-protocol-constants.spec.ts` | delete block, drop now-unused type import, fix the "networks that stay put" comment |
 | dead env scripts (e.g. `sandbox-env.sh` exporting `RUN_<NET>_WITH_SECRET_KEY`, `TEZOS_RPC_<NET>`) | `integration-tests/` | check each variable against `config.ts`; `git rm` if nothing reads them |
 | unused per-network consts (`const <net> = rpc.includes('<net>') ? test : test.skip`) | `__tests__/**` | delete if unreferenced |
+| Flextesa/sandbox leftovers (`isSandbox`, `NetworkType.SANDBOX`, `TEZOS_NETWORK_TYPE`, `__tests__/flextesa/`) | `config.ts`, specs, READMEs | delete once nothing uses them |
 | cspell word list | `cspell.json` | swap `<p>net` → `<new>net` |
 | CLAUDE.md lane examples | `CLAUDE.md` | update example names only (no policy changes) |
 
