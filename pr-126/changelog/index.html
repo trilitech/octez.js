@@ -10,7 +10,12 @@ code[class*=language-],pre[class*=language-]{color:#000;background:none;text-sha
 <ul>
 <li><strong><code>@tezos-x/octez.js-dapp-wallet</code>: the <code>beacon-types</code> UMD global is now <code>octezBeaconTypes</code></strong> (was <code>taquitoBeaconTypes</code>). Only <code>&lt;script&gt;</code>-tag consumers of <code>dist/beacon-types.umd.js</code> are affected; update any <code>window.taquitoBeaconTypes</code> reference.</li>
 <li><strong><code>@tezos-x/octez.js</code>: <code>ChainIds.TALLINNNET</code> is removed.</strong> The Tallinn (U024) testnet is shut down. Use <code>ChainIds.USHUAIANET</code> or <code>ChainIds.MAINNET</code>.</li>
+<li><strong><code>@tezos-x/octez.js-wallet-connect</code>: <code>NetworkType.GHOSTNET</code> is removed.</strong> Ghostnet is shut down.</li>
 <li><strong><code>@tezos-x/octez.js-wallet-connect</code>: <code>NetworkType.TALLINNNET</code> is replaced by <code>NetworkType.USHUAIANET</code></strong> (<code>&#39;tallinnnet&#39;</code> → <code>&#39;ushuaianet&#39;</code>). Update any code or stored sessions that reference the old network.</li>
+</ul>
+<h3 id="new-features">New features</h3>
+<ul>
+<li><strong><code>tz5</code> (ML-DSA-44) accounts are supported</strong>, for use on protocols where <code>tz5_account_enable</code> is turned on (it is not on mainnet or ushuaianet today). <code>InMemorySigner.fromSecretKey</code> accepts <code>mdsk</code> secret keys and <code>mdesk</code> encrypted secret keys; mnemonic generation and HD derivation do not support ML-DSA. <code>@tezos-x/octez.js-utils</code> knows the <code>tz5</code>, <code>mdpk</code>, <code>mdsk</code>, <code>mdesk</code> and <code>mdsig</code> prefixes and verifies ML-DSA-44 signatures, and the local forger, Michelson codec and encoder handle the new key, key hash and signature types. Reveal gas, fee and size estimation account for tz5. The support is validated against an isolated Octez 25.2 sandbox (<code>npm run test:tz5:local</code>). <code>@tezos-x/octez.js-utils</code> and <code>@tezos-x/octez.js-signer</code> now depend on <code>@noble/post-quantum</code>.</li>
 </ul>
 <hr/>
 <h1 id="octezjs-v110">octez.js v1.1.0</h1>
@@ -95,7 +100,7 @@ code[class*=language-],pre[class*=language-]{color:#000;background:none;text-sha
 <p>This is official release of v24.0.0.
 There are only websites and internal changes since 24.0.0-RC.0</p>
 </blockquote>
-<h3 id="new-features">New Features</h3>
+<h3 id="new-features-1">New Features</h3>
 <ul>
 <li><code>@taquito/rpc</code> – Added support for the new RPC endpoint <code>getdestinationindex</code> #3261</li>
 <li><code>@taquito/michel-codec</code> – Added support for new Michelson instructions: <code>INDEX_ADDRESS</code> and <code>GET_ADDRESS_INDEX</code> #3238</li>
@@ -422,7 +427,7 @@ const length = payloadLength[PrefixV2.Ed25519PublicKeyHash]
 <h1 id="taquito-v2200">Taquito v22.0.0</h1>
 <h2 id="summary-2">Summary</h2>
 <h3 id="rio-protocol-support">Rio Protocol Support</h3>
-<h3 id="new-features-1">New Features</h3>
+<h3 id="new-features-2">New Features</h3>
 <p><code>@taquito/local-forging</code> - Update <code>localForger</code> to <code>forge</code> and <code>parse</code> a tz4 address as <code>delegate</code> for <code>delegation</code> operation #3113
 <code>@taquito/local-forging</code> - Update <code>localForger</code> to <code>forge</code> and <code>parse</code> a tz4 <code>pk</code> and <code>proof</code> for <code>update_consensus_key</code> operation #3113
 <code>@taquito/utils</code> - Updated <code>b58decode</code>, <code>encodePubKey</code>, <code>encodeAddress</code>, and <code>encodeKeyHash</code> to encode and decode tz4 public keys and addresses #3113
@@ -468,7 +473,7 @@ Updated ci script actions/upload-artifact to v4 #3110</p>
 <h1 id="taquito-v2100">Taquito v21.0.0</h1>
 <h2 id="summary-8">Summary</h2>
 <h3 id="quebec-protocol-support">Quebec Protocol Support</h3>
-<h3 id="new-features-2">New Features</h3>
+<h3 id="new-features-3">New Features</h3>
 <p><code>@taquito/rpc</code> - Added <code>getSpendable</code>, <code>getBalanceAndFrozenBonds</code> and <code>getSpendableAndFrozenBonds</code> rpc endpoint #3023</p>
 <h3 id="improvement">Improvement</h3>
 <p><code>@taquito/rpc</code> - Updated <code>getPendingOperations</code> with param <code>source</code> and <code>operationHash</code> #3034
@@ -547,7 +552,7 @@ For more information, visit <a href="https://www.ecadinfra.com/">ECAD Infra’s 
 <li>We migrated <code>Node.js</code> support from LTS18 to LTS20 and above</li>
 </ul>
 <h2 id="summary-11">Summary</h2>
-<h3 id="new-features-3">New features</h3>
+<h3 id="new-features-4">New features</h3>
 <ul>
 <li><code>@taquito/taquito</code> - Supported operation <code>transferTicket</code> in walletAPI PR #3003</li>
 </ul>
@@ -617,7 +622,7 @@ await wallet.requestPermissions();
   }
 }
 </code></pre>
-<h3 id="new-features-4">New Features</h3>
+<h3 id="new-features-5">New Features</h3>
 <ul>
 <li><code>@taquito/taquito</code> - Added staking pseudo operations (stake, unstake, finalize_unstake) to the Contract API. This includes support for <code>prepareProvider</code>, <code>estimationProvider</code>, and <code>rpcContractProvider</code> #2886</li>
 <li><code>@taquito/taquito</code> - Added staking related pseudo operations (stake, unstake, finalize_unstake) to the Wallet API #2921</li>
@@ -667,7 +672,7 @@ await op.confirmation();
 <h1 id="taquito-v1920">Taquito v19.2.0</h1>
 <p><strong>Breaking Changes</strong>: (if applicable)</p>
 <h2 id="summary-13">Summary</h2>
-<h3 id="new-features-5">New Features</h3>
+<h3 id="new-features-6">New Features</h3>
 <ul>
 <li><code>@taquito/timelock</code>- A new package for Timelocks have been introduced #2843. Users will now be able to create Chests, unlock Chests, and utilize Chests. For more information, please refer to this <a href="https://taquito.io/docs/next/timelock">document</a></li>
 <li><code>@taquito/beacon-wallet</code> - the <code>beacon-wallet</code> package is now bundled in a <code>.zip</code> file for <a href="https://github.com/ecadlabs/taquito/pull/2860">PR#2860</a></li>
@@ -700,7 +705,7 @@ await op.confirmation();
 </li>
 </ul>
 <h2 id="summary-14">Summary</h2>
-<h3 id="new-features-6">New Features</h3>
+<h3 id="new-features-7">New Features</h3>
 <ul>
 <li><code>@taquito/taquito</code> - Added smart rollup execute outbox message operation #2321 (please note that this feature is not fully tested due to some parts requiring the use of <code>octez-client</code>)
 <code>@taquito/beacon-wallet</code> - added beacon-wallet bundle script to output a <code>.zip</code> bundle for browser only environments #2744</li>
@@ -760,7 +765,7 @@ Oxford2 comes with quite a few breaking changes, please make sure to update your
 <li><code>@taquito/rpc</code> - Updated RPC types for Oxford2 compatibility #2596</li>
 </ul>
 <h2 id="summary-15">Summary</h2>
-<h3 id="new-features-7">New Features</h3>
+<h3 id="new-features-8">New Features</h3>
 <ul>
 <li><code>@taquito/local-forging</code> - Added new property <code>whitelist</code> in smart rollup origination operation #2776</li>
 </ul>
@@ -771,7 +776,7 @@ Oxford2 comes with quite a few breaking changes, please make sure to update your
 In this version, we replaced instances of <code>Axios</code> in favour of <code>Fetch</code>.</p>
 <p>We are not expecting any breaking changes, but if there are any issues that you see regarding this, please reach out to the Taquito team.</p>
 <h2 id="summary-16">Summary</h2>
-<h3 id="new-features-8">New Features</h3>
+<h3 id="new-features-9">New Features</h3>
 <ul>
 <li><code>@taquito/taquito</code> - Expose and publicly <code>smartContractAbstractionSemantic</code> #2534</li>
 </ul>
@@ -846,7 +851,7 @@ Taquito has moved from <code>MIT</code> to <code>Apache 2.0</code>.</p>
 <li><code>OrToken.Execute()</code> used to throw <code>OrTokenDecodingError</code> in case of failure, but now will throw <code>OrValidationError</code></li>
 </ul>
 <h2 id="summary-20">Summary</h2>
-<h3 id="new-features-9">New Features</h3>
+<h3 id="new-features-10">New Features</h3>
 <ul>
 <li><code>@taquito/michelson-encoder</code> - The <code>OrToken</code>’s <code>EncodeObject</code> method now only accepts an object with a single field #2544</li>
 </ul>
@@ -981,7 +986,7 @@ Further improved error classes</p>
 <li>In <code>@taquito/michel-codec</code> <code>InvalidContractError</code> is renamed to <code>InvalidMichelsonError</code></li>
 </ul>
 <h2 id="summary-21">Summary</h2>
-<h3 id="new-features-10">New Features</h3>
+<h3 id="new-features-11">New Features</h3>
 <ul>
 <li>Added new RPC endpoint <code>simulateOperation</code> #2548</li>
 <li>Added support for signing <code>failingNoop</code> operation in <code>Contract API</code> and <code>Wallet API</code> #952 #2507</li>
@@ -1075,7 +1080,7 @@ let simulate = await Tezos.rpc.simulateOperation(op)).contents[0]
 <li>In <code>@taquito/tzip-16</code> - <code>ForbiddenInstructionInViewCode</code> is renamed to <code>ForbiddenInstructionInViewCodeError</code></li>
 </ul>
 <h2 id="summary-23">Summary</h2>
-<h3 id="new-features-11">New Features</h3>
+<h3 id="new-features-12">New Features</h3>
 <ul>
 <li>Exposed the injector to be customizable from the TezosToolkit class #1344</li>
 </ul>
@@ -1115,7 +1120,7 @@ let simulate = await Tezos.rpc.simulateOperation(op)).contents[0]
 <li><code>@taquito/taquito</code> - Update gas limit changes that pertains to each different curve in Protocol N #2447</li>
 <li><code>@taquito/rpc</code> - Update operation result of <code>sc_rollup_cement_result</code> to have the newly added field #2448</li>
 </ul>
-<h3 id="new-features-12">New Features</h3>
+<h3 id="new-features-13">New Features</h3>
 <ul>
 <li><code>@taquito/taquito</code> &amp; <code>@taquito/michelson-encoder</code>- Introduced a new feature called <code>EventAbstraction</code> that provides an abstraction to Events, similar to <code>ContractAbstraction</code> #2128</li>
 <li></li>
@@ -1174,7 +1179,7 @@ let simulate = await Tezos.rpc.simulateOperation(op)).contents[0]
 </ul>
 <p><strong>Note</strong>: There are also significant (backwards compatible) changes to the <code>@taquito/taquito</code> package, largely regarding the flow of preparing, estimating, forging, and injecting operations into a node. No breaking changes are expected, but users are welcomed to reach out to the team if any issues arise.</p>
 <h2 id="summary-25">Summary</h2>
-<h3 id="new-features-13">New Features</h3>
+<h3 id="new-features-14">New Features</h3>
 <ul>
 <li>Introduction of the new <code>@taquito/core</code> package, which will contain important types and shared classes #1992</li>
 </ul>
@@ -1389,7 +1394,7 @@ const forgedBytes = await forger.forge(params);
 <p>For more information, refer to <a href="https://gitlab.com/tezos/tezos/-/merge_requests/6681">this page</a></p>
 <h1 id="taquito-v1510">Taquito v15.1.0</h1>
 <h2 id="summary-28">Summary</h2>
-<h3 id="new-features-14">New Features</h3>
+<h3 id="new-features-15">New Features</h3>
 <ul>
 <li><code>@taquito/taquito</code> New provider support <code>PrepareProvider</code> to facilitate preparation of operations in Taquito. #2020</li>
 <li><code>@taquito/taquito</code> Support new operation <code>increase_paid_storage</code> on the wallet API #1768</li>
@@ -1549,7 +1554,7 @@ await op.confirmation();
 <p>The <code>TICKET</code> instruction now returns an optional ticket instead of a ticket. This change has also been reflected in the michel-codec parser.</p>
 <h1 id="taquito-v1420-beta">Taquito v14.2.0-beta</h1>
 <h2 id="summary-31">Summary</h2>
-<h3 id="new-features-15">New Features</h3>
+<h3 id="new-features-16">New Features</h3>
 <ul>
 <li><code>@taquito/taquito</code> - Added support for <code>Ballot</code> operation in the Contract API #1630</li>
 <li><code>@taquito/taquito</code> - Added support for <code>Proposals</code> operation in the Contract API #2099</li>
@@ -1594,7 +1599,7 @@ const signer = InMemorySigner.fromMnemonic({
 </code></pre>
 <h1 id="taquito-v1410-beta">Taquito v14.1.0-beta</h1>
 <h2 id="summary-32">Summary</h2>
-<h3 id="new-features-16">New features</h3>
+<h3 id="new-features-17">New features</h3>
 <ul>
 <li><code>@taquito/taquito</code> - Provide a subscriber to events #1746</li>
 <li><code>@taquiro/rpc</code> - Support <code>voting_info</code> endpoint #1749</li>
@@ -1704,7 +1709,7 @@ We are also investigating the integration of wallet connect 2 in Taquito.</p>
 <li><code>@taquito/rpc</code> - Support new properties/operations for Kathmandu #1862 #1848</li>
 <li><code>@taquito/rpc</code> - Add support for <code>run_script_view</code> endpoint #1750</li>
 </ul>
-<h3 id="new-features-17">New features</h3>
+<h3 id="new-features-18">New features</h3>
 <ul>
 <li>Sapling package</li>
 <li><code>@taquito/taquito</code> - Added support for the <code>transfer_ticket</code> operation #1680</li>
@@ -2216,7 +2221,7 @@ await contact.methods.methodName().send();
 Note that the wallet account needs to be revealed to conduct any estimate as Taquito has no access to the wallet’s public key required to simulate a reveal operation.</p>
 <h1 id="taquito-v1120-beta">Taquito v11.2.0-beta</h1>
 <h2 id="summary-38">Summary</h2>
-<h3 id="new-features-18">New features</h3>
+<h3 id="new-features-19">New features</h3>
 <ul>
 <li>@taquito/utils - Implemented additional hash checksum validation functions in Taquito #95</li>
 </ul>
@@ -2320,7 +2325,7 @@ Users can use this method to discover how to write the storage property when dep
 <p>The error <code>Cannot read property &#39;DAppClient&#39; of undefined</code> was thrown when using the <code>@taquito/beacon-wallet</code> package without npm. This has been fixed by replacing the global name from <code>beaconSdk</code> to <code>beacon</code> in the taquito-beacon-wallet.umd.js compiled file.</p>
 <h1 id="taquito-v1110-beta">Taquito v11.1.0-beta</h1>
 <h2 id="summary-39">Summary</h2>
-<h3 id="new-features-19">New features</h3>
+<h3 id="new-features-20">New features</h3>
 <ul>
 <li>@taquito/taquito - Support for simulating contract views #1117</li>
 <li>@taquito/michel-codec - Option added to the Parser to expand global constants in script #1219</li>
@@ -2508,7 +2513,7 @@ More details can be found here: <a href="https://github.com/ecadlabs/taquito/dis
 </ul>
 <h1 id="taquito-v1020-beta">Taquito v10.2.0-beta</h1>
 <h2 id="summary-41">Summary</h2>
-<h3 id="new-features-20">New features</h3>
+<h3 id="new-features-21">New features</h3>
 <ul>
 <li>@taquito/contract-library - [Performance] Embed popular contracts into your application using the new ContractAbstraction instantiation #1049</li>
 <li>@taquito/rpc - [Performance] Enable RPC caching in your application using the RpcClient cache implementation #924</li>
@@ -2758,7 +2763,7 @@ Thank you for your time and support!</p>
 <p>If you have feature or issue requests, please create an issue on <a href="http://github.com/ecadlabs/taquito/issues">http://github.com/ecadlabs/taquito/issues</a> or join us on the Taquito community support channel on Telegram <a href="https://t.me/tezostaquito">https://t.me/tezostaquito</a></p>
 <h1 id="taquito-v920-beta">Taquito v9.2.0-beta</h1>
 <h2 id="summary-44">Summary</h2>
-<h3 id="new-features-21">New features</h3>
+<h3 id="new-features-22">New features</h3>
 <ul>
 <li>Compatibility support for Granadanet</li>
 <li>@taquito/michelson-encoder - Accept bytes in Uint8Array #375</li>
@@ -2815,7 +2820,7 @@ The <code>getSaplingDiff</code> method returns an object of the following type:<
 @taquito/michelson-encoder - Fix for unexpected MapTypecheckError when loading contract storage - for cases where a map contains a big map as value #925</p>
 <h1 id="taquito-v910-beta">Taquito v9.1.0-beta</h1>
 <h2 id="summary-45">Summary</h2>
-<h3 id="new-features-22">New features</h3>
+<h3 id="new-features-23">New features</h3>
 <ul>
 <li>@taquito/taquito - Added reveal operation on the RpcContractProvider and RPCEstimateProvider classes #772</li>
 <li>@taquito/taquito &amp; @taquito/beacon-wallet - Ability to specify the fee, storageLimit and gasLimit parameters using the wallet API #866</li>
@@ -2909,7 +2914,7 @@ These values are configurable by the user:
 <p>A note on how to use the Kukai wallet for testing on Edonet has been added to the Wallet API documentation.</p>
 <h1 id="taquito-v810-beta">Taquito v8.1.0-beta</h1>
 <h2 id="summary-48">Summary</h2>
-<h3 id="new-features-23">New features</h3>
+<h3 id="new-features-24">New features</h3>
 <ul>
 <li>Pack/unpack data locally. Now used for fetching big-maps too.</li>
 <li>New API to fetch multiple bigmap values at once 🚀🚀</li>
@@ -3051,7 +3056,7 @@ const p = new Parser(parserOptions);
 <p>We have a good practice of Continuous Delivery in Taquito, but we plan to take this to the next level. Making new features available for pre-view earlier, and test artefacts more visible. Stay tuned!</p>
 <p>If you have feature or issue requests, please create an issue on <a href="http://github.com/ecadlabs/taquito/issues">http://github.com/ecadlabs/taquito/issues</a> or join us on the Taquito community support channel on Telegram <a href="https://t.me/tezostaquito">https://t.me/tezostaquito</a></p>
 <h2 id="taquito-v710-beta">Taquito v7.1.0-beta</h2>
-<h3 id="new-features-24">New Features</h3>
+<h3 id="new-features-25">New Features</h3>
 <h4 id="lambda-views">Lambda Views</h4>
 <p>Lambda views is a technique that allows a caller to execute a view function on a contract without incurring fees. Taquito provides an abstraction over this technique that makes it easy to use. Application developers can use this feature to call view methods on smart-contracts without incurring fees.</p>
 <p>See the <a href="https://taquito.io/docs/lambda_view">Lambda View documentation</a></p>
@@ -3480,4 +3485,4 @@ docs(website) Add origination documentation page #196</p>
   }
 })();</script>  </div> </div> </div> <aside id="sidebar" class="hidden md:block pt-8 pr-4 shrink-0 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pl-4 border-l border-[var(--ifm-toc-border-color)] toc-sidebar"> <div id="sidebar-content" class="relative"> <nav> <ul id="sidebar-nav" class="list-none p-0 m-0"></ul> </nav> </div> </aside> </main> <footer class="bg-brand-dark border-t border-white/10 py-12 px-12 md:px-24 flex-col-reverse md:flex-row flex justify-between text-white relative z-10 footer-font" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <img src="/octez.js/pr-126/_astro/octez-logo.CEHtwN6o.svg" alt="octez.js Logo" class="h-14 w-auto mb-4 object-contain" data-astro-cid-sz7xmlte> <p class="mt-2 text-sm opacity-60" data-astro-cid-sz7xmlte>Build on Tezos with TypeScript</p> <a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" class="mt-6 bg-accent text-white hover:bg-accent-dark transition-colors duration-150 px-3.5 items-center py-2.5 rounded-full text-lg flex w-fit" data-astro-cid-sz7xmlte> <!-- Github Logo --> <svg width="10" height="10" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline-block size-7 align-middle mr-1" aria-label="GitHub" data-astro-cid-sz7xmlte> <path d="M8.10059 19.0137C8.10059 19.1113 7.98828 19.1895 7.84668 19.1895C7.68555 19.2041 7.57324 19.126 7.57324 19.0137C7.57324 18.916 7.68555 18.8379 7.82715 18.8379C7.97363 18.8232 8.10059 18.9014 8.10059 19.0137ZM6.58203 18.7939C6.54785 18.8916 6.64551 19.0039 6.79199 19.0332C6.91895 19.082 7.06543 19.0332 7.09473 18.9355C7.12402 18.8379 7.03125 18.7256 6.88477 18.6816C6.75781 18.6475 6.61621 18.6963 6.58203 18.7939ZM8.74023 18.7109C8.59863 18.7451 8.50098 18.8379 8.51562 18.9502C8.53027 19.0479 8.65723 19.1113 8.80371 19.0771C8.94531 19.043 9.04297 18.9502 9.02832 18.8525C9.01367 18.7598 8.88184 18.6963 8.74023 18.7109ZM11.9531 0C5.18066 0 0 5.1416 0 11.9141C0 17.3291 3.4082 21.9629 8.27637 23.5938C8.90137 23.7061 9.12109 23.3203 9.12109 23.0029C9.12109 22.7002 9.10645 21.0303 9.10645 20.0049C9.10645 20.0049 5.68848 20.7373 4.9707 18.5498C4.9707 18.5498 4.41406 17.1289 3.61328 16.7627C3.61328 16.7627 2.49512 15.9961 3.69141 16.0107C3.69141 16.0107 4.90723 16.1084 5.57617 17.2705C6.64551 19.1553 8.4375 18.6133 9.13574 18.291C9.24805 17.5098 9.56543 16.9678 9.91699 16.6455C7.1875 16.3428 4.43359 15.9473 4.43359 11.25C4.43359 9.90723 4.80469 9.2334 5.58594 8.37402C5.45898 8.05664 5.04395 6.74805 5.71289 5.05859C6.7334 4.74121 9.08203 6.37695 9.08203 6.37695C10.0586 6.10352 11.1084 5.96191 12.1484 5.96191C13.1885 5.96191 14.2383 6.10352 15.2148 6.37695C15.2148 6.37695 17.5635 4.73633 18.584 5.05859C19.2529 6.75293 18.8379 8.05664 18.7109 8.37402C19.4922 9.23828 19.9707 9.91211 19.9707 11.25C19.9707 15.9619 17.0947 16.3379 14.3652 16.6455C14.8145 17.0312 15.1953 17.7637 15.1953 18.9111C15.1953 20.5566 15.1807 22.5928 15.1807 22.9932C15.1807 23.3105 15.4053 23.6963 16.0254 23.584C20.9082 21.9629 24.2188 17.3291 24.2188 11.9141C24.2188 5.1416 18.7256 0 11.9531 0ZM4.74609 16.8408C4.68262 16.8896 4.69727 17.002 4.78027 17.0947C4.8584 17.1729 4.9707 17.207 5.03418 17.1436C5.09766 17.0947 5.08301 16.9824 5 16.8896C4.92188 16.8115 4.80957 16.7773 4.74609 16.8408ZM4.21875 16.4453C4.18457 16.5088 4.2334 16.5869 4.33105 16.6357C4.40918 16.6846 4.50684 16.6699 4.54102 16.6016C4.5752 16.5381 4.52637 16.46 4.42871 16.4111C4.33105 16.3818 4.25293 16.3965 4.21875 16.4453ZM5.80078 18.1836C5.72266 18.2471 5.75195 18.3936 5.86426 18.4863C5.97656 18.5986 6.11816 18.6133 6.18164 18.5352C6.24512 18.4717 6.21582 18.3252 6.11816 18.2324C6.01074 18.1201 5.86426 18.1055 5.80078 18.1836ZM5.24414 17.4658C5.16602 17.5146 5.16602 17.6416 5.24414 17.7539C5.32227 17.8662 5.4541 17.915 5.51758 17.8662C5.5957 17.8027 5.5957 17.6758 5.51758 17.5635C5.44922 17.4512 5.32227 17.4023 5.24414 17.4658Z" fill="currentColor" data-astro-cid-sz7xmlte></path> </svg> <p class="tracking-wide ml-1 uppercase" data-astro-cid-sz7xmlte>GitHub</p> </a> <p class="mt-12 text-sm opacity-60" data-astro-cid-sz7xmlte>
 Copyright © 2026 Nomadic Labs - Open Source Apache 2.0 License
-</p> </div> <div class="grid grid-cols-2 md:flex gap-16 mb-12 md:mb-0" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Documentation</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="/docs/1.0.0/quick_start" data-astro-cid-sz7xmlte>Quick Start</a></li> </ul> </div> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Community</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="https://tezos.stackexchange.com/questions/tagged/octez.js" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Stack Exchange</a></li> <li data-astro-cid-sz7xmlte><a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>X (Twitter)</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/blob/master/code-of-conduct.md" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Code of Conduct</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>GitHub</a></li> </ul> </div> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Contact</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/issues/new/choose" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Report Issues</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Contribute</a></li> </ul> </div> </div> </footer>   <script type="module" src="/octez.js/pr-126/_astro/MarkdownLayout.astro_astro_type_script_index_2_lang.BrpNFygn.js"></script></body></html>
+</p> </div> <div class="grid grid-cols-2 md:flex gap-16 mb-12 md:mb-0" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Documentation</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="/docs/1.0.0/quick_start" data-astro-cid-sz7xmlte>Quick Start</a></li> </ul> </div> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Community</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="https://tezos.stackexchange.com/questions/tagged/octez.js" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Stack Exchange</a></li> <li data-astro-cid-sz7xmlte><a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>X (Twitter)</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/blob/master/code-of-conduct.md" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Code of Conduct</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>GitHub</a></li> </ul> </div> <div data-astro-cid-sz7xmlte> <h4 class="font-bold mb-2" data-astro-cid-sz7xmlte>Contact</h4> <ul class="text-sm space-y-2" data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/issues/new/choose" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Report Issues</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/trilitech/octez.js/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" data-astro-cid-sz7xmlte>Contribute</a></li> </ul> </div> </div> </footer>   <script type="module" src="/octez.js/pr-126/_astro/MarkdownLayout.astro_astro_type_script_index_2_lang.CP7Xmn15.js"></script></body></html>
