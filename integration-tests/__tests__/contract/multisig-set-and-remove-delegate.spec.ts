@@ -1,6 +1,6 @@
 import { HttpResponseError, STATUS_CODE } from '@tezos-x/octez.js-http-utils';
 import { MANAGER_LAMBDA, TezosToolkit } from '@tezos-x/octez.js';
-import { CONFIGS, isSandbox } from '../../config';
+import { CONFIGS } from '../../config';
 import { genericMultisig } from '../../data/multisig';
 
 const isRegisteredDelegate = async (Tezos: TezosToolkit, pkh: string) => {
@@ -25,21 +25,10 @@ const isRegisteredDelegate = async (Tezos: TezosToolkit, pkh: string) => {
 };
 
 CONFIGS().forEach(({ lib, rpc, setup, createAddress }) => {
-  const Funder = lib;
-  let Tezos: TezosToolkit;
+  const Tezos: TezosToolkit = lib;
   describe(`Generic Multisig set delegate: ${rpc}`, () => {
     beforeAll(async () => {
       await setup({ preferFreshKey: true, minBalanceMutez: 5_000_000 });
-      // Checks if test is being run in Flextesa or not
-      // If it is, fund the signer account using using 'Funder', which is the flextesa_bootstrap account
-      if (isSandbox({ rpc })) {
-        Tezos = await createAddress();
-        const pkh = await Tezos.signer.publicKeyHash();
-        const fund = await Funder.contract.transfer({ amount: 10000, to: pkh });
-        await fund.confirmation();
-      } else {
-        Tezos = Funder;
-      }
     });
     test('test manager transfers set delegate scenarios', async () => {
       const account1 = await createAddress();

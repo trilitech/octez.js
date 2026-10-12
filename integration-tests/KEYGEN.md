@@ -20,7 +20,7 @@ and a **signer config**. Two signer modes (`SignerType`):
 - **`EPHEMERAL_KEY`** — acquire a fresh key from the keygen (the default for the
   testnet suite; `preferFreshKey: true`).
 - **static secret key** (`defaultSecretKey`) — a single configured key, used for
-  flextesa/ledger specs and external users who can't run a keygen (tests then run
+  ledger specs and external users who can't run a keygen (tests then run
   sequentially).
 
 ### 3. Fresh-key acquisition (`setupSignerWithFreshKey`)
