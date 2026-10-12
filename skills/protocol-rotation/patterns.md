@@ -27,7 +27,7 @@ Scope: git-tracked files; docs only under `website/src/content/docs/next/`; skip
 | Pattern | Files | Action |
 |---|---|---|
 | `NetworkType.<P>NET = '<p>net'` | `packages/octez.js-wallet-connect/src/types.ts` (+ its tests/data: `tezos:<p>net:tz…`, error strings `"<p>net" is missing…`) | replace by NEW; breaking → `!` commit |
-| `ChainIds.<P>NET = 'NetX…'` | `packages/octez.js/src/constants.ts` | delete (always removed); breaking → `!` commit |
+| `ChainIds.<P>NET = 'NetX…'` | `packages/octez.js/src/constants.ts` | public API, separate enum from wallet-connect's `NetworkType`. Rotation: delete OLD. Older retired ids (ghostnet, …): keep, with the status comment above the enum; breaking → `!` commit |
 | `{net, url, provider}` entries | `website/public/rpc_nodes.json` | substitute net+host for all providers; verify each answers |
 | `<TabItem value="<p>net">`, `Tabs values=[…]`, `<BlockLevel network=…>` | `next/rpc_nodes.mdx` | substitute (keep table shape) |
 | network union strings `'mainnet' \| '<p>net' \| …` / prose lists | `next/wallet_API.mdx` | substitute / add NEW |
