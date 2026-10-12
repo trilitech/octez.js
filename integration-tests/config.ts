@@ -66,20 +66,10 @@ enum ForgerType {
   COMPOSITE = 'composite',
 }
 
-export const isSandbox = (config: { rpc: string }) => {
-  return (
-    config.rpc.includes('localhost') ||
-    config.rpc.includes('0.0.0.0') ||
-    config.rpc.includes('127.0.0.1')
-  );
-};
-
 const forgers: ForgerType[] = [ForgerType.COMPOSITE];
 
-// user running integration test can pass environment variable TEZOS_NETWORK_TYPE=sandbox to specify which network to run against
 export enum NetworkType {
   TESTNET, // corresponds shadownet, ushuaianet and weeklynet etc.
-  SANDBOX, // corresponds to flextesa local chain
 }
 
 interface Config {
@@ -463,8 +453,7 @@ const defaultConfig = ({
   knownContracts,
   signerConfig,
 }: DefaultConfiguration): Config => {
-  const networkType =
-    process.env['TEZOS_NETWORK_TYPE'] === 'sandbox' ? NetworkType.SANDBOX : NetworkType.TESTNET;
+  const networkType = NetworkType.TESTNET;
   return {
     networkName: networkName || '',
     rpc: process.env[`TEZOS_RPC_${networkName}`] || defaultRpc,
