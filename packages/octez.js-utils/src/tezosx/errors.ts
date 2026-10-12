@@ -80,3 +80,14 @@ export class MissingCalldataError extends ParameterValidationError {
     this.name = 'MissingCalldataError';
   }
 }
+
+/**
+ *  @category Error
+ *  Error that indicates a mutez amount that does not fit in a JavaScript number
+ */
+export class UnsafeMutezAmountError extends ParameterValidationError {
+  constructor(public readonly mutezAmount: bigint) {
+    super(`Amount ${mutezAmount} mutez is larger than Number.MAX_SAFE_INTEGER.`);
+    this.name = 'UnsafeMutezAmountError';
+  }
+}
