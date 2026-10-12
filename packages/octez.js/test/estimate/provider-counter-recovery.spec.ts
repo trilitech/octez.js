@@ -200,6 +200,38 @@ describe('simulation counter recovery', () => {
     expect(counters(result.op)).toEqual(['156', '158']);
   });
 
+  it('does not refresh counters when a content carries a malformed counter', async () => {
+    const { provider, simulate, getCounter } = setup();
+    const error = httpError();
+    simulate.mockRejectedValue(error);
+
+    await expect(provider.run(request([transaction('not-a-number')]))).rejects.toBe(error);
+
+    expect(getCounter).not.toHaveBeenCalled();
+    expect(simulate).toHaveBeenCalledTimes(1);
+  });
+
+  // Defensive path: a valid manager batch has one source and only counted contents, so this
+  // synthetic batch checks that entries without a computed shift are passed through as is.
+  it('leaves contents without a counter, and sources whose counter is already right, untouched', async () => {
+    const { provider, simulate } = setup();
+    simulate.mockRejectedValueOnce(httpError());
+    const ballot: OperationContents = {
+      kind: OpKind.BALLOT,
+      source,
+      period: 1,
+      proposal: 'ProtoALphaALphaALphaALphaALphaALphaALphaALphaDdp3zK',
+      ballot: 'yay',
+    };
+    // The stored counter mock answers 155 for every source, so 156 is already correct for this one.
+    const otherSource = { ...transaction('156'), source: destination };
+
+    const result = await provider.run(request([transaction('157'), ballot, otherSource]));
+
+    expect(result.op.operation.contents).toEqual([transaction('156'), ballot, otherSource]);
+    expect(simulate).toHaveBeenCalledTimes(2);
+  });
+
   it('keeps exact counters above Number.MAX_SAFE_INTEGER', async () => {
     const { provider, simulate, getCounter } = setup();
     getCounter.mockResolvedValue('9007199254740993');
