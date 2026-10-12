@@ -10,6 +10,8 @@ import {
   encodeKey,
   encodeKeyHash,
   getPkhfromPk,
+  InvalidPublicKeyError,
+  InvalidSignatureError,
   payloadLength,
   validateAddress,
   validateKeyHash,
@@ -93,6 +95,19 @@ describe('tz5 / ML-DSA-44 Octez reference vectors', () => {
     const bytes = bs58check.decode(tz5.signatures.plain);
     bytes[5] ^= 1;
     expect(verifySignature(tz5.message, tz5.publicKey, bs58check.encode(bytes))).toBe(false);
+  });
+
+  it('rejects a truncated signature or public key that has a valid Base58 checksum', () => {
+    const signature = bs58check.decode(tz5.signatures.plain);
+    const publicKey = bs58check.decode(tz5.publicKey);
+    const shortSignature = bs58check.encode(signature.slice(0, signature.length - 10));
+    const shortPublicKey = bs58check.encode(publicKey.slice(0, publicKey.length - 10));
+    expect(() => verifySignature(tz5.message, tz5.publicKey, shortSignature)).toThrow(
+      InvalidSignatureError
+    );
+    expect(() => verifySignature(tz5.message, shortPublicKey, tz5.signatures.plain)).toThrow(
+      InvalidPublicKeyError
+    );
   });
 
   it.each([
