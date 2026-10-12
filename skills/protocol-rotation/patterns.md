@@ -64,6 +64,10 @@ Scope: git-tracked files; docs only under `website/src/content/docs/next/`; skip
 
 ## Lessons log
 
+- Gotchas: `npm run build-website` runs `npm ci` in `website/` and strips root dev deps (vitest, nx) — run `npm ci` at
+  the root afterwards, and also after rebasing onto a master that added dependencies. After a rebase-merge,
+  hashes change: use `git cherry` to find what is really unmerged.
+
 (Append here when the Phase 4 sweep catches a pattern missing from the tables above.)
 
 - 2026-10 Tallinn → Ushuaia: name-only grep missed hash/number tokens; `ChainIds` (not `NetworkType`)
