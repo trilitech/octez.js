@@ -166,8 +166,7 @@ the scratchpad. Do **not** run two of these at once (they share one signer count
 3. **Full suite, resumable:** `SECRET_KEY=… skills/protocol-rotation/run-itests.sh <newnet> 3000 <scratch>/itests`
    — run it with `run_in_background`; it re-runs only unreported files each round and retries failures alone.
    Expect transient failures from signer contention (mempool conflict, confirmation timeout) that pass alone;
-   skips are by design (`weeklynet`-gated `security-*`, keygen-only `simple-reveal`). `flextesa/` and
-   `ledger/` are excluded — say so. Any failure that survives the retry is a real finding: investigate
+   skips are by design (`weeklynet`-gated `security-*`, keygen-only `simple-reveal`). `ledger/` is excluded — say so. Any failure that survives the retry is a real finding: investigate
    (is it the rotation?) before reporting.
 4. **Reveal re-measurement:** `SECRET_KEY=… node skills/protocol-rotation/measure-reveal.js <newnet-rpc>`
    prints consumed gas / minimal fee / storage for fresh tz1–tz4 accounts next to the stored
@@ -200,7 +199,7 @@ use the protocol letters/numbers from Phase 1). Leave it untracked unless told o
 3. **Kept (intentional)** — every allowlisted hit grouped by reason (registry entry, recorded fixture,
    "introduced in", changelog, upstream link, frozen docs).
 4. **Needs a human** — only what is still open: unverified or derived values (say which), skipped checks
-   (no key, flextesa/ledger), workflow files mentioning OLD, dead NEW endpoints, new bugs found (with issue
+   (no key, ledger), workflow files mentioning OLD, dead NEW endpoints, new bugs found (with issue
    links if the user had them filed). Resolved items go in a short "Resolved" list with their commit.
 5. **Sweep log** — number of sweep iterations and what each iteration caught (this is how we improve
    `patterns.md`).

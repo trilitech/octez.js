@@ -10,8 +10,8 @@
 #   SECRET_KEY='edsk...' skills/protocol-rotation/run-itests.sh <lane> [round-timeout-sec] [out-dir]
 #   e.g. ... run-itests.sh ushuaianet 3000 "$SCRATCH/itests"
 #
-# Needs `test:<lane>-secret-key` in integration-tests/package.json. flextesa/ and ledger/
-# specs are excluded (sandbox / hardware). Exit status: 0 only if nothing failed after retry.
+# Needs `test:<lane>-secret-key` in integration-tests/package.json. ledger/
+# specs are excluded (hardware). Exit status: 0 only if nothing failed after retry.
 set -uo pipefail
 lane=${1:?lane, e.g. ushuaianet}
 tmo=${2:-3000}
@@ -21,7 +21,7 @@ cd "$(git rev-parse --show-toplevel)/integration-tests"
 mkdir -p "$out"
 script="test:${lane}-secret-key"
 
-find __tests__ -name '*.spec.ts' ! -path '__tests__/flextesa/*' ! -path '__tests__/ledger/*' | sort > "$out/all.txt"
+find __tests__ -name '*.spec.ts' ! -path '__tests__/ledger/*' | sort > "$out/all.txt"
 : > "$out/done.txt"; : > "$out/failed.txt"
 
 collect() { # $1 = log: record every file that printed a result line (pass, skip or fail)
