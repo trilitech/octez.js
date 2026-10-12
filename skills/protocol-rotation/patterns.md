@@ -19,6 +19,8 @@ Scope: git-tracked files; docs only under `website/src/content/docs/next/`; skip
 | docs commands/env (`TALLINNNET=true npm run test`, `npm run test:<p>net …`) | `integration-tests/README.md`, `KEYGEN.md`, `next/rpc_nodes_integration_test.mdx` | rename to NEW |
 | `rpc.includes('<p>')` host switches, `rpc.tzkt.io/<p>net` | `__tests__/{contract/operations,wallet}/failing-noop.spec.ts` | map to NEW (verify host) |
 | OLD-pinned exhaustive fixture block (`<p>net(...)` + `ConstantsResponseProtoNNN`) | `__tests__/rpc/get-protocol-constants.spec.ts` | delete block, drop now-unused type import, fix the "networks that stay put" comment |
+| dead env scripts (e.g. `sandbox-env.sh` exporting `RUN_<NET>_WITH_SECRET_KEY`, `TEZOS_RPC_<NET>`) | `integration-tests/` | check each variable against `config.ts`; `git rm` if nothing reads them |
+| unused per-network consts (`const <net> = rpc.includes('<net>') ? test : test.skip`) | `__tests__/**` | delete if unreferenced |
 | cspell word list | `cspell.json` | swap `<p>net` → `<new>net` |
 | CLAUDE.md lane examples | `CLAUDE.md` | update example names only (no policy changes) |
 
