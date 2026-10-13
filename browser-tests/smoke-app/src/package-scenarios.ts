@@ -59,15 +59,16 @@ const localForgerTransaction = {
   ],
 } as const;
 
-// Fixture shared with packages/octez.js-remote-signer/test/octez.js-remote-signer.spec.ts
-const remoteSignerPkh = 'tz1iD5nmudc4QtfNW14WWaiP7JEDuUHnbXuv';
-const remoteSignerPublicKey = 'edpkuAhkJ81xGyf4PcmRMHLSaQGbDEpkGhNbcjNVnKWKR8kqkgQR3f';
-const remoteSignerSignature =
+// Signing fixture used by the remote-signer and dapp-wallet scenarios (taken from
+// packages/octez.js-remote-signer/test/octez.js-remote-signer.spec.ts)
+const signFixturePkh = 'tz1iD5nmudc4QtfNW14WWaiP7JEDuUHnbXuv';
+const signFixturePublicKey = 'edpkuAhkJ81xGyf4PcmRMHLSaQGbDEpkGhNbcjNVnKWKR8kqkgQR3f';
+const signFixtureSignature =
   'sigiGUGvWRkoYuf7ReH3wWAYnpgBFTa2DJ4Nxi7v1Wy5KqS7sZaxNhRiW6ivuoSUdKZnyGTABVk23WnppatuYqHty7uDtWRY';
 // Watermarked operation (0x03 prefix) and the raw bytes of the signature above, in hex
-const remoteSignerWatermarkedBytes =
+const signFixtureWatermarkedBytes =
   '0365cac93523b8c10346c0107cfea5e12ff3c759459020e532f299e2f41082f7cb6d0000f68c4abfa21dfc0c9efcf588190388cac85d9db60f81d6038b79d8030000000000b902000000b405000764045b0000000a2564656372656d656e74045b0000000a25696e6372656d656e740501035b0502020000008503210317057000010321057100020316072e020000002b032105700002032105710003034203210317057000010321057100020316034b051f020000000405200002020000002b0321057000020321057100030342032103170570000103210571000203160312051f0200000004052000020321053d036d0342051f020000000405200003000000020000';
-const remoteSignerSignatureHex =
+const signFixtureSignatureHex =
   '9b00f3b02e3760092415595548e2bd6532b0223d8ff282d31b6f30e35592b6b91a4c37fb0a6a24cc8b5176cc497e204ab722a4711803121ff51dc5a450cfd10b';
 
 // The packages must not rely on a Node.js `Buffer` global in the browser: a polyfill already
@@ -218,40 +219,40 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
       createRequest: async (options: { method: string; url: string }, data?: unknown) => {
         requests.push({ method: options.method, url: options.url, data });
         return options.method === 'POST'
-          ? { signature: remoteSignerSignature }
-          : { public_key: remoteSignerPublicKey };
+          ? { signature: signFixtureSignature }
+          : { public_key: signFixturePublicKey };
       },
     };
-    const signer = new RemoteSigner(remoteSignerPkh, 'http://127.0.0.1:6732', {}, http as any);
+    const signer = new RemoteSigner(signFixturePkh, 'http://127.0.0.1:6732', {}, http as any);
     // The signer may also GET the public key (and cache it): look at the signing POSTs only
     const postPayloads = () => requests.filter((r) => r.method === 'POST').map((r) => r.data);
 
     // Operation that already carries its watermark: the request bytes and the decoded signature
     // both go through buf2hex
-    const signed = await signer.sign(remoteSignerWatermarkedBytes);
+    const signed = await signer.sign(signFixtureWatermarkedBytes);
     assertNoGlobalBuffer('after signing');
     assertEqual(
       signed,
       {
-        bytes: remoteSignerWatermarkedBytes,
-        sig: remoteSignerSignature,
-        prefixSig: remoteSignerSignature,
-        sbytes: remoteSignerWatermarkedBytes + remoteSignerSignatureHex,
+        bytes: signFixtureWatermarkedBytes,
+        sig: signFixtureSignature,
+        prefixSig: signFixtureSignature,
+        sbytes: signFixtureWatermarkedBytes + signFixtureSignatureHex,
       },
       'remote-signer sign() result'
     );
-    assertEqual(postPayloads()[0], remoteSignerWatermarkedBytes, 'remote-signer POST payload');
+    assertEqual(postPayloads()[0], signFixtureWatermarkedBytes, 'remote-signer POST payload');
 
     // Same operation with the watermark passed separately (mergebuf path)
-    const operationBytes = remoteSignerWatermarkedBytes.slice(2);
+    const operationBytes = signFixtureWatermarkedBytes.slice(2);
     const signedWithWatermark = await signer.sign(operationBytes, new Uint8Array([3]));
     assertNoGlobalBuffer('after signing with a watermark');
     assertEqual(
       signedWithWatermark.sbytes,
-      operationBytes + remoteSignerSignatureHex,
+      operationBytes + signFixtureSignatureHex,
       'remote-signer sign() with watermark sbytes'
     );
-    assertEqual(postPayloads()[1], remoteSignerWatermarkedBytes, 'remote-signer watermarked POST payload');
+    assertEqual(postPayloads()[1], signFixtureWatermarkedBytes, 'remote-signer watermarked POST payload');
 
     return {
       exports: ['RemoteSigner'],
@@ -365,6 +366,45 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
       summary: {
         beaconWalletType: typeof beaconWallet.BeaconWallet,
         errorType: typeof beaconWallet.BeaconWalletNotInitialized,
+      },
+    };
+  },
+
+  'dapp-wallet-sign-behavior': async () => {
+    assertNoGlobalBuffer('before importing dapp-wallet');
+    const { BeaconWallet } = await importPackage<typeof import('@tezos-x/octez.js-dapp-wallet')>(
+      '@tezos-x/octez.js-dapp-wallet'
+    );
+    assertNoGlobalBuffer('after importing dapp-wallet');
+
+    // sign() only needs `client.requestSignPayload`: build the wallet without a real Beacon session.
+    // The constructor is bypassed, so if sign() starts reading other instance state this scenario
+    // fails on that missing field: extend the stub (or build the wallet through its constructor)
+    // rather than reading it as a Buffer regression.
+    const requests: unknown[] = [];
+    const wallet = Object.create(BeaconWallet.prototype) as InstanceType<typeof BeaconWallet>;
+    wallet.client = {
+      requestSignPayload: async (request: unknown) => {
+        requests.push(request);
+        return { signature: signFixtureSignature };
+      },
+    } as any;
+
+    const operationBytes = signFixtureWatermarkedBytes.slice(2);
+    const signature = await wallet.sign(operationBytes, new Uint8Array([3]));
+    assertNoGlobalBuffer('after signing');
+    assertEqual(signature, signFixtureSignature, 'dapp-wallet sign() result');
+    assertEqual(
+      requests,
+      [{ payload: signFixtureWatermarkedBytes, signingType: 'operation' }],
+      'dapp-wallet requestSignPayload request'
+    );
+
+    return {
+      exports: ['BeaconWallet'],
+      summary: {
+        requestCount: requests.length,
+        signatureLength: signature.length,
       },
     };
   },
