@@ -17,6 +17,8 @@ The `@tezos-x/octez.js-utils` package provides helpers that wrap an operation of
 npm i --save @tezos-x/octez.js-utils
 ```
 
+The examples below use previewnet: see [Support for Tezos X](tezosx_support#networks) for the endpoints of the other networks.
+
 ## Michelson → EVM
 
 `buildMichelsonToEvmCall` turns an EVM transaction (`to`, `value` in wei, `data`) into a call to the NAC gateway. `toTransferParams` turns that call into parameters for `Tezos.contract.transfer` or `Tezos.wallet.transfer`.
