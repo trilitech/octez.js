@@ -18,7 +18,6 @@ export default {
         '@tezos-x/octez.js-core': 'core',
         '@tezos-x/octez.js-http-utils': 'httpUtils',
         '@tezos-x/octez.js-utils': 'utils',
-        'typedarray-to-buffer': 'toBuffer',
       } 
     },
     { file: pkg.module, format: 'es', sourcemap: true },
@@ -27,8 +26,7 @@ export default {
   external: [
     '@tezos-x/octez.js-core',
     '@tezos-x/octez.js-http-utils',
-    '@tezos-x/octez.js-utils',
-    'typedarray-to-buffer'
+    '@tezos-x/octez.js-utils'
   ],
   watch: {
     include: 'src/**',

@@ -7,6 +7,7 @@ export type PackageScenarioId =
   | 'michelson-encoder-behavior'
   | 'local-forging-behavior'
   | 'signer-import'
+  | 'remote-signer-behavior'
   | 'octez.js-behavior'
   | 'tzip16-behavior'
   | 'tzip12-behavior'
@@ -64,6 +65,11 @@ export const packageScenarios: readonly PackageScenario[] = [
     id: 'signer-import',
     packageName: '@tezos-x/octez.js-signer',
     description: 'imports the signer package in a browser',
+  },
+  {
+    id: 'remote-signer-behavior',
+    packageName: '@tezos-x/octez.js-remote-signer',
+    description: 'imports remote-signer and signs through a stubbed HTTP backend without a Buffer polyfill',
   },
   {
     id: 'octez.js-behavior',
