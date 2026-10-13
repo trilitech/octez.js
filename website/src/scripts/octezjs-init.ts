@@ -70,6 +70,8 @@ declare global {
     contractStorageWithoutAnnot: any;
     managerCode: any;
     configureSigner: () => Promise<string | undefined>;
+    loadLedger: () => Promise<void>;
+    loadWalletConnect: () => Promise<void>;
     connectWallet: () => Promise<string | undefined>;
     __signerConfigured?: boolean;
     __walletConnected?: boolean;
@@ -104,9 +106,6 @@ async function init() {
     const { SigningType } = await import('@tezos-x/octez.connect-dapp')
     const { Parser, packDataBytes, emitMicheline } = await import('@tezos-x/octez.js-michel-codec');
     const { b58Encode, PrefixV2 } = await import('@tezos-x/octez.js-utils');
-    const TransportWebHID = (await import('@ledgerhq/hw-transport-webhid')).default;
-    const { LedgerSigner, DerivationType, HDPathTemplate } = await import('@tezos-x/octez.js-ledger-signer');
-    const { WalletConnect, NetworkType, PermissionScopeMethods } = await import("@tezos-x/octez.js-wallet-connect");
 
     const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
     window.Tezos = Tezos;
@@ -137,13 +136,6 @@ async function init() {
     window.PrefixV2 = PrefixV2;
     window.emitMicheline = emitMicheline;
     window.getRevealFee = getRevealFee;
-    window.TransportWebHID = TransportWebHID;
-    window.LedgerSigner = LedgerSigner;
-    window.DerivationType = DerivationType;
-    window.HDPathTemplate = HDPathTemplate;
-    window.WalletConnect = WalletConnect;
-    window.NetworkType = NetworkType;
-    window.PermissionScopeMethods = PermissionScopeMethods;
 
     // Expose contracts for live code examples
     window.genericMultisigJSONfile = genericMultisigJSONfile;
@@ -170,6 +162,39 @@ async function init() {
     if (rejectInit) rejectInit(e);
   }
 }
+
+// The Ledger and WalletConnect bundles are only needed by a handful of pages, so they are
+// loaded on demand (the live-code runner calls these before running a snippet that uses
+// their globals) instead of on every docs page load. Memoized: each loads at most once.
+let ledgerLoading: Promise<void> | undefined;
+window.loadLedger = function () {
+  ledgerLoading ??= (async () => {
+    const TransportWebHID = (await import('@ledgerhq/hw-transport-webhid')).default;
+    const { LedgerSigner, DerivationType, HDPathTemplate } = await import('@tezos-x/octez.js-ledger-signer');
+    window.TransportWebHID = TransportWebHID;
+    window.LedgerSigner = LedgerSigner;
+    window.DerivationType = DerivationType;
+    window.HDPathTemplate = HDPathTemplate;
+  })().catch((e) => {
+    ledgerLoading = undefined; // allow a retry after a failed load
+    throw e;
+  });
+  return ledgerLoading;
+};
+
+let walletConnectLoading: Promise<void> | undefined;
+window.loadWalletConnect = function () {
+  walletConnectLoading ??= (async () => {
+    const { WalletConnect, NetworkType, PermissionScopeMethods } = await import('@tezos-x/octez.js-wallet-connect');
+    window.WalletConnect = WalletConnect;
+    window.NetworkType = NetworkType;
+    window.PermissionScopeMethods = PermissionScopeMethods;
+  })().catch((e) => {
+    walletConnectLoading = undefined;
+    throw e;
+  });
+  return walletConnectLoading;
+};
 
 // Make configureSigner available globally
 window.configureSigner = async function () {
