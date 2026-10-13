@@ -1,6 +1,9 @@
 ---
 import octezLogo from "../images/octez-logo.svg";
 import { DEFAULT_VERSION } from "../pages/api/search/[version].json.ts";
+
+// Normalize base URL to always have trailing slash for path joining
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 ---
 
 <footer
@@ -53,6 +56,13 @@ import { DEFAULT_VERSION } from "../pages/api/search/[version].json.ts";
         <li><a href="https://x.com/LabosNomades" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
         <li><a href="https://github.com/trilitech/octez.js/blob/master/code-of-conduct.md" target="_blank" rel="noopener noreferrer">Code of Conduct</a></li>
         <li><a href="https://github.com/trilitech/octez.js" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold mb-2">Legal</h4>
+      <ul class="text-sm space-y-2">
+        <li><a href={`${base}terms`}>Terms and Conditions</a></li>
+        <li><a href={`${base}privacy`}>Privacy Policy</a></li>
       </ul>
     </div>
     <div>
