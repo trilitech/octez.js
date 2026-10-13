@@ -39,6 +39,26 @@ const localForgerOperation = {
   ],
 } as const;
 
+const localForgerTransaction = {
+  branch: localForgerOperation.branch,
+  contents: [
+    {
+      kind: 'transaction',
+      source: 'tz1h5DrMhmdrGMpb3qkykU1RmCWoTYAkFJPu',
+      fee: '1496',
+      counter: '3970',
+      gas_limit: '2849',
+      storage_limit: '6572',
+      amount: '0',
+      destination: validContractAddress,
+      parameters: {
+        entrypoint: 'my_entrypoint',
+        value: { prim: 'Pair', args: [{ string: 'octez' }, { int: '42' }] },
+      },
+    },
+  ],
+} as const;
+
 const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   'core-import': async () => {
     const core = await importPackage<typeof import('@tezos-x/octez.js-core')>('@tezos-x/octez.js-core');
@@ -132,11 +152,20 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
   },
 
   'local-forging-behavior': async () => {
+    // The package must not rely on a Node.js `Buffer` global in the browser: fail loudly if the
+    // page already provides one, since that would hide a missing `import { Buffer } from 'buffer'`.
+    if (typeof (globalThis as { Buffer?: unknown }).Buffer !== 'undefined') {
+      throw new Error('Invalid smoke setup: a global Buffer exists, which would mask missing imports');
+    }
+
     const { LocalForger } = await importPackage<typeof import('@tezos-x/octez.js-local-forging')>(
       '@tezos-x/octez.js-local-forging'
     );
     const localForger = new LocalForger();
     const forged = await localForger.forge(localForgerOperation as any);
+    // A transaction with a custom entrypoint and a Michelson string exercises the codecs that
+    // encode entrypoints, lengths and strings, which are the ones that use Buffer.
+    const forgedTransaction = await localForger.forge(localForgerTransaction as any);
 
     return {
       exports: ['LocalForger'],
@@ -144,6 +173,10 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
         forgedPrefix: forged.slice(0, 20),
         forgedLength: forged.length,
         containsMessage: forged.includes(localForgerOperation.contents[0].message[0]),
+        forgedTransactionLength: forgedTransaction.length,
+        // hex of the entrypoint name 'my_entrypoint' and of the Michelson string 'octez'
+        containsEntrypoint: forgedTransaction.includes('6d795f656e747279706f696e74'),
+        containsString: forgedTransaction.includes('6f6374657a'),
       },
     };
   },

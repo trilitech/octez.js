@@ -65,6 +65,7 @@
     "@tezos-x/octez.js-core": "^25.0.0-rc.1",
     "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
     "bignumber.js": "^10.0.2",
+    "buffer": "^6.0.3",
     "fast-text-encoding": "^1.0.6"
   },
   "devDependencies": {
