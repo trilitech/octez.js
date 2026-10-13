@@ -84,7 +84,7 @@ export const sidebarConfig = [
   },
   {
     name: "Tezos X",
-    items: ["tezosx_cross_runtime"],
+    items: ["tezosx_support", "tezosx_cross_runtime"],
   },
   {
     name: "Packages",
