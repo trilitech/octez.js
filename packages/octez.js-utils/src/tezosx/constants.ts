@@ -5,9 +5,9 @@
 export const NAC_PRECOMPILE_ADDRESS = '0xff00000000000000000000000000000000000007' as const;
 
 /**
- * Address of the NAC gateway contract on the Tezos X Michelson runtime.
- * Michelson → EVM calls are sent to this contract. Pass `gatewayAddress` to
- * {@link buildMichelsonToEvmCall} to use another gateway.
+ * Address of the NAC gateway contract on the Tezos X Michelson runtime, the same on
+ * previewnet and mainnet. Michelson → EVM calls are sent to this contract. Pass
+ * `gatewayAddress` to {@link buildMichelsonToEvmCall} to use another gateway.
  */
 export const NAC_GATEWAY = 'KT18oDJJKXMKhfE1bSuAPGp92pYcwVDiqsPw';
 

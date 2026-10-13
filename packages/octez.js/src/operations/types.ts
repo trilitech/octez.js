@@ -7,6 +7,7 @@ import {
   BallotVote,
   PvmKind,
 } from '@tezos-x/octez.js-rpc';
+import type { GatewayTransferParams } from '@tezos-x/octez.js-utils';
 import { BlockIdentifier } from '../read-provider/interface';
 
 export { OpKind } from '@tezos-x/octez.js-rpc';
@@ -413,6 +414,13 @@ export interface TransferParams {
    */
   mutez?: boolean;
 }
+
+/**
+ * Compile-time check that the transfer parameters built by `toTransferParams` in
+ * `@tezos-x/octez.js-utils`, which cannot import {@link TransferParams}, stay assignable
+ * to it. It has no runtime effect.
+ */
+type _GatewayTransferParamsAreTransferParams<T extends TransferParams = GatewayTransferParams> = T;
 
 /**
  * RPC Stake pseudo operation params
