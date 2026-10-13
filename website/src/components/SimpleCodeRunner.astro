@@ -146,6 +146,18 @@ const html = Prism.highlight(code, Prism.languages[language] || Prism.languages.
           }
         }
 
+        // Load the optional Ledger / WalletConnect bundles only for snippets that use them
+        if (/\b(TransportWebHID|LedgerSigner|DerivationType|HDPathTemplate)\b/.test(sourceCodeContent)) {
+          this.button.textContent = "Loading Ledger...";
+          await win.loadLedger();
+          this.button.textContent = "Running...";
+        }
+        if (/\b(WalletConnect|NetworkType|PermissionScopeMethods)\b/.test(sourceCodeContent)) {
+          this.button.textContent = "Loading WalletConnect...";
+          await win.loadWalletConnect();
+          this.button.textContent = "Running...";
+        }
+
         // Capture console.log and console.error
         const originalLog = console.log;
         const originalError = console.error;
