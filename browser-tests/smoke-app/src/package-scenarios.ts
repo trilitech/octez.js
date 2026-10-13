@@ -366,6 +366,42 @@ const scenarios: Record<PackageScenarioId, SmokeScenario> = {
     };
   },
 
+  'dapp-wallet-sign-behavior': async () => {
+    assertNoGlobalBuffer('before importing dapp-wallet');
+    const { BeaconWallet } = await importPackage<typeof import('@tezos-x/octez.js-dapp-wallet')>(
+      '@tezos-x/octez.js-dapp-wallet'
+    );
+    assertNoGlobalBuffer('after importing dapp-wallet');
+
+    // sign() only needs `client.requestSignPayload`: build the wallet without a real Beacon session
+    const requests: unknown[] = [];
+    const wallet = Object.create(BeaconWallet.prototype) as InstanceType<typeof BeaconWallet>;
+    wallet.client = {
+      requestSignPayload: async (request: unknown) => {
+        requests.push(request);
+        return { signature: remoteSignerSignature };
+      },
+    } as any;
+
+    const operationBytes = remoteSignerWatermarkedBytes.slice(2);
+    const signature = await wallet.sign(operationBytes, new Uint8Array([3]));
+    assertNoGlobalBuffer('after signing');
+    assertEqual(signature, remoteSignerSignature, 'dapp-wallet sign() result');
+    assertEqual(
+      requests,
+      [{ payload: remoteSignerWatermarkedBytes, signingType: 'operation' }],
+      'dapp-wallet requestSignPayload request'
+    );
+
+    return {
+      exports: ['BeaconWallet'],
+      summary: {
+        requestCount: requests.length,
+        signatureLength: signature.length,
+      },
+    };
+  },
+
   'wallet-connect-import': async () => {
     const walletConnect = await importPackage<typeof import('@tezos-x/octez.js-wallet-connect')>(
       '@tezos-x/octez.js-wallet-connect'

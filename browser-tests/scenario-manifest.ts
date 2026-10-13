@@ -14,6 +14,7 @@ export type PackageScenarioId =
   | 'contracts-library-behavior'
   | 'timelock-behavior'
   | 'dapp-wallet-import'
+  | 'dapp-wallet-sign-behavior'
   | 'wallet-connect-import'
   | 'ledger-signer-behavior'
   | 'sapling-import'
@@ -100,6 +101,11 @@ export const packageScenarios: readonly PackageScenario[] = [
     id: 'dapp-wallet-import',
     packageName: '@tezos-x/octez.js-dapp-wallet',
     description: 'imports dapp-wallet in a browser',
+  },
+  {
+    id: 'dapp-wallet-sign-behavior',
+    packageName: '@tezos-x/octez.js-dapp-wallet',
+    description: 'signs an operation through a stubbed Beacon client without a Buffer polyfill',
   },
   {
     id: 'wallet-connect-import',
