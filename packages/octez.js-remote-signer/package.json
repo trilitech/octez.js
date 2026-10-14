@@ -62,8 +62,7 @@
     "@tezos-x/octez.js-core": "^25.0.0-rc.1",
     "@tezos-x/octez.js-http-utils": "^25.0.0-rc.1",
     "@tezos-x/octez.js": "^25.0.0-rc.1",
-    "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
-    "typedarray-to-buffer": "^4.0.0"
+    "@tezos-x/octez.js-utils": "^25.0.0-rc.1"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.42",

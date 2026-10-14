@@ -6,6 +6,7 @@ import '@tezos-x/octez.js-michel-codec';
 import '@tezos-x/octez.js-michelson-encoder';
 import '@tezos-x/octez.js-local-forging';
 import '@tezos-x/octez.js-signer';
+import '@tezos-x/octez.js-remote-signer';
 import '@tezos-x/octez.js';
 import '@tezos-x/octez.js-tzip16';
 import '@tezos-x/octez.js-tzip12';
