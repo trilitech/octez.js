@@ -80,7 +80,7 @@
     "@tezos-x/octez.js-core": "^25.0.0-rc.1",
     "@tezos-x/octez.js": "^25.0.0-rc.1",
     "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
-    "typedarray-to-buffer": "^4.0.0",
+    "buffer": "^6.0.3",
     "util": "^0.12.5"
   },
   "devDependencies": {
