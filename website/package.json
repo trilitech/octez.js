@@ -15,9 +15,9 @@
   "dependencies": {
     "@tezos-x/octez.connect-sdk": "^1.0.0",
     "@astrojs/mdx": "^4.3.13",
-    "@astrojs/sitemap": "^3.6.0",
-    "@cloudflare/workers-types": "^4.20251205.0",
-    "@ledgerhq/hw-transport-webhid": "^6.30.10",
+    "@astrojs/sitemap": "^3.7.4",
+    "@cloudflare/workers-types": "^4.20260702.1",
+    "@ledgerhq/hw-transport-webhid": "^6.36.0",
     "@lucide/astro": "^0.562.0",
     "@tezos-x/octez.js-dapp-wallet": "^25.0.0-rc.1",
     "@tezos-x/octez.js-ledger-signer": "^25.0.0-rc.1",
@@ -32,7 +32,7 @@
     "astro-auto-import": "^0.4.5",
     "bignumber.js": "^10.0.2",
     "buffer": "^6.0.3",
-    "fuse.js": "^7.1.0",
+    "fuse.js": "^7.5.0",
     "prismjs": "^1.30.0",
     "stream-browserify": "^3.0.0",
     "unist-util-visit": "^5.0.0"
