@@ -125,6 +125,46 @@ resolve this ambiguity yourself, and do not silently skip it either — say so e
    repo's actual funded-key/infra access, never something to copy from upstream's CI file as-is.
 5. When a cherry-pick *is* appropriate, keep the original `Co-Authored-By` trailer and do the
    `taquito-*` → `octez.js-*` path/name adaptation in the same commit.
+6. **Pinpoint the upstream commits you port, with a git trailer.** Git ancestry cannot tell us
+   which Taquito commits octez.js has (the fork was replayed), so the weekly sync tracker
+   (issue #53, `.github/scripts/taquito-sync.mjs`) reads trailers to report "last backported" and
+   how far behind we are. Put them in the last paragraph of the commit message, with the
+   **full 40-character SHA** from `taquito/main`:
+   ```
+   Upstream-Commit: <sha of the Taquito commit that was ported or reworked>
+   Upstream-Skipped: <sha of a Taquito commit reviewed and deliberately NOT ported>
+   ```
+   The tracker works on a **high-water mark**: the newest upstream commit named by any trailer
+   means everything up to and including it is handled; only upstream commits *newer* than the
+   mark count as pending. So:
+   - A backport commit (cherry-pick, rework, or a re-done dependency refresh) **must** carry an
+     `Upstream-Commit` trailer for the newest upstream commit it covers. Listing every older
+     commit is unnecessary (a squashed backport may still list several, for traceability).
+   - **The mark closes everything older.** Adding `Upstream-Commit` for commit Y declares every
+     upstream commit before Y handled (ported, or consciously left out). The author of the PR is
+     responsible for that: before adding the trailer, make sure each older pending upstream
+     commit is backported, skipped, or escalated to a human. If you port only a later fix and
+     want the older ones to stay visible as pending, don't add the trailer yet.
+   - Use `Upstream-Skipped` only to move the mark past newest commits you deliberately do not
+     port (version bump, a lane decision of our own, …) when nothing newer is being ported — on
+     an empty commit if nothing else changes (`git commit --allow-empty`).
+   - **`website/` commits always need a human decision first.** The hard stop above applies: an
+     agent never decides on its own to skip, or to record as handled, a commit that touches
+     `website/`. Surface it to the human; only after they decide may the trailer be added, by SHA
+     only — never read or port its content. A **mixed** commit (`website/` plus other paths) must
+     be escalated too: a skip trailer would also hide its non-website part.
+   - Merge commits (`Merge pull request …`) need no trailer; reference the underlying commits.
+   - Keep the `Co-Authored-By` trailer from rule 5 in the same block.
+   - Git only reads the **last paragraph** of a message as trailers: no blank line between the
+     `Upstream-*` lines and `Co-Authored-By`, and no prose after them. The tracker also scans the
+     whole message and warns about a trailer git does not recognise, but don't rely on that.
+   - Merge backport PRs with **rebase-merge**, never squash: a squash concatenates the commit
+     messages as `* …` bullets and only the final paragraph stays a trailer block.
+   - **Reverts:** the tracker reads whole messages, so reverting a backport leaves the original
+     `Upstream-Commit` in history and the commit still counts as handled. If you revert one,
+     say so in the PR and record it in the tracker issue by hand; don't expect the line to move.
+   - Don't amend or rewrite history to add a missing trailer; add an empty
+     `chore: record Taquito backport status` commit carrying it instead.
 
 ## CI state — read before assuming a workflow "should" run
 
