@@ -58,7 +58,7 @@
     "@tezos-x/octez.js-core": "^25.0.0-rc.1",
     "@tezos-x/octez.js": "^25.0.0-rc.1",
     "@tezos-x/octez.js-utils": "^25.0.0-rc.1",
-    "@noble/hashes": "^2.2.0",
+    "@noble/hashes": "2.2.0",
     "buffer": "^6.0.3"
   },
   "devDependencies": {

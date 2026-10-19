@@ -26,7 +26,7 @@
     "@ledgerhq/hw-transport-node-hid-noevents": "6.31.0"
   },
   "dependencies": {
-    "@scure/bip39": "^2.0.1",
+    "@scure/bip39": "2.2.0",
     "@tezos-x/octez.js-contracts-library": "^25.0.0-rc.1",
     "@tezos-x/octez.js-core": "^25.0.0-rc.1",
     "@tezos-x/octez.js-http-utils": "^25.0.0-rc.1",
