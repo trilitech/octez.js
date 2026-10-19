@@ -4,7 +4,9 @@ const os = require('node:os');
 const { mkdtempSync, mkdirSync, writeFileSync, rmSync } = require('node:fs');
 const { join } = require('node:path');
 
-const { scanForRebrandLeftovers, PATTERNS } = require('./rebrand-lint.js');
+const { execFileSync } = require('node:child_process');
+const { symlinkSync, rmSync: rm } = require('node:fs');
+const { scanForRebrandLeftovers, listTrackedFiles, globToRegExp, PATTERNS } = require('./rebrand-lint.js');
 
 function withTempRepo(fn) {
   const root = mkdtempSync(join(os.tmpdir(), 'rebrand-lint-'));
@@ -197,4 +199,84 @@ test('scanForRebrandLeftovers runs against the real repo and allowlist without t
   assert.ok(Array.isArray(violations));
   assert.ok(Array.isArray(allowed));
   assert.ok(Array.isArray(unusedAllowlistEntries));
+});
+
+test('scan does not crash on non-ASCII names, dangling symlinks, directory symlinks or deleted tracked files', () => {
+  withTempRepo((root) => {
+    execFileSync('git', ['init', '-q'], { cwd: root });
+    mkdirSync(join(root, 'dir'));
+    writeFileSync(join(root, 'café.ts'), "const a = 'taquito.io';\n");
+    writeFileSync(join(root, 'gone.ts'), 'x\n');
+    symlinkSync('does-not-exist', join(root, 'dangling'));
+    symlinkSync('dir', join(root, 'dirlink'));
+    execFileSync('git', ['add', '-A'], { cwd: root });
+    rm(join(root, 'gone.ts'));
+
+    const files = listTrackedFiles(root);
+    assert.ok(files.includes('café.ts'), 'unquoted non-ASCII name is listed');
+
+    const { violations } = scanForRebrandLeftovers({ rootDir: root, files, allowlist: [] });
+    assert.deepEqual(violations.map((v) => v.file), ['café.ts']);
+  });
+});
+
+test('globToRegExp: `*` stays inside one path segment, `**` crosses segments, matches are anchored', () => {
+  const m = (glob, file) => globToRegExp(glob).test(file);
+  assert.ok(m('NOTICE', 'NOTICE'));
+  assert.ok(!m('NOTICE', 'packages/a/NOTICE'), 'must be anchored at the start');
+  assert.ok(!m('NOTICE', 'NOTICE.md'), 'must be anchored at the end');
+  assert.ok(m('packages/*/NOTICE', 'packages/a/NOTICE'));
+  assert.ok(!m('packages/*/NOTICE', 'packages/a/b/NOTICE'), '`*` must not cross `/`');
+  assert.ok(m('packages/**/package.json', 'packages/a/b/package.json'));
+  assert.ok(m('integration-tests/**', 'integration-tests/x/y.ts'));
+  assert.ok(m('a?c.ts', 'abc.ts'));
+  assert.ok(!m('a?c.ts', 'a/c.ts'), '`?` must not match `/`');
+  assert.ok(!m('a.ts', 'abts'), 'regex metacharacters are escaped');
+});
+
+test('TAQUITO_ env pattern needs a word boundary before the prefix', () => {
+  const env = PATTERNS.find((p) => p.id === 'taquito-env-prefix');
+  assert.equal([...'use TAQUITO_OP_TRACE here'.matchAll(env.regex)].length, 1);
+  assert.equal([...'XTAQUITO_OP_TRACE'.matchAll(env.regex)].length, 0);
+});
+
+// Runs a copy of the linter in a throwaway git repo (the script resolves the
+// repo root from its own location) to test the real CLI contract.
+function runCli(files, allowlist = []) {
+  return withTempRepo((root) => {
+    execFileSync('git', ['init', '-q'], { cwd: root });
+    mkdirSync(join(root, 'scripts'));
+    const fs = require('node:fs');
+    fs.copyFileSync(join(__dirname, 'rebrand-lint.js'), join(root, 'scripts', 'rebrand-lint.js'));
+    writeFileSync(join(root, 'scripts', 'rebrand-lint.allowlist.json'), JSON.stringify(allowlist));
+    for (const [name, content] of Object.entries(files)) writeFileSync(join(root, name), content);
+    // Track only the fixtures: the copied linter source itself contains the patterns.
+    execFileSync('git', ['add', '--', ...Object.keys(files)], { cwd: root });
+    try {
+      const stdout = execFileSync('node', ['scripts/rebrand-lint.js'], { cwd: root, encoding: 'utf8', stdio: 'pipe' });
+      return { status: 0, stdout, stderr: '' };
+    } catch (err) {
+      return { status: err.status, stdout: String(err.stdout), stderr: String(err.stderr) };
+    }
+  });
+}
+
+test('CLI exits 1 and lists the file when there is an unreviewed leftover', () => {
+  const r = runCli({ 'a.ts': "const u = 'https://taquito.io/docs';\n" });
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /a\.ts:1\s+\[taquito-io\]/);
+});
+
+test('CLI exits 0 on a clean repo and on an allowlisted leftover', () => {
+  assert.equal(runCli({ 'a.ts': 'const x = 1;\n' }).status, 0);
+  const allowed = runCli(
+    { 'a.ts': "const u = 'https://taquito.io/docs';\n" },
+    [{ pattern: 'taquito-io', file: 'a.ts', reason: 'test' }]
+  );
+  assert.equal(allowed.status, 0);
+});
+
+test('CLI does not fail on an allowlist entry that matches nothing (stale)', () => {
+  const r = runCli({ 'a.ts': 'const x = 1;\n' }, [{ pattern: 'taquito-io', file: 'gone/**', reason: 'test' }]);
+  assert.equal(r.status, 0);
 });

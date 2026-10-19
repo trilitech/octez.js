@@ -112,9 +112,12 @@ function loadAllowlist(allowlistPath = defaultAllowlistPath) {
 
 // Every file `git ls-files` reports, which is exactly "the whole repo minus
 // whatever .gitignore excludes" -- no separate exclude list to keep in sync.
+//
+// `-z` (NUL-separated, never quoted): plain `git ls-files` C-quotes names with
+// non-ASCII or special characters, which then no longer point at the real file.
 function listTrackedFiles(rootDir) {
-  return execFileSync('git', ['ls-files'], { cwd: rootDir, encoding: 'utf8' })
-    .split('\n')
+  return execFileSync('git', ['ls-files', '-z'], { cwd: rootDir, encoding: 'utf8' })
+    .split('\0')
     .filter(Boolean)
     .filter((file) => !SKIP_EXTENSIONS.has(path.extname(file).slice(1).toLowerCase()));
 }
@@ -134,6 +137,15 @@ function scanForRebrandLeftovers({
   const usedAllowlistEntries = new Set();
 
   for (const relativePath of files) {
+    // Only regular files: skip symlinks (dangling or to a directory), submodule
+    // directories, and tracked files deleted from the working tree.
+    let stat;
+    try {
+      stat = fs.lstatSync(path.join(rootDir, relativePath));
+    } catch {
+      continue;
+    }
+    if (!stat.isFile()) continue;
     const source = fs.readFileSync(path.join(rootDir, relativePath), 'utf8');
 
     for (const { id, regex, label } of patterns) {
@@ -208,6 +220,7 @@ if (require.main === module) {
 
 module.exports = {
   scanForRebrandLeftovers,
+  globToRegExp,
   loadAllowlist,
   listTrackedFiles,
   formatFinding,
