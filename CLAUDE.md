@@ -195,3 +195,9 @@ branch `main`, but the repo default branch is `master` — it will never trigger
 - Don't bump package versions to match Taquito's version line.
 - Flag, don't silently resolve, any inconsistency you find between this repo and Taquito that
   touches licensing, attribution, or the `NOTICE` file — those are legal/compliance-sensitive.
+- **Rebrand check.** Before finishing a change that adds or renames names, URLs, env vars or docs,
+  run `npm run check:rebrand`. It lists stale pre-rebrand leftovers (`ecadlabs`, `taquito.io`,
+  `@taquito/*`, `TAQUITO_*`, `Taquito*` identifiers, `ecadinfra` hosts). A new hit is either a
+  miss to fix or a deliberate exception: add it to `scripts/rebrand-lint.allowlist.json` with a
+  justification. Don't allowlist just to make it pass, and don't "fix" the known deliberate
+  leftovers described in the naming section above. CI runs it as a non-blocking warning.
