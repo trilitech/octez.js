@@ -105,6 +105,17 @@ jobs:
       - run: npm run test:scripts
       - run: npm run test:dist:esm-imports
       - run: npm run lint
+      # Advisory: warns on stale pre-rebrand leftovers (see CLAUDE.md) and never
+      # fails the job. Run once, not per Node version. A failure or crash becomes
+      # a workflow annotation (`|| echo ::warning`); `continue-on-error` alone
+      # would leave a green check with no signal. The timeout plus
+      # `continue-on-error` only guard against a hang, which would otherwise
+      # block the steps below.
+      - name: Rebrand check (non-blocking)
+        if: matrix.node == '24'
+        timeout-minutes: 2
+        continue-on-error: true
+        run: npm run check:rebrand || echo "::warning title=Rebrand check::New pre-rebrand leftovers found (or the check crashed). See this step's log; fix them or allowlist with a reason (see CLAUDE.md)."
       - run: npm run build-docs
       - run: npm run test
       - name: Codecov
