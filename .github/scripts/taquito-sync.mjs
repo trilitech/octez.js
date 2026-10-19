@@ -265,6 +265,114 @@ export function parseCheckpointSha(body) {
 }
 
 // ---------------------------------------------------------------------------
+// Backport status ("how far behind Taquito are we?")
+//
+// The fork was replayed, not merged, so git ancestry says nothing about which
+// upstream commits octez.js already has. Every backport commit therefore
+// pinpoints its upstream source with a git trailer (see CLAUDE.md):
+//
+//   Upstream-Commit: <sha of the Taquito commit that was ported>
+//   Upstream-Skipped: <sha of a Taquito commit reviewed and deliberately NOT ported>
+//
+// This section turns those trailers into a status line for the tracker issue.
+// ---------------------------------------------------------------------------
+
+export const TRAILER_BACKPORTED = 'Upstream-Commit';
+export const TRAILER_SKIPPED = 'Upstream-Skipped';
+
+// Extracts the (7-40 char, hex) SHAs from the raw output of
+// `git log --format=%(trailers:key=<Key>,valueonly=true)`. Anything after the
+// SHA on a trailer line (e.g. a PR number) is ignored.
+export function parseTrailerShas(raw) {
+  if (!raw) return [];
+  const out = [];
+  for (const line of raw.split('\n')) {
+    const m = /^\s*([0-9a-fA-F]{7,40})\b/.exec(line);
+    if (m) out.push(m[1].toLowerCase());
+  }
+  return out;
+}
+
+const matchesAny = (sha, prefixes) => prefixes.some((p) => sha.startsWith(p));
+
+// `upstream`: every upstream commit, newest first, as { sha, shortSha, date,
+// subject, parents: [sha] }. `backported`/`skipped`: SHAs (or unique prefixes)
+// taken from the trailers. Returns null when no trailer names a backported
+// upstream commit.
+//
+// "Covered" = backported or skipped. The high-water mark works on the commit
+// GRAPH, not on list position: everything reachable from a covered commit is
+// handled, and `pending` = non-merge upstream commits NOT reachable from any
+// covered commit. Position in `git log` (sorted by date) is not safe: Taquito
+// merges PR branches whose commits are dated before the mark, and they would
+// sort below it and silently vanish from the backlog.
+export function computeBackportStatus({ upstream, backported, skipped }) {
+  const bySha = new Map(upstream.map((c) => [c.sha, c]));
+  const lastBackported = upstream.find((c) => matchesAny(c.sha, backported)) || null;
+  if (!lastBackported) return null;
+
+  const handled = new Set();
+  const stack = upstream.filter((c) => matchesAny(c.sha, [...backported, ...skipped])).map((c) => c.sha);
+  while (stack.length) {
+    const sha = stack.pop();
+    if (handled.has(sha)) continue;
+    handled.add(sha);
+    for (const parent of bySha.get(sha)?.parents ?? []) stack.push(parent);
+  }
+
+  const pending = upstream.filter((c) => c.parents.length < 2 && !handled.has(c.sha));
+  const oldestPending = pending.reduce(
+    (oldest, c) => (!oldest || Date.parse(c.date) < Date.parse(oldest.date) ? c : oldest),
+    null,
+  );
+  return { lastBackported, pending, oldestPending };
+}
+
+// Trailer SHAs (or prefixes) that match no upstream commit: a typo, an octez.js
+// SHA, or a commit that is not on the tracked branch. They would otherwise be
+// dropped silently and could make the line wrongly say "none recorded yet".
+export function findUnmatchedTrailerShas({ upstream, backported, skipped }) {
+  return [...new Set([...backported, ...skipped])].filter((p) => !upstream.some((c) => c.sha.startsWith(p)));
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+export function renderBackportLine(status, { generatedAt, repoUrl }) {
+  if (!status) {
+    return (
+      `**Last backported:** none recorded yet — backport commits must carry an ` +
+      `\`${TRAILER_BACKPORTED}: <sha>\` trailer (see CLAUDE.md).`
+    );
+  }
+  const { lastBackported, pending, oldestPending } = status;
+  const link = `[\`${lastBackported.shortSha}\`](${commitUrl(repoUrl, lastBackported.sha)})`;
+  let line = `**Last backported:** ${link} ${lastBackported.subject} (${formatDateOnly(lastBackported.date)})`;
+  if (!pending.length) {
+    return `${line} — up to date, nothing pending.`;
+  }
+  const days = Math.max(0, Math.floor((Date.parse(generatedAt) - Date.parse(oldestPending.date)) / DAY_MS));
+  const since = `[\`${oldestPending.shortSha}\`](${commitUrl(repoUrl, oldestPending.sha)})`;
+  return `${line} — ${pending.length} upstream commit(s) not yet backported or skipped, oldest ${since} from ${formatDateOnly(oldestPending.date)} (${days} day(s) ago).`;
+}
+
+const BACKPORT_LINE_RE = /^\*\*Last backported:\*\* .*$/m;
+
+// Inserts or replaces the "Last backported" line: in place if present, else
+// right after the "Last checked" line, else right after the checkpoint marker.
+export function upsertBackportLine(body, line) {
+  if (BACKPORT_LINE_RE.test(body)) return body.replace(BACKPORT_LINE_RE, () => line);
+  const checked = LAST_CHECKED_LINE_RE.exec(body);
+  if (checked) {
+    const at = checked.index + checked[0].length;
+    return `${body.slice(0, at)}\n${line}${body.slice(at)}`;
+  }
+  const marker = CHECKPOINT_MARKER_RE.exec(body);
+  if (!marker) throw new Error('upsertBackportLine: body has no checkpoint marker to anchor the insert.');
+  const at = marker.index + marker[0].length;
+  return `${body.slice(0, at)}\n\n${line}${body.slice(at)}`;
+}
+
+// ---------------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------------
 
@@ -283,7 +391,7 @@ function renderCommitBullet(c, repoUrl) {
 
 // Renders the full issue body. `commits` is an array of already-classified
 // commits ({ ...gitLogRecord, classification }); pass [] for bootstrap.
-export function renderIssueBody({ lastReviewedSha, generatedAt, bootstrap, commits, repoUrl }) {
+export function renderIssueBody({ lastReviewedSha, generatedAt, bootstrap, commits, repoUrl, backportLine }) {
   const lines = [];
 
   lines.push('<!-- Auto-generated by .github/workflows/taquito-sync.yml (runs weekly). -->');
@@ -293,6 +401,7 @@ export function renderIssueBody({ lastReviewedSha, generatedAt, bootstrap, commi
     `**Last reviewed:** \`${lastReviewedSha}\` — ${generatedAt} (${commitUrl(repoUrl, lastReviewedSha)})`,
   );
   lines.push(renderLastCheckedLine(generatedAt));
+  if (backportLine) lines.push(backportLine);
   lines.push('');
   lines.push(renderCheckpointMarker(lastReviewedSha));
   lines.push('');
@@ -480,6 +589,92 @@ function getCommitLogRaw(dir, lastReviewedSha, branch) {
   );
 }
 
+// Lenient scan of whole commit messages for `<Key>: <sha>` lines anywhere (also
+// as a squash-merge "* " bullet). Git only treats the LAST paragraph as a
+// trailer block, so a blank line before `Co-Authored-By`, or a squash merge
+// concatenating messages, hides valid trailers from `%(trailers)`.
+export function parseBodyTrailerShas(raw, key) {
+  if (!raw) return [];
+  const re = new RegExp(`^\\s*(?:[-*]\\s+)?${key}:\\s*([0-9a-fA-F]{7,40})\\b`, 'gim');
+  return [...raw.matchAll(re)].map((m) => m[1].toLowerCase());
+}
+
+// SHAs named on this repo's own history (cwd = the octez.js checkout; the
+// workflow fetches full history for this): the union of strict git trailers and
+// the lenient body scan. A SHA found only by the lenient scan means a trailer
+// that git does not recognise — warn so the author can fix the message.
+function getLocalTrailerShas(key) {
+  const run = (format) =>
+    execFileSync('git', ['log', 'HEAD', `--format=${format}`], {
+      encoding: 'utf8',
+      maxBuffer: GIT_LOG_MAX_BUFFER_BYTES,
+    });
+  const strict = parseTrailerShas(run(`%(trailers:key=${key},valueonly=true)`));
+  const lenient = parseBodyTrailerShas(run('%B'), key);
+  const missed = [...new Set(lenient.filter((sha) => !strict.includes(sha)))];
+  if (missed.length) {
+    console.warn(
+      `${key}: ${missed.join(', ')} found in a commit message but not in its trailer block ` +
+        `(git ignores it as a trailer; keep trailers in the last paragraph, with no blank line before Co-Authored-By).`,
+    );
+  }
+  return [...new Set([...strict, ...lenient])];
+}
+
+// %cI (commit date), not %aI: a feature commit authored weeks before its PR was
+// merged would overstate how long a commit has been waiting.
+export const UPSTREAM_HISTORY_FORMAT = [GIT_LOG_RECORD_SEP + '%H', '%h', '%cI', '%P', '%s'].join(GIT_LOG_FIELD_SEP);
+
+// Whole upstream history, newest first (no file lists: cheap).
+function getUpstreamHistory(dir, branch) {
+  const raw = execFileSync(
+    'git',
+    ['-C', dir, 'log', branch, `--format=${UPSTREAM_HISTORY_FORMAT}`],
+    { encoding: 'utf8', maxBuffer: GIT_LOG_MAX_BUFFER_BYTES },
+  );
+  return raw
+    .split(GIT_LOG_RECORD_SEP)
+    .map((r) => r.trim())
+    .filter(Boolean)
+    .map((r) => {
+      const [sha, shortSha, date, parents, subject] = r.split(GIT_LOG_FIELD_SEP);
+      return { sha, shortSha, date, subject, parents: parents.trim().split(/\s+/).filter(Boolean) };
+    });
+}
+
+// The backport line is informational: a failure computing it must never stop
+// the checkpoint update or the "Last checked" heartbeat. Returns a placeholder
+// line (and logs the cause) instead of throwing.
+export function backportLineOrFallback(compute) {
+  try {
+    return compute();
+  } catch (err) {
+    const reason = String((err && err.message) || err).split('\n')[0].slice(0, 200);
+    console.warn(`Could not compute the backport status: ${reason}`);
+    return `**Last backported:** unavailable (${reason})`;
+  }
+}
+
+function buildBackportLine(dir, config, generatedAt) {
+  return backportLineOrFallback(() => computeBackportLine(dir, config, generatedAt));
+}
+
+function computeBackportLine(dir, config, generatedAt) {
+  const input = {
+    upstream: getUpstreamHistory(dir, config.branch),
+    backported: getLocalTrailerShas(TRAILER_BACKPORTED),
+    skipped: getLocalTrailerShas(TRAILER_SKIPPED),
+  };
+  const unmatched = findUnmatchedTrailerShas(input);
+  if (unmatched.length) {
+    console.warn(
+      `Trailer SHA(s) matching no commit on ${config.branch} (typo, octez.js SHA or wrong branch?): ${unmatched.join(', ')}`,
+    );
+  }
+  const status = computeBackportStatus(input);
+  return renderBackportLine(status, { generatedAt, repoUrl: config.repoUrl });
+}
+
 // `gh issue list --search "<title>" in:title` is a *contains* match, so a
 // differently-titled labelled issue (e.g. "Taquito Sync Tracker (archived)")
 // can come back in `results` alongside (or instead of) the real tracker
@@ -655,7 +850,10 @@ export async function main(env = process.env) {
       // Nothing to report, but still record that the job ran — see the
       // "Last checked" heartbeat section above. No comment is posted; this
       // is a silent, single-line body edit, not a content update.
-      const heartbeatBody = upsertLastCheckedLine(issue.body, generatedAt);
+      const heartbeatBody = upsertBackportLine(
+        upsertLastCheckedLine(issue.body, generatedAt),
+        buildBackportLine(tmpDir, config, generatedAt),
+      );
       if (config.dryRun) {
         console.log(
           'No new commits since last checkpoint. [DRY_RUN] Would update the "Last checked" ' +
@@ -680,6 +878,7 @@ export async function main(env = process.env) {
       bootstrap: false,
       commits: classified,
       repoUrl: config.repoUrl,
+      backportLine: buildBackportLine(tmpDir, config, generatedAt),
     });
     const summary = summarizeCounts(classified);
     const commentBody =

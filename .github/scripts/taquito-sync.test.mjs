@@ -29,6 +29,14 @@ import {
   renderCheckpointMarker,
   parseCheckpointSha,
   renderIssueBody,
+  parseTrailerShas,
+  parseBodyTrailerShas,
+  findUnmatchedTrailerShas,
+  computeBackportStatus,
+  renderBackportLine,
+  upsertBackportLine,
+  backportLineOrFallback,
+  UPSTREAM_HISTORY_FORMAT,
   upsertLastCheckedLine,
   selectTrackerIssue,
   resolveTrackerState,
@@ -779,4 +787,143 @@ test('resolveTrackerState: CLOSED issue with valid checkpoint -> not bootstrap, 
   assert.equal(result.corrupted, false);
   assert.equal(result.needsReopen, true);
   assert.equal(result.lastReviewedSha, sha);
+});
+
+// ---------------------------------------------------------------------------
+// Backport status (Upstream-Commit / Upstream-Skipped trailers)
+// ---------------------------------------------------------------------------
+
+const up = (sha, date, subject, parents = []) => ({ sha: sha.repeat(40).slice(0, 40), shortSha: sha, date, subject, parents: parents.map((p) => p.repeat(40).slice(0, 40)) });
+// newest first; linear history a <- b <- (merge c of b and x) <- d <- e
+const UPSTREAM = [
+  up('e', '2026-10-18T00:00:00Z', 'website bump', ['d']),
+  up('d', '2026-10-17T00:00:00Z', 'deps refresh', ['c']),
+  up('c', '2026-10-07T00:00:00Z', 'Merge PR', ['b', 'x']),
+  up('b', '2026-10-06T00:00:00Z', 'fix b', ['a']),
+  up('a', '2026-10-05T00:00:00Z', 'fix a'),
+  // PR branch commit dated BEFORE b but brought in by merge c: sorts below b in `git log`.
+  up('x', '2026-10-01T00:00:00Z', 'fix x from a PR branch', ['a']),
+];
+const REPO = 'https://github.com/ecadlabs/taquito';
+
+test('parseTrailerShas: keeps hex SHAs, lowercases them, ignores noise', () => {
+  const raw = 'ABCDEF1234567\n\n  0123456789abcdef0123456789abcdef01234567 (#3450)\nnot-a-sha\n';
+  assert.deepEqual(parseTrailerShas(raw), ['abcdef1234567', '0123456789abcdef0123456789abcdef01234567']);
+  assert.deepEqual(parseTrailerShas(''), []);
+  assert.deepEqual(parseTrailerShas(undefined), []);
+});
+
+test('computeBackportStatus: null when no trailer matches an upstream commit', () => {
+  assert.equal(computeBackportStatus({ upstream: UPSTREAM, backported: ['f'.repeat(40)], skipped: [] }), null);
+  assert.equal(computeBackportStatus({ upstream: UPSTREAM, backported: [], skipped: [] }), null);
+});
+
+test('computeBackportStatus: skipped commits do not count as pending', () => {
+  const s = computeBackportStatus({ upstream: UPSTREAM, backported: ['d'.repeat(40)], skipped: ['e'.repeat(40)] });
+  assert.equal(s.lastBackported.shortSha, 'd');
+  assert.equal(s.pending.length, 0);
+});
+
+test('computeBackportStatus: commits not reachable from a covered commit are pending; merges are not counted', () => {
+  const s = computeBackportStatus({ upstream: UPSTREAM, backported: ['b'.repeat(40)], skipped: [] });
+  assert.equal(s.lastBackported.shortSha, 'b');
+  // x is on the merged PR branch (not an ancestor of b) even though it is older by date.
+  assert.deepEqual(s.pending.map((c) => c.shortSha).sort(), ['d', 'e', 'x']);
+  assert.equal(s.oldestPending.shortSha, 'x');
+});
+
+test('computeBackportStatus: a mark on a merge covers the commits it brought in', () => {
+  const s = computeBackportStatus({ upstream: UPSTREAM, backported: ['c'.repeat(40)], skipped: [] });
+  assert.deepEqual(s.pending.map((c) => c.shortSha).sort(), ['d', 'e']);
+});
+
+test('computeBackportStatus: the mark follows ancestry, not date order (regression: date-sorted position hid x)', () => {
+  // Marking b (dated after x) must NOT make x look handled just because x sorts below b.
+  const s = computeBackportStatus({ upstream: UPSTREAM, backported: ['b'.repeat(40)], skipped: [] });
+  assert.ok(s.pending.some((c) => c.shortSha === 'x'));
+});
+
+test('computeBackportStatus: accepts short SHA prefixes', () => {
+  const s = computeBackportStatus({ upstream: UPSTREAM, backported: ['ddddddd'], skipped: ['eeeeeee'] });
+  assert.equal(s.lastBackported.shortSha, 'd');
+  assert.equal(s.pending.length, 0);
+});
+
+test('renderBackportLine: up to date, behind, and no-trailer variants', () => {
+  const opts = { generatedAt: '2026-10-27T00:00:00Z', repoUrl: REPO };
+  const done = computeBackportStatus({ upstream: UPSTREAM, backported: ['d'.repeat(40)], skipped: ['e'.repeat(40)] });
+  assert.match(renderBackportLine(done, opts), /^\*\*Last backported:\*\* \[`d`\]\(.*\) deps refresh \(2026-10-17\) — up to date/);
+  const behind = computeBackportStatus({ upstream: UPSTREAM, backported: ['b'.repeat(40)], skipped: [] });
+  assert.match(renderBackportLine(behind, opts), /3 upstream commit\(s\) not yet backported or skipped, oldest .*2026-10-01.* \(26 day\(s\) ago\)/);
+  assert.match(renderBackportLine(null, opts), /none recorded yet.*Upstream-Commit/);
+});
+
+test('upsertBackportLine + renderIssueBody: line sits under "Last checked", is replaced in place, and survives no-op patching', () => {
+  const backportLine = '**Last backported:** x';
+  const body = renderIssueBody({
+    lastReviewedSha: 'a'.repeat(40),
+    generatedAt: '2026-09-01T06:00:00.000Z',
+    bootstrap: false,
+    commits: [],
+    repoUrl: REPO,
+    backportLine,
+  });
+  assert.match(body, /\*\*Last checked:\*\* .*\n\*\*Last backported:\*\* x\n/);
+  const patched = upsertBackportLine(body, '**Last backported:** y');
+  assert.match(patched, /^\*\*Last backported:\*\* y$/m);
+  assert.equal(patched.match(/Last backported/g).length, 1);
+  // Old body without the line: inserted after "Last checked".
+  const legacy = renderIssueBody({ lastReviewedSha: 'a'.repeat(40), generatedAt: '2026-09-01T06:00:00.000Z', bootstrap: false, commits: [], repoUrl: REPO });
+  assert.match(upsertBackportLine(legacy, '**Last backported:** z'), /Last checked:\*\* .*\n\*\*Last backported:\*\* z/);
+});
+
+test('backportLineOrFallback: returns the computed line, or a placeholder instead of throwing', () => {
+  assert.equal(backportLineOrFallback(() => '**Last backported:** ok'), '**Last backported:** ok');
+  const warn = console.warn;
+  console.warn = () => {};
+  try {
+    const line = backportLineOrFallback(() => {
+      throw new Error('git exploded\nsecond line');
+    });
+    assert.equal(line, '**Last backported:** unavailable (git exploded)');
+  } finally {
+    console.warn = warn;
+  }
+});
+
+test('parseBodyTrailerShas: finds trailers git would ignore (non-final paragraph, squash bullets), not prose', () => {
+  const raw = [
+    'chore: backport',
+    '',
+    'Upstream-Commit: ABCDEF1234567',
+    '',
+    'Co-Authored-By: Someone <a@b.c>',
+    '* second squashed commit',
+    '  Upstream-Commit: 0123456789abcdef0123456789abcdef01234567 (#9)',
+    'We follow the Upstream-Commit: convention here.',
+    'Upstream-Skipped: ffffffffff',
+  ].join('\n');
+  assert.deepEqual(parseBodyTrailerShas(raw, 'Upstream-Commit'), ['abcdef1234567', '0123456789abcdef0123456789abcdef01234567']);
+  assert.deepEqual(parseBodyTrailerShas(raw, 'Upstream-Skipped'), ['ffffffffff']);
+  assert.deepEqual(parseBodyTrailerShas('', 'Upstream-Commit'), []);
+});
+
+test('UPSTREAM_HISTORY_FORMAT: dates are commit dates (%cI), fields in the order getUpstreamHistory parses', () => {
+  assert.equal(UPSTREAM_HISTORY_FORMAT, `${GIT_LOG_RECORD_SEP}%H${GIT_LOG_FIELD_SEP}%h${GIT_LOG_FIELD_SEP}%cI${GIT_LOG_FIELD_SEP}%P${GIT_LOG_FIELD_SEP}%s`);
+  assert.ok(!UPSTREAM_HISTORY_FORMAT.includes('%aI'));
+});
+
+test('findUnmatchedTrailerShas: reports trailer SHAs that match no upstream commit, accepts prefixes', () => {
+  const unmatched = findUnmatchedTrailerShas({
+    upstream: UPSTREAM,
+    backported: ['d'.repeat(40), '1234567'],
+    skipped: ['eeeeeee', '1234567', 'deadbeef'],
+  });
+  assert.deepEqual(unmatched.sort(), ['1234567', 'deadbeef']);
+  assert.deepEqual(findUnmatchedTrailerShas({ upstream: UPSTREAM, backported: [], skipped: [] }), []);
+});
+
+test('parseBodyTrailerShas: a mid-sentence mention with a hex sha is prose, not a trailer', () => {
+  assert.deepEqual(parseBodyTrailerShas('We follow Upstream-Commit: abcdef1 here.', 'Upstream-Commit'), []);
+  assert.deepEqual(parseBodyTrailerShas('see (Upstream-Skipped: abcdef1234)', 'Upstream-Skipped'), []);
 });
