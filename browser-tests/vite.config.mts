@@ -48,7 +48,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     entries: [join(browserTestsDir, 'smoke-app', 'src', 'prewarm-packages.ts')],
-    exclude: ['@taquito/sapling-wasm'],
   },
   server: {
     fs: {

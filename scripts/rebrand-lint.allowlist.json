@@ -60,11 +60,6 @@
     "reason": "Generated npm provenance/build-signature artifact that echoes the package.json author/contributor attribution to ECAD Labs Inc.; generated, not hand-edited."
   },
   {
-    "pattern": "taquito-scope",
-    "file": "browser-tests/vite.config.mts",
-    "reason": "Vite optimizeDeps exclusion for the tracked @taquito/sapling-wasm dependency."
-  },
-  {
     "pattern": "ecadlabs",
     "file": "website/src/content/docs/*/dapp_template.mdx",
     "reason": "Links to community starter templates (taquito-react-template, taquito-vue-template) that genuinely live under github.com/ecadlabs; not this project's own branding."
