@@ -4,18 +4,49 @@ description: Release notes for octez.js and archive of Taquito releases prior to
 layout: ../layouts/MarkdownLayout.astro
 ---
 
-# octez.js v25.0.0 (unreleased)
+# octez.js v25.0.0
+
+The major version now tracks the Octez node release line. This release adds Tezos X cross-runtime tooling and tz5 (ML-DSA-44) support.
 
 ### Breaking changes
 
-- **`@tezos-x/octez.js-dapp-wallet`: the `beacon-types` UMD global is now `octezBeaconTypes`** (was `taquitoBeaconTypes`). Only `<script>`-tag consumers of `dist/beacon-types.umd.js` are affected; update any `window.taquitoBeaconTypes` reference.
-- **`@tezos-x/octez.js`: `ChainIds.TALLINNNET` is removed.** The Tallinn (U024) testnet is shut down. Use `ChainIds.USHUAIANET` or `ChainIds.MAINNET`.
-- **`@tezos-x/octez.js-wallet-connect`: `NetworkType.GHOSTNET` is removed.** Ghostnet is shut down.
-- **`@tezos-x/octez.js-wallet-connect`: `NetworkType.TALLINNNET` is replaced by `NetworkType.USHUAIANET`** (`'tallinnnet'` → `'ushuaianet'`). Update any code or stored sessions that reference the old network.
+- **`@tezos-x/octez.js`: `ChainIds.TALLINNNET` is removed.** The Tallinn (U024) testnet is shut down. Use `ChainIds.USHUAIANET` or `ChainIds.MAINNET` (#121).
+- **`@tezos-x/octez.js-wallet-connect`: `NetworkType.GHOSTNET` is removed.** Ghostnet is shut down (#135).
+- **`@tezos-x/octez.js-wallet-connect`: `NetworkType.TALLINNNET` is replaced by `NetworkType.USHUAIANET`** (`'tallinnnet'` → `'ushuaianet'`). Update any code or stored sessions that reference the old network (#121).
+- **`@tezos-x/octez.js-dapp-wallet`: the `beacon-types` UMD global is now `octezBeaconTypes`** (was `taquitoBeaconTypes`). Only `<script>`-tag consumers of `dist/beacon-types.umd.js` are affected; update any `window.taquitoBeaconTypes` reference (#104).
+
+### Tezos X
+
+New `@tezos-x/octez.js-utils` helpers to work across the Michelson and EVM runtimes (NAC, Native Atomic Composability):
+
+- **Cross-runtime address mapping:** derive the corresponding Ethereum-compatible address from a Tezos address, and vice versa, without requiring a network request (`getEthereumAlias`, `getTezosAlias`) (#92).
+- **Cross-runtime operation tracking:** retrieve the corresponding operation identifier across the Michelson and EVM runtimes, making it easier to follow interactions between them (`getEthereumTransactionHash`, `getTezosOperationHash`) (#113).
+- **Cross-runtime transactions and contract calls:** prepare operations to transfer funds or interact with smart contracts from the Michelson runtime to the EVM runtime, and vice versa. Octez.js handles operation preparation, leaving signing and submission to the developer's usual tools.
+  - Michelson → EVM: `buildMichelsonToEvmCall` wraps an EVM transaction into a call to the NAC gateway contract, and `toTransferParams` turns it into transfer parameters. EVM method signatures are canonicalized and resolved from calldata (#124, #125).
+  - EVM → Michelson: `buildEvmToMichelsonCall`, `encodeNacCall` and `encodeNacCallMichelson` wrap a Michelson operation into a call to the NAC precompile (#126).
+  - Supporting pieces: NAC constants (gateway, precompile, runtime URLs, recommended gas), wei/mutez conversion and hex/amount parsing (#123). `@tezos-x/octez.js-utils` now depends on `viem`.
+
+### Improved confirmation tracking
+
+More reliable operation confirmation handling on networks with very short block times, addressing cases where confirmations could previously be missed. Wallet confirmation no longer misses operations included before monitoring starts, and confirmation backfills blocks before the first observed head (#137).
 
 ### New features
 
-- **`tz5` (ML-DSA-44) accounts are supported**, for use on protocols where `tz5_account_enable` is turned on (it is not on mainnet or ushuaianet today). `InMemorySigner.fromSecretKey` accepts `mdsk` secret keys and `mdesk` encrypted secret keys; mnemonic generation and HD derivation do not support ML-DSA. `@tezos-x/octez.js-utils` knows the `tz5`, `mdpk`, `mdsk`, `mdesk` and `mdsig` prefixes and verifies ML-DSA-44 signatures, and the local forger, Michelson codec and encoder handle the new key, key hash and signature types. Reveal gas, fee and size estimation account for tz5. The support is validated against an isolated Octez 25.2 sandbox (`npm run test:tz5:local`). `@tezos-x/octez.js-utils` and `@tezos-x/octez.js-signer` now depend on `@noble/post-quantum`.
+- **`tz5` (ML-DSA-44) accounts are supported**, for use on protocols where `tz5_account_enable` is turned on (it is not on mainnet or ushuaianet today). `InMemorySigner.fromSecretKey` accepts `mdsk` secret keys and `mdesk` encrypted secret keys; mnemonic generation and HD derivation do not support ML-DSA. `@tezos-x/octez.js-utils` knows the `tz5`, `mdpk`, `mdsk`, `mdesk` and `mdsig` prefixes and verifies ML-DSA-44 signatures, and the local forger, Michelson codec and encoder handle the new key, key hash and signature types. Reveal gas, fee and size estimation account for tz5; the reveal gas and fee are calibrated against a live network (#121). The support is validated against an isolated Octez 25.2 sandbox (`npm run test:tz5:local`). `@tezos-x/octez.js-utils` and `@tezos-x/octez.js-signer` now depend on `@noble/post-quantum` (#137).
+
+### Fixes
+
+- Operation preparation: fixed counter allocation under concurrent operations, and simulation counters are recovered after nonstandard RPC errors.
+- Automatic reveal fees are now correct on networks with custom pricing.
+- `OptionToken.EncodeObject` keeps one-element list and set values intact.
+- Default IPFS gateway fixed, with better diagnostics when retrieving metadata.
+
+All four were backported in #137.
+
+### Dependencies and environment variables
+
+- `@tezos-x/octez.js-dapp-wallet`: `octez.connect` updated to v5.0.4 (multi-network, backward compatible) (#60).
+- Diagnostic and retry environment variables are now `OCTEZJS_*`. The `TAQUITO_*` names still work but are **deprecated** and will be removed in a future release (#81).
 
 ---
 
