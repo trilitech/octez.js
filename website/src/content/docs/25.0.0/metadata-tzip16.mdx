@@ -1,0 +1,560 @@
+---
+title: TZIP-16 Contract Metadata and Views
+---
+
+
+
+The `@tezos-x/octez.js-tzip16` package allows retrieving metadata associated with a smart contract. These metadata can be stored on-chain (tezos-storage) or off-chain (HTTP(S) or IPFS). The package also provides a way to execute the `MichelsonStorageView` found in the metadata. More information about the TZIP-16 standard can be found [here](https://gitlab.com/tzip/tzip/-/blob/master/proposals/tzip-16/tzip-16.md#introduction).
+
+## How to use the tzip16 package
+
+The package can be used as an extension to the well known octez.js contract abstraction.
+
+1. **We first need to create an instance of `Tzip16Module` and add it as an extension to our `TezosToolkit`**
+
+<Tabs
+defaultValue="defaultMetadataProvider"
+values={[
+{label: 'Using the default Metadata Provider', value: 'defaultMetadataProvider'},
+{label: 'Using a custom Metadata Provider', value: 'customMetadataProvider'}
+]}>
+<TabItem value="defaultMetadataProvider">
+
+The constructor of the `Tzip16Module` takes an optional `MetadataProvider` as a parameter. When none is passed, the default `MetadataProvider` of octez.js is instantiated and the default handlers (`HttpHandler`, `IpfsHandler`, and `TezosStorageHandler`) are used.
+
+:::caution
+For production applications that retrieve IPFS metadata, configure a reliable gateway. The default IPFS gateway, `ipfs.filebase.io`, is a shared public gateway provided for convenience: it may be rate-limited or unavailable. Use a dedicated or application-controlled gateway that can retrieve your content and that supports CORS if your application runs in a browser. See [the custom metadata provider](#how-to-use-the-tzip16-package) below.
+:::
+
+```js
+import { TezosToolkit } from '@tezos-x/octez.js';
+import { Tzip16Module, tzip16 } from '@tezos-x/octez.js-tzip16';
+
+const Tezos = new TezosToolkit('rpcUrl');
+Tezos.addExtension(new Tzip16Module());
+```
+
+  </TabItem>
+  <TabItem value="customMetadataProvider">
+
+In some cases, we may want to use a customized metadata provider. The constructor of the `Tzip16Module` class takes an optional metadata provider as a parameter. This allows to inject a custom metadata provider with custom protocol handlers if desired. For example, if we want to use a different IPFS gateway than the default one, which is `ipfs.filebase.io`, or if we want to use a different HTTP handler to support authentication or custom headers. Here is an example:
+
+```js
+import { Handler, IpfsHttpHandler, TezosStorageHandler, MetadataProvider, Tzip16Module, tzip16 } from '@tezos-x/octez.js-tzip16';
+
+const Tezos = new TezosToolkit('rpcUrl');
+
+// The constructor of the `MetadataProvider` class takes a `Map<string, Handler>` as a parameter.
+const customHandler = new Map<string, Handler>([
+  ['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')], // The optional argument of IpfsHttpHandler is the gateway hostname, without `https://` or `/ipfs/`
+  ['http', 'customHttpHandler'], // Custom HTTP(S) handler
+  ['https', 'customHttpHandler'],
+  ['tezos-storage', new TezosStorageHandler()],
+]);
+
+const customMetadataProvider = new MetadataProvider(customHandler);
+Tezos.addExtension(new Tzip16Module(customMetadataProvider));
+```
+
+A list of public gateways is accessible [here](https://ipfs.github.io/public-gateway-checker/).
+
+Overriding the IPFS gateway only changes the retrieval of `ipfs://` metadata: HTTP(S) URLs stored in a contract, or URLs inside the returned metadata, are not rewritten.
+
+To keep the other default handlers, copy `DEFAULT_HANDLERS` and replace only the `ipfs` entry: `const handlers = new Map(DEFAULT_HANDLERS); handlers.set('ipfs', new IpfsHttpHandler('your-gateway-hostname'));`
+
+octez.js does not switch to another gateway when a request fails. Transient HTTP 429 and 5xx responses are retried only as configured for `@tezos-x/octez.js-http-utils` (`OCTEZJS_HTTP_RETRY_COUNT`, 1 by default).
+
+  </TabItem>
+</Tabs>
+
+2. **Use the `tzip16` function to extend a contract abstraction**
+
+```js
+const contract = await Tezos.contract.at('contractAddress', tzip16);
+```
+
+3. **Call the methods of the `Tzip16ContractAbstraction` class**
+
+The namespace `tzip16()` need to be specified when calling a method of the `Tzip16ContractAbstraction` class:
+
+```js
+const metadata = await contract.tzip16().getMetadata();
+const views = await contract.tzip16().metadataViews();
+```
+
+All other methods of the `ContractAbstraction` class can be called as usual on the `contract` object.
+
+## Get the metadata
+
+The `getMetadata` method returns an object which contains the URI, the metadata in JSON format, an optional SHA256 hash of the metadata and an optional integrity check result.
+
+A sequence diagram can be found [here](./tzip16-sequence-diagram#get-the-metadata).
+
+### Handling retrieval errors
+
+When the metadata cannot be retrieved, `getMetadata` rejects with one of the errors of `@tezos-x/octez.js-http-utils`: `HttpResponseError` (the gateway answered with an error status), `HttpRequestFailed` (network or transport failure), or `HttpTimeoutError`. For IPFS, the error message names the gateway URL that failed and recalls how to configure another gateway; the status, URL, timeout and cause fields remain available on their respective error types.
+
+If the response is not valid JSON, `getMetadata` rejects with an `InvalidContractMetadataError` whose message contains the metadata URI (for IPFS, the original `ipfs://` address) and whose `invalidMetadata` property holds the response text. For IPFS this often means the gateway returned an HTML error or service-worker page instead of the metadata. Prefer checking the error type and its fields over matching the message text.
+
+Applications should catch these errors and let users retry, or display that the metadata is temporarily unavailable.
+
+#### Tezos-storage example
+
+<Tabs
+defaultValue="contractAPI"
+values={[
+{label: 'Contract API', value: 'contractAPI'},
+{label: 'Wallet API', value: 'walletAPI'}
+]}>
+<TabItem value="contractAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT19qUfrNySSdDBfGKeFbKwY4ivCRtapGX4D';
+
+try {
+  const contract = await Tezos.contract.at(contractAddress, tzip16);
+  console.log(`Fetching the metadata for ${contractAddress}...`);
+  const metadata = await contract.tzip16().getMetadata();
+  console.log(JSON.stringify(metadata, null, 2));
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+</TabItem>
+  <TabItem value="walletAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT19qUfrNySSdDBfGKeFbKwY4ivCRtapGX4D';
+
+try {
+  const wallet = await Tezos.wallet.at(contractAddress, tzip16);
+  console.log(`Fetching the metadata for ${contractAddress}...`);
+  const metadata = await wallet.tzip16().getMetadata();
+  console.log(JSON.stringify(metadata, null, 2));
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### HTTPS example
+
+<Tabs
+defaultValue="contractAPI"
+values={[
+{label: 'Contract API', value: 'contractAPI'},
+{label: 'Wallet API', value: 'walletAPI'}
+]}>
+<TabItem value="contractAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT1GZurBrUjQ8cbJsHsn38GvYjNgHepajgXZ';
+
+try {
+  const contract = await Tezos.contract.at(contractAddress, tzip16);
+  console.log(`Fetching the metadata for ${contractAddress}...`);
+  const metadata = await contract.tzip16().getMetadata();
+  console.log(JSON.stringify(metadata, null, 2));
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+</TabItem>
+  <TabItem value="walletAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT1GZurBrUjQ8cbJsHsn38GvYjNgHepajgXZ';
+
+try {
+  const wallet = await Tezos.wallet.at(contractAddress, tzip16);
+  console.log(`Fetching the metadata for ${contractAddress}...`);
+  const metadata = await wallet.tzip16().getMetadata();
+  console.log(JSON.stringify(metadata, null, 2));
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+  </TabItem>
+</Tabs>
+
+#### Example having a SHA256 hash:
+
+<Tabs
+defaultValue="contractAPI"
+values={[
+{label: 'Contract API', value: 'contractAPI'},
+{label: 'Wallet API', value: 'walletAPI'}
+]}>
+<TabItem value="contractAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT1T7BcFApJc5thrZKnzhFP1Py5ZjTdcQrk2';
+
+try {
+  const contract = await Tezos.contract.at(contractAddress, tzip16);
+  console.log(`Fetching the metadata for ${contractAddress}...`);
+  const metadata = await contract.tzip16().getMetadata();
+  console.log(JSON.stringify(metadata, null, 2));
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+</TabItem>
+  <TabItem value="walletAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT1T7BcFApJc5thrZKnzhFP1Py5ZjTdcQrk2';
+
+try {
+  const wallet = await Tezos.wallet.at(contractAddress, tzip16);
+  console.log(`Fetching the metadata for ${contractAddress}...`);
+  const metadata = await wallet.tzip16().getMetadata();
+  console.log(JSON.stringify(metadata, null, 2));
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### IPFS example
+
+The IPFS handler fetches the metadata through an HTTP gateway. The default one (`ipfs.filebase.io`) is a shared public gateway that may be rate-limited, so this example explicitly configures the `IpfsHttpHandler` with another public gateway, as you would do with your own gateway in production (see [the custom metadata provider](#how-to-use-the-tzip16-package) above).
+
+<Tabs
+defaultValue="contractAPI"
+values={[
+{label: 'Contract API', value: 'contractAPI'},
+{label: 'Wallet API', value: 'walletAPI'}
+]}>
+<TabItem value="contractAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16, IpfsHttpHandler, MetadataProvider } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+// The default IPFS gateway is shared and may be rate-limited: we give the metadata provider
+// a handler that uses an explicitly chosen gateway.
+const handlers = new Map([['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')]]);
+Tezos.addExtension(new Tzip16Module(new MetadataProvider(handlers)));
+
+const contractAddress = 'KT1Ach5BFD1nREMgySGQHKM2pgxRG8XCpUgu';
+
+try {
+  const contract = await Tezos.contract.at(contractAddress, tzip16);
+  console.log(`Fetching the metadata for ${contractAddress}...`);
+  const metadata = await contract.tzip16().getMetadata();
+  console.log(JSON.stringify(metadata, null, 2));
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+</TabItem>
+  <TabItem value="walletAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16, IpfsHttpHandler, MetadataProvider } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+// The default IPFS gateway is shared and may be rate-limited: we give the metadata provider
+// a handler that uses an explicitly chosen gateway.
+const handlers = new Map([['ipfs', new IpfsHttpHandler('gateway.pinata.cloud')]]);
+Tezos.addExtension(new Tzip16Module(new MetadataProvider(handlers)));
+
+const contractAddress = 'KT1Ach5BFD1nREMgySGQHKM2pgxRG8XCpUgu';
+
+try {
+  const wallet = await Tezos.wallet.at(contractAddress, tzip16);
+  console.log(`Fetching the metadata for ${contractAddress}...`);
+  const metadata = await wallet.tzip16().getMetadata();
+  console.log(JSON.stringify(metadata, null, 2));
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Execute off-chain views
+
+A sequence diagram can be found [here](./tzip16-sequence-diagram#execute-a-view).
+
+In the next example, we will run a view named `someJson` that can be found in the metadata of the contract `KT1Si2RLjUp9DUEk4EukX5d3upkSERsGdY9f`. When we inspect those metadata, we can see that this view takes no parameter, has a returnType of bytes and has the following code:
+
+```
+"code":
+[
+  {
+    "prim": "DROP",
+    "args": [],
+    "annots": []
+  },
+  {
+    "prim": "PUSH",
+    "args": [
+      {
+        "prim": "bytes",
+        "args": [],
+        "annots": []
+      },
+      {
+        "bytes": "7b2268656c6c6f223a22776f726c64222c226d6f7265223a7b226c6f72656d223a34322c22697073756d223a5b22222c226f6e65222c2232225d7d7d"
+      }
+    ],
+    "annots": []
+  }
+]
+```
+
+
+Try to run the view:
+
+<Tabs
+defaultValue="contractAPI"
+values={[
+{label: 'Contract API', value: 'contractAPI'},
+{label: 'Wallet API', value: 'walletAPI'}
+]}>
+<TabItem value="contractAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16, bytesToString } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT1Si2RLjUp9DUEk4EukX5d3upkSERsGdY9f';
+
+try {
+  const contract = await Tezos.contract.at(contractAddress, tzip16);
+  console.log(`Initialising the views for ${contractAddress}...`);
+  const views = await contract.tzip16().metadataViews();
+  console.log(`The following view names were found in the metadata: ${Object.keys(views)}`);
+  const result = await views.someJson().executeView();
+  console.log(`Result of the view someJson: ${result}`);
+  console.log(`Transform result to char: ${bytesToString(result)}`);
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+</TabItem>
+  <TabItem value="walletAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16, bytesToString } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT1Si2RLjUp9DUEk4EukX5d3upkSERsGdY9f';
+
+try {
+  const wallet = await Tezos.wallet.at(contractAddress, tzip16);
+  console.log(`Initialising the views for ${contractAddress}...`);
+  const views = await wallet.tzip16().metadataViews();
+  console.log(`The following view names were found in the metadata: ${Object.keys(views)}`);
+  const result = await views.someJson().executeView();
+  console.log(`Result of the view someJson: ${result}`);
+  console.log(`Transform result to char: ${bytesToString(result)}`);
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+  </TabItem>
+</Tabs>
+
+In the next example, we will run a view named `multiply-the-nat-in-storage` that can be found in the metadata of the contract `KT1DojqiUQFwNwBHMLYsCzWpmVraSLpLGa1T`. When we inspect those metadata, we can see that this view takes a `nat` has a parameter, has a returnType of `nat` and has the following instructions: `DUP, CDR, CAR, SWAP, CAR, MUL`.
+
+Try to run the view:
+
+<Tabs
+defaultValue="contractAPI"
+values={[
+{label: 'Contract API', value: 'contractAPI'},
+{label: 'Wallet API', value: 'walletAPI'}
+]}>
+<TabItem value="contractAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT1DojqiUQFwNwBHMLYsCzWpmVraSLpLGa1T';
+
+try {
+  const contract = await Tezos.contract.at(contractAddress, tzip16);
+  const storage = await contract.storage();
+  console.log(`The nat in the storage of the contract is: ${storage[0]}`);
+  console.log(`Initialising the views for ${contractAddress}...`);
+  const views = await contract.tzip16().metadataViews();
+  console.log(`The following view names were found in the metadata: ${Object.keys(views)}`);
+  const result = await views['multiply-the-nat-in-storage']().executeView(10);
+  console.log(`Result of the view 'multiply-the-nat-in-storage': ${result}`);
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+</TabItem>
+  <TabItem value="walletAPI">
+
+```js live
+// import { TezosToolkit } from '@tezos-x/octez.js';
+// import { Tzip16Module, tzip16 } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+Tezos.addExtension(new Tzip16Module());
+
+const contractAddress = 'KT1DojqiUQFwNwBHMLYsCzWpmVraSLpLGa1T';
+
+try {
+  const wallet = await Tezos.wallet.at(contractAddress, tzip16);
+  const storage = await wallet.storage();
+  console.log(`The nat in the storage of the contract is: ${storage[0]}`);
+  console.log(`Initialising the views for ${contractAddress}...`);
+  const views = await wallet.tzip16().metadataViews();
+  console.log(`The following view names were found in the metadata: ${Object.keys(views)}`);
+  const result = await views['multiply-the-nat-in-storage']().executeView(10);
+  console.log(`Result of the view 'multiply-the-nat-in-storage': ${result}`);
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Execute a custom view
+
+In the next example we execute the view `multiply-the-nat-in-storage` in a custom way:
+
+<Tabs
+defaultValue="contractAPI"
+values={[
+{label: 'Contract API', value: 'contractAPI'},
+{label: 'Wallet API', value: 'walletAPI'}
+]}>
+<TabItem value="contractAPI">
+
+```js live
+// import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
+// import { MichelsonStorageView } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+const contractAddress = 'KT1DojqiUQFwNwBHMLYsCzWpmVraSLpLGa1T';
+
+try {
+  const contract = await Tezos.contract.at(contractAddress);
+  const view = new MichelsonStorageView(
+    'test', // view name
+    contract, // contract abstraction
+    Tezos.rpc, // rpc
+    new RpcReadAdapter(Tezos.rpc), // readProvider
+    { prim: 'nat' }, // returnType
+    [
+      { prim: 'DUP' },
+      { prim: 'CDR' },
+      { prim: 'CAR' },
+      { prim: 'SWAP' },
+      { prim: 'CAR' },
+      { prim: 'MUL' },
+    ], // code of the view
+    { prim: 'nat' } // parameter type
+  );
+
+  const result = await view.executeView(2);
+  console.log(`Result of the custom view: ${result}`);
+} catch (error) {
+  console.log(error);
+}
+```
+
+</TabItem>
+  <TabItem value="walletAPI">
+
+```js live
+// import { TezosToolkit, RpcReadAdapter } from '@tezos-x/octez.js';
+// import { MichelsonStorageView } from "@tezos-x/octez.js-tzip16";
+// const Tezos = new TezosToolkit('rpc_url');
+
+const contractAddress = 'KT1DojqiUQFwNwBHMLYsCzWpmVraSLpLGa1T';
+
+try {
+  const wallet = await Tezos.wallet.at(contractAddress);
+  const view = new MichelsonStorageView(
+    'test', // view name
+    wallet, // contract abstraction
+    Tezos.rpc, // rpc,
+    new RpcReadAdapter(Tezos.rpc), // readProvider
+    { prim: 'nat' }, // returnType
+    [
+      { prim: 'DUP' },
+      { prim: 'CDR' },
+      { prim: 'CAR' },
+      { prim: 'SWAP' },
+      { prim: 'CAR' },
+      { prim: 'MUL' },
+    ], // code of the view
+    { prim: 'nat' } // parameter type
+  );
+
+  const result = await view.executeView(2);
+  console.log(`Result of the custom view: ${result}`);
+} catch (error) {
+  console.log(`Error: ${JSON.stringify(error, null, 2)}`);
+}
+```
+  </TabItem>
+</Tabs>
