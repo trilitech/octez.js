@@ -1,0 +1,46 @@
+---
+title: Support for Tezos X
+---
+
+:::warning
+This feature is a work in progress and might go through refinements in the near future.
+:::
+
+octez.js supports both Tezos layer 1 and Tezos X. The `TezosToolkit`, its signers, contract abstractions and operations work the same way on both.
+
+On Tezos X, octez.js targets the [Michelson interface](https://docs.etherlink.com/michelson/), which runs Michelson smart contracts next to the EVM interface and exposes a Tezos RPC API, like a layer 1 node, modulo a few differences highlighted below.
+
+To call the EVM interface from the Michelson interface, or the other way around, see [Cross-runtime calls](tezosx_cross_runtime).
+
+## Differences between Tezos X and Tezos layer 1
+
+The Michelson interface of Tezos X behaves as closely as possible to Tezos layer 1, but some differences exist:
+
+- Some are inherent to Tezos X: there is no baking, attestation, delegation or staking, and no consensus, governance or Smart Rollup operation. The octez.js features built on them, such as [staking](staking), [delegation](set_delegate) or [Smart Rollups](smart_rollups), do not apply. Fees are burnt instead of being paid to a baker.
+- Others are features that are not available yet, such as tz4 accounts, [tickets](tickets), [Sapling](sapling), [timelocks](timelock) and [global constants](global_constant).
+
+See [Compatibility with Tezos L1](https://docs.etherlink.com/michelson/developing/compatibility) for the complete and up-to-date list.
+
+## Targeting Tezos X
+
+octez.js is not tied to a network: it works with the network of the RPC node given to the `TezosToolkit`, a Tezos layer 1 node in most of this documentation. To target Tezos X, give it the RPC endpoint of the Michelson interface instead:
+
+```js
+import { TezosToolkit } from '@tezos-x/octez.js';
+
+const Tezos = new TezosToolkit('https://michelson.etherlink.shadownet.octez.io');
+```
+
+The rest of the setup, such as the signer or the wallet, is the same as on layer 1: see [Quick Start](quick_start).
+
+### Networks
+
+| Network | Michelson interface RPC endpoint | Chain ID |
+|---|---|---|
+| Mainnet | `https://michelson.etherlink.mainnet.octez.io` | `NetXohUVN5QWR4f` |
+| Shadownet (testnet) | `https://michelson.etherlink.shadownet.octez.io` | `NetXtLrzvQDobza` |
+| Previewnet (testnet) | `https://michelson.previewnet.tezosx.nomadic-labs.com` | `NetXY2oPPzkxUW1` |
+
+Previewnet runs upcoming Tezos X features ahead of the other networks, and its faucet funds Michelson interface accounts directly; see [Tezos X Previewnet](https://docs.etherlink.com/testing/previewnet). You can also run your own EVM node: its Michelson interface RPC endpoint is `<your-evm-node-url>/tezlink`.
+
+These endpoints may change: see [Network information](https://docs.etherlink.com/michelson/network-information) for the current ones.

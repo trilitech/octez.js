@@ -4,5 +4,5 @@
  * src/pages/api/search/[version].json.ts, which the rest of the site imports from.
  */
 
-export const VERSIONS = ["next", "1.0.0", "0.9.0"];
-export const DEFAULT_VERSION = "1.0.0";
+export const VERSIONS = ["next","25.0.0","1.0.0","0.9.0"];
+export const DEFAULT_VERSION = "25.0.0";

@@ -1,0 +1,87 @@
+---
+title: "Architecture: Operations"
+---
+
+Every action that changes chain state — a transfer, an origination, a delegation, a vote — is
+modelled as an *operation*. This page describes how operations are represented and how they move
+from a method call to a confirmed block.
+
+## Operation types
+
+octez.js provides a class for each operation the protocol supports, including:
+
+- `TransactionOperation` — tez transfers and contract calls
+- `OriginationOperation` — contract deployment
+- `DelegateOperation` — setting or clearing a delegate
+- `RevealOperation` — revealing an account's public key
+- `RegisterGlobalConstantOperation` — registering a global constant
+- `IncreasePaidStorageOperation` — paying for additional storage
+- `TransferTicketOperation` — transferring tickets
+- `BallotOperation` / `ProposalsOperation` — on-chain governance
+- `UpdateConsensusKeyOperation` — rotating a consensus key
+- `DrainDelegateOperation` — draining a delegate account
+- the Smart Rollup operations (originate, add messages, execute outbox message)
+- `FailingNoopOperation` — a no-op used for signing arbitrary bytes
+
+Each class wraps the operation's contents together with the metadata returned once it is applied,
+and exposes the operation hash, the block it was included in, fees, and consumed gas/storage.
+
+## The operation lifecycle
+
+Sending an operation goes through the same five stages regardless of type. The stages map onto
+the providers held by the [`Context`](/docs/next/arch_framework):
+
+1. **Prepare** — the operation contents are assembled and validated. Missing fees, gas limits and
+   storage limits are filled in using the [estimator](/docs/next/estimate), which simulates the
+   operation against the node.
+2. **Forge** — the prepared contents are serialised to bytes by the `Forger`. This can be done
+   locally (`@tezos-x/octez.js-local-forging`) or delegated to a remote forger.
+3. **Sign** — the forged bytes are signed by the configured `Signer`.
+4. **Inject** — the signed operation is submitted to the node by the `Injector`, which returns the
+   operation hash.
+5. **Confirm** — an operation handle watches the chain (through the subscription/stream provider)
+   until the operation appears in a block, then resolves once the requested number of
+   confirmations is reached.
+
+```js
+// Contract API: signed locally with the configured Signer.
+const op = await Tezos.contract.transfer({ to: 'tz1...', amount: 1 });
+await op.confirmation(); // resolves after inclusion
+console.log(op.hash);
+```
+
+`prepare()` and the underlying estimation can also be invoked explicitly when you want to inspect
+or adjust an operation before sending it — see [Prepare](/docs/next/prepare) and
+[Estimate](/docs/next/estimate).
+
+## Batches
+
+Several operations can be grouped and injected together as a batch. A batch runs the same
+lifecycle once for the whole group: the contents are prepared and estimated, forged and signed as
+a unit, injected together, and confirmed as a single operation group.
+
+```js
+const batch = Tezos.contract.batch()
+  .withTransfer({ to: 'tz1...', amount: 1 })
+  .withTransfer({ to: 'tz1...', amount: 2 });
+
+const op = await batch.send();
+await op.confirmation();
+```
+
+See the [Batch API](/docs/next/batch-api) for the full surface.
+
+## Confirmation and event streaming
+
+Confirmation is built on the subscription layer. After injection, the operation handle subscribes
+to new blocks and resolves when it observes its own hash, applying the confirmation count and
+timeout configured on the `Context`. The same streaming machinery powers the
+[confirmation event stream](/docs/next/confirmation_event_stream) and
+[event subscriptions](/docs/next/events).
+
+## Contract API versus wallet API
+
+The lifecycle above describes the contract API, where octez.js forges, signs and injects directly.
+The wallet API performs the same conceptual steps but hands forging, signing and injection to a
+connected wallet through the `WalletProvider`. The operation handles returned by the two APIs are
+intentionally similar so that application code reads the same way regardless of the path taken.

@@ -1,0 +1,35 @@
+---
+title: Client-Side Environments
+id: package_bundle
+---
+# Using octez.js in Client-Side Environments
+While octez.js works best in Node runtime applications, some of our users working in client-side development might not have access to such features. To accommodate for that, we have decided to provide separate pure JavaScript bundles that you can import into your client-side environment.
+
+Currently, the available bundles are `@tezos-x/octez.js-local-forging` and `@tezos-x/octez.js-dapp-wallet` packages.
+
+The bundle wraps functions from the `@tezos-x/octez.js-local-forging` package into a single variable called `octez.js_local_forging`, and from the `@tezos-x/octez.js-dapp-wallet` package into a single variable called `octez.js_beacon_wallet`.
+
+## Instructions for Using the Bundle
+
+To use the JavaScript bundle for your project, download the zip file under `Assets` from your preferred octez.js [release](https://github.com/trilitech/octez.js/releases).
+
+After that, simply copy the `.js` file and the `.map.js` file into your project.
+
+Example of how to use the `LocalForger` class in a simple HTML script tag:
+```
+<script type="text/javascript" src="/path/to/octez.js_local_forging.js"></script>
+<script type="text/javascript">
+    let op = {...}
+    let forger = new octez.js_local_forging.LocalForger();
+    let res = forger.forge(op);
+</script>
+```
+Example of how to use the `BeaconWallet` class in a simple HTML script tag:
+
+```
+<script type="text/javascript" src="/path/to/octez.js_beacon_wallet.js"></script>
+<script type="text/javascript">
+    let op = {...}
+    let wallet = new octez.js_beacon_wallet.BeaconWallet();
+</script>
+```
