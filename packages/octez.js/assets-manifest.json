@@ -1,10 +1,10 @@
 {
   "dist/octez.min.js.LICENSE.txt": {
     "src": "dist/octez.min.js.LICENSE.txt",
-    "integrity": "sha256-i5IpkG5d6ff9TmpscMSAzRB4s5Zkf3xyVQoKzdgcgko= sha384-K4lMXvJxUDAqZeGu81D8F+L2+klZALUfFdn9KwjvEyIr9WGIzx71ERlGVf5ouTsC sha512-cs3WKTX3tHVZPlDeKsk5+xVTsugNSdZ3sLzC/pyxXMOcqxcvDKfUyC17blVyspMj8XTaC26zzQlCGM6P9P73rw=="
+    "integrity": "sha256-YEdeVuRfMcOLmdSbF3BCRznaLPM8H/CDDLvAoNYRdAE= sha384-khr2ExG5+oMcD+Jm0a5a+yP5l65uh3F2gzhflH3498Kfj2ztEKlYgIkRVA5+jNrR sha512-VdLghMrEa481J6cYVP9YVdna544seRn4jQpZvdnmNFXpSomtELkKzSyAViVzXE1SVzPwvC4fShQ/xiRgcNyKFQ=="
   },
   "main.js": {
     "src": "dist/octez.min.js",
-    "integrity": "sha256-D+8Q+38IvIQtNQml44jVpKarMKTI2e2XScY9J4njBQI= sha384-ren9DLHgNIPIW57YYIw6AAwOcl/xcn7oODbiZP8AC3xeL/Diayx25a+Lvf8fUB8G sha512-tzeyMlD7JL13YpTpEXTxmtojWSeQqTcbD52hk6NlSZKbnciOjVRlrQArBCJV7tYWMSMgD4Kekw5kruDgQX9gxA=="
+    "integrity": "sha256-+uooovxsiBIDAqGVhQ2PdsCp1G6EAL/W575mvpwwk38= sha384-2POnJWftesVUP1rT+pNMpprX7hMuj4wnQgyxDfKvCk05P+1Q70xwKbUHyaJlem2F sha512-sJCeSxl6KvlwN7RiqqePrRj0RGfh3WUZMnSHXs/TLK3bYBq58ycVMkU9LrFKGOaHsT1C5dJn3/WEjc0SSQj9OA=="
   }
 }
