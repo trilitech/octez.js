@@ -121,11 +121,6 @@ jobs:
         if: ${{ !inputs.prerelease }}
         run: npm install --package-lock-only --ignore-scripts
 
-      - name: Sync website lockfile metadata
-        if: ${{ !inputs.prerelease }}
-        run: npm install --package-lock-only --ignore-scripts
-        working-directory: website
-
       - name: Snapshot website docs for stable release
         if: ${{ !inputs.prerelease }}
         shell: bash
@@ -161,7 +156,6 @@ jobs:
             packages/octez.js-michel-codec/pack-test-tool/package.json \
             packages/octez.js/README.md \
             website/package.json \
-            website/package-lock.json \
             website/src/config/versions.mjs \
             website/src/content/docs
 
