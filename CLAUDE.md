@@ -166,6 +166,24 @@ resolve this ambiguity yourself, and do not silently skip it either — say so e
    - Don't amend or rewrite history to add a missing trailer; add an empty
      `chore: record Taquito backport status` commit carrying it instead.
 
+### Deliberate divergences from Taquito — don't "sync" these back
+
+When re-doing an upstream dependency refresh (e.g. a "low-risk dependencies" commit), keep the
+values below even if upstream's diff says otherwise, and say so in the commit body.
+
+- **`vite` override in the root `package.json` is `8.x`, not Taquito's `7.x`.** Taquito pins
+  `vite` to a 7.x release in `overrides` (originally a security-alert pin, `fdcce16b6`). octez.js
+  moved the website to astro 7 (dependabot #156), which requires `vite ^8.3.5`, so the override
+  is `8.3.5`. Downgrading it to 7.x makes the website build fail with
+  `vite does not provide an export named 'transformWithOxc'`. Only raise it within 8.x. The
+  related website pins (`@tailwindcss/vite`/`tailwindcss` ≥ 4.3, `vite-plugin-node-polyfills`
+  ≥ 0.28, `@astrojs/markdown-remark` ^7) live in `website/`, which is off-limits to port from
+  upstream anyway (see the hard stop above).
+- When you port such a commit minus a divergent line, record it with `Upstream-Commit` for the
+  ported part, and state the left-out line in the body. If nothing else is ported, use
+  `Upstream-Skipped`.
+- Add new entries here when a future bump deliberately deviates from Taquito.
+
 ## CI state — read before assuming a workflow "should" run
 
 Several `.github/workflows/*.disabled` files are **deliberately disabled**, not broken and
