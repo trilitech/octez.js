@@ -6,6 +6,7 @@ import { remarkLiveCode } from './src/utils/remark-live-code.mjs';
 import { remarkCallouts } from './src/utils/remark-callouts.mjs';
 import { remarkRelativeLinks } from './src/utils/remark-relative-links.mjs';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import { unified } from '@astrojs/markdown-remark';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import tailwindcss from "@tailwindcss/vite";
@@ -17,13 +18,14 @@ const fetchPolyfillPath = fileURLToPath(
   new URL('./src/scripts/fetch-polyfill.ts', import.meta.url)
 );
 
-// Resolve shim paths to absolute ESM paths for monorepo compatibility
-const nodePolyfillsDir = fileURLToPath(new URL('./node_modules/vite-plugin-node-polyfills', import.meta.url));
-const shimPaths = {
-  'vite-plugin-node-polyfills/shims/buffer': `${nodePolyfillsDir}/shims/buffer/dist/index.js`,
-  'vite-plugin-node-polyfills/shims/global': `${nodePolyfillsDir}/shims/global/dist/index.js`,
-  'vite-plugin-node-polyfills/shims/process': `${nodePolyfillsDir}/shims/process/dist/index.js`,
-};
+// Resolve shim paths to absolute ESM paths for monorepo compatibility. Resolved through the
+// package's `exports` so it works wherever npm hoists vite-plugin-node-polyfills to.
+const shimPaths = Object.fromEntries(
+  ['buffer', 'global', 'process'].map((name) => [
+    `vite-plugin-node-polyfills/shims/${name}`,
+    fileURLToPath(import.meta.resolve(`vite-plugin-node-polyfills/shims/${name}`)),
+  ])
+);
 
 // Custom Rollup plugin to resolve polyfill shims from any location in the monorepo
 function polyfillShimsResolver() {
@@ -37,6 +39,43 @@ function polyfillShimsResolver() {
       return null;
     },
   };
+}
+
+/**
+ * Restrict Vite plugin(s) to the browser (`client`) environment.
+ *
+ * vite-plugin-node-polyfills aliases Node built-ins (e.g. `path` -> the CommonJS
+ * `path-browserify`) through a global `resolve.alias`. Since Astro 7 the content config
+ * and prerendering run through Vite's Node-side module runner, where that alias breaks
+ * with "module is not defined". The alias is therefore moved from the global `config`
+ * hook to a client-only `configEnvironment` hook.
+ *
+ * @param {import('vite').PluginOption} plugins
+ * @returns {import('vite').Plugin[]}
+ */
+function clientOnly(plugins) {
+  return /** @type {import('vite').Plugin[]} */ ([plugins].flat(Infinity)).map((plugin) => {
+    const { config } = plugin;
+    if (typeof config !== 'function') {
+      return { ...plugin, applyToEnvironment: (env) => env.config.consumer === 'client' };
+    }
+    /** @type {import('vite').UserConfig['resolve']} */
+    let clientResolve;
+    return {
+      ...plugin,
+      applyToEnvironment: (env) => env.config.consumer === 'client',
+      config(userConfig, env) {
+        const { resolve, ...rest } = /** @type {import('vite').UserConfig} */ (
+          config.call(this, userConfig, env)
+        );
+        clientResolve = resolve;
+        return rest;
+      },
+      configEnvironment(name) {
+        return name === 'client' && clientResolve ? { resolve: clientResolve } : undefined;
+      },
+    };
+  });
 }
 
 // Ensure base path has trailing slash for proper asset resolution
@@ -76,7 +115,9 @@ export default defineConfig({
     },
   })],
   markdown: {
-    remarkPlugins: [remarkRelativeLinks, remarkCallouts, remarkLiveCode],
+    processor: unified({
+      remarkPlugins: [remarkRelativeLinks, remarkCallouts, remarkLiveCode],
+    }),
     syntaxHighlight: false,
   },
   vite: {
@@ -95,7 +136,7 @@ export default defineConfig({
     plugins: [
       polyfillShimsResolver(),
       tailwindcss(),
-      nodePolyfills({
+      ...clientOnly(nodePolyfills({
         include: ['buffer', 'stream', 'crypto', 'path', 'http', 'https'],
         globals: {
           Buffer: true,
@@ -103,7 +144,7 @@ export default defineConfig({
           process: true,
         },
         protocolImports: true,
-      }),
+      })),
     ],
     build: {
       commonjsOptions: {
