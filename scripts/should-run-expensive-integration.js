@@ -35,7 +35,6 @@ const jsonMetadataPatterns = [
   /^example\/package\.json$/,
   /^integration-tests\/package\.json$/,
   /^website\/package\.json$/,
-  /^website\/package-lock\.json$/,
   /^packages\/[^/]+\/package\.json$/,
   /^packages\/octez.js-michel-codec\/pack-test-tool\/package\.json$/,
 ];
@@ -100,14 +99,6 @@ function sanitizePackageLock(file, json) {
   }
 
   if (!clone.packages) {
-    return clone;
-  }
-
-  if (file === 'website/package-lock.json') {
-    for (const [pkgPath, pkg] of Object.entries(clone.packages)) {
-      if (!pkgPath.startsWith('node_modules/@tezos-x/octez.js-')) continue;
-      normalizePackageLockPackage(pkg, true);
-    }
     return clone;
   }
 
