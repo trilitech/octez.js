@@ -904,6 +904,35 @@ try {
   </TabItem>
 </Tabs>
 
+## Read big map values page by page
+
+The methods above read values by key. When you don't know the keys, for example to list what a
+big map contains, read its values one page at a time:
+
+```js
+const contract = await Tezos.contract.at('KT1...');
+const storage = await contract.storage();
+const bigMap = storage.ledger; // a BigMapAbstraction
+
+const page = await bigMap.getValuesPage({ offset: 0, length: 100 });
+console.log(page.values); // decoded values, at most 100
+console.log(page.blockHash); // the block the page was read from
+
+const values = await bigMap.getValues({ length: 10 }); // values only
+const empty = await bigMap.isEmpty();
+```
+
+- A page holds **values only**. The node doesn't return the original keys, so use
+  `get`/`getMultipleValues` when you need them.
+- `offset` defaults to 0 and `length` to 100. `length` must be between 1 and 1000, and both must be
+  safe non-negative integers, otherwise a `RangeError` is thrown before any request.
+- `block` selects the state to read, as for the other big map reads. The default is the block the
+  storage was read at, or `head`. `getValuesPage` resolves it to an exact block hash and returns
+  that hash as `blockHash`, so every value in the page comes from the same block.
+- Values are decoded with the big map's value type, like `get` does.
+- These methods need a read provider that can list big map values. The default RPC read provider
+  can; others throw `UnsupportedActionError`.
+
 ---
 
 [michelson_map]: https://michelson.nomadic-labs.com/#type-big_map
