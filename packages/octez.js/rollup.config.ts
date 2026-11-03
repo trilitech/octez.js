@@ -1,3 +1,4 @@
+import resolve from '@rollup/plugin-node-resolve';
 import camelCase from 'lodash.camelcase';
 import typescript from 'rollup-plugin-typescript2';
 import json from 'rollup-plugin-json';
@@ -19,15 +20,15 @@ export default {
         '@tezos-x/octez.js-rpc': 'rpc',
         '@tezos-x/octez.js-http-utils': 'httpUtils',
         '@tezos-x/octez.js-core': 'core',
-        'rxjs': 'rxjs',
+        rxjs: 'rxjs',
         'rxjs/operators': 'operators',
         '@tezos-x/octez.js-michelson-encoder': 'michelsonEncoder',
         '@tezos-x/octez.js-utils': 'utils',
         'bignumber.js': 'BigNumber',
         '@tezos-x/octez.js-michel-codec': 'michelCodec',
         '@tezos-x/octez.js-local-forging': 'localForging',
-        '@tezos-x/octez.js-signer': 'octezJsSigner'
-      }
+        '@tezos-x/octez.js-signer': 'octezJsSigner',
+      },
     },
     { file: pkg.module, format: 'es', sourcemap: true },
   ],
@@ -43,12 +44,13 @@ export default {
     '@tezos-x/octez.js-signer',
     'rxjs',
     'rxjs/operators',
-    'bignumber.js'
+    'bignumber.js',
   ],
   watch: {
     include: 'src/**',
   },
   plugins: [
+    resolve(),
     // Allow json resolution
     json(),
     // Compile TypeScript files
