@@ -19,11 +19,13 @@
   "exports": {
     ".": {
       "types": "./dist/types/octez.js-dapp-wallet.d.ts",
+      "node": "./dist/octez.js-dapp-wallet.umd.js",
       "import": "./dist/octez.js-dapp-wallet.es6.js",
       "require": "./dist/octez.js-dapp-wallet.umd.js"
     },
     "./types": {
       "types": "./dist/types/beacon-types.d.ts",
+      "node": "./dist/beacon-types.umd.js",
       "import": "./dist/beacon-types.es6.js",
       "require": "./dist/beacon-types.umd.js"
     },
@@ -77,6 +79,7 @@
   "dependencies": {
     "@tezos-x/octez.connect-dapp": "5.0.4",
     "@tezos-x/octez.connect-types": "5.0.4",
+    "@types/chrome": "0.1.40",
     "@tezos-x/octez.js-core": "^25.0.0",
     "@tezos-x/octez.js": "^25.0.0",
     "@tezos-x/octez.js-utils": "^25.0.0",
@@ -87,7 +90,6 @@
     "@tezos-x/octez.connect-ui": "5.0.4",
     "@rollup/plugin-json": "^6.1.0",
     "@types/bluebird": "^3.5.42",
-    "@types/chrome": "0.1.40",
     "@types/node": "^22.20.5",
     "@types/ws": "^8.18.2",
     "@typescript-eslint/eslint-plugin": "^6.21.0",

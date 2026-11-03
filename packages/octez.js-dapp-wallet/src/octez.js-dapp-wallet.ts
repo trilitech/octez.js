@@ -1,3 +1,4 @@
+/// <reference types="chrome" preserve="true" />
 /**
  * @packageDocumentation
  * @module @tezos-x/octez.js-dapp-wallet
