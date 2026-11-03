@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const TerserPlugin = require('terser-webpack-plugin');
 const pkg = require('./package.json');
-const path = require('path');
 var { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
 var WebpackAssetsManifest = require('webpack-assets-manifest');
 
@@ -20,10 +19,7 @@ module.exports = {
       fs: false,
       stream: require.resolve("stream-browserify")
     },
-    conditionNames: ['import', 'module', 'browser', 'default'],
-    alias: {
-      '@noble/hashes': path.resolve(__dirname, '../../node_modules/@noble/hashes/esm')
-    }
+    conditionNames: ['import', 'module', 'browser', 'default']
   },
   optimization: {
     minimize: true,

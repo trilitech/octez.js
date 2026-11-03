@@ -24,10 +24,10 @@ export default {
         "@tezos-x/octez.js-core": "core",
         "@tezos-x/octez.js-michel-codec": "michelCodec",
         viem: "viem",
-        "@noble/curves/ed25519": "ed25519",
-        "@noble/curves/bls12-381": "bls12381",
-        "@noble/curves/secp256k1": "secp256k1",
-        "@noble/curves/nist": "nist"
+        "@noble/curves/ed25519.js": "ed25519",
+        "@noble/curves/bls12-381.js": "bls12381",
+        "@noble/curves/secp256k1.js": "secp256k1",
+        "@noble/curves/nist.js": "nist"
       }
     },
     { file: pkg.module, format: 'es', sourcemap: true },
@@ -40,10 +40,10 @@ export default {
     '@tezos-x/octez.js-core',
     '@tezos-x/octez.js-michel-codec',
     'viem',
-    '@noble/curves/ed25519',
-    '@noble/curves/bls12-381',
-    '@noble/curves/secp256k1',
-    '@noble/curves/nist',
+    '@noble/curves/ed25519.js',
+    '@noble/curves/bls12-381.js',
+    '@noble/curves/secp256k1.js',
+    '@noble/curves/nist.js',
     'bignumber.js',
   ],
   watch: {
