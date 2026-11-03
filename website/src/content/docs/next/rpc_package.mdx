@@ -110,6 +110,44 @@ const view = await client.runView({
 });
 ```
 
+### BLS helpers
+
+Octez nodes expose shell RPCs under `/bls/` that work on BLS (tz4) keys and signatures. The node
+does the cryptography, so you don't need a BLS library to check proofs or combine signatures:
+
+```js
+// Check a proof of possession: resolves to true or false
+const valid = await client.checkProof({ public_key: 'BLpk...', proof: 'BLsig...' });
+
+// Aggregate public keys; every proof is checked first.
+// Resolves to { public_key, public_key_hash }, or null if a proof is invalid
+const aggregate = await client.aggregatePublicKeys([
+  { public_key: 'BLpk1...', proof: 'BLsig1...' },
+  { public_key: 'BLpk2...', proof: 'BLsig2...' },
+]);
+
+// Aggregate signatures of the same message, given as unprefixed hex.
+// Resolves to a Base58Check signature, or null if aggregation or verification fails
+const signature = await client.aggregateSignatures({
+  public_key: 'BLpk...',
+  message: '00010203',
+  signature_shares: ['BLsig1...', 'BLsig2...'],
+});
+
+// Rebuild a threshold signature from indexed shares (ids are signed 8-bit integers)
+const rebuilt = await client.thresholdSignatures({
+  public_key: 'BLpk...',
+  message: '00010203',
+  signature_shares: [
+    { id: 1, signature: 'BLsig1...' },
+    { id: 2, signature: 'BLsig2...' },
+  ],
+});
+```
+
+Invalid input is reported in the result (`false` or `null`), not as an exception. These calls
+aren't cached by `RpcClientCache`.
+
 ## Full documentation
 
 You can find the full documentation at the following address: [https://octez-js.tezos.com/typedoc/classes/_tezos-x_octez.js-rpc.RpcClient.html](https://octez-js.tezos.com/typedoc/classes/_tezos-x_octez.js-rpc.RpcClient.html)
