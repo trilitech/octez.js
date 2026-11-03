@@ -119,3 +119,39 @@ console.log(op.hash);
 - `rollup` is a rollup address (`sr1` address)
 - `cementedCommitment` is a hash of cemented commitment
 - `outputProof` is a serialized output proof containing the transaction to be executed on L1.
+
+## Smart rollup operations with the Wallet API
+
+The examples above use the contract API, which signs with the toolkit's signer. The same three
+operations are available through the Wallet API, so a connected wallet can sign them:
+
+```typescript
+const op = await Tezos.wallet
+  .smartRollupAddMessages({ message: ['0000000031010000000b48656c6c6f20576f726c64'] })
+  .send();
+await op.confirmation();
+console.log(await op.status()); // 'applied'
+```
+
+- `Tezos.wallet.smartRollupAddMessages`, `smartRollupOriginate` and
+  `smartRollupExecuteOutboxMessage` take the same parameters as their contract-API counterparts,
+  without `source`: the wallet decides which account sends the operation.
+- `send()` returns a wallet operation handle. As for other wallet operations, `confirmation()`
+  waits for inclusion, and `status()` and the matching result accessor
+  (`smartRollupAddMessagesOperation()`, `smartRollupOriginateOperation()`,
+  `smartRollupExecuteOutboxMessageOperation()`) read the receipt. After an origination,
+  `rollupAddress()` returns the new `sr1` address.
+
+### Wallet provider support
+
+| Wallet provider | Smart rollup operations |
+| --- | --- |
+| Built-in signer wallet (`LegacyWalletProvider`, used when you only set a signer) | Supported |
+| `@tezos-x/octez.js-dapp-wallet` (octez.connect) | Supported |
+| `@tezos-x/octez.js-wallet-connect` | Supported |
+| Your own `WalletProvider` | Supported if it implements the optional `mapSmartRollupAddMessagesParamsToWalletParams`, `mapSmartRollupOriginateParamsToWalletParams` and `mapSmartRollupExecuteOutboxMessageParamsToWalletParams` methods |
+
+If the provider lacks the method for an operation, octez.js throws `UnsupportedActionError`
+before contacting the wallet. In a batch, every operation is checked before anything is sent, so
+the wallet is never asked to sign a batch it can't fully handle. The wallet itself must also
+support these operation kinds.
