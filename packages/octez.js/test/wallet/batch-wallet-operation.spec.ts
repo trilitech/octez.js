@@ -1,7 +1,7 @@
 import { BlockResponse } from '@tezos-x/octez.js-rpc';
 import { TestScheduler } from 'rxjs/testing';
 import { Context, defaultConfigConfirmation } from '../../src/context';
-import { BatchWalletOperation } from '../../src/wallet/batch-operation';
+import { BatchWalletOperation } from '../../src/wallet';
 import {
   resultOriginations,
   resultWithoutOrigination,
