@@ -82,7 +82,8 @@ console.log(validatePublicKey(publicKey));
 ```ts
 import { validateSignature } from '@tezos-x/octez.js-utils';
 
-const signature = 'edsigtkpiSSschcaCt9pUVrpNPf7TTcgvgDEDD6NCEHMy8NNQJCGnMfLZzYoQj74yLjo9wx6MPVV29CvVzgi7qEcEUok3k7AuMg';
+const signature =
+  'edsigtkpiSSschcaCt9pUVrpNPf7TTcgvgDEDD6NCEHMy8NNQJCGnMfLZzYoQj74yLjo9wx6MPVV29CvVzgi7qEcEUok3k7AuMg';
 console.log(validateSignature(signature));
 // output: 3 which is valid
 ```
@@ -92,7 +93,7 @@ console.log(validateSignature(signature));
 ```ts
 import { validateBlock } from '@tezos-x/octez.js-utils';
 
-const block ='BLJjnzaPtSsxykZ9pLTFLSfsKuiN3z7SjSPDPWwbE4Q68u5EpBw';
+const block = 'BLJjnzaPtSsxykZ9pLTFLSfsKuiN3z7SjSPDPWwbE4Q68u5EpBw';
 console.log(validateBlock(block));
 // output: 3 which is valid
 ```
@@ -102,7 +103,7 @@ console.log(validateBlock(block));
 ```ts
 import { validateOperation } from '@tezos-x/octez.js-utils';
 
-const operation ='ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj';
+const operation = 'ood2Y1FLHH9izvYghVcDGGAkvJFo1CgSEjPfWvGsaz3qypCmeUj';
 console.log(validateOperation(operation));
 // output: 3 which is valid
 ```
@@ -113,7 +114,7 @@ console.log(validateOperation(operation));
 import { validateProtocol } from '@tezos-x/octez.js-utils';
 
 //valid
-const protocol ='PtHangz2aRngywmSRGGvrcTyMbbdpWdpFKuS4uMWxg2RaH9i1qx';
+const protocol = 'PtHangz2aRngywmSRGGvrcTyMbbdpWdpFKuS4uMWxg2RaH9i1qx';
 console.log(validateProtocol(protocol));
 // output: 3 which is valid
 ```
@@ -125,9 +126,11 @@ The function takes a message, a public key, and a signature as parameters and re
 ```ts
 import { verifySignature } from '@tezos-x/octez.js-utils';
 
-const message = '03d0c10e3ed11d7c6e3357f6ef335bab9e8f2bd54d0ce20c482e241191a6e4b8ce6c01be917311d9ac46959750e405d57e268e2ed9e174a80794fbd504e12a4a000141eb3781afed2f69679ff2bbe1c5375950b0e40d00ff000000005e05050505050507070100000024747a32526773486e74516b72794670707352466261313652546656503539684b72654a4d07070100000024747a315a6672455263414c42776d4171776f6e525859565142445439426a4e6a42484a750001';
+const message =
+  '03d0c10e3ed11d7c6e3357f6ef335bab9e8f2bd54d0ce20c482e241191a6e4b8ce6c01be917311d9ac46959750e405d57e268e2ed9e174a80794fbd504e12a4a000141eb3781afed2f69679ff2bbe1c5375950b0e40d00ff000000005e05050505050507070100000024747a32526773486e74516b72794670707352466261313652546656503539684b72654a4d07070100000024747a315a6672455263414c42776d4171776f6e525859565142445439426a4e6a42484a750001';
 const pk = 'sppk7c7hkPj47yjYFEHX85q46sFJGw6RBrqoVSHwAJAT4e14KJwzoey';
-const sig = 'spsig1cdLkp1RLgUHAp13aRFkZ6MQDPp7xCnjAExGL3MBSdMDmT6JgQSX8cufyDgJRM3sinFtiCzLbsyP6d365EHoNevxhT47nx'
+const sig =
+  'spsig1cdLkp1RLgUHAp13aRFkZ6MQDPp7xCnjAExGL3MBSdMDmT6JgQSX8cufyDgJRM3sinFtiCzLbsyP6d365EHoNevxhT47nx';
 
 const isValid = verifySignature(message, pk, sig);
 console.log(isValid);
@@ -137,6 +140,7 @@ console.log(isValid);
 ### Utility functions
 
 **Conversion between hexadecimal and ASCII strings**
+
 ```ts
 import { stringToBytes, bytesToString } from '@tezos-x/octez.js-utils';
 
@@ -156,7 +160,7 @@ console.log(bytesToString(hex));
 import { buf2hex, hex2buf } from '@tezos-x/octez.js-utils';
 
 const buffer = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
-const hex = '627566666572'
+const hex = '627566666572';
 
 console.log(buf2hex(buffer));
 // output: 627566666572
@@ -170,8 +174,8 @@ console.log(hex2buf(hex));
 ```ts
 import { mergebuf } from '@tezos-x/octez.js-utils';
 
-const buff = new Uint8Array([1,2]);
-const buff2 = new Uint8Array([3,4]);
+const buff = new Uint8Array([1, 2]);
+const buff2 = new Uint8Array([3, 4]);
 
 console.log(mergebuf(buff, buff2));
 // output: Uint8Array(4) [ 1, 2, 3, 4 ]
@@ -196,6 +200,7 @@ console.log(encodeKey('0060842d4ba23a9940ef5dcf4404fdaa430cfaaccb5029fad06cb5ea8
 ```
 
 **Base58 encode an address using a predefined prefix**
+
 ```ts
 import { encodeAddress } from '@tezos-x/octez.js-utils';
 
@@ -220,7 +225,13 @@ console.log(b58DecodeAddress('tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM'));
 ```ts
 import { b58DecodeAndCheckPrefix, PrefixV2 } from '@tezos-x/octez.js-utils';
 
-console.log(b58DecodeAndCheckPrefix('tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM', [PrefixV2.Ed25519PublicKeyHash], true));
+console.log(
+  b58DecodeAndCheckPrefix(
+    'tz1gvF4cD2dDtqitL3ZTraggSR1Mju2BKFEM',
+    [PrefixV2.Ed25519PublicKeyHash],
+    true
+  )
+);
 // output: <Buffer e9 6b 9f 8b 19 af 9c 7f fa 0c 04 80 e1 97 7b 29 58 50 96 1f>
 ```
 
@@ -238,7 +249,8 @@ console.log(b58Encode('e96b9f8b19af9c7ffa0c0480e1977b295850961f', PrefixV2.Ed255
 ```ts
 import { encodeOpHash } from '@tezos-x/octez.js-utils';
 
-const opBytesSigned = '0f185d8a30061e8134c162dbb7a6c3ab8f5fdb153363ccd6149b49a33481156a6c00b2e19a9e74440d86c59f13dab8a18ff873e889eaa304ab05da13000001f1585a7384f36e45fb43dc37e8ce172bced3e05700ff0000000002002110c033f3a990c2e46a3d6054ecc2f74072aae7a34b5ac4d9ce9edc11c2410a97695682108951786f05b361da03b97245dc9897e1955e08b5b8d9e153b0bdeb0d';
+const opBytesSigned =
+  '0f185d8a30061e8134c162dbb7a6c3ab8f5fdb153363ccd6149b49a33481156a6c00b2e19a9e74440d86c59f13dab8a18ff873e889eaa304ab05da13000001f1585a7384f36e45fb43dc37e8ce172bced3e05700ff0000000002002110c033f3a990c2e46a3d6054ecc2f74072aae7a34b5ac4d9ce9edc11c2410a97695682108951786f05b361da03b97245dc9897e1955e08b5b8d9e153b0bdeb0d';
 console.log(encodeOpHash(opBytesSigned));
 // output: opapqvVXmebRTCFd2GQFydr4tJj3V5QocQuTmuhbatcHm4Seo2t
 ```
@@ -292,3 +304,26 @@ See the top-level [https://github.com/trilitech/octez.js](https://github.com/tri
 ## Disclaimer
 
 THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## Wallet input helpers
+
+```ts
+import { isValidAddress, getPublicKeyHashFromPublicKey } from '@tezos-x/octez.js-utils';
+
+if (isValidAddress(input)) acceptAddress(input);
+const address = getPublicKeyHashFromPublicKey(publicKey);
+```
+
+isValidAddress, isValidContractAddress, isValidPublicKey and isValidOperationHash
+accept unknown values and return booleans. They return false for nonstrings and
+use the existing validateAddress, validateContractAddress, validatePublicKey and
+validateOperation rules for strings. The enum validators and ValidationResult
+remain available when callers need a reason for rejection.
+
+isValidAddress follows validateAddress by ignoring the part after the first %.
+isValidContractAddress validates the complete originated contract address and
+does not accept that suffix.
+
+getPublicKeyHashFromPublicKey is a descriptive alias of getPkhfromPk. Both support
+Ed25519, secp256k1, P-256, BLS12-381 and ML-DSA-44 public keys and retain the same
+errors for invalid input.
