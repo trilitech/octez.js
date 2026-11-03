@@ -60,6 +60,63 @@ const data = chest.open(chestKey, time);
 - `time` param being passed should not be mistaken with the 'time' it takes for a chest to open in Timelocks. The `time` param here relates to a complexity relating to the number of power by modulo operations required to compute the key. Without getting too much into the weeds, we recommend using a value of `10000` and adjust accordingly.
 - `payload` relates to the message payload you would like to lock in a chest
 
+### Proof compatibility with the Tezos protocol
+
+A chest key carries a proof that the time-locked value was computed correctly.
+To check it, the `OPEN_CHEST` Michelson instruction hashes the integers that make
+up the proof. Each integer is serialized as little-endian bytes, padded to a whole
+number of 64-bit words.
+
+octez.js now builds and checks proofs with exactly the same padding as Octez.
+Releases up to and including octez.js 25.0.0 did not pad these integers. When an
+integer needed padding, the resulting proof was still accepted by `chest.open()`
+in octez.js, because generation and verification used the same convention, but
+`OPEN_CHEST` rejected it on chain.
+
+What this means for existing data:
+
+- **Unchanged:** chest bytes and chest key bytes that are valid for the protocol
+  stay valid. The encrypted payload and the chest encoding are unchanged too.
+- **Now rejected:** precomputed `Timelock` tuples, and keys built with the old
+  convention whenever padding was involved. `chest.open()` returns `null` for such
+  a key, which matches what `OPEN_CHEST` does on chain.
+
+### Recovering a key for an existing chest
+
+If you cached precomputed tuples, generate them again with `Timelock.precompute`:
+
+```js
+import { Chest, Timelock } from '@tezos-x/octez.js-timelock';
+
+const time = 10000;
+const precomputedTimelock = Timelock.precompute(time); // regenerate, then cache
+const { chest, key } = Chest.fromTimelock(payload, time, precomputedTimelock);
+```
+
+If a chest is already published, for example in contract storage, you don't
+need to recreate it. Compute a new key for it with `chest.newKey`. The key it
+returns carries a proof that the protocol accepts:
+
+```js
+import { Chest } from '@tezos-x/octez.js-timelock';
+
+const time = 10000;
+const [chest] = Chest.fromArray(chestBytes);
+const key = chest.newKey(time); // recomputes the unlocked value and its proof
+const data = chest.open(key, time); // the original payload
+const keyBytes = key.encode(); // pass these bytes to OPEN_CHEST
+```
+
+`chest.newKey(time)` has to redo the sequential computation that `time` sets.
+It takes about as long as unlocking the chest the first time did.
+
+:::note
+`Timelock.precompute` and `chest.newKey` take an optional custom RSA modulus. Custom
+moduli use the same, corrected hashing convention, but on chain `OPEN_CHEST` always
+uses the fixed Tezos RSA modulus. Chests built with another modulus can only be
+opened off chain.
+:::
+
 ## Coinflip Contract Example
 This example is an excerpt from [Tezos docs](https://tezos.gitlab.io/active/timelock.html?highlight=timelock#example) and contracts are taken from [timelock_flip.tz](https://gitlab.com/tezos/tezos/-/blob/master/src/proto_alpha/lib_protocol/contracts/timelock_flip.tz).
 
