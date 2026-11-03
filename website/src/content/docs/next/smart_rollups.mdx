@@ -196,6 +196,16 @@ const sameBatch = await Tezos.wallet
 
 The builder also has `withSmartRollupOriginate` and `withSmartRollupExecuteOutboxMessage`.
 
+#### Private rollups through a wallet
+
+`Tezos.wallet.smartRollupOriginate` accepts the same `whitelist` as the contract API (see
+[Private rollups](#private-rollups)). octez.js passes it to the wallet unchanged: same addresses,
+in the same order, and your input array isn't modified. When you leave `whitelist` out, the
+request sent to the wallet has no `whitelist` field at all, so the rollup is public. It's never
+sent as an empty list. The built-in signer wallet, the dapp-wallet (octez.connect) and
+WalletConnect providers all forward it this way. Whether the operation is then signed with its
+whitelist depends on the wallet application.
+
 ### Wallet provider support
 
 | Wallet provider | Smart rollup operations |
