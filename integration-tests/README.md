@@ -1,7 +1,6 @@
 # octez.js Integration Tests
 
-
-The `octez.js/integration-tests` directory contains the integration test suite for octez.js. These tests are executed against live Tezos testnets, ensuring a comprehensive evaluation of various octez.js use cases.
+The `integration-tests` directory contains the integration test suite for octez.js. These tests are executed against live Tezos testnets (and a local Octez Docker sandbox for `tz5` tests), ensuring a comprehensive evaluation of various octez.js use cases.
 
 Internally octez.js is tested with tests running in parallel. This is achieved using an application (a "keygen") that generates new keys and funds them as needed per test.
 The application is not publicly available. External users, therefore, must run the octez.js Integration Tests in sequence, one test at a time.
@@ -10,39 +9,31 @@ For how the suite, the fresh-key acquisition, the prefetch buffer, the keygen se
 
 ## Running Integration Tests Against a Tezos Testnet
 
-
 To run tests in this environment, make sure you have:
 
-
 - octez.js source code cloned to your local machine
-- A compatible version of Node.js installed (see the top-level README.md)
-- Successfully compiled octez.js (see the top-level README)
-
+- A compatible version of Node.js installed (see the top-level [`README.md`](../README.md))
+- Successfully built octez.js (`npm ci && npm run build` from the root)
 
 ### Running all tests against all pre-configured testnets
 
+From the `integration-tests` directory (or via `npm -w integration-tests` from the root), run:
 
-From the `octez.js/integration-tests` directory, run the following:
-
-
-```
+```bash
 npm run test # This runs all tests against all pre-configured testnets
 ```
 
-
 ### Running all tests against a specific testnet
 
+Depending on the current Tezos upgrade cycle, multiple testnet networks may be configured in [`config.ts`](./config.ts). To target a specific testnet, use the corresponding script or environment variable:
 
-Depending on the current Tezos upgrade cycle, multiple testnet networks may be configured in the octez.js integration tests. To target a specific testnet, use environment variables found in `octez.js/integration-tests/config.ts` (see the Configuration section below):
-
-
-```
+```bash
 USHUAIANET=true npm run test
 ```
 
 ## Configuration
 
-Refer to the `octez.js/integration-tests/config.ts` file for details on test configurations and target networks. Some configurations have default values that can be overridden using environment variables. Sometimes, you can use CLI commands to invoke a configuration instead of exporting it.
+Refer to [`config.ts`](./config.ts) for details on test configurations and target networks. Default values can be overridden using environment variables.
 
 ### Common CI Reliability Variables
 
@@ -81,30 +72,26 @@ real key-service outage.
 
 ## CLI Options
 
+You can run a single test file against a configured testnet:
 
-If different testnets are configured in the `config.ts` file, you can run tests on a specific testnet using the command-line parameter for a test file:
-
-
-```
+```bash
 npm run test:ushuaianet contract-with-bigmap-init.spec.ts
 ```
 
+Or run a specific test by name within a test file:
 
-Or for a specific test within a test file:
-
-
-```
+```bash
 npm run test:ushuaianet -- -t "Verify contract.originate for a contract and call deposit method with unit param"
 ```
 
 
 ## Running Tests Against a Specific RPC URL
 
+To run tests against a node that is not pre-configured in octez.js, export `TEZOS_RPC_<NETWORK>`:
 
-To run tests against a node that is not pre-configured in octez.js, use:
-
-
-`export TEZOS_RPC_USHUAIANET='http://localhost:8732'`.
+```bash
+export TEZOS_RPC_USHUAIANET='http://localhost:8732'
+```
 
 ## Using a Secret Key Instead of the Keygen API
 
@@ -127,6 +114,18 @@ export SECRET_KEY='edsk...'
 
 If running the test with a configured secret key, ensure that the account balance is not zero.
 
+
+## Local Octez Sandbox Tests (`tz5`)
+
+The `tz5` (ML-DSA-44) conformance tests run against an isolated local Octez sandbox in Docker, not
+against a testnet, so they need no keygen service or funded account. Run them from the repository
+root:
+
+```bash
+npm run test:tz5:local
+```
+
+See [`tz5/README.md`](./tz5/README.md) for the pinned Octez image and what the suite covers.
 
 ## Test Report
 

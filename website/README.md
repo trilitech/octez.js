@@ -1,43 +1,43 @@
-# Astro Starter Kit: Minimal
+# octez.js website
 
-```sh
-npm create astro@latest -- --template minimal
+The documentation site published at [octez-js.tezos.com](https://octez-js.tezos.com). It is an
+[Astro](https://astro.build) site and an npm workspace of the monorepo
+(`@tezos-x/octez.js-website`), so its dependencies are installed from the root `package-lock.json`.
+
+## Running it locally
+
+From the repository root:
+
+```bash
+npm ci
+npm run build                                   # the site imports the built packages
+npm -w @tezos-x/octez.js-website run dev        # dev server on http://localhost:4321
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+To produce the static site in `website/dist/`:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm -w @tezos-x/octez.js-website run build
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Layout
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- `src/content/docs/next/`: documentation for the next, unreleased version. Edit these pages.
+- `src/content/docs/<version>/`: frozen snapshots of released versions.
+- `src/pages/`: standalone pages (home, changelog, legal pages, ...).
+- `src/components/`, `src/layouts/`: Astro components and layouts.
+- `src/cloudflare/`: Cloudflare Workers used by the site (feedback, chat).
+- `public/`: static assets served as is.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Scripts
 
-## 🧞 Commands
+Run them with `npm -w @tezos-x/octez.js-website run <script>`:
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Script                   | What it does                                                        |
+| ------------------------ | ------------------------------------------------------------------- |
+| `dev`                    | Starts the local dev server                                         |
+| `build`                  | Generates `public/llms.txt`, then builds the site into `dist/`      |
+| `preview`                | Serves the built site locally                                       |
+| `docs:version <version>` | Copies `src/content/docs/next/` into a new versioned snapshot       |
+| `generate:llms`          | Regenerates `public/llms.txt` from the docs                         |
+| `generate:rpc`           | Prints the community RPC nodes table from `rpc_nodes.json` as MDX   |
