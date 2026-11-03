@@ -933,6 +933,30 @@ const empty = await bigMap.isEmpty();
 - These methods need a read provider that can list big map values. The default RPC read provider
   can; others throw `UnsupportedActionError`.
 
+### Ordering and walking through all values
+
+The order of values is decided by the node and is **not specified**. Don't rely on it: it isn't
+key order or insertion order, and it may differ between blocks. Pages are only consistent with
+each other when they're read from the **same block**.
+
+To read every value, pin the block returned by the first page and move `offset` forward until a
+page comes back shorter than `length`:
+
+```js
+const length = 100;
+const first = await bigMap.getValuesPage({ length });
+const all = [...first.values];
+let lastPage = first.values;
+
+for (let offset = length; lastPage.length === length; offset += length) {
+  lastPage = (await bigMap.getValuesPage({ offset, length, block: first.blockHash })).values;
+  all.push(...lastPage);
+}
+```
+
+Without `block: first.blockHash`, each page would be read at the current head, and a big map
+that changes between two pages could skip or repeat values.
+
 ---
 
 [michelson_map]: https://michelson.nomadic-labs.com/#type-big_map
