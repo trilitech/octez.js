@@ -214,6 +214,49 @@ try {
 }
 ```
 
+### Mnemonic helpers
+
+`@tezos-x/octez.js-signer` also exports helpers to work with mnemonics without creating a
+signer. For example, you can generate a phrase for a new wallet, or show the address of an
+account before the user picks it:
+
+```js
+import {
+  generateMnemonic,
+  mnemonicToEntropy,
+  entropyToMnemonic,
+  deriveKeyFromMnemonic,
+} from '@tezos-x/octez.js-signer';
+
+const mnemonic = generateMnemonic(); // 12 words; generateMnemonic(256) gives 24
+const entropy = mnemonicToEntropy(mnemonic); // Uint8Array
+const sameMnemonic = entropyToMnemonic(entropy); // also accepts unprefixed hex
+
+const account = deriveKeyFromMnemonic({
+  mnemonic,
+  derivationPath: "44'/1729'/1'/0'", // second account
+  curve: 'ed25519',
+});
+console.log(account.publicKeyHash); // tz1...
+```
+
+- All helpers use the English BIP39 wordlist. `generateMnemonic` takes the entropy size in bits
+  (128, 160, 192, 224 or 256; default 128) and uses a secure random source.
+- `entropyToMnemonic` accepts 16, 20, 24, 28 or 32 bytes, as a `Uint8Array` or as an unprefixed,
+  even-length hexadecimal string. Leading zeros count.
+- An invalid phrase throws `InvalidMnemonicError`. The error never contains the phrase, so it is
+  safe to log.
+- `deriveKeyFromMnemonic` takes the same options as `InMemorySigner.fromMnemonic`, with the same
+  defaults (no password, path `44'/1729'/0'/0'`, `ed25519`). It works for `ed25519`,
+  `secp256k1` and `p256`. It is synchronous and returns `publicKey`, `publicKeyHash` and
+  `secretKey`.
+
+:::warning
+The `secretKey` returned by `deriveKeyFromMnemonic` is not encrypted (for Ed25519, it is the
+expanded form also returned by `InMemorySigner.secretKey()`). Don't log, store or send it. Use
+`publicKeyHash` and `publicKey` for previews.
+:::
+
 ### Using a testnet faucet key
 
 ~~To load a faucet key (available from https://faucet.tzalpha.net/) for working a public testnet use the `importKey` function.~~
