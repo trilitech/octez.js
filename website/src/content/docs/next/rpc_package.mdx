@@ -145,8 +145,13 @@ const rebuilt = await client.thresholdSignatures({
 });
 ```
 
+`aggregateProofs({ public_key, proofs })` combines the members' proofs over an aggregate key into
+the proof for a native multisig account. See
+[BLS proofs for a native multisig account](/docs/next/inmemory_signer#bls-proofs-for-a-native-multisig-account).
+
 Invalid input is reported in the result (`false` or `null`), not as an exception. These calls
-aren't cached by `RpcClientCache`.
+aren't cached by `RpcClientCache`. `aggregateProofs` is optional on `RpcClientInterface`: with a custom client that
+doesn't implement it, `RpcClientCache` throws `UnsupportedActionError`.
 
 ## Full documentation
 
