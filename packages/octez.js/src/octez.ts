@@ -1,9 +1,10 @@
-import { DetachedIdentity } from './prepare/detached-identity';
-import { DetachedSigningWorkflow } from './prepare/detached-signing';
 /**
  * @packageDocumentation
  * @module @tezos-x/octez.js
  */
+
+import { DetachedIdentity } from './prepare/detached-identity';
+import { DetachedSigningWorkflow } from './prepare/detached-signing';
 
 import { RpcClient, RpcClientInterface } from '@tezos-x/octez.js-rpc';
 import { Forger } from '@tezos-x/octez.js-local-forging';
