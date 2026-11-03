@@ -26,6 +26,8 @@
     "packages/octez.js-wallet-connect/test/octez.js-wallet-connect.spec.ts",
     "packages/octez.js/test/batch/rpc-batch-provider.spec.ts",
     "packages/octez.js/test/prepare/detached-*.ts",
-    "packages/octez.js/test/wallet/smart-rollup.spec.ts"
+    "packages/octez.js/test/wallet/smart-rollup.spec.ts",
+    "packages/octez.js-sapling/test/sapling-tx-builder/output-order.spec.ts",
+    "packages/octez.js-sapling/test/sapling-tx-builder/shuffle-outputs.spec.ts"
   ]
 }
