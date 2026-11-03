@@ -12,6 +12,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@tezos-x/octez.js-rpc": "^25.0.0",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.3"
   }
 }
