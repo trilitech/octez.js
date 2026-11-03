@@ -40,7 +40,7 @@ Refer to [`config.ts`](./config.ts) for details on test configurations and targe
 - `OCTEZJS_KEYGEN_URL`: overrides the Keygen API base URL (default: `http://localhost:3000`, i.e. a keygen you run yourself — see `trilitech/octez.js-keygen`, whose image is `ghcr.io/trilitech/octezjs-keygen`)
 - `OCTEZJS_KEYGEN_REQUEST_TIMEOUT_MS`: fail-fast timeout (in ms) for Keygen API HTTP requests (default: `30000`)
 - `OCTEZJS_FRESH_KEY_MAX_ATTEMPTS`: max attempts when selecting a fresh key (default: `5`)
-- `OCTEZJS_FRESH_KEY_RETRY_MS`: delay between fresh-key retry attempts in ms (default: `0`)
+- `OCTEZJS_FRESH_KEY_RETRY_MS`: delay between fresh-key retry attempts in ms (default: `1000`)
 - `OCTEZJS_ITEST_DIAGNOSTICS=true`: enables structured setup/key selection diagnostics in test logs
 
 

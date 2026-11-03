@@ -70,6 +70,7 @@ describe('fresh-key setup with local HTTP fixtures', () => {
     vi.stubEnv('OCTEZJS_KEYGEN_URL', base);
     vi.stubEnv('TEZOS_RPC_SHADOWNET', base);
     vi.stubEnv('OCTEZJS_FRESH_KEY_PREFETCH', '0');
+    vi.stubEnv('OCTEZJS_FRESH_KEY_RETRY_MS', '0');
     vi.stubEnv('OCTEZJS_ITEST_DIAGNOSTICS', 'true');
     vi.stubEnv('RPC_CACHE_MILLISECONDS', '0');
     // The network CI lanes also run this spec: pin the settings they export
@@ -169,6 +170,22 @@ describe('fresh-key setup with local HTTP fixtures', () => {
       expect(
         log.mock.calls.some(([message]) => String(message).includes('fresh-key-request-retry'))
       ).toBe(true);
+    });
+
+    it('disables prefetch for high-balance requests that require on-chain top-up', async () => {
+      vi.stubEnv('OCTEZJS_FRESH_KEY_PREFETCH', '4');
+      balance = '20000000';
+      replies = [503, 200];
+      const selected = await config();
+      await selected.setup({
+        preferFreshKey: true,
+        minBalanceMutez: 20_000_000,
+        maxAttempts: 3,
+        retryDelayMs: 50,
+      });
+      expect(keyRequests).toBe(2);
+      expect(keyRequestTimes[1] - keyRequestTimes[0]).toBeGreaterThanOrEqual(40);
+      expect(await selected.lib.signer.publicKeyHash()).toBe(pkh);
     });
   });
 
