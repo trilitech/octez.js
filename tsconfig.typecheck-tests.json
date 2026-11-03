@@ -3,10 +3,7 @@
   "compilerOptions": {
     "noEmit": true,
     "rootDir": ".",
-    "types": [
-      "node",
-      "vitest/globals"
-    ],
+    "types": ["node", "vitest/globals"],
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
@@ -33,6 +30,7 @@
     "packages/octez.js/src/wallet/smart-rollup-originate-operation.ts",
     "packages/octez.js/src/wallet/wallet.ts",
     "packages/octez.js/test/batch/rpc-batch-provider.spec.ts",
-    "packages/octez.js/test/wallet/smart-rollup.spec.ts"
+    "packages/octez.js/test/wallet/smart-rollup.spec.ts",
+    "test-fixtures/wallet-rollup-mapper.types.ts"
   ]
 }
