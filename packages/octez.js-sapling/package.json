@@ -31,7 +31,7 @@
     "Davis Sawali <davis.sawali@ecadlabs.com>",
     "hui-an.yang <hui-an.yang@ecadlabs.com>",
     "Roxane Letourneau <roxane@ecadlabs.com>",
-    "Jev Björsell (jevonearth)"
+    "Jev Bj\u00f6rsell (jevonearth)"
   ],
   "homepage": "https://octez-js.tezos.com/",
   "repository": {
@@ -55,7 +55,8 @@
     "version-stamp": "node ../octez.js/version-stamping.js",
     "prepare:release-artifacts": "node ./prepare-sapling-release-artifacts.js",
     "build": "tsc --project ./tsconfig.prod.json --module commonjs && rollup -c rollup.config.ts --bundleConfigAsCjs",
-    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w"
+    "start": "rollup -c rollup.config.ts --bundleConfigAsCjs -w",
+    "test:types": "tsc --noEmit --project test/tsconfig.types.json"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
