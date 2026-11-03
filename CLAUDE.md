@@ -179,6 +179,32 @@ values below even if upstream's diff says otherwise, and say so in the commit bo
   related website pins (`@tailwindcss/vite`/`tailwindcss` ≥ 4.3, `vite-plugin-node-polyfills`
   ≥ 0.28, `@astrojs/markdown-remark` ^7) live in `website/`, which is off-limits to port from
   upstream anyway (see the hard stop above).
+- **Internal `@tezos-x/octez.js-*` ranges follow our own version (`^25.0.0` today), never
+  Taquito's.** Upstream dependency commits carry Taquito's internal ranges (`^25.1.0`, …) in
+  their context; keep ours, and run `node scripts/sync-workspace-deps.js <our version>` if a range
+  drifted.
+- **http-utils keeps its broader retry policy.** We retry transient `429`, `502`, `503` and `504`
+  on retriable requests, honour `Retry-After`, and treat the whole `/helpers/scripts/` family as
+  retriable (`4da7ea5a3`, `698efc2cd`). Taquito only added `502/503/504` with an explicit endpoint
+  list (`2e42c5a18`); we ported its error-body fallback and tests, not its retry rewrite. Tests
+  asserting exact call counts for `429`/`503` (e.g. Taquito `f892c0117`) don't apply.
+- **Timelock seeds Miller-Rabin witnesses from the caller's `rng`** (`4fb1ea819`). Upstream tests
+  with a scripted RNG must serve the extra 4-byte witness draws from the platform RNG (done in
+  the `48e70b797` port).
+- **Package-level divergences to keep in every port:** dapp-wallet uses
+  `@tezos-x/octez.connect-*` (not `@ecadlabs/beacon-*`, so rename `@ecadlabs/beacon-*` imports to
+  `@tezos-x/octez.connect-*`); sapling uses `@tezos-x/sapling-wasm` and our `octez-js-assets`
+  parameter URLs (params source `'octez.js'`); `octez.js-utils` depends on
+  `@tezos-x/octez.js-michel-codec` and `viem` for the Tezos X helpers (keep them in
+  `package.json` and in its `rollup.config.ts` globals/externals).
+- **ChatKit is kept** even though Taquito removed it (`8e56073e7`); see #159 for its status.
+- **Integration-test keygen retries HTTP `500` too**, not only Taquito's `502/503/504`
+  (`460a5b4ce`). The shadownet faucet returns `500` under concurrent load (`9a20994d7`). Timeouts
+  stay fatal, as upstream: retrying a timed-out key request can orphan a funded key.
+- **No `@noble/hashes` alias in the `webpack.config.js` files.** Taquito aliases
+  `@noble/hashes/sha256$` to the root `node_modules/@noble/hashes/esm/sha256.js` (`d408b9a8d`).
+  The bundles are byte-identical without it, and the path breaks once v2 is hoisted at the root.
+  Don't port it back.
 - When you port such a commit minus a divergent line, record it with `Upstream-Commit` for the
   ported part, and state the left-out line in the body. If nothing else is ported, use
   `Upstream-Skipped`.
