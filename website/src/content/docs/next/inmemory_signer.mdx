@@ -244,6 +244,9 @@ console.log(account.publicKeyHash); // tz1...
   (128, 160, 192, 224 or 256; default 128) and uses a secure random source.
 - `entropyToMnemonic` accepts 16, 20, 24, 28 or 32 bytes, as a `Uint8Array` or as an unprefixed,
   even-length hexadecimal string. Leading zeros count.
+  Any `Uint8Array` works, including a Node.js `Buffer` or a `subarray` view: only the bytes in
+  that view are used, and the input isn't modified. Plain number arrays and other typed arrays
+  (such as `Uint16Array`) are rejected.
 - An invalid phrase throws `InvalidMnemonicError`. The error never contains the phrase, so it is
   safe to log.
 - `deriveKeyFromMnemonic` takes the same options as `InMemorySigner.fromMnemonic`, with the same
