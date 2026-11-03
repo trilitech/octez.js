@@ -84,6 +84,10 @@ Releases up to v25.0.0 are described in the
   sends headers and then stalls fails with `HttpTimeoutError` instead of hanging. Errors while
   reading a successful body, including JSON parse errors, are thrown as they are, without being
   wrapped or retried (#164).
+- **dapp-wallet**: a native Node `import` of the package or of its `/types` subpath now loads the
+  CommonJS build, so the package can be imported without a DOM. Using the wallet still needs a
+  browser: in plain Node, creating it fails on the missing `localStorage`. `@types/chrome` is now a
+  dependency, so consumers type-check the declarations without installing it themselves (#164).
 
 ### Dependencies
 
