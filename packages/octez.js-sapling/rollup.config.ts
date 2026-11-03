@@ -24,7 +24,6 @@ export default {
         "@tezos-x/sapling-wasm": "sapling",
         "blakejs": "blake",
         "@stablelib/nacl": "nacl",
-        "@stablelib/random": "random",
         "typedarray-to-buffer": "toBuffer",
       }
     },
@@ -40,7 +39,6 @@ export default {
     '@tezos-x/sapling-wasm',
     '@stablelib/nacl',
     'bip39',
-    '@stablelib/random',
     '@tezos-x/octez.js'
   ],
   watch: {

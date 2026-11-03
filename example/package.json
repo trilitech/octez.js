@@ -40,7 +40,7 @@
     "example:scan-path-ledger": "node -r ts-node/register --preserve-symlinks scan-path-ledger.ts"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-node-hid": "^6.29.16",
+    "@ledgerhq/hw-transport-node-hid": "^6.33.5",
     "@tezos-x/octez.js-ledger-signer": "^25.0.0",
     "@tezos-x/octez.js-local-forging": "^25.0.0",
     "@tezos-x/octez.js-michel-codec": "^25.0.0",
@@ -51,7 +51,7 @@
     "@tezos-x/octez.js": "^25.0.0",
     "@tezos-x/octez.js-tzip16": "^25.0.0",
     "@tezos-x/octez.js-utils": "^25.0.0",
-    "bignumber.js": "^9.1.2",
+    "bignumber.js": "^10.0.2",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
