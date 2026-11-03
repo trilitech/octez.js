@@ -16,7 +16,10 @@ function fixedRandomness(locked: BigInteger, nonce: BigInteger, cipherNonce: Uin
     getRandomValues(target) {
       // octez.js seeds Miller-Rabin witnesses from the caller's rng (4-byte draws, 4fb1ea819).
       // They don't affect the proof, so serve them from the platform RNG.
-      if (target.length === 4) return globalThis.crypto.getRandomValues(target);
+      if (target.length === 4) {
+        target.set(globalThis.crypto.getRandomValues(new Uint8Array(4)));
+        return target;
+      }
       const next = values.shift();
       if (!next || next.length !== target.length) {
         throw new Error('Unexpected random byte request');
