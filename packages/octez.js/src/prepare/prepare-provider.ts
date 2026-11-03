@@ -1,3 +1,5 @@
+import { Context } from '../context';
+import { DetachedIdentity, detachedProof } from './detached-identity';
 import {
   OperationContents,
   OpKind,
@@ -112,6 +114,19 @@ const mergeLimits = (
  * PrepareProvider is a utility class to output the prepared format of an operation
  */
 export class PrepareProvider extends Provider implements PreparationProvider {
+  constructor(
+    context: Context,
+    private readonly identity?: Readonly<DetachedIdentity>
+  ) {
+    super(context);
+  }
+
+  private async revealProof(): Promise<string> {
+    return this.identity
+      ? detachedProof(this.identity)
+      : (await this.signer.provePossession!()).prefixSig;
+  }
+
   private async getBlockHash(block?: BlockIdentifier) {
     return this.context.readProvider.getBlockHash(block ?? 'head~2');
   }
@@ -217,7 +232,7 @@ export class PrepareProvider extends Provider implements PreparationProvider {
         }
         const [, pkhPrefix] = b58DecodeAndCheckPrefix(pkh, publicKeyHashPrefixes);
         const isBls = pkhPrefix === PrefixV2.BLS12_381PublicKeyHash;
-        const proof = isBls ? (await this.signer.provePossession!()).prefixSig : undefined;
+        const proof = isBls ? await this.revealProof() : undefined;
         const { fee, storageLimit, gasLimit } = await this.getRevealLimits(pkh);
         ops.unshift(
           await createRevealOperation({ fee, storageLimit, gasLimit, proof }, publicKeyHash, publicKey)
@@ -301,6 +316,7 @@ export class PrepareProvider extends Provider implements PreparationProvider {
     pkh: string;
     publicKey?: string;
   }> {
+    if (this.identity) return this.identity;
     const isSignerConfigured = this.context.isAnySignerConfigured();
     return {
       pkh: isSignerConfigured ? await this.signer.publicKeyHash() : await this.context.wallet.pkh(),
@@ -486,8 +502,7 @@ export class PrepareProvider extends Provider implements PreparationProvider {
       if (proof) {
         b58DecodeAndCheckPrefix(proof, [PrefixV2.BLS12_381Signature]); // validate proof to be a bls signature
       } else {
-        const { prefixSig } = await this.signer.provePossession!();
-        proof = prefixSig;
+        proof = await this.revealProof();
       }
     } else {
       if (proof) {
@@ -1470,7 +1485,7 @@ export class PrepareProvider extends Provider implements PreparationProvider {
       }
       const [, pkhPrefix] = b58DecodeAndCheckPrefix(pkh, publicKeyHashPrefixes);
       const isBls = pkhPrefix === PrefixV2.BLS12_381PublicKeyHash;
-      revealProof = isBls ? (await this.signer.provePossession!()).prefixSig : undefined;
+      revealProof = isBls ? await this.revealProof() : undefined;
       revealLimits = await this.getRevealLimits(pkh);
     }
 
