@@ -80,6 +80,10 @@ Releases up to v25.0.0 are described in the
   characters. A failure to read the parameter files is reported as a `SaplingParamsError` with
   code `SAPLING_PARAMS_FETCH_FAILED` (#160).
 - **timelock**: proof hashing pads integers the way Octez does, so proofs match Octez's (#161).
+- **http-utils**: the request timeout now also covers reading the response body, so a server that
+  sends headers and then stalls fails with `HttpTimeoutError` instead of hanging. Errors while
+  reading a successful body, including JSON parse errors, are thrown as they are, without being
+  wrapped or retried (#164).
 
 ### Dependencies
 
@@ -99,3 +103,4 @@ Releases up to v25.0.0 are described in the
   consumer checks on Node 22 and 24 (#161). `bundle-webpack` runs on Node 22 (#157).
 - Integration-test keygen retries HTTP 500, 502, 503 and 504 (#160).
 - Website on astro 7 and vite 8 (#157).
+- Backport of Taquito `d24dfebc..24d68fb7`, one commit per upstream commit (#164).
