@@ -32,6 +32,30 @@ await op.confirmation();
 For more information in regards to Smart Rollup Origination please refer to this [link](https://tezos.gitlab.io/active/smart_rollups.html#origination)
 
 
+### Private rollups
+
+By default a rollup is public: anyone with a bond can publish commitments for it. To originate a
+**private** rollup, pass a `whitelist` with the public key hashes allowed to publish commitments:
+
+```typescript
+const op = await Tezos.contract.smartRollupOriginate({
+  pvmKind: 'wasm_2_0_0',
+  kernel: '2321...', // same kernel as above
+  parametersType: { prim: 'bytes' },
+  whitelist: ['tz1...', 'tz4...'],
+});
+await op.confirmation();
+```
+
+- Any implicit account type can be listed (`tz1`, `tz2`, `tz3`, `tz4` and `tz5`). The order you
+  give is kept in the forged operation.
+- Leave `whitelist` out for a public rollup. An empty array (`whitelist: []`) is not the same
+  thing: it's sent as an empty whitelist, which the protocol rejects, and the node's error is
+  returned to you as is.
+- The whitelist is kept through every step of the operation: estimation, an automatically added
+  reveal, forging, signing and injection, and in batches (`Tezos.contract.batch()`) that mix
+  private and public originations.
+
 ## `smart_rollup_add_messages`
 The add messages operation allows users to send external messages into a rollup inbox. We will go into a bit more detail down below on what that means.
 
