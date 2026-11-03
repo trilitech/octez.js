@@ -260,6 +260,49 @@ expanded form also returned by `InMemorySigner.secretKey()`). Don't log, store o
 `publicKeyHash` and `publicKey` for previews.
 :::
 
+### BLS proofs for a native multisig account
+
+A BLS (tz4) native multisig account is controlled by an aggregate key built from several member
+keys. Setting one up needs proofs of possession in two stages, and `InMemorySigner` produces both.
+
+**Stage 1: each member proves its own key.** `provePossession()` signs the member's own public
+key. The node checks each proof while aggregating the member keys:
+
+```js
+// one InMemorySigner per member, each with a tz4 (BLsk...) key
+const members = await Promise.all(
+  signers.map(async (signer) => ({
+    public_key: await signer.publicKey(),
+    proof: (await signer.provePossession()).prefixSig,
+  }))
+);
+const aggregate = await Tezos.rpc.aggregatePublicKeys(members);
+// { public_key: 'BLpk...', public_key_hash: 'tz4...' }, or null if a proof is invalid
+```
+
+**Stage 2: each member proves the aggregate key.** Pass the aggregate public key to
+`provePossession` so the member signs that key instead of its own. The node then combines these
+proofs into the proof for the aggregate account:
+
+```js
+const proofs = await Promise.all(
+  signers.map(async (signer) => (await signer.provePossession(aggregate.public_key)).prefixSig)
+);
+const aggregateProof = await Tezos.rpc.aggregateProofs({
+  public_key: aggregate.public_key,
+  proofs,
+});
+// 'BLsig...', or null if the proofs don't combine
+```
+
+- The stage-1 proofs can't be combined into the aggregate proof, because each one signs a
+  different key. Combining them returns `null`.
+- `provePossession(publicKey)` rejects anything that isn't a valid BLS public key with an
+  `InvalidPublicKeyError`.
+- `aggregateProofs` is an optional method of the RPC client interface. `RpcClient` implements it,
+  and `RpcClientCache` forwards it without caching. A custom client that doesn't implement it
+  makes `RpcClientCache` throw `UnsupportedActionError`.
+
 ### Using a testnet faucet key
 
 ~~To load a faucet key (available from https://faucet.tzalpha.net/) for working a public testnet use the `importKey` function.~~
