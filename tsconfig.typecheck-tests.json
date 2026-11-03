@@ -11,6 +11,7 @@
     "packages/octez.js/test/contract/big-map-values*.spec.ts",
     "packages/octez.js-rpc/test/big-map-values*.spec.ts",
     "packages/octez.js/test/contract/smart-rollup-whitelist.spec.ts",
+    "integration-tests/__tests__/contract/big-map-values.spec.ts",
     "integration-tests/__tests__/contract/operations/smart-rollup-originate.spec.ts"
   ]
 }
