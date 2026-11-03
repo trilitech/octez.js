@@ -1,6 +1,11 @@
 /// <reference types="node" />
 
-import { SaplingToolkit, InMemorySpendingKey } from '@tezos-x/octez.js-sapling';
+import {
+  SaplingToolkit,
+  InMemorySpendingKey,
+  InvalidSaplingOutputOrderError,
+} from '@tezos-x/octez.js-sapling';
+import { ParameterValidationError } from '@tezos-x/octez.js-core';
 import { RpcClient } from '@tezos-x/octez.js-rpc';
 import { RpcReadAdapter } from '@tezos-x/octez.js';
 
@@ -14,3 +19,6 @@ new SaplingToolkit(keys, { ...contract, outputOrder: 'preserve' }, readProvider)
 new SaplingToolkit(keys, { ...contract, outputOrder: 'randomized' }, readProvider);
 // @ts-expect-error Unknown policies must fail for a public consumer.
 new SaplingToolkit(keys, { ...contract, outputOrder: 'random' }, readProvider);
+
+const policyError: ParameterValidationError = new InvalidSaplingOutputOrderError();
+void policyError;

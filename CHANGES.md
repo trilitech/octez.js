@@ -57,7 +57,7 @@ Releases up to v25.0.0 are described in the
 - **sapling**: opt-in randomized output order. `outputOrder: 'randomized'` in the contract details
   makes the default transaction builder shuffle the outputs, private change included, before
   signing, so change is no longer always the last output. The default, `'preserve'`, keeps the
-  current order (#164).
+  current order. An unknown value throws the exported `InvalidSaplingOutputOrderError` (#164).
 
 ### Fixes
 

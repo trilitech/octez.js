@@ -123,7 +123,9 @@ How it works:
   transaction is rejected before the binding signature is created.
 - A shuffle can leave the outputs in their original order. With zero or one output, there is
   nothing to shuffle.
-- Any other `outputOrder` value throws when the toolkit is created.
+- Any other `outputOrder` value throws an `InvalidSaplingOutputOrderError` when the toolkit is
+  created. It is exported by `@tezos-x/octez.js-sapling` and extends `ParameterValidationError`
+  from `@tezos-x/octez.js-core`.
 
 Things to keep in mind:
 
