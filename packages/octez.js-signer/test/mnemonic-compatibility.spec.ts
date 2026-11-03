@@ -1,5 +1,9 @@
-import { InMemorySigner, type FromMnemonicParams } from '../src/octez.js-signer';
-import { InvalidCurveError, InvalidMnemonicError, ToBeImplemented } from '../src/errors';
+import {
+  InvalidMnemonicError,
+  InMemorySigner,
+  type FromMnemonicParams,
+} from '../src/octez.js-signer';
+import { InvalidCurveError, ToBeImplemented } from '../src/errors';
 import { InvalidDerivationPathError } from '@tezos-x/octez.js-core';
 import vectors from './fixtures/mnemonic-vectors';
 
