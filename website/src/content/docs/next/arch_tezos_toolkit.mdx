@@ -78,6 +78,31 @@ The main configuration points are:
 
 `setProvider` is a convenience that accepts several of these at once.
 
+### Reads after an RPC change
+
+Chain reads (balances, contract storage, big maps, blocks, protocol constants) go through the read
+provider. Unless you install one yourself, the toolkit uses an `RpcReadAdapter` over the current
+`RpcClient`.
+
+That default follows RPC changes. When you switch nodes with `setRpcProvider(url)`, or pass `rpc` to
+`setProvider`, the toolkit rebuilds its default read provider on the new client, so reads and
+operations use the same node:
+
+```js
+const Tezos = new TezosToolkit('https://node-a.example.org');
+Tezos.setRpcProvider('https://node-b.example.org');
+await Tezos.tz.getBalance('tz1...'); // read from node-b
+```
+
+A read provider you set explicitly stays in place when the RPC changes. This includes an indexer
+adapter, a cache, a read provider installed by an extension, and an `RpcReadAdapter` you built
+for another endpoint. Reads keep going to it until you replace it. To go back to the default, call
+`setReadProvider()` with no argument: reads then use the current RPC and follow later RPC changes
+again.
+
+A read that has already started finishes on the provider it started with. Only reads started
+after the switch use the new node.
+
 ## Why it is built this way
 
 Keeping the toolkit thin and pushing behaviour into pluggable providers means an application can
