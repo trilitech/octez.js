@@ -1,8 +1,21 @@
-/* eslint-disable @typescript-eslint/no-var-requires -- These consumers verify CommonJS require. */
-const assert = require('node:assert/strict');
-const { createServer } = require('node:http');
+import { createServer } from 'node:http';
+import { createRequire } from 'node:module';
 
-module.exports = async function checkConsumer(core, http) {
+export default async function ({ assert, load, mode }) {
+  const core = await load('@tezos-x/octez.js-core');
+  const http = await load('@tezos-x/octez.js-http-utils');
+  const require = createRequire(import.meta.url);
+  const commonCore = require('@tezos-x/octez.js-core');
+  const commonHttp = require('@tezos-x/octez.js-http-utils');
+  assert.equal(core.NetworkError, commonCore.NetworkError);
+  assert.equal(http.HttpResponseError, commonHttp.HttpResponseError);
+  if (mode === 'import') {
+    // Record current CJS interop until the native ESM default-export policy is agreed.
+    assert.equal(core.default, commonCore);
+    assert.equal(http.default, commonHttp);
+  }
+  const requireHttp = createRequire(require.resolve('@tezos-x/octez.js-http-utils'));
+  assert.equal(requireHttp.resolve('@tezos-x/octez.js-core'), require.resolve('@tezos-x/octez.js-core'));
   assert.equal(core.ValidationResult.INVALID_CHECKSUM, 1);
   const invalid = new core.InvalidAddressError('invalid');
   assert.equal(invalid.message, 'Invalid address "invalid"');
@@ -29,4 +42,4 @@ module.exports = async function checkConsumer(core, http) {
     server.closeAllConnections();
     await new Promise((resolve) => server.close(resolve));
   }
-};
+}
