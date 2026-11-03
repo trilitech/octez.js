@@ -3,7 +3,10 @@
   "compilerOptions": {
     "noEmit": true,
     "rootDir": ".",
-    "types": ["node", "vitest/globals"],
+    "types": [
+      "node",
+      "vitest/globals"
+    ],
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
@@ -12,6 +15,24 @@
     "packages/octez.js-rpc/test/big-map-values*.spec.ts",
     "packages/octez.js/test/contract/smart-rollup-whitelist.spec.ts",
     "integration-tests/__tests__/contract/big-map-values.spec.ts",
-    "integration-tests/__tests__/contract/operations/smart-rollup-originate.spec.ts"
+    "integration-tests/__tests__/contract/operations/smart-rollup-originate.spec.ts",
+    "integration-tests/__tests__/wallet/smart-rollups.spec.ts",
+    "integration-tests/data/smart-rollup-echo-kernel.ts",
+    "packages/octez.js-dapp-wallet/src/octez.js-dapp-wallet.ts",
+    "packages/octez.js-dapp-wallet/test/octez.js-dapp-wallet.spec.ts",
+    "packages/octez.js-wallet-connect/src/octez.js-wallet-connect.ts",
+    "packages/octez.js-wallet-connect/src/types.ts",
+    "packages/octez.js-wallet-connect/test/octez.js-wallet-connect.spec.ts",
+    "packages/octez.js/src/wallet/batch-operation.ts",
+    "packages/octez.js/src/wallet/index.ts",
+    "packages/octez.js/src/wallet/interface.ts",
+    "packages/octez.js/src/wallet/legacy.ts",
+    "packages/octez.js/src/wallet/operation-factory.ts",
+    "packages/octez.js/src/wallet/smart-rollup-add-messages-operation.ts",
+    "packages/octez.js/src/wallet/smart-rollup-execute-outbox-message-operation.ts",
+    "packages/octez.js/src/wallet/smart-rollup-originate-operation.ts",
+    "packages/octez.js/src/wallet/wallet.ts",
+    "packages/octez.js/test/batch/rpc-batch-provider.spec.ts",
+    "packages/octez.js/test/wallet/smart-rollup.spec.ts"
   ]
 }
