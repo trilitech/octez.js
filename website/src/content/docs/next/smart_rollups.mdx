@@ -142,6 +142,60 @@ console.log(await op.status()); // 'applied'
   `smartRollupExecuteOutboxMessageOperation()`) read the receipt. After an origination,
   `rollupAddress()` returns the new `sr1` address.
 
+### Wallet API examples
+
+Originate a rollup and read its address once the operation is included:
+
+```typescript
+import { PvmKind } from '@tezos-x/octez.js-rpc';
+
+const origination = await Tezos.wallet
+  .smartRollupOriginate({
+    pvmKind: PvmKind.WASM2,
+    kernel: '2321...', // hex-encoded kernel, as in the contract API example
+    parametersType: { prim: 'bytes' },
+  })
+  .send();
+await origination.confirmation();
+const rollup = await origination.rollupAddress(); // 'sr1...'
+```
+
+Execute an outbox message once its commitment is cemented:
+
+```typescript
+const execution = await Tezos.wallet
+  .smartRollupExecuteOutboxMessage({
+    rollup: 'sr1...',
+    cementedCommitment: 'src1...',
+    outputProof: '0300...', // from the rollup node, see above
+  })
+  .send();
+await execution.confirmation();
+```
+
+Smart rollup operations can also be batched with other wallet operations, with the fluent
+builder or the array form:
+
+```typescript
+import { OpKind } from '@tezos-x/octez.js-rpc';
+
+const batch = await Tezos.wallet
+  .batch()
+  .withSmartRollupAddMessages({ message: ['0000000031010000000b48656c6c6f20576f726c64'] })
+  .withTransfer({ to: 'tz1...', amount: 1 })
+  .send();
+await batch.confirmation();
+
+const sameBatch = await Tezos.wallet
+  .batch([
+    { kind: OpKind.SMART_ROLLUP_ADD_MESSAGES, message: ['0000000031010000000b48656c6c6f20576f726c64'] },
+    { kind: OpKind.TRANSACTION, to: 'tz1...', amount: 1 },
+  ])
+  .send();
+```
+
+The builder also has `withSmartRollupOriginate` and `withSmartRollupExecuteOutboxMessage`.
+
 ### Wallet provider support
 
 | Wallet provider | Smart rollup operations |
