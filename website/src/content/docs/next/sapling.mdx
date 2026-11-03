@@ -90,6 +90,54 @@ await saplingToolkit.prepareShieldedTransaction([
 ]);
 ```
 
+## Sapling parameters
+
+Building Sapling proofs needs the Sapling spend and output parameters (about 50 MB). octez.js
+downloads them the first time a proof is needed and checks each file against a pinned SHA-256
+digest before use. Pick the source with `initSapling`, before any Sapling operation, and call
+`preloadSaplingParams` if you want to download them ahead of time:
+
+```js
+import { initSapling, preloadSaplingParams } from '@tezos-x/octez.js-sapling';
+
+await initSapling({ params: { source: 'octez.js' } }); // default; or { source: 'zcash' }
+await preloadSaplingParams();
+```
+
+You can also give your own URLs (`spendParamsUrl`/`outputParamsUrl` with their
+`spendParamsSha256`/`outputParamsSha256` digests), or local files in Node.js
+(`spendParamsPath`/`outputParamsPath`). Once loading has started, the source can no longer be
+changed: later calls to `initSapling` have no effect.
+
+### When loading fails
+
+Loading errors are raised as `SaplingParamsError`. Its `code` tells you what went wrong, `source`
+says which source was in use (`'octez.js'`, `'zcash'`, `'custom'` or `'local'`), and `cause`
+carries the underlying error when there is one:
+
+| `code` | Meaning |
+| --- | --- |
+| `SAPLING_PARAMS_FETCH_FAILED` | The download failed: network error, non-2xx HTTP status, or the connection broke while the file was being read. |
+| `SAPLING_PARAMS_HASH_MISMATCH` | A file was downloaded or read but its SHA-256 digest is not the expected one. It is not used. |
+| `SAPLING_PARAMS_UNSUPPORTED_RUNTIME` | The runtime can't verify or read the files: `globalThis.crypto.subtle` is missing, or local paths were used outside Node.js. |
+| `SAPLING_PARAMS_INVALID_CONFIG` | The `params` option is incomplete, for example only one of the two URLs or paths, or custom URLs without their digests. |
+
+A failed load isn't cached. The next Sapling operation, or another call to
+`preloadSaplingParams`, tries again, so a temporary network failure can be retried:
+
+```js
+import { preloadSaplingParams, SaplingParamsError } from '@tezos-x/octez.js-sapling';
+
+try {
+  await preloadSaplingParams();
+} catch (e) {
+  if (e instanceof SaplingParamsError && e.code === 'SAPLING_PARAMS_FETCH_FAILED') {
+    // retry later
+  }
+  throw e;
+}
+```
+
 ## How to retrieve my balance in the Sapling shielded set?
 
 When calling the `getSaplingTransactionViewer` method of the `SaplingToolkit` class, an instance of the `SaplingTransactionViewer` class is returned. The `SaplingTransactionViewer` class allows retrieving and decrypting Sapling transactions for the specified viewing key and calculating the unspent balance.
