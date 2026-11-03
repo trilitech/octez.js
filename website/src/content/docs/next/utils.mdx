@@ -199,6 +199,36 @@ const invalidValidation = validateProtocol(invalidProtocol);
 console.log(`Calling the validateProtocol function with ${invalidProtocol} returns ${invalidValidation}.`);
 ```
 
+### Boolean checks for user input
+
+To check wallet input such as a text field, use the boolean helpers. They accept any value and
+return `true` or `false`, so you don't need to compare against `ValidationResult`:
+
+```js
+import {
+  isValidAddress,
+  isValidContractAddress,
+  isValidPublicKey,
+  isValidOperationHash,
+  getPublicKeyHashFromPublicKey,
+} from '@tezos-x/octez.js-utils';
+
+isValidAddress('tz1L9r8mWmRPndRhuvMCWESLGSVeFzQ9NAWx'); // true
+isValidAddress(42); // false: not a string
+isValidContractAddress('KT1...%entrypoint'); // false: the suffix is not accepted
+```
+
+- `isValidAddress`, `isValidContractAddress`, `isValidPublicKey` and `isValidOperationHash` return
+  `false` for anything that isn't a string. For strings they apply the same rules as
+  `validateAddress`, `validateContractAddress`, `validatePublicKey` and `validateOperation`.
+- Like `validateAddress`, `isValidAddress` ignores everything after the first `%`.
+  `isValidContractAddress` checks the whole value and rejects such a suffix.
+- When you need the reason for a rejection, use the `validate…` functions above instead.
+
+`getPublicKeyHashFromPublicKey(publicKey)` returns the address (`tz1`, `tz2`, `tz3`, `tz4` or
+`tz5`) of an Ed25519, secp256k1, P-256, BLS12-381 or ML-DSA-44 public key. It is an alias of
+`getPkhfromPk` with a more descriptive name, and throws the same errors for invalid input.
+
 ## Tezos X cross-runtime address aliases
 
 On Tezos X, every address of the Michelson runtime has a deterministic alias in the EVM runtime, and vice versa. `getEthereumAlias` computes the EVM alias of an implicit (tz1–tz5) or originated (KT1) address, and `getTezosAlias` computes the KT1 alias of an Ethereum address. Both are computed offline and throw an `InvalidAddressError` on malformed input.
