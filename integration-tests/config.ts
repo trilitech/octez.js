@@ -8,7 +8,7 @@ import {
   importKey,
 } from '@tezos-x/octez.js';
 import { RemoteSigner } from '@tezos-x/octez.js-remote-signer';
-import { HttpBackend } from '@tezos-x/octez.js-http-utils';
+import { HttpBackend, HttpResponseError } from '@tezos-x/octez.js-http-utils';
 import { b58Encode, PrefixV2 } from '@tezos-x/octez.js-utils';
 import { InMemorySigner } from '@tezos-x/octez.js-signer';
 import { RpcClient, RpcClientCache } from '@tezos-x/octez.js-rpc';
@@ -611,13 +611,44 @@ const setupSignerWithFreshKey = async (
     : freshKeyPrefetch;
   const freshKeyPool = getFreshKeyPool(signerConfig, options);
   for (let attempt = 1; attempt <= options.maxAttempts; attempt++) {
+    let candidate: Awaited<ReturnType<typeof freshKeyPool.take>>;
     try {
+      candidate = await freshKeyPool.take();
+    } catch (error) {
+      if (
+        !(error instanceof HttpResponseError) ||
+        // 500 is an octez.js addition: the shadownet faucet returns it under
+        // concurrent load (9a20994d7). Timeouts stay fatal to avoid orphaning
+        // funded keys.
+        ![500, 502, 503, 504].includes(error.status) ||
+        attempt === options.maxAttempts
+      ) {
+        throw error;
+      }
+
+      console.warn(
+        `[keygen] transient HTTP ${error.status} (attempt ${attempt}/${options.maxAttempts}); ` +
+          'requesting a new key'
+      );
+      diagnosticsLog({
+        stage: 'fresh-key-request-retry',
+        keyUrl: v2FreshKeyUrl,
+        attempt,
+        maxAttempts: options.maxAttempts,
+        status: error.status,
+      });
+      if (options.retryDelayMs > 0) {
+        await sleep(options.retryDelayMs);
+      }
+      continue;
+    }
+
     const {
       value: { keyResponse, keyRequestDurationMs },
       waitMs: keyAcquireWaitMs,
       wasPrefetched,
       readyLeadMs,
-    } = await freshKeyPool.take();
+    } = candidate;
 
     if (!keyResponse.secret_key) {
       throw new Error(`Keygen V2 did not return secret_key from ${v2FreshKeyUrl}`);
@@ -703,24 +734,6 @@ const setupSignerWithFreshKey = async (
       prefetchedReadyLeadMs: readyLeadMs,
       prefetchBufferSize: actualPrefetchBufferSize,
     });
-    } catch (err) {
-      // Transient keygen failures (faucet 500 / request timeout) are retryable:
-      // record the reason and fall through to the inter-attempt delay instead of
-      // aborting setup, so a later attempt (after a block / once the faucet
-      // recovers) can succeed.
-      const failReason = `keygen_error:${toErrorMessage(err)}`;
-      reasons.push(`attempt_${attempt}:${failReason}`);
-      console.warn(
-        `[keygen] attempt ${attempt}/${options.maxAttempts} keygen request failed: ${toErrorMessage(err)}`
-      );
-      diagnosticsLog({
-        stage: 'fresh-key-retry',
-        keyUrl: v2FreshKeyUrl,
-        attempt,
-        maxAttempts: options.maxAttempts,
-        reason: failReason,
-      });
-    }
 
     if (attempt < options.maxAttempts && options.retryDelayMs > 0) {
       await sleep(options.retryDelayMs);
