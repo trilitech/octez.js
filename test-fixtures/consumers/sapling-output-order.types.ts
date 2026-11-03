@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import { SaplingToolkit, InMemorySpendingKey } from '@tezos-x/octez.js-sapling';
 import { RpcClient } from '@tezos-x/octez.js-rpc';
 import { RpcReadAdapter } from '@tezos-x/octez.js';
