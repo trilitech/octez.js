@@ -88,13 +88,22 @@ describe('Origination operation', () => {
         level: 200,
       },
     });
-    fakeContext.readProvider.getBlock.mockImplementation(async (level: number) => ({
-      hash: `BLpastBlockAtLevel${level}`,
-      operations: [[], [], [], []],
-      header: {
-        level,
-      },
-    }));
+    fakeContext.readProvider.getBlockHash = vi
+      .fn()
+      .mockResolvedValue('BLJjnzaPtSsxykZ9pLTFLSfsKuiN3z7SjSPDPWwbE4Q68u5EpBw');
+    // Numeric levels are the confirmation backfill's past-block lookups; anything else (the
+    // polled head hash) resolves to the current head block.
+    fakeContext.readProvider.getBlock.mockImplementation(async (block: number | string) =>
+      typeof block === 'number'
+        ? {
+            hash: `BLpastBlockAtLevel${block}`,
+            operations: [[], [], [], []],
+            header: {
+              level: block,
+            },
+          }
+        : fakeContext.rpc.getBlock(block)
+    );
     fakeContext.getConfirmationPollingInterval.mockResolvedValue(10);
   });
 
