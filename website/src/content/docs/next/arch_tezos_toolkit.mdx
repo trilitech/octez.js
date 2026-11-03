@@ -47,10 +47,10 @@ Choosing between them is an application decision, not a difference in capability
 
 ## Configuring providers
 
-Every replaceable part of the toolkit has a `set…Provider` method. Each method follows the same
-contract: if you pass an implementation it is used; if you pass nothing a sensible default is
-installed; in both cases the shared `Context` is updated so that every other service sees the
-change.
+Every replaceable part of the toolkit has a `set…Provider` method. When you pass an
+implementation, it is used, and the shared `Context` is updated so that every other service sees
+the change. What happens when you pass nothing depends on the setter (see
+[Calling a setter without an argument](#calling-a-setter-without-an-argument)).
 
 ```js
 import { TezosToolkit } from '@tezos-x/octez.js';
@@ -77,6 +77,29 @@ The main configuration points are:
 | `setGlobalConstantsProvider` | global constant resolution | a no-op provider |
 
 `setProvider` is a convenience that accepts several of these at once.
+
+### Calling a setter without an argument
+
+The setters don't all react the same way to a missing argument:
+
+| Setter | With no argument |
+| --- | --- |
+| `setRpcProvider()` | Changes nothing: the toolkit keeps its current RPC client. |
+| `setReadProvider()` | Restores the default read provider: reads go through the current RPC again and follow later RPC changes. |
+| `setSignerProvider()`, `setForgerProvider()`, `setStreamProvider()`, `setWalletProvider()`, `setPackerProvider()`, `setGlobalConstantsProvider()`, `setParserProvider()`, `setInjectorProvider()` | Keep the provider already set. A default is installed only if none was set yet. |
+
+`setProvider({ ... })` calls each of these setters with the matching option, or with nothing
+when the option is omitted. So it leaves the RPC client and the other providers alone, but **it
+restores the default read provider whenever `readProvider` is omitted**. If you use a custom
+read provider, pass it again, or set the other providers with their own setters:
+
+```js
+Tezos.setReadProvider(myIndexerReader);
+
+Tezos.setProvider({ signer });                               // reads are back on the RPC
+Tezos.setProvider({ signer, readProvider: myIndexerReader }); // keeps the custom reader
+Tezos.setSignerProvider(signer);                             // keeps the custom reader
+```
 
 ### Reads after an RPC change
 
