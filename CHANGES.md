@@ -54,6 +54,10 @@ Releases up to v25.0.0 are described in the
 - **local-forging**, **ledger-signer**, **octez.js**: more symbols exported from the package
   entry points: local-forging errors and the Michelson codec, ledger-signer errors and helpers,
   and the wallet batch and increase-paid-storage operation classes (#160).
+- **sapling**: opt-in randomized output order. `outputOrder: 'randomized'` in the contract details
+  makes the default transaction builder shuffle the outputs, private change included, before
+  signing, so change is no longer always the last output. The default, `'preserve'`, keeps the
+  current order (#164).
 
 ### Fixes
 
