@@ -159,6 +159,13 @@ Refer to the top-level `package.json` for available scripts. Common commands:
 - `npx nx build <package-name>`: Builds a single package (e.g., `npx nx build @tezos-x/octez.js`)
 - `npx nx test <package-name>`: Runs unit tests for a single package (e.g., `npx nx test @tezos-x/octez.js`)
 
+### Testing packed packages
+
+Before changing package entrypoints or published files, run the
+[packed package consumer checks](package-tests/README.md). They test installed
+`@tezos-x/octez.js-core` and `@tezos-x/octez.js-http-utils` tarballs on Linux or WSL. The guide lists
+the build and browser prerequisites for `npm run test:packages:consumers`.
+
 ### Running Integration Tests
 
 See [`integration-tests/README.md`](./integration-tests/README.md) for instructions on configuring and running integration tests.
