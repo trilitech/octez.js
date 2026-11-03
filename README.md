@@ -27,7 +27,7 @@ octez.js is used by **over 80% of DApps** in the Tezos ecosystem. It is easy to 
 
 ## Why should I use octez.js?
 
-octez.js provides convenient abstractions for a multitude of common operations, including wallet interactions (with [WalletConnect/Reown](https://reown.com/) in the works), batching operations, calling into contracts, querying the blockchain, and more. octez.js will shield your code from subtle - and not-so-subtle - changes to the underlying Tezos protocol.
+octez.js provides convenient abstractions for a multitude of common operations, including wallet interactions (via [octez.connect](https://www.npmjs.com/package/@tezos-x/octez.js-dapp-wallet) and [WalletConnect](https://www.npmjs.com/package/@tezos-x/octez.js-wallet-connect)), batching operations, calling into contracts, querying the blockchain, and more. octez.js will shield your code from subtle, and not-so-subtle, changes to the underlying Tezos protocol.
 
 ...Not to mention our thriving, helpful, and welcoming community!
 
@@ -107,11 +107,11 @@ octez.js supports the *current* and *next* (beta) protocol versions of Tezos.
 
 We use [Semantic Versioning](https://semver.org) with a twist: the *Major* version typically tracks the latest version of Tezos, while *Minor* and *Patch* follow standard SemVer rules.
 
-For example, a stable octez.js release line might be `v24.x`, while the next protocol release is prepared as `v25.0.0-beta.1`.
+For example, a stable octez.js release line might be `v25.x`, while the next protocol release is prepared as `v26.0.0-beta.1`.
 
 ### Release Timing
 
-When the next protocol proposal is likely to be promoted, and octez.js has been updated and tested against it, we release the next version (e.g., `v25.0.0-beta.1`) *before* the chain switches. This gives DApp developers time to update and test their projects.
+When the next protocol proposal is likely to be promoted, and octez.js has been updated and tested against it, we release the next version (e.g., `v26.0.0-beta.1`) *before* the chain switches. This gives DApp developers time to update and test their projects.
 
 During these “Major” version updates, the octez.js public API *may* undergo breaking changes. We do our best to document these in release notes.
 
@@ -129,53 +129,42 @@ Interested in contributing to octez.js? Wonderful! Read on to set up your enviro
 
 ### Setup and Build the octez.js Project
 
-*Perform these steps in order.*
-
-1. **Install libudev-dev** (if on GNU/Linux):
-    - **Ubuntu** / **Debian**-based: `sudo apt-get install libudev-dev`
-    - **Fedora** / **RedHat**-based: `sudo dnf install libudev-devel`
-
-2. **Install or use a compatible version of Node.js** (see [Supported Versions](#supported-versions-of-node)), for example:
+1. **Use a supported version of Node.js** (see [Supported Versions](#supported-versions-of-node)):
     ```bash
     nvm install
     nvm use
     ```
 
-### Building octez.js
+2. **Install dependencies and build all packages**:
+    ```bash
+    npm ci
+    npm run build
+    ```
 
-Once prerequisites are installed, run:
-```bash
-npm ci
-npm run build
-```
-If everything goes well, run the unit tests:
-```bash
-npm run test
-```
-All tests should pass successfully.
+3. **Run the unit tests**:
+    ```bash
+    npm run test
+    ```
 
-### Build Gotchas
+### Useful Commands
 
-- **Do not delete `node_modules/` manually** – this confuses the build system. Use `npm run clean` instead.
-- **Prefer `npm ci` rather than `npm install`** to ensure a deterministic installation that respects `package-lock.json`.
+Refer to the top-level `package.json` for available scripts. Common commands:
 
-### Useful npm Scripts
-
-Refer to the top-level `package.json` for available scripts. Common ones:
-
-- `npm run clean`: Recursively deletes build artifacts
-- `npm run test`: Runs the unit tests
-- `npm run build`: Generates bundles, type definitions, and TypeDocs for all packages
-- `npm run lint`: Runs ESLint
-- `npm run example`: Runs an example Node.js app demonstrating octez.js functionality
+- `npm run build`: Builds all workspace packages via Nx
+- `npm run test`: Runs unit tests across all packages
+- `npm run lint`: Checks the package catalog and runs ESLint across workspaces
+- `npm run build-docs`: Generates TypeDoc API documentation
+- `npm run clean`: Removes `node_modules` directories across the monorepo
+- `npx nx build <package-name>`: Builds a single package (e.g., `npx nx build @tezos-x/octez.js`)
+- `npx nx test <package-name>`: Runs unit tests for a single package (e.g., `npx nx test @tezos-x/octez.js`)
 
 ### Running Integration Tests
 
-See the `integration-tests/` directory for details. The README in that folder explains how to configure and run integration tests.
+See [`integration-tests/README.md`](./integration-tests/README.md) for instructions on configuring and running integration tests.
 
 ### Modifying octez.js Source
 
-After making your changes:
+Before committing your changes, ensure linting and tests pass:
 
 ```bash
 npm run lint
@@ -183,11 +172,11 @@ npm run test
 git commit
 ```
 
-Use a conventional commit message for your final commit.
+Use a [Conventional Commit](https://www.conventionalcommits.org/) message for your commits.
 
 ### Building and viewing documentation
 
-The [octez.js website][4] is built with [Astro][5].
+The [octez.js website][4] lives in `website/` and is built with [Astro][5].
 
 > Note: A previous version used Docusaurus. For this reason, we support both Docusaurus-style and Github-style admonitions (notes, warnings, etc).
 

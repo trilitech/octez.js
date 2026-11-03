@@ -6,8 +6,8 @@ We currently provide security fixes for the latest octez.js release line.
 
 | Release Line | Supported          |
 | ------------ | ------------------ |
-| 24.x         | :white_check_mark: |
-| < 24.0       | :x:                |
+| 25.x         | :white_check_mark: |
+| < 25.0       | :x:                |
 
 Current supported Node.js runtimes for this repository are:
 
