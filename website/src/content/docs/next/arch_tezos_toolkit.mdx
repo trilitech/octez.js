@@ -126,6 +126,24 @@ again.
 A read that has already started finishes on the provider it started with. Only reads started
 after the switch use the new node.
 
+## Subscriptions
+
+### How polling works
+
+The default stream provider, `PollingSubscribeProvider`, polls the node in two steps:
+
+1. At every polling interval it asks for the hash of the current head (`getBlockHash('head')`),
+   a small request.
+2. Only when that hash differs from the last block it delivered does it fetch the full block
+   (`getBlock(hash)`). Block, operation and event subscriptions are built from that block.
+
+Most ticks return a hash that has already been seen, so a node is no longer asked for a full
+block several times per block interval. Both steps go through the toolkit's read provider.
+
+A slow request doesn't pile up: while a hash or block request is in flight, the ticks that fall
+due are skipped. If fetching the full block fails, the next tick that returns the same hash
+retries it, so the block isn't silently missed.
+
 ## Why it is built this way
 
 Keeping the toolkit thin and pushing behaviour into pluggable providers means an application can
