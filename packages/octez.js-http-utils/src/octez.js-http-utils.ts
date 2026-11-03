@@ -214,7 +214,7 @@ export interface HttpRequestOptions {
  */
 export class HttpBackend {
   /**
-   * @param timeout - Default request timeout in milliseconds (default `30000`).
+   * @param timeout - Default per-attempt request timeout in milliseconds (default `30000`).
    */
   constructor(private timeout: number = 30000) {}
 
@@ -260,13 +260,14 @@ export class HttpBackend {
   }
 
   /**
-   * Send an HTTP request to the given URL, with automatic retries on transport errors.
+   * Send an HTTP request to the given URL, with automatic retries on retriable transport
+   * errors and transient server statuses (`429`, `502`, `503`, `504`) for retriable requests.
    *
-   * @param options - Request configuration (URL, method, timeout, headers, etc.).
+   * @param options - Request configuration (URL, method, per-attempt timeout, headers, etc.).
    * @param data - Request body, serialized to JSON via `JSON.stringify`.
    * @returns The parsed JSON response (or raw text when `json: false`).
-   * @throws {@link HttpResponseError} when the server returns HTTP status >= 400.
-   * @throws {@link HttpTimeoutError} when the request exceeds the configured timeout.
+   * @throws {@link HttpResponseError} when the server returns HTTP status >= 400 (after any applicable retries).
+   * @throws {@link HttpTimeoutError} when an attempt exceeds the configured timeout.
    * @throws {@link HttpRequestFailed} for transport-level failures (network, DNS, socket, etc.).
    */
   async createRequest<T>(
@@ -311,7 +312,14 @@ export class HttpBackend {
 
         // Handle responses with status code >= 400
         if (response.status >= 400) {
-          const errorData = await response.text();
+          let errorData = '';
+          try {
+            errorData = await response.text();
+          } catch {
+            // If reading the error body fails (e.g. socket reset or timeout mid-error-body),
+            // preserve the HTTP status so the status-based retry policy still governs.
+            errorData = response.statusText || '';
+          }
           // Retry transient errors (429/502/503/504) for retriable requests,
           // instead of failing the caller on a momentary node/proxy blip or a
           // rate limit the server itself expects to be retried.
