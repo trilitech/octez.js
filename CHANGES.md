@@ -108,3 +108,5 @@ Releases up to v25.0.0 are described in the
 - Integration-test keygen retries HTTP 500, 502, 503 and 504 (#160).
 - Website on astro 7 and vite 8 (#157).
 - Backport of Taquito `d24dfebc..24d68fb7`, one commit per upstream commit (#164).
+- CI: `build-lint-docs-unit` and the http-utils tests also run on Node 26, and the README lists Node
+  26 LTS as supported (#164).
