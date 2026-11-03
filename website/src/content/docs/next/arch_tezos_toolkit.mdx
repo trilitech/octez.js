@@ -103,8 +103,10 @@ Tezos.setSignerProvider(signer);                             // keeps the custom
 
 ### Reads after an RPC change
 
-Chain reads (balances, contract storage, big maps, blocks, protocol constants) go through the read
-provider. Unless you install one yourself, the toolkit uses an `RpcReadAdapter` over the current
+Chain reads (balances, contract storage, big maps including
+[paged big map values](/docs/next/maps_bigmaps#read-big-map-values-page-by-page), blocks, protocol
+constants) go through the read provider. Unless you install one yourself, the toolkit uses an
+`RpcReadAdapter` over the current
 `RpcClient`.
 
 That default follows RPC changes. When you switch nodes with `setRpcProvider(url)`, or pass `rpc` to

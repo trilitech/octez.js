@@ -918,20 +918,32 @@ const page = await bigMap.getValuesPage({ offset: 0, length: 100 });
 console.log(page.values); // decoded values, at most 100
 console.log(page.blockHash); // the block the page was read from
 
-const values = await bigMap.getValues({ length: 10 }); // values only
-const empty = await bigMap.isEmpty();
+const values = await bigMap.listValues({ length: 10 }); // values only, one request
+const empty = await bigMap.isEmpty(); // one request, reads at most one value
 ```
 
 - A page holds **values only**. The node doesn't return the original keys, so use
   `get`/`getMultipleValues` when you need them.
 - `offset` defaults to 0 and `length` to 100. `length` must be between 1 and 1000, and both must be
-  safe non-negative integers, otherwise a `RangeError` is thrown before any request.
+  safe non-negative integers, otherwise an `InvalidBigMapParameterError` is thrown before any
+  request.
 - `block` selects the state to read, as for the other big map reads. The default is the block the
-  storage was read at, or `head`. `getValuesPage` resolves it to an exact block hash and returns
-  that hash as `blockHash`, so every value in the page comes from the same block.
+  storage was read at, or `head`. `getValuesPage` first resolves it to an exact block hash (one
+  extra request) and returns that hash as `blockHash`. `listValues` and `isEmpty` send a single
+  request at the given block without resolving it: use them for one-off reads, and
+  `getValuesPage` when you need several pages from the same block.
+- `isEmpty` doesn't convert node errors: for an unknown big map ID you get the node's 404 error,
+  not `true`.
 - Values are decoded with the big map's value type, like `get` does.
-- These methods need a read provider that can list big map values. The default RPC read provider
-  can; others throw `UnsupportedActionError`.
+- These reads use optional provider methods: `getBigMapValuesPageByID`, `listBigMapValuesByID` and
+  `isBigMapEmptyByID` on the storage provider, and `getBigMapValuesPage` on the read provider. The
+  default providers implement them all. With a custom provider that doesn't, the methods throw
+  `UnsupportedActionError`, and a malformed response is reported as an `RpcError`.
+- `InvalidBigMapParameterError` and `UnsupportedActionError` are exported by
+  `@tezos-x/octez.js-core` and `@tezos-x/octez.js`.
+
+The raw RPC is also available: `Tezos.rpc.getBigMapValuesPage(id, { offset, length }, { block })`
+returns one page of undecoded Micheline values.
 
 ### Ordering and walking through all values
 

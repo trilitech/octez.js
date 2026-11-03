@@ -42,7 +42,8 @@ recurring interfaces are:
 - `Forger` — turns operation contents into bytes (locally or via a remote service).
 - `Injector` — injects signed bytes and returns an operation hash.
 - `RpcClientInterface` — the full surface of node RPC calls.
-- `TzReadProvider` — a narrower read-only view of chain state.
+- `TzReadProvider` — a narrower read-only view of chain state. Some of its methods are optional, such as
+  `getBigMapValuesPage` for [paged big map reads](/docs/next/maps_bigmaps#read-big-map-values-page-by-page).
 - `Packer` — packs data to bytes (`PACK`).
 - `SubscribeProvider` — streams new blocks and matching operations.
 - `WalletProvider` — the backend for the wallet API.
