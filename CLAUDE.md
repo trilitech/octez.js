@@ -239,6 +239,12 @@ branch `main`, but the repo default branch is `master` — it will never trigger
 - Don't bump package versions to match Taquito's version line.
 - Flag, don't silently resolve, any inconsistency you find between this repo and Taquito that
   touches licensing, attribution, or the `NOTICE` file — those are legal/compliance-sensitive.
+- **Changelog.** A change users can notice (API, behaviour, breaking change, published
+  dependency) adds a line under **Unreleased** in `CHANGES.md`, in its section, in the same PR.
+  Notable CI, test and tooling changes may go under **Internal**. Don't edit
+  `website/src/pages/changelog.mdx` between releases: production is deployed by hand from
+  `master`, sometimes between releases for a docs fix, and would publish unreleased changes as
+  released. That page only gets curated notes at release time.
 - **Rebrand check.** Before finishing a change that adds or renames names, URLs, env vars or docs,
   run `npm run check:rebrand`. It lists stale pre-rebrand leftovers (`ecadlabs`, `taquito.io`,
   `@taquito/*`, `TAQUITO_*`, `Taquito*` identifiers, `ecadinfra` hosts). A new hit is either a
