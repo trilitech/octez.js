@@ -2,10 +2,15 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["node", "vitest/globals"],
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
   "include": [
     "packages/octez.js/test/contract/big-map-values*.spec.ts",
-    "packages/octez.js-rpc/test/big-map-values*.spec.ts"
+    "packages/octez.js-rpc/test/big-map-values*.spec.ts",
+    "packages/octez.js/test/contract/smart-rollup-whitelist.spec.ts",
+    "integration-tests/__tests__/contract/operations/smart-rollup-originate.spec.ts"
   ]
 }
