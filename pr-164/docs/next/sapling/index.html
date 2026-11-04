@@ -76,6 +76,10 @@ await saplingToolkit.prepareShieldedTransaction([
 <p>By default, a transaction keeps its outputs in the order you list the recipients, and the change
 that comes back to you, if any, is added last. Since change is always the last output, anyone who
 knows this rule can tell which output is the change.</p>
+<p>Sapling already hides the amount and the recipient of each shielded output, but not the order of
+the outputs. With the default order, an observer can tell which output is the change, and so how
+many outputs went to other recipients. Randomizing the order removes that signal. It is a small
+privacy hardening, not a new privacy guarantee.</p>
 <p>Set <code>outputOrder: &#39;randomized&#39;</code> in the second <code>SaplingToolkit</code> argument to shuffle the outputs
 instead. It applies to shielded transactions and to Sapling transactions, change included.
 Leaving the option out, or setting <code>&#39;preserve&#39;</code>, keeps the default order.</p>
@@ -105,8 +109,8 @@ history, can change. Don’t rely on position to find a recipient or the change.
 <li>The option only affects the default transaction builder. If you pass your own <code>saplingTxBuilder</code>
 to <code>SaplingToolkit</code>, the toolkit doesn’t shuffle its result: ordering, randomness and option
 checks are up to your builder.</li>
-<li>Randomizing the order is not anonymity. The number of outputs, public deposits and withdrawals,
-amounts and timing stay visible, and can still link outputs to users.</li>
+<li>Randomizing the order is not anonymity. The number of outputs, the public amounts of deposits
+and withdrawals, and timing stay visible, and can still link transactions to users.</li>
 </ul>
 <h2 id="sapling-parameters">Sapling parameters</h2>
 <p>Building Sapling proofs needs the Sapling spend and output parameters (about 50 MB). octez.js
