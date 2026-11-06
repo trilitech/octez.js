@@ -24,6 +24,11 @@ Releases up to v25.0.0 are described in the
   `isValidOperationHash` now return the type predicate `value is string` instead of `boolean`.
   Runtime behaviour is unchanged, but an argument already typed `string` is narrowed to `never`
   when the check fails, which can break compilation of code that still uses it there (#160).
+- **utils**: `getEthereumAlias` returns a new, recoverable alias for tz1, tz2 and tz3 addresses
+  (RFC-26051): the `CREATE2` address of a rescue account bound to the public key hash, the same on
+  every EVM chain. Funds sent to it by mistake on another EVM chain can be recovered with the Tezos
+  key. Aliases computed with an earlier version no longer match for these addresses. tz4, tz5 and
+  KT1 aliases, and `getTezosAlias`, are unchanged (#152).
 
 ### Features
 
