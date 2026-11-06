@@ -3,7 +3,7 @@
   "maintainers": [
     "Nomadic Labs <contact@nomadic-labs.com>"
   ],
-  "version": "25.0.0",
+  "version": "25.1.0-rc.0",
   "description": "TZIP-10 Beacon wallet integration for octez.js dapps built on the Beacon SDK DAppClient.",
   "keywords": [
     "octez.js",
@@ -80,9 +80,9 @@
     "@tezos-x/octez.connect-dapp": "5.0.4",
     "@tezos-x/octez.connect-types": "5.0.4",
     "@types/chrome": "0.1.40",
-    "@tezos-x/octez.js-core": "^25.0.0",
-    "@tezos-x/octez.js": "^25.0.0",
-    "@tezos-x/octez.js-utils": "^25.0.0",
+    "@tezos-x/octez.js-core": "^25.1.0-rc.0",
+    "@tezos-x/octez.js": "^25.1.0-rc.0",
+    "@tezos-x/octez.js-utils": "^25.1.0-rc.0",
     "util": "^0.12.5"
   },
   "devDependencies": {
