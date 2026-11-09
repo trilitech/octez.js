@@ -27,62 +27,6 @@
 <li>The ability to simulate an operation before injecting</li>
 </ul>
 <p>The <code>PrepareProvider</code> class affords extension and control to users when preparing operations while also promoting modularity in octez.js as a design principle.</p>
-<h2 id="detached-signing">Detached signing</h2>
-<p>Sometimes the key that signs an operation lives somewhere else: a hardware device, a signing
-service, or an approval step run by another person. <code>Tezos.prepareFor</code> prepares and estimates
-operations from the account’s <strong>public</strong> identity only, and leaves signing to that external
-party:</p>
-<pre><code class="language-js">const workflow = Tezos.prepareFor({
-  pkh: &#39;tz1...&#39;,
-  publicKey: &#39;edpk...&#39;, // optional for an account that is already revealed
-  // proof: &#39;BLsig...&#39;, // BLS proof of possession, needed to reveal a tz4 account
-});
-
-const prepared = await workflow.prepare.transaction({ to: &#39;tz1...&#39;, amount: 1 });
-const signable = await workflow.toSignable(prepared);
-
-// ... send `signable` to the external signer, get back a Base58Check signature ...
-
-const signed = workflow.attachSignature(signable, signature);
-const op = await workflow.inject(signed);
-await op.confirmation();
-</code></pre>
-<p><code>workflow.prepare</code> and <code>workflow.estimate</code> support transactions, delegations, originations,
-reveals, contract calls, and batches of transactions, delegations and originations. Every
-operation must come from the identity’s <code>pkh</code>. A reveal must use the identity’s public key and,
-for a tz4 account, its proof.</p>
-<h3 id="what-the-external-signer-signs">What the external signer signs</h3>
-<p><code>toSignable</code> forges the operation and returns a frozen snapshot of it:</p>
-<ul>
-<li><code>unsignedBytes</code>: the forged operation;</li>
-<li><code>watermarkedBytes</code>: <code>03</code> followed by the forged bytes;</li>
-<li><code>blake2bDigest</code>: the 32-byte Blake2b hash of the watermarked bytes;</li>
-<li><code>scheme</code> and <code>signingInput</code>: BLS (tz4) keys sign <code>watermarkedBytes</code>. Ed25519, secp256k1,
-P-256 and ML-DSA-44 keys sign <code>blake2bDigest</code>.</li>
-</ul>
-<p><code>attachSignature</code> takes the Base58Check signature for the identity’s scheme. The generic <code>sig</code>
-prefix is also accepted for the 64-byte schemes. When the identity includes a public key, the
-signature is checked against the watermarked bytes before anything is sent. The signed bytes
-are exactly the approved bytes, followed by the signature: BLS signatures are prefixed with
-<code>ff03</code> and ML-DSA-44 signatures with <code>ff04</code>, as Octez does.</p>
-<p>The snapshot can’t be changed after <code>toSignable</code>: editing <code>prepared</code> afterwards has no effect.
-Snapshots only work with the workflow that created them, in the same process.</p>
-<h3 id="injection-and-retries">Injection and retries</h3>
-<p><code>inject</code> preapplies the signed operation before injecting it. If the node reports an error, or
-any operation result isn’t <code>applied</code>, it throws (<code>TezosOperationError</code> or
-<code>TezosPreapplyFailureError</code>) and nothing is injected. On success it returns the usual <code>Operation</code>
-handle, so you can wait for confirmations as with any other operation.</p>
-<p><code>inject</code> runs only once for a given signed operation. Calling it again with the same <code>signed</code>
-object returns the same promise, so a retry after a timeout can’t inject the operation twice.
-To submit after a failure, prepare, sign and attach again.</p>
-<h3 id="providers-and-operation-lifetime">Providers and operation lifetime</h3>
-<p><code>prepareFor</code> captures the toolkit’s RPC client, configuration and custom providers when it is
-called. Later calls to <code>setProvider</code> or <code>setRpcProvider</code> don’t affect a workflow that already
-exists. Call <code>prepareFor</code> again to use the new providers.</p>
-<p>A prepared operation is anchored to a recent block (its branch, <code>head~2</code> when it was prepared).
-The protocol accepts it only while that block is among the last <code>max_operations_ttl</code> blocks, so
-an operation that waits too long for its signature is rejected at preapplication. In that case,
-prepare and sign it again.</p>
 <h2 id="usage-example">Usage example</h2>
 <h3 id="individual-operations">Individual Operations</h3>
 <p>The <code>PrepareProvider</code> is accessible via the <code>TezosToolkit</code> class:</p>
@@ -144,7 +88,63 @@ const preapplyOp = await Tezos.rpc.preapplyOperations(params);
 });
 const params = Tezos.prepare.toForge(preparedTransfer);
 const forgedBytes = await forger.forge(params);
-</code></pre><button id="chat-toggle" aria-label="Open chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-gwpikqco></path></svg></button><div id="chatkit-container" class="hidden" data-astro-cid-gwpikqco><button id="chat-close" aria-label="Close chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-gwpikqco></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-gwpikqco></line></svg></button><div id="chatkit-widget" data-astro-cid-gwpikqco></div></div><script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script><script>(function(){const apiEndpoint = "https://octez.js-chatkit.ops-octez.js-cloudflare.workers.dev/api/chatkit/session";
+</code></pre>
+<h2 id="detached-signing">Detached signing</h2>
+<p>Sometimes the key that signs an operation lives somewhere else: a hardware device, a signing
+service, or an approval step run by another person. <code>Tezos.prepareFor</code> prepares and estimates
+operations from the account’s <strong>public</strong> identity only, and leaves signing to that external
+party:</p>
+<pre><code class="language-js">const workflow = Tezos.prepareFor({
+  pkh: &#39;tz1...&#39;,
+  publicKey: &#39;edpk...&#39;, // optional for an account that is already revealed
+  // proof: &#39;BLsig...&#39;, // BLS proof of possession, needed to reveal a tz4 account
+});
+
+const prepared = await workflow.prepare.transaction({ to: &#39;tz1...&#39;, amount: 1 });
+const signable = await workflow.toSignable(prepared);
+
+// ... send `signable` to the external signer, get back a Base58Check signature ...
+
+const signed = workflow.attachSignature(signable, signature);
+const op = await workflow.inject(signed);
+await op.confirmation();
+</code></pre>
+<p><code>workflow.prepare</code> and <code>workflow.estimate</code> support transactions, delegations, originations,
+reveals, contract calls, and batches of transactions, delegations and originations. Every
+operation must come from the identity’s <code>pkh</code>. A reveal must use the identity’s public key and,
+for a tz4 account, its proof.</p>
+<h3 id="what-the-external-signer-signs">What the external signer signs</h3>
+<p><code>toSignable</code> forges the operation and returns a frozen snapshot of it:</p>
+<ul>
+<li><code>unsignedBytes</code>: the forged operation;</li>
+<li><code>watermarkedBytes</code>: <code>03</code> followed by the forged bytes;</li>
+<li><code>blake2bDigest</code>: the 32-byte Blake2b hash of the watermarked bytes;</li>
+<li><code>scheme</code> and <code>signingInput</code>: BLS (tz4) keys sign <code>watermarkedBytes</code>. Ed25519, secp256k1,
+P-256 and ML-DSA-44 keys sign <code>blake2bDigest</code>.</li>
+</ul>
+<p><code>attachSignature</code> takes the Base58Check signature for the identity’s scheme. The generic <code>sig</code>
+prefix is also accepted for the 64-byte schemes. When the identity includes a public key, the
+signature is checked against the watermarked bytes before anything is sent. The signed bytes
+are exactly the approved bytes, followed by the signature: BLS signatures are prefixed with
+<code>ff03</code> and ML-DSA-44 signatures with <code>ff04</code>, as Octez does.</p>
+<p>The snapshot can’t be changed after <code>toSignable</code>: editing <code>prepared</code> afterwards has no effect.
+Snapshots only work with the workflow that created them, in the same process.</p>
+<h3 id="injection-and-retries">Injection and retries</h3>
+<p><code>inject</code> preapplies the signed operation before injecting it. If the node reports an error, or
+any operation result isn’t <code>applied</code>, it throws (<code>TezosOperationError</code> or
+<code>TezosPreapplyFailureError</code>) and nothing is injected. On success it returns the usual <code>Operation</code>
+handle, so you can wait for confirmations as with any other operation.</p>
+<p><code>inject</code> runs only once for a given signed operation. Calling it again with the same <code>signed</code>
+object returns the same promise, so a retry after a timeout can’t inject the operation twice.
+To submit after a failure, prepare, sign and attach again.</p>
+<h3 id="providers-and-operation-lifetime">Providers and operation lifetime</h3>
+<p><code>prepareFor</code> captures the toolkit’s RPC client, configuration and custom providers when it is
+called. Later calls to <code>setProvider</code> or <code>setRpcProvider</code> don’t affect a workflow that already
+exists. Call <code>prepareFor</code> again to use the new providers.</p>
+<p>A prepared operation is anchored to a recent block (its branch, <code>head~2</code> when it was prepared).
+The protocol accepts it only while that block is among the last <code>max_operations_ttl</code> blocks, so
+an operation that waits too long for its signature is rejected at preapplication. In that case,
+prepare and sign it again.</p><button id="chat-toggle" aria-label="Open chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-gwpikqco></path></svg></button><div id="chatkit-container" class="hidden" data-astro-cid-gwpikqco><button id="chat-close" aria-label="Close chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-gwpikqco></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-gwpikqco></line></svg></button><div id="chatkit-widget" data-astro-cid-gwpikqco></div></div><script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script><script>(function(){const apiEndpoint = "https://octez.js-chatkit.ops-octez.js-cloudflare.workers.dev/api/chatkit/session";
 
   let chatkitInitialized = false;
 

@@ -167,27 +167,51 @@ isValidAddress(42); // false: not a string
 isValidContractAddress(&#39;KT1...%entrypoint&#39;); // false: the suffix is not accepted
 </code></pre>
 <ul>
-<li><code>isValidAddress</code>, <code>isValidContractAddress</code>, <code>isValidPublicKey</code> and <code>isValidOperationHash</code> return
+<li>
+<p><code>isValidAddress</code>, <code>isValidContractAddress</code>, <code>isValidPublicKey</code> and <code>isValidOperationHash</code> return
 <code>false</code> for anything that isn’t a string. For strings they apply the same rules as
-<code>validateAddress</code>, <code>validateContractAddress</code>, <code>validatePublicKey</code> and <code>validateOperation</code>.</li>
-<li>Like <code>validateAddress</code>, <code>isValidAddress</code> ignores everything after the first <code>%</code>.
-<code>isValidContractAddress</code> checks the whole value and rejects such a suffix.</li>
-<li>When you need the reason for a rejection, use the <code>validate…</code> functions above instead.</li>
+<code>validateAddress</code>, <code>validateContractAddress</code>, <code>validatePublicKey</code> and <code>validateOperation</code>.</p>
+</li>
+<li>
+<p>Like <code>validateAddress</code>, <code>isValidAddress</code> ignores everything after the first <code>%</code>.
+<code>isValidContractAddress</code> checks the whole value and rejects such a suffix.</p>
+</li>
+<li>
+<p>When you need the reason for a rejection, use the <code>validate…</code> functions above instead.</p>
+</li>
+<li>
+<p>In TypeScript, they are type guards (<code>value is string</code>): after a successful check, an <code>unknown</code>
+value is narrowed to <code>string</code>. On a value already typed <code>string</code>, the failing branch is
+narrowed to <code>never</code>, so code there that still uses the value doesn’t compile:</p>
+<pre><code class="language-ts">function preview(input: string) {
+  if (!isValidAddress(input)) {
+    return `Invalid address: ${input.trim()}`; // error: Property &#39;trim&#39; does not exist on type &#39;never&#39;
+  }
+  // ...
+}
+</code></pre>
+<p>Keep the original value in another variable, or use <code>validateAddress</code>, if you need it there.</p>
+</li>
 </ul>
 <p><code>getPublicKeyHashFromPublicKey(publicKey)</code> returns the address (<code>tz1</code>, <code>tz2</code>, <code>tz3</code>, <code>tz4</code> or
 <code>tz5</code>) of an Ed25519, secp256k1, P-256, BLS12-381 or ML-DSA-44 public key. It is an alias of
 <code>getPkhfromPk</code> with a more descriptive name, and throws the same errors for invalid input.</p>
 <h2 id="tezos-x-cross-runtime-address-aliases">Tezos X cross-runtime address aliases</h2>
 <p>On Tezos X, every address of the Michelson runtime has a deterministic alias in the EVM runtime, and vice versa. <code>getEthereumAlias</code> computes the EVM alias of an implicit (tz1–tz5) or originated (KT1) address, and <code>getTezosAlias</code> computes the KT1 alias of an Ethereum address. Both are computed offline and throw an <code>InvalidAddressError</code> on malformed input.</p>
-<p>The EVM alias of a tz1, tz2 or tz3 address is recoverable: it is the <code>CREATE2</code> address of a rescue account bound to the Tezos public key hash, so it is the same on every EVM chain. If funds are sent to it by mistake on another EVM chain, the owner can recover them by signing with their Tezos key. On Tezos X itself, the alias behaves as before. The EVM alias of any other address (tz4, tz5, KT1) is a hash of the Tezos address.</p>
+<p>The EVM alias of a tz1, tz2 or tz3 address is recoverable: it is the <code>CREATE2</code> address of a rescue account bound to the Tezos public key hash, so it is the same on every EVM chain. If funds are sent to it by mistake on another EVM chain, the owner can recover them by signing with their Tezos key. On Tezos X, it is the account’s address in the EVM runtime, like any other alias. The EVM alias of any other address (tz4, tz5, KT1) is a hash of the Tezos address.</p>
 <pre><code class="language-js">import { getEthereumAlias, getTezosAlias } from &#39;@tezos-x/octez.js-utils&#39;;
 
 const ethereumAlias = getEthereumAlias(&#39;tz1aAdmy1MiGhnRkw8RWS6xbUpTuSRh3ZB4y&#39;);
 console.log(ethereumAlias); // 0xcdb4d002582717fa10060665ec598ac68590072a
 
-const tezosAlias = getTezosAlias(&#39;0xccef676171871a48bbd6e2be75bbcc09d38830c5&#39;);
-console.log(tezosAlias); // KT1TLraR9PboPAvxLKYQs9eU4n75rGFJTbWk
+// An EVM account, unrelated to the tz1 address above
+const tezosAlias = getTezosAlias(&#39;0xdeAD000000000000000042000000000000000000&#39;);
+console.log(tezosAlias); // KT1Ezy5yhhzsnamZDAQo4x1U9d6LDjmcsAJW
 </code></pre>
+<p>The two functions don’t undo each other: <code>getTezosAlias</code> gives the alias of an EVM address, not
+the Tezos address an EVM alias was computed from. For example,
+<code>getTezosAlias(&#39;0xcdb4d002582717fa10060665ec598ac68590072a&#39;)</code> is a KT1 address, not
+<code>tz1aAdmy1MiGhnRkw8RWS6xbUpTuSRh3ZB4y</code>.</p>
 <h1 id="verification-of-a-signature">Verification of a signature</h1>
 <p>octez.js provides a function named <code>verifySignature</code> that allows verifying signatures of payloads. The function takes a message, a public key, and a signature as parameters and returns a boolean indicating if the signature matches.</p>
 <p>Here is an example of a successful verification:</p>

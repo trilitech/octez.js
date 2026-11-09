@@ -12,7 +12,21 @@ import { RpcClient, RpcClientCache } from &#39;@tezos-x/octez.js-rpc&#39;;
 
 const rpcClient = new RpcClient(&#39;replace_with_RPC_URL&#39;);
 const tezos = new TezosToolkit(new RpcClientCache(rpcClient));
-</code></pre><button id="chat-toggle" aria-label="Open chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-gwpikqco></path></svg></button><div id="chatkit-container" class="hidden" data-astro-cid-gwpikqco><button id="chat-close" aria-label="Close chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-gwpikqco></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-gwpikqco></line></svg></button><div id="chatkit-widget" data-astro-cid-gwpikqco></div></div><script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script><script>(function(){const apiEndpoint = "https://octez.js-chatkit.ops-octez.js-cloudflare.workers.dev/api/chatkit/session";
+</code></pre>
+<h2 id="what-is-cached">What is cached</h2>
+<ul>
+<li>Read requests are cached by RPC URL, method and arguments. A request made while the same request
+is still in flight gets the same pending response, so the node is asked only once.</li>
+<li>Requests that send data to the node aren’t cached: forging, preapplying, simulating and
+injecting operations, running code or views, and the <a href="/docs/next/rpc_package#bls-helpers">BLS helpers</a>.</li>
+<li>A failed request is removed from the cache at once, so the next call sends it again instead of
+returning the same error until the <code>ttl</code> expires.</li>
+<li>An entry’s expiry timer is cleared when the entry is replaced, expires, or is removed with
+<code>deleteAllCachedData()</code>, so a cleared cache doesn’t keep a Node.js process running.</li>
+<li>Some <code>RpcClientInterface</code> methods are optional, such as <code>getBigMapValuesPage</code> and
+<code>aggregateProofs</code>. If the client you wrap doesn’t implement one, calling it on the cache throws
+<code>UnsupportedActionError</code>.</li>
+</ul><button id="chat-toggle" aria-label="Open chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-gwpikqco></path></svg></button><div id="chatkit-container" class="hidden" data-astro-cid-gwpikqco><button id="chat-close" aria-label="Close chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-gwpikqco></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-gwpikqco></line></svg></button><div id="chatkit-widget" data-astro-cid-gwpikqco></div></div><script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script><script>(function(){const apiEndpoint = "https://octez.js-chatkit.ops-octez.js-cloudflare.workers.dev/api/chatkit/session";
 
   let chatkitInitialized = false;
 

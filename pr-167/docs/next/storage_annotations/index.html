@@ -19,7 +19,7 @@
     (mutez %theTez))
 </code></pre>
 <p>We need to write the storage as a Javascript object and include the annotated names in it.</p>
-<div class="tabs-container" data-tabs-id="tabs-v7kvtsjiq" data-astro-cid-jm73rrov><div class="tabs-buttons" data-astro-cid-jm73rrov><button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-jm73rrov>Contract API</button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-jm73rrov>Wallet API</button></div><div class="tabs-content" data-astro-cid-jm73rrov><div data-tab-item="contractAPI" class="tab-item" data-astro-cid-kh2lg7uv><live-code-runner data-code="// const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
+<div class="tabs-container" data-tabs-id="tabs-jrvtzzzo6" data-astro-cid-jm73rrov><div class="tabs-buttons" data-astro-cid-jm73rrov><button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-jm73rrov>Contract API</button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-jm73rrov>Wallet API</button></div><div class="tabs-content" data-astro-cid-jm73rrov><div data-tab-item="contractAPI" class="tab-item" data-astro-cid-kh2lg7uv><live-code-runner data-code="// const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
 
 try {
   const originationOp = await Tezos.contract.originate({
@@ -106,7 +106,7 @@ try {
     (mutez))
 </code></pre>
 <p>All properties in storage are accessible by the index corresponding to the order that the storage is defined.</p>
-<div class="tabs-container" data-tabs-id="tabs-2vlhg3tee" data-astro-cid-jm73rrov><div class="tabs-buttons" data-astro-cid-jm73rrov><button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-jm73rrov>Contract API</button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-jm73rrov>Wallet API</button></div><div class="tabs-content" data-astro-cid-jm73rrov><div data-tab-item="contractAPI" class="tab-item" data-astro-cid-kh2lg7uv><live-code-runner data-code="// const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
+<div class="tabs-container" data-tabs-id="tabs-v8jmarn7e" data-astro-cid-jm73rrov><div class="tabs-buttons" data-astro-cid-jm73rrov><button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-jm73rrov>Contract API</button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-jm73rrov>Wallet API</button></div><div class="tabs-content" data-astro-cid-jm73rrov><div data-tab-item="contractAPI" class="tab-item" data-astro-cid-kh2lg7uv><live-code-runner data-code="// const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
 
 try {
   const originationOp = await Tezos.contract.originate({
@@ -194,7 +194,7 @@ try {
 </code></pre>
 <p>In the following example, only the elements in positions 2 and 3 have an annotation. We need to access these elements with their annotated name and the others with corresponding indexes.</p>
 <p>Note that when proprieties have annotations, we cannot access them by index. For example, if you replace “theNat” by 2 and “theNumber” by 3 in this code example, it will fail.</p>
-<div class="tabs-container" data-tabs-id="tabs-alguwl8dz" data-astro-cid-jm73rrov><div class="tabs-buttons" data-astro-cid-jm73rrov><button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-jm73rrov>Contract API</button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-jm73rrov>Wallet API</button></div><div class="tabs-content" data-astro-cid-jm73rrov><div data-tab-item="contractAPI" class="tab-item" data-astro-cid-kh2lg7uv><live-code-runner data-code="// const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
+<div class="tabs-container" data-tabs-id="tabs-1xn7ocmb4" data-astro-cid-jm73rrov><div class="tabs-buttons" data-astro-cid-jm73rrov><button class="tab-button active" data-tab="contractAPI" type="button" data-astro-cid-jm73rrov>Contract API</button><button class="tab-button " data-tab="walletAPI" type="button" data-astro-cid-jm73rrov>Wallet API</button></div><div class="tabs-content" data-astro-cid-jm73rrov><div data-tab-item="contractAPI" class="tab-item" data-astro-cid-kh2lg7uv><live-code-runner data-code="// const Tezos = new TezosToolkit('https://rpc.shadownet.teztnets.com');
 
 try {
   const originationOp = await Tezos.contract.originate({

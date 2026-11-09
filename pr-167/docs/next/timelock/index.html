@@ -54,8 +54,8 @@ const data = chest.open(chestKey, time);
 To check it, the <code>OPEN_CHEST</code> Michelson instruction hashes the integers that make
 up the proof. Each integer is serialized as little-endian bytes, padded to a whole
 number of 64-bit words.</p>
-<p>octez.js now builds and checks proofs with exactly the same padding as Octez.
-Releases up to and including octez.js 25.0.0 did not pad these integers. When an
+<p>Since octez.js 25.1.0, proofs are built and checked with exactly the same padding
+as Octez. Releases up to and including octez.js 25.0.0 did not pad these integers. When an
 integer needed padding, the resulting proof was still accepted by <code>chest.open()</code>
 in octez.js, because generation and verification used the same convention, but
 <code>OPEN_CHEST</code> rejected it on chain.</p>

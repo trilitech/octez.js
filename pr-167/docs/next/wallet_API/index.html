@@ -609,6 +609,9 @@ Tezos.setProvider({ rpc: &#39;https://YOUR_PREFERRED_RPC_URL&#39; });
 <li>
 <p><code>transfer</code>: transfers Tezos tokens from the current address to a specific address or call a smart contract</p>
 </li>
+<li>
+<p><code>smartRollupOriginate</code>, <code>smartRollupAddMessages</code> and <code>smartRollupExecuteOutboxMessage</code>: send smart rollup operations (see <a href="/docs/next/smart_rollups#smart-rollup-operations-with-the-wallet-api">Smart rollup operations with the Wallet API</a>)</p>
+</li>
 </ol>
 <p>We have already seen the <code>at</code> method of the Wallet instance earlier in order to create the contract abstraction:</p>
 <pre><code class="language-js">const contract = await Tezos.wallet.at(&#39;KT1JrvLkVrWNUhi9FtpXQNquCnVd5t3Jd98P&#39;);

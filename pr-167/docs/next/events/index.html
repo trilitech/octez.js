@@ -67,6 +67,8 @@ try {
 <li><code>address</code> is the address of the smart contract that was called</li>
 <li><code>excludeFailedOperations</code>: In rare cases, events from failed operations can be received by the subscriber. You can use this field to filter out these events (if you pass <code>true</code> to this field, only events from successful operations will be received)</li>
 </ul>
+<p>The <code>setStreamProvider</code> call is optional: it configures polling, as described in
+<a href="#choosing-and-configuring-the-stream-provider">Choosing and configuring the stream provider</a>.</p>
 <div class="callout callout-note"><div class="callout-title"><span class="callout-icon callout-icon-info"></span>Note</div><div class="callout-content"><p>If you would like to subscribe to <strong><em>any</em></strong> event that goes through, you can call <code>subscribeEvent()</code> as is without any parameters</p></div></div>
 <h4 id="output">Output</h4>
 <p>The output of the <code>subscribeEvent</code> method will look something like this:</p>
@@ -102,7 +104,54 @@ try {
     &quot;consumed_milligas&quot;: &quot;1000000&quot;
   }
 }
-</code></pre><button id="chat-toggle" aria-label="Open chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-gwpikqco></path></svg></button><div id="chatkit-container" class="hidden" data-astro-cid-gwpikqco><button id="chat-close" aria-label="Close chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-gwpikqco></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-gwpikqco></line></svg></button><div id="chatkit-widget" data-astro-cid-gwpikqco></div></div><script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script><script>(function(){const apiEndpoint = "https://octez.js-chatkit.ops-octez.js-cloudflare.workers.dev/api/chatkit/session";
+</code></pre>
+<h2 id="subscribing-to-the-chain">Subscribing to the chain</h2>
+<p><code>Tezos.stream</code> provides subscriptions to new heads, blocks, operations and contract events. Event
+subscriptions are described above; the others work the same way:</p>
+<pre><code class="language-js">const sub = Tezos.stream.subscribeOperation({ destination: &#39;KT1...&#39; });
+sub.on(&#39;data&#39;, (op) =&gt; console.log(op.hash));
+sub.on(&#39;error&#39;, (err) =&gt; console.error(err));
+// later
+sub.close();
+</code></pre>
+<h3 id="choosing-and-configuring-the-stream-provider">Choosing and configuring the stream provider</h3>
+<p>By default this is a <code>PollingSubscribeProvider</code> that polls through the toolkit’s read provider:
+the node set with <code>setRpcProvider</code>, unless you installed another read provider with
+<code>setReadProvider</code>. To poll a specific node, pass its URL:</p>
+<pre><code class="language-js">Tezos.setStreamProvider(&#39;https://rpc.example.org&#39;);
+</code></pre>
+<p>To change how polling behaves, create the provider with a configuration:</p>
+<pre><code class="language-js">import { PollingSubscribeProvider } from &#39;@tezos-x/octez.js&#39;;
+
+Tezos.setStreamProvider(
+  Tezos.getFactory(PollingSubscribeProvider)({
+    pollingIntervalMilliseconds: 1000,
+    shouldObservableSubscriptionRetry: true,
+  })
+);
+</code></pre>
+<ul>
+<li><code>pollingIntervalMilliseconds</code>: if you don’t set it, the provider uses one third of the
+protocol’s <code>minimal_block_delay</code>, with a minimum of 700 ms. If the protocol constants can’t be
+read, it polls every 5 s.</li>
+<li><code>shouldObservableSubscriptionRetry</code>: <code>false</code> by default, so the first error is emitted on
+<code>&#39;error&#39;</code> and the subscription stops. When it’s <code>true</code>, every error is still emitted on
+<code>&#39;error&#39;</code>, then the subscription waits one polling interval and starts polling again.
+<code>observableSubscriptionRetryFunction</code> replaces that retry strategy with an RxJS operator of your
+own.</li>
+</ul>
+<h3 id="sharing-between-subscriptions">Sharing between subscriptions</h3>
+<p>All subscriptions created from the same provider share a single polling loop:</p>
+<ul>
+<li>A new subscription doesn’t replay data the shared stream has already delivered. A subscriber
+that joins an active stream only receives heads, blocks or operations that appear after it
+joined.</li>
+<li>Polling stops when the last subscription is closed. The next subscription starts a new polling
+loop.</li>
+</ul>
+<p>Close subscriptions you no longer need, so polling doesn’t keep running in the background.</p>
+<p>To learn how the default provider polls the node, see
+<a href="/docs/next/arch_tezos_toolkit#how-polling-works">Architecture: The TezosToolkit</a>.</p><button id="chat-toggle" aria-label="Open chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-gwpikqco></path></svg></button><div id="chatkit-container" class="hidden" data-astro-cid-gwpikqco><button id="chat-close" aria-label="Close chat" data-astro-cid-gwpikqco><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-gwpikqco><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-gwpikqco></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-gwpikqco></line></svg></button><div id="chatkit-widget" data-astro-cid-gwpikqco></div></div><script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script><script>(function(){const apiEndpoint = "https://octez.js-chatkit.ops-octez.js-cloudflare.workers.dev/api/chatkit/session";
 
   let chatkitInitialized = false;
 

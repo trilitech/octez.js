@@ -64,7 +64,9 @@ await op.confirmation();
 to new blocks and resolves when it observes its own hash, applying the confirmation count and
 timeout configured on the <code>Context</code>. The same streaming machinery powers the
 <a href="/docs/next/confirmation_event_stream">confirmation event stream</a> and
-<a href="/docs/next/events">event subscriptions</a>.</p>
+<a href="/docs/next/events#subscribing-to-the-chain">chain subscriptions</a>. See
+<a href="/docs/next/arch_tezos_toolkit#how-polling-works">How polling works</a> for how the default stream
+provider polls the node.</p>
 <h2 id="contract-api-versus-wallet-api">Contract API versus wallet API</h2>
 <p>The lifecycle above describes the contract API, where octez.js forges, signs and injects directly.
 The wallet API performs the same conceptual steps but hands forging, signing and injection to a

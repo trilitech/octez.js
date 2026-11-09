@@ -7,7 +7,15 @@
 <p>Here is one example to override <code>HttpBackend</code> and/or <code>RpcClient</code>:</p>
 <h4 id="create-a-custom-httpbackend">Create a custom <code>HttpBackend</code></h4>
 <p>Create a class called <code>CancellableHttpBackend</code> which extends the <code>HttpBackend</code> class. Override the <code>createRequest</code> method to utilize an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController">AbortController</a> to handle and capture abort signals.</p>
-<div class="callout callout-warning"><div class="callout-title"><span class="callout-icon callout-icon-alert-triangle"></span>Warning</div><div class="callout-content"><p>We currently use the <code>AbortController</code> to timeout requests in the <code>HttpBackend</code> class. Plase note that this example will override the timeout functionality. If you want to keep the timeout functionality, you can add a custom timeout to call the cancelRequest method after a certain amount of time.</p></div></div>
+<div class="callout callout-warning"><div class="callout-title"><span class="callout-icon callout-icon-alert-triangle"></span>Warning</div><div class="callout-content"><p>Overriding <code>createRequest</code> replaces everything the default <code>HttpBackend</code> does around <code>fetch</code>.
+The example below loses:</p><ul>
+<li>the per-attempt timeout, which covers both the response headers and the response body;</li>
+<li>the automatic retries of transport errors and of transient <code>429</code>, <code>502</code>, <code>503</code> and <code>504</code>
+responses, including waiting for <code>Retry-After</code>;</li>
+<li>the typed errors (<code>HttpTimeoutError</code>, <code>HttpRequestFailed</code>, <code>HttpResponseError</code>) that the rest
+of octez.js expects.</li>
+</ul><p>If you need them, add them to your override: for example, call <code>cancelRequest</code> from a timer to
+keep a timeout.</p></div></div>
 <pre><code class="language-typescript">class CancellableHttpBackend extends HttpBackend {
   private abortController: AbortController;
   constructor() {

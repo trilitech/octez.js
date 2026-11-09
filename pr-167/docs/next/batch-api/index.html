@@ -59,8 +59,15 @@ const batch = await Tezos.wallet.batch()
   .withContractCall(contract.methodsObject.interact({ 0: &#39;tezos&#39; }))
   .withContractCall(contract.methodsObject.wait({ 1: UnitValue });
 </code></pre>
+<h4 id="--other-operations">- Other operations</h4>
+<p>Both batch builders also have methods for other operation kinds, such as
+<code>withSmartRollupAddMessages</code>, <code>withSmartRollupOriginate</code> and
+<code>withSmartRollupExecuteOutboxMessage</code> (see
+<a href="/docs/next/smart_rollups#wallet-api-examples">Smart rollups</a> for an example). The
+<a href="https://octez-js.tezos.com/typedoc/classes/_tezos-x_octez.js.WalletOperationBatch.html">reference documentation</a>
+lists all of them.</p>
 <h4 id="--the-array-of-transactions-method">- The <code>array of transactions</code> method</h4>
-<p>If you prefer having an array that contains objects with the different transactions you want to emit, you can use the <code>with</code> method. It allows you to group transactions as objects instead of concatenating function calls. The object you use expects the same properties as the parameter of the corresponding method with an additional <code>kind</code> property that indicates the kind of transaction you want to emit (a handy <code>opKind</code> enum is <a href="https://github.com/trilitech/octez.js/blob/master/packages/taquito-rpc/src/opkind.ts">exported from the octez.js package</a> with the valid values for the <code>kind</code> property).</p>
+<p>If you prefer having an array that contains objects with the different transactions you want to emit, you can use the <code>with</code> method. It allows you to group transactions as objects instead of concatenating function calls. The object you use expects the same properties as the parameter of the corresponding method with an additional <code>kind</code> property that indicates the kind of transaction you want to emit (a handy <code>opKind</code> enum is <a href="https://github.com/trilitech/octez.js/blob/master/packages/octez.js-rpc/src/opkind.ts">exported from the octez.js package</a> with the valid values for the <code>kind</code> property).</p>
 <pre><code class="language-js">import { OpKind, UnitValue } from &#39;@tezos-x/octez.js&#39;;
 
 const batch = await Tezos.wallet.batch([
