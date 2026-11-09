@@ -19,3 +19,17 @@ import { RpcClient, RpcClientCache } from '@tezos-x/octez.js-rpc';
 const rpcClient = new RpcClient('replace_with_RPC_URL');
 const tezos = new TezosToolkit(new RpcClientCache(rpcClient));
 ```
+
+## What is cached
+
+- Read requests are cached by RPC URL, method and arguments. A request made while the same request
+  is still in flight gets the same pending response, so the node is asked only once.
+- Requests that change or simulate chain state aren't cached: forging, preapplying, simulating and
+  injecting operations, running code or views, and the [BLS helpers](/docs/next/rpc_package#bls-helpers).
+- A failed request is removed from the cache at once, so the next call sends it again instead of
+  returning the same error until the `ttl` expires.
+- An entry's expiry timer is cleared when the entry is replaced, expires, or is removed with
+  `deleteAllCachedData()`, so a cleared cache doesn't keep a Node.js process running.
+- Some `RpcClientInterface` methods are optional, such as `getBigMapValuesPage` and
+  `aggregateProofs`. If the client you wrap doesn't implement one, calling it on the cache throws
+  `UnsupportedActionError`.

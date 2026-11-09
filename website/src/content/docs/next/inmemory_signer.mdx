@@ -299,9 +299,9 @@ const aggregateProof = await Tezos.rpc.aggregateProofs({
   different key. Combining them returns `null`.
 - `provePossession(publicKey)` rejects anything that isn't a valid BLS public key with an
   `InvalidPublicKeyError`.
-- `aggregateProofs` is an optional method of the RPC client interface. `RpcClient` implements it,
-  and `RpcClientCache` forwards it without caching. A custom client that doesn't implement it
-  makes `RpcClientCache` throw `UnsupportedActionError`.
+- `aggregatePublicKeys` and `aggregateProofs` are RPC client methods. See
+  [BLS helpers](/docs/next/rpc_package#bls-helpers) for the other BLS calls and for custom RPC
+  clients.
 
 ### Using a testnet faucet key
 
