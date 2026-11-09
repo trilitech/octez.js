@@ -6,6 +6,10 @@ title: Ledger Signer
 
 The Ledger Signer implements the Signer interface of octez.js, allowing you to sign operation from a Ledger Nano device.
 
+If the Ledger device isn't connected to the machine that runs octez.js, prepare the operation
+with [detached signing](/docs/next/prepare#detached-signing) and have it signed where the device
+is.
+
 :::note
 You need to have the [Tezos Wallet app](https://support.ledger.com/hc/en-us/articles/360016057774-Tezos-XTZ-) installed and opened on your Ledger device when using the Ledger Signer.
 :::
