@@ -41,7 +41,8 @@ recurring interfaces are:
 - `Signer` — produces signatures and exposes the public key / key hash.
 - `Forger` — turns operation contents into bytes (locally or via a remote service).
 - `Injector` — injects signed bytes and returns an operation hash.
-- `RpcClientInterface` — the full surface of node RPC calls.
+- `RpcClientInterface` — the full surface of node RPC calls. A custom implementation must provide
+  the required methods, including some mandatory [BLS helpers](/docs/next/rpc_package#bls-helpers).
 - `TzReadProvider` — a narrower read-only view of chain state. Some of its methods are optional, such as
   `getBigMapValuesPage` for [paged big map reads](/docs/next/maps_bigmaps#read-big-map-values-page-by-page).
 - `Packer` — packs data to bytes (`PACK`).

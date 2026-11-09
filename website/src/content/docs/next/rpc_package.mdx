@@ -154,6 +154,10 @@ aren't cached by [`RpcClientCache`](/docs/next/rpc-cache#what-is-cached). `aggre
 optional on `RpcClientInterface`: with a custom client that doesn't implement it,
 `RpcClientCache` throws `UnsupportedActionError`.
 
+If you implement `RpcClientInterface` yourself, `checkProof`, `aggregatePublicKeys`,
+`aggregateSignatures` and `thresholdSignatures` are required members since octez.js 25.1.0:
+add them, for example by forwarding to an `RpcClient`, or the implementation no longer compiles.
+
 ## Full documentation
 
 You can find the full documentation at the following address: [https://octez-js.tezos.com/typedoc/classes/_tezos-x_octez.js-rpc.RpcClient.html](https://octez-js.tezos.com/typedoc/classes/_tezos-x_octez.js-rpc.RpcClient.html)
