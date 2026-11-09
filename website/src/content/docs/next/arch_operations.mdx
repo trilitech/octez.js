@@ -77,7 +77,9 @@ Confirmation is built on the subscription layer. After injection, the operation 
 to new blocks and resolves when it observes its own hash, applying the confirmation count and
 timeout configured on the `Context`. The same streaming machinery powers the
 [confirmation event stream](/docs/next/confirmation_event_stream) and
-[event subscriptions](/docs/next/events).
+[chain subscriptions](/docs/next/events#subscribing-to-the-chain). See
+[How polling works](/docs/next/arch_tezos_toolkit#how-polling-works) for how the default stream
+provider polls the node.
 
 ## Contract API versus wallet API
 
