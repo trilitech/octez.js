@@ -101,7 +101,7 @@ Tezos.setProvider({ signer, readProvider: myIndexerReader }); // keeps the custo
 Tezos.setSignerProvider(signer);                             // keeps the custom reader
 ```
 
-### Reads after an RPC change
+### Reads after an RPC provider change
 
 Chain reads (balances, contract storage, big maps including
 [paged big map values](/docs/next/maps_bigmaps#read-big-map-values-page-by-page), blocks, protocol
@@ -109,7 +109,7 @@ constants) go through the read provider. Unless you install one yourself, the to
 `RpcReadAdapter` over the current
 `RpcClient`.
 
-That default follows RPC changes. When you switch nodes with `setRpcProvider(url)`, or pass `rpc` to
+That default follows RPC provider changes. When you switch nodes with `setRpcProvider(url)`, or pass `rpc` to
 `setProvider`, the toolkit rebuilds its default read provider on the new client, so reads and
 operations use the same node:
 
@@ -119,10 +119,10 @@ Tezos.setRpcProvider('https://node-b.example.org');
 await Tezos.tz.getBalance('tz1...'); // read from node-b
 ```
 
-A read provider you set explicitly stays in place when the RPC changes. This includes an indexer
+A read provider you set explicitly stays in place when the RPC provider changes. This includes an indexer
 adapter, a cache, a read provider installed by an extension, and an `RpcReadAdapter` you built
 for another endpoint. Reads keep going to it until you replace it. To go back to the default, call
-`setReadProvider()` with no argument: reads then use the current RPC and follow later RPC changes
+`setReadProvider()` with no argument: reads then use the current RPC and follow later RPC provider changes
 again.
 
 A read that has already started finishes on the provider it started with. Only reads started
