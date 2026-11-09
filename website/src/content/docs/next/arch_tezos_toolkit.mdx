@@ -143,8 +143,8 @@ The default stream provider, `PollingSubscribeProvider`, polls the node in two s
 2. Only when that hash differs from the last block it delivered does it fetch the full block
    (`getBlock(hash)`). Block, operation and event subscriptions are built from that block.
 
-Most ticks return a hash that has already been seen, so a node is no longer asked for a full
-block several times per block interval. Both steps go through the toolkit's read provider.
+Most ticks return a hash that has already been seen, so the node is asked for each full block
+once, not at every tick. Both steps go through the toolkit's read provider.
 
 A slow request doesn't pile up: while a hash or block request is in flight, the ticks that fall
 due are skipped. If fetching the full block fails, the next tick that returns the same hash
