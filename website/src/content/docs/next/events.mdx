@@ -140,8 +140,9 @@ sub.close();
 
 ### Choosing and configuring the stream provider
 
-By default this is a `PollingSubscribeProvider` that polls the node set with `setRpcProvider`.
-To poll a different node, pass its URL:
+By default this is a `PollingSubscribeProvider` that polls through the toolkit's read provider:
+the node set with `setRpcProvider`, unless you installed another read provider with
+`setReadProvider`. To poll a specific node, pass its URL:
 
 ```js
 Tezos.setStreamProvider('https://rpc.example.org');
