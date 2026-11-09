@@ -224,6 +224,20 @@ isValidContractAddress('KT1...%entrypoint'); // false: the suffix is not accepte
 - Like `validateAddress`, `isValidAddress` ignores everything after the first `%`.
   `isValidContractAddress` checks the whole value and rejects such a suffix.
 - When you need the reason for a rejection, use the `validate…` functions above instead.
+- In TypeScript, they are type guards (`value is string`): after a successful check, an `unknown`
+  value is narrowed to `string`. On a value already typed `string`, the failing branch is
+  narrowed to `never`, so code there that still uses the value doesn't compile:
+
+  ```ts
+  function preview(input: string) {
+    if (!isValidAddress(input)) {
+      return `Invalid address: ${input.trim()}`; // error: Property 'trim' does not exist on type 'never'
+    }
+    // ...
+  }
+  ```
+
+  Keep the original value in another variable, or use `validateAddress`, if you need it there.
 
 `getPublicKeyHashFromPublicKey(publicKey)` returns the address (`tz1`, `tz2`, `tz3`, `tz4` or
 `tz5`) of an Ed25519, secp256k1, P-256, BLS12-381 or ML-DSA-44 public key. It is an alias of
