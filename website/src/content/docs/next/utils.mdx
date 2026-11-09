@@ -241,9 +241,15 @@ import { getEthereumAlias, getTezosAlias } from '@tezos-x/octez.js-utils';
 const ethereumAlias = getEthereumAlias('tz1aAdmy1MiGhnRkw8RWS6xbUpTuSRh3ZB4y');
 console.log(ethereumAlias); // 0xcdb4d002582717fa10060665ec598ac68590072a
 
-const tezosAlias = getTezosAlias('0xccef676171871a48bbd6e2be75bbcc09d38830c5');
-console.log(tezosAlias); // KT1TLraR9PboPAvxLKYQs9eU4n75rGFJTbWk
+// An EVM account, unrelated to the tz1 address above
+const tezosAlias = getTezosAlias('0xdeAD000000000000000042000000000000000000');
+console.log(tezosAlias); // KT1Ezy5yhhzsnamZDAQo4x1U9d6LDjmcsAJW
 ```
+
+The two functions are not the inverse of each other: `getTezosAlias` gives the alias of an EVM address, not
+the Tezos address an EVM alias was computed from. For example,
+`getTezosAlias('0xcdb4d002582717fa10060665ec598ac68590072a')` is a KT1 address, not
+`tz1aAdmy1MiGhnRkw8RWS6xbUpTuSRh3ZB4y`.
 
 # Verification of a signature
 
