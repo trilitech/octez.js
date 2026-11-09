@@ -1786,7 +1786,7 @@ Also updates to existing types to accommodate changes regarding consensus keys.
 
 ## `@taquito/michelson-encoder` - Support new type `TICKET_DEPRECATED`
 
-- Added support for the new Michelson type `TICKET_DEPRECATED`. More info here: https://tezos.gitlab.io/protocols/015_lima.html#breaking-changes
+- Added support for the new Michelson type `TICKET_DEPRECATED`. More info here: https://octez.tezos.com/docs/protocols/015_lima.html#breaking-changes
 
 ## `@taquito/michel-codec` - Support new instruction `LAMBDA_REC` and value `Lambda_rec`
 
@@ -2253,7 +2253,7 @@ The `TxRollupL2AddressToken` class allows users of Taquito to pass `tz4` address
 
 > A new instruction MIN_BLOCK_TIME has been added. It can be used to push the current minimal time between blocks onto the stack. The value is obtained from the protocol's minimal_block_delay constant.
 
-_Reference: https://tezos.gitlab.io/protocols/013jakarta.html#michelson_
+_Reference: https://octez.tezos.com/docs/protocols/013_jakarta.html#michelson_
 
 ## `@taquito/michel-codec` - Annotating the top-level parameter constructor to designate the root entry point is now forbidden
 
@@ -2261,7 +2261,7 @@ If the top-level parameter constructor is annotated when parsing a contract, a `
 
 > Annotating the parameter toplevel constructor to designate the root entrypoint is now forbidden. Put the annotation on the parameter type instead. E.g. replace parameter %a int; by parameter (int %a);
 
-_Reference: https://tezos.gitlab.io/protocols/013jakarta.html#michelson_
+_Reference: https://octez.tezos.com/docs/protocols/013_jakarta.html#michelson_
 
 ## `@taquito/taquito` - Added support for the `tx_rollup_origination` and `tx_rollup_submit_batch` operations
 
@@ -2319,7 +2319,7 @@ The `txRollupSubmitBatch` method also takes optional `storageLimit`, `gasLimit` 
 
 We addressed the Jakarta protocol's breaking changes, making this version of Taquito compatible with the Jakarta protocol. This early integration has been possible by using the Mondaynet testnet.
 
-The Jakarta protocol addresses the [malleability issue](https://tezos.gitlab.io/alpha/sapling.html#preventing-malleability) discovered in Sapling. It introduces changes around the sapling related types and instructions that are now supported in Taquito:
+The Jakarta protocol addresses the [malleability issue](https://octez.tezos.com/docs/active/sapling.html#preventing-malleability) discovered in Sapling. It introduces changes around the sapling related types and instructions that are now supported in Taquito:
 
 - The encoding of `sapling_transaction` has changed; we added support for it in the `@taquito/local-forging` package and support for `sapling_transaction_deprecated`.
 
@@ -2377,7 +2377,7 @@ new RpcClient('url', 'chain', new HttpBackend(50000));
 
 We addressed the Jakarta protocol's breaking changes, making this version of Taquito compatible with the Jakarta protocol. This early integration has been possible by using the Mondaynet testnet.
 
-The Jakarta protocol addresses the [malleability issue](https://tezos.gitlab.io/alpha/sapling.html#preventing-malleability) discovered in Sapling. It introduces changes around the sapling related types and instructions that are now supported in Taquito:
+The Jakarta protocol addresses the [malleability issue](https://octez.tezos.com/docs/active/sapling.html#preventing-malleability) discovered in Sapling. It introduces changes around the sapling related types and instructions that are now supported in Taquito:
 
 - The encoding of `sapling_transaction` has changed; we added support for it in the `@taquito/local-forging` package and support for `sapling_transaction_deprecated`.
 
@@ -2487,7 +2487,7 @@ We added support to forge and parse operations containing the new `SUB_MUTEZ` in
 
 > [SUB_MUTEZ] is similar to the mutez case of the SUB instruction but its return type is option mutez instead of mutez. This allows subtracting mutez values without failing in case of underflow.
 
-_source: https://tezos.gitlab.io/protocols/012ithaca.html#michelson_
+_source: https://octez.tezos.com/docs/protocols/012_ithaca.html#michelson_
 
 ## @taquito/rpc - Updated the `RpcClient` types based on the changes to the balance updates and the new type of operations
 
@@ -2502,7 +2502,7 @@ The new categories of balance updates are `legacy_rewards`, `block fees`, `legac
 
 The new origin for balance update is `simulation`.
 
-For more information on the balance update changes, refer to https://tezos.gitlab.io/protocols/tenderbake.html#metadata
+For more information on the balance update changes, refer to https://octez.tezos.com/docs/protocols/tenderbake.html#metadata
 
 ## @taquito/rpc - Updated signature of the `getEndorsingRights` and `getBakingRights` methods
 
@@ -3799,7 +3799,7 @@ Taquito’s michel-codec package and michelson-encoder package has been updated 
 
 Michel-codec Update to support all Michelson changes introduced in the 008 edo update.
 
-For all the changes in edo itself, see the edo changelogs here: https://tezos.gitlab.io/protocols/008_edo.html
+For all the changes in edo itself, see the edo changelogs here: https://octez.tezos.com/docs/protocols/008_edo.html
 
 Contract and Token Metadata support (TZIP-16/TZIP-12
 Taquito v8 ships with full support for reading Contract and Token metadata, as well as loading and executing “off-chain-views”. Projects can now publish metadata about their contract to IPFS, a HTTP server or (even if not appropriate) on-chain.

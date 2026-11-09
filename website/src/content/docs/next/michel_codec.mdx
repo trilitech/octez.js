@@ -14,7 +14,7 @@ const p = new Parser()
 ### Configuration
 You can configure the parser class by passing `ParserOptions` through initialization with `expandMacros` and `expandGlobalConstant` properties.
 
-* `expandMacros` -  defaults to true unless you don't want `Parser` class to expand them; you can pass `{ expandMacros: false }` to disable it. ref: Expand [Michelson macros](https://tezos.gitlab.io/whitedoc/michelson.html#macros) during parsing
+* `expandMacros` -  defaults to true unless you don't want `Parser` class to expand them; you can pass `{ expandMacros: false }` to disable it. ref: Expand [Michelson macros](https://octez.tezos.com/docs/active/michelson.html#macros) during parsing
 * `expandGlobalConstant` - expects an object where the keys are global constant hashes and the values are the corresponding JSON Micheline expressions.
 
 for example
@@ -57,7 +57,7 @@ try {
 ### parseMichelineExpression - Parse Micheline and convert it to JSON Michelson
 Takes a Micheline expression in the form of script or data and converts it to JSON Michelson
 
-```js live 
+```js live
 // import { Parser } from '@tezos-x/octez.js-michel-codec'
 
 const p = new Parser();

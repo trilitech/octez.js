@@ -262,7 +262,7 @@ expanded form also returned by `InMemorySigner.secretKey()`). Don't log, store o
 
 ### BLS proofs for a native multisig account
 
-A BLS (tz4) native multisig account is controlled by an aggregate key built from several member
+A BLS (tz4) [native multisig account](https://octez.tezos.com/docs/active/native_multisig.html) is controlled by an aggregate key built from several member
 keys. Setting one up needs proofs of possession in two stages, and `InMemorySigner` produces both.
 
 **Stage 1: each member proves its own key.** `provePossession()` signs the member's own public
