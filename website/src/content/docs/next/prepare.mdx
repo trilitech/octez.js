@@ -31,76 +31,6 @@ Having access to the `PreparedOperation` object offers a few benefits, a few of 
 
 The `PrepareProvider` class affords extension and control to users when preparing operations while also promoting modularity in octez.js as a design principle.
 
-## Detached signing
-
-Sometimes the key that signs an operation lives somewhere else: a hardware device, a signing
-service, or an approval step run by another person. `Tezos.prepareFor` prepares and estimates
-operations from the account's **public** identity only, and leaves signing to that external
-party:
-
-```js
-const workflow = Tezos.prepareFor({
-  pkh: 'tz1...',
-  publicKey: 'edpk...', // optional for an account that is already revealed
-  // proof: 'BLsig...', // BLS proof of possession, needed to reveal a tz4 account
-});
-
-const prepared = await workflow.prepare.transaction({ to: 'tz1...', amount: 1 });
-const signable = await workflow.toSignable(prepared);
-
-// ... send `signable` to the external signer, get back a Base58Check signature ...
-
-const signed = workflow.attachSignature(signable, signature);
-const op = await workflow.inject(signed);
-await op.confirmation();
-```
-
-`workflow.prepare` and `workflow.estimate` support transactions, delegations, originations,
-reveals, contract calls, and batches of transactions, delegations and originations. Every
-operation must come from the identity's `pkh`. A reveal must use the identity's public key and,
-for a tz4 account, its proof.
-
-### What the external signer signs
-
-`toSignable` forges the operation and returns a frozen snapshot of it:
-
-- `unsignedBytes`: the forged operation;
-- `watermarkedBytes`: `03` followed by the forged bytes;
-- `blake2bDigest`: the 32-byte Blake2b hash of the watermarked bytes;
-- `scheme` and `signingInput`: BLS (tz4) keys sign `watermarkedBytes`. Ed25519, secp256k1,
-  P-256 and ML-DSA-44 keys sign `blake2bDigest`.
-
-`attachSignature` takes the Base58Check signature for the identity's scheme. The generic `sig`
-prefix is also accepted for the 64-byte schemes. When the identity includes a public key, the
-signature is checked against the watermarked bytes before anything is sent. The signed bytes
-are exactly the approved bytes, followed by the signature: BLS signatures are prefixed with
-`ff03` and ML-DSA-44 signatures with `ff04`, as Octez does.
-
-The snapshot can't be changed after `toSignable`: editing `prepared` afterwards has no effect.
-Snapshots only work with the workflow that created them, in the same process.
-
-### Injection and retries
-
-`inject` preapplies the signed operation before injecting it. If the node reports an error, or
-any operation result isn't `applied`, it throws (`TezosOperationError` or
-`TezosPreapplyFailureError`) and nothing is injected. On success it returns the usual `Operation`
-handle, so you can wait for confirmations as with any other operation.
-
-`inject` runs only once for a given signed operation. Calling it again with the same `signed`
-object returns the same promise, so a retry after a timeout can't inject the operation twice.
-To submit after a failure, prepare, sign and attach again.
-
-### Providers and operation lifetime
-
-`prepareFor` captures the toolkit's RPC client, configuration and custom providers when it is
-called. Later calls to `setProvider` or `setRpcProvider` don't affect a workflow that already
-exists. Call `prepareFor` again to use the new providers.
-
-A prepared operation is anchored to a recent block (its branch, `head~2` when it was prepared).
-The protocol accepts it only while that block is among the last `max_operations_ttl` blocks, so
-an operation that waits too long for its signature is rejected at preapplication. In that case,
-prepare and sign it again.
-
 ## Usage example
 
 ### Individual Operations
@@ -180,3 +110,73 @@ const preparedTransfer = await Tezos.prepare.transaction({
 const params = Tezos.prepare.toForge(preparedTransfer);
 const forgedBytes = await forger.forge(params);
 ```
+
+## Detached signing
+
+Sometimes the key that signs an operation lives somewhere else: a hardware device, a signing
+service, or an approval step run by another person. `Tezos.prepareFor` prepares and estimates
+operations from the account's **public** identity only, and leaves signing to that external
+party:
+
+```js
+const workflow = Tezos.prepareFor({
+  pkh: 'tz1...',
+  publicKey: 'edpk...', // optional for an account that is already revealed
+  // proof: 'BLsig...', // BLS proof of possession, needed to reveal a tz4 account
+});
+
+const prepared = await workflow.prepare.transaction({ to: 'tz1...', amount: 1 });
+const signable = await workflow.toSignable(prepared);
+
+// ... send `signable` to the external signer, get back a Base58Check signature ...
+
+const signed = workflow.attachSignature(signable, signature);
+const op = await workflow.inject(signed);
+await op.confirmation();
+```
+
+`workflow.prepare` and `workflow.estimate` support transactions, delegations, originations,
+reveals, contract calls, and batches of transactions, delegations and originations. Every
+operation must come from the identity's `pkh`. A reveal must use the identity's public key and,
+for a tz4 account, its proof.
+
+### What the external signer signs
+
+`toSignable` forges the operation and returns a frozen snapshot of it:
+
+- `unsignedBytes`: the forged operation;
+- `watermarkedBytes`: `03` followed by the forged bytes;
+- `blake2bDigest`: the 32-byte Blake2b hash of the watermarked bytes;
+- `scheme` and `signingInput`: BLS (tz4) keys sign `watermarkedBytes`. Ed25519, secp256k1,
+  P-256 and ML-DSA-44 keys sign `blake2bDigest`.
+
+`attachSignature` takes the Base58Check signature for the identity's scheme. The generic `sig`
+prefix is also accepted for the 64-byte schemes. When the identity includes a public key, the
+signature is checked against the watermarked bytes before anything is sent. The signed bytes
+are exactly the approved bytes, followed by the signature: BLS signatures are prefixed with
+`ff03` and ML-DSA-44 signatures with `ff04`, as Octez does.
+
+The snapshot can't be changed after `toSignable`: editing `prepared` afterwards has no effect.
+Snapshots only work with the workflow that created them, in the same process.
+
+### Injection and retries
+
+`inject` preapplies the signed operation before injecting it. If the node reports an error, or
+any operation result isn't `applied`, it throws (`TezosOperationError` or
+`TezosPreapplyFailureError`) and nothing is injected. On success it returns the usual `Operation`
+handle, so you can wait for confirmations as with any other operation.
+
+`inject` runs only once for a given signed operation. Calling it again with the same `signed`
+object returns the same promise, so a retry after a timeout can't inject the operation twice.
+To submit after a failure, prepare, sign and attach again.
+
+### Providers and operation lifetime
+
+`prepareFor` captures the toolkit's RPC client, configuration and custom providers when it is
+called. Later calls to `setProvider` or `setRpcProvider` don't affect a workflow that already
+exists. Call `prepareFor` again to use the new providers.
+
+A prepared operation is anchored to a recent block (its branch, `head~2` when it was prepared).
+The protocol accepts it only while that block is among the last `max_operations_ttl` blocks, so
+an operation that waits too long for its signature is rejected at preapplication. In that case,
+prepare and sign it again.

@@ -5,6 +5,10 @@ id: ophash_before_injecting
 
 This section serves as a guide to get the operation hash without injecting it into the blockchain.
 
+With [detached signing](/docs/next/prepare#detached-signing), the object returned by
+`attachSignature` holds the signed operation in `signedBytes`: pass it to `encodeOpHash` the same
+way to get the hash before calling `inject`.
+
 ## Getting the Operation Hash
 
 There might come a time when you, the developer, would like to grab the operation hash without injecting it into the blockchain.

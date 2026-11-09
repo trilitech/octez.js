@@ -9,6 +9,12 @@ Signing arbitrary chunks of data is a common practice in a blockchain environmen
 
 This practice is still new on Tezos and the use cases are rare. However, as the interactions between users and smart contracts increase, knowing how to sign data and send the signature to a smart contract can set you one step ahead in your knowledge of the Tezos blockchain.
 
+:::tip
+This page is about signing arbitrary data. To sign an operation with a key that is held
+somewhere else, such as a signing service or another person's device, see
+[Detached signing](/docs/next/prepare#detached-signing).
+:::
+
 ## Understanding what a signature is
 
 A signature is a string generally based58 encoded for better readability that starts with **edsig**. It requires a signer to hash the input bytes and thus can only be done if the signer has access to the private key of the account. Therefore, it is impossible to forge a signature for an account of which you don't have access to the private key. Michelson implements an instruction called `CHECK_SIGNATURE` that allows it to retrieve the public key of the account that created the signature.
