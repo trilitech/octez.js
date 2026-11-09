@@ -233,7 +233,7 @@ isValidContractAddress('KT1...%entrypoint'); // false: the suffix is not accepte
 
 On Tezos X, every address of the Michelson runtime has a deterministic alias in the EVM runtime, and vice versa. `getEthereumAlias` computes the EVM alias of an implicit (tz1–tz5) or originated (KT1) address, and `getTezosAlias` computes the KT1 alias of an Ethereum address. Both are computed offline and throw an `InvalidAddressError` on malformed input.
 
-The EVM alias of a tz1, tz2 or tz3 address is recoverable: it is the `CREATE2` address of a rescue account bound to the Tezos public key hash, so it is the same on every EVM chain. If funds are sent to it by mistake on another EVM chain, the owner can recover them by signing with their Tezos key. On Tezos X itself, the alias behaves as before. The EVM alias of any other address (tz4, tz5, KT1) is a hash of the Tezos address.
+The EVM alias of a tz1, tz2 or tz3 address is recoverable: it is the `CREATE2` address of a rescue account bound to the Tezos public key hash, so it is the same on every EVM chain. If funds are sent to it by mistake on another EVM chain, the owner can recover them by signing with their Tezos key. On Tezos X, it is the address of the EVM contract already forwarding tez to the Tezos address. The EVM alias of any other address (tz4, tz5, KT1) is a hash of the Tezos address.
 
 ```js
 import { getEthereumAlias, getTezosAlias } from '@tezos-x/octez.js-utils';
