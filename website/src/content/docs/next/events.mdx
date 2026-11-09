@@ -81,6 +81,9 @@ try {
 - `address` is the address of the smart contract that was called
 - `excludeFailedOperations`: In rare cases, events from failed operations can be received by the subscriber. You can use this field to filter out these events (if you pass `true` to this field, only events from successful operations will be received)
 
+The `setStreamProvider` call is optional: it configures polling, as described in
+[Choosing and configuring the stream provider](#choosing-and-configuring-the-stream-provider).
+
 :::info
 If you would like to subscribe to **_any_** event that goes through, you can call `subscribeEvent()` as is without any parameters
 :::
@@ -121,3 +124,62 @@ The output of the `subscribeEvent` method will look something like this:
   }
 }
 ```
+
+## Subscribing to the chain
+
+`Tezos.stream` provides subscriptions to new heads, blocks, operations and contract events. Event
+subscriptions are described above; the others work the same way:
+
+```js
+const sub = Tezos.stream.subscribeOperation({ destination: 'KT1...' });
+sub.on('data', (op) => console.log(op.hash));
+sub.on('error', (err) => console.error(err));
+// later
+sub.close();
+```
+
+### Choosing and configuring the stream provider
+
+By default this is a `PollingSubscribeProvider` that polls the node set with `setRpcProvider`.
+To poll a different node, pass its URL:
+
+```js
+Tezos.setStreamProvider('https://rpc.example.org');
+```
+
+To change how polling behaves, create the provider with a configuration:
+
+```js
+import { PollingSubscribeProvider } from '@tezos-x/octez.js';
+
+Tezos.setStreamProvider(
+  Tezos.getFactory(PollingSubscribeProvider)({
+    pollingIntervalMilliseconds: 1000,
+    shouldObservableSubscriptionRetry: true,
+  })
+);
+```
+
+- `pollingIntervalMilliseconds`: if you don't set it, the provider uses one third of the
+  protocol's `minimal_block_delay`, with a minimum of 700 ms. If the protocol constants can't be
+  read, it polls every 5 s.
+- `shouldObservableSubscriptionRetry`: `false` by default, so the first error is emitted on
+  `'error'` and the subscription stops. When it's `true`, every error is still emitted on
+  `'error'`, then the subscription waits one polling interval and starts polling again.
+  `observableSubscriptionRetryFunction` replaces that retry strategy with an RxJS operator of your
+  own.
+
+### Sharing between subscriptions
+
+All subscriptions created from the same provider share a single polling loop:
+
+- A new subscription doesn't replay data the shared stream has already delivered. A subscriber
+  that joins an active stream only receives heads, blocks or operations that appear after it
+  joined.
+- Polling stops when the last subscription is closed. The next subscription starts a new polling
+  loop.
+
+Close subscriptions you no longer need, so polling doesn't keep running in the background.
+
+To learn how the default provider polls the node, see
+[Architecture: The TezosToolkit](/docs/next/arch_tezos_toolkit#how-polling-works).

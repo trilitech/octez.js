@@ -51,3 +51,7 @@ Finally, when the Observable reaches the number of confirmations required, the w
 
 >[!NOTE]
 > The length of the `evts` array is equal to `n confirmations + 1` because the Observable sends a `confirmation 0` value with the block level at which the operation was injected.
+
+Confirmations are observed through the toolkit's stream provider. To change how often it polls
+the node, or how it handles errors, see
+[Choosing and configuring the stream provider](/docs/next/events#choosing-and-configuring-the-stream-provider).
