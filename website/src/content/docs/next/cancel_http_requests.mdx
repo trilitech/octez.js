@@ -12,7 +12,16 @@ Here is one example to override `HttpBackend` and/or `RpcClient`:
 Create a class called `CancellableHttpBackend` which extends the `HttpBackend` class. Override the `createRequest` method to utilize an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) to handle and capture abort signals. 
 
 > [!WARNING]
-> We currently use the `AbortController` to timeout requests in the `HttpBackend` class. Plase note that this example will override the timeout functionality. If you want to keep the timeout functionality, you can add a custom timeout to call the cancelRequest method after a certain amount of time.
+> Overriding `createRequest` replaces everything the default `HttpBackend` does around `fetch`.
+> The example below loses:
+> - the per-attempt timeout, which covers both the response headers and the response body;
+> - the automatic retries of transport errors and of transient `429`, `502`, `503` and `504`
+>   responses, including waiting for `Retry-After`;
+> - the typed errors (`HttpTimeoutError`, `HttpRequestFailed`, `HttpResponseError`) that the rest
+>   of octez.js expects.
+>
+> If you need them, add them to your override: for example, call `cancelRequest` from a timer to
+> keep a timeout.
 
 ```typescript
 class CancellableHttpBackend extends HttpBackend {
