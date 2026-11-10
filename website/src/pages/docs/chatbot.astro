@@ -1,5 +1,8 @@
 ---
 import { DEFAULT_VERSION } from '../api/search/[version].json.ts';
 
-return Astro.redirect(`/docs/${DEFAULT_VERSION}/quick_start?chatbot=open`, 302);
+// Normalize base URL to always have trailing slash for path joining
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
+return Astro.redirect(`${base}docs/${DEFAULT_VERSION}/quick_start?chatbot=open`, 302);
 ---
