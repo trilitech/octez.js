@@ -11,7 +11,7 @@
 <p>Delegation is when you give your baking rights to another person (baker). This mechanism in Tezos allows users to participate in staking and receive Tezos rewards without running their own node.</p>
 <p>In Tezos, a delegation operation will set the delegate of an address.</p>
 <p>When the <code>Babylon/proto005</code> protocol amendment came into effect, it changed how delegation from KT1 addresses work. Calling the KT1’s smart contract <code>do</code> method is required to set the delegate for a KT1 account.  The <code>do</code> method takes a lambda function, and it is the logic of this function that causes the desired delegation to happen.</p>
-<h2 id="delegate-from-a-user-account-address-tz1-prefix">Delegate from a user account address (<code>tz1</code> prefix)</h2>
+<h2 id="delegate-from-a-user-account-tz1-address">Delegate from a user account (<code>tz1</code> address)</h2>
 <p>octez.js has two main methods that facilitate a delegate operation, <code>setDelegate()</code> and <code>registerDelegate()</code></p>
 <p>The difference between the 2 methods is that <code>registerDelegate()</code> will set the delegate to the current address while <code>setDelegate()</code> will set the delegate to another address (baker).</p>
 <h3 id="setdelegate">setDelegate()</h3>
@@ -26,7 +26,7 @@ await Tezos.contract.setDelegate({ source: &#39;tz1_source&#39;, delegate: &#39;
 
 await Tezos.contract.registerDelegate({});
 </code></pre>
-<h2 id="delegation-involving-originated-addresses-kt1-prefix">Delegation involving originated addresses (<code>KT1</code> prefix)</h2>
+<h2 id="delegation-involving-contract-addresses-kt1-prefix">Delegation involving contract addresses (<code>KT1</code> prefix)</h2>
 <p>Pre-<code>Babylon/proto005</code>, it was common to have “script-less” KT1 addresses. This circumstance changed when the Tezos blockchain migrated to the new <code>Babylon/proto005</code> protocol.</p>
 <p>During the migration from <code>proto004</code> to <code>proto005</code>, all KT1 addresses that migrated got a contract called <a href="https://gitlab.com/nomadic-labs/mi-cho-coq/blob/master/src/contracts/manager.tz">manager.tz</a>. As a result, there are no longer any “script-less” KT1 addresses in Tezos.</p>
 <p>A call to the KT1’s smart contract’s <code>do</code> method must be made to delegate to a KT1 address with the new <code>manager.tz</code> contract. The <code>do</code> method takes a lambda function, and it is this lambda function that causes changes to occur in the KT1 address.</p>
