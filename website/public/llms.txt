@@ -79,6 +79,10 @@ The default version is `0.9.0`. The `next` version contains unreleased documenta
 - `inmemory_signer` - In Memory Signer
 - `ledger_signer` - Ledger Signer
 
+### Tezos X
+- `tezosx_support` - Support for Tezos X
+- `tezosx_cross_runtime` - Cross-runtime calls
+
 ### Packages
 - `rpc_package` - RPC
 - `michelson_encoder` - Michelson Encoder
