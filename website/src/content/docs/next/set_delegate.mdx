@@ -18,7 +18,7 @@ In Tezos, a delegation operation will set the delegate of an address.
 
 When the `Babylon/proto005` protocol amendment came into effect, it changed how delegation from KT1 addresses work. Calling the KT1's smart contract `do` method is required to set the delegate for a KT1 account.  The `do` method takes a lambda function, and it is the logic of this function that causes the desired delegation to happen.
 
-## Delegate from an implicit address (`tz1` prefix)
+## Delegate from a user account (`tz1` address)
 octez.js has two main methods that facilitate a delegate operation, `setDelegate()` and `registerDelegate()`
 
 The difference between the 2 methods is that `registerDelegate()` will set the delegate to the current address while `setDelegate()` will set the delegate to another address (baker).
@@ -41,7 +41,7 @@ To run a delegate you must first be registered. Use`registerDelegate()` to accom
 await Tezos.contract.registerDelegate({});
 ```
 
-## Delegation involving originated addresses (`KT1` prefix)
+## Delegation involving contract addresses (`KT1` prefix)
 
 Pre-`Babylon/proto005`, it was common to have "script-less" KT1 addresses. This circumstance changed when the Tezos blockchain migrated to the new `Babylon/proto005` protocol.
 

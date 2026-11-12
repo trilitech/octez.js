@@ -4,13 +4,13 @@ title: Transfers (Transaction)
 
 # Examples demonstrating transfers between various address types
 
-In Tezos, a transfer operation transfers tokens between two addresses.
+In Tezos, a transfer operation transfers tokens between two addresses. An address is either a user account (`tz1`, `tz2`, `tz3`, …, sometimes called an implicit account) or a contract (`KT1`, sometimes called an originated account).
 
 When the `Babylon/proto005` protocol amendment came into effect, it changed how token transfer involving KT1 addresses work. The transfer of tokens _from_ a KT1 account is completed by calling the KT1's smart contract `do` method. The `do` method takes a lambda function, and it is the logic of this function that causes the desired transfer of tokens to happen.
 
 The octez.js [integration tests](https://github.com/trilitech/octez.js/blob/master/integration-tests/contract-manager-scenario.spec.ts) can be useful to see how this works.
 
-## Transfer from an implicit tz1 address to a tz1 address
+## Transfer between user tz1 addresses
 
 This is the simplest token transfer scenario
 
@@ -39,7 +39,7 @@ await operation.confirmation(1);
 console.log(`Operation injected: https://shadownet.tzkt.io/${operation.hash}`);
 ```
 
-## Transfers involving "originated" KT1 addresses
+## Transfers involving contract KT1 addresses
 
 Pre-`Babylon/proto005` "script-less" KT1 addresses were common. This situation changed when the Tezos blockchain migrated to the new `Babylon/proto005` protocol.
 

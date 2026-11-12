@@ -336,7 +336,7 @@ The `ParametersSaplingTransaction` is an object made of:
 The `prepareSaplingTransaction` method returns the crafted Sapling transaction parameter but does not perform any change on the shielded set. A subsequent step where the Sapling transaction parameter is submitted to the smart contract must be done.
 
 >[!NOTE]
-> A user should not use their own implicit account (tz1, tz2, tz3) to submit a Sapling transaction but rather have a third party inject it.
+> A user should not use their own account (tz1, tz2, tz3) to submit a Sapling transaction but rather have a third party inject it.
 
 Here is an example of how to prepare and inject a Sapling transaction using octez.js:
 

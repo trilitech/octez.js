@@ -47,7 +47,7 @@ const op = await Tezos.contract.smartRollupOriginate({
 await op.confirmation();
 ```
 
-- Any implicit account type can be listed (`tz1`, `tz2`, `tz3`, `tz4` and `tz5`). The order you
+- Any user account type can be listed (`tz1`, `tz2`, `tz3`, `tz4` and `tz5`). The order you
   give is kept in the forged operation.
 - Leave `whitelist` out for a public rollup. An empty array (`whitelist: []`) is not the same
   thing: it's sent as an empty whitelist, which the protocol rejects, and the node's error is
