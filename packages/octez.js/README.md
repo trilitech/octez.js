@@ -7,8 +7,8 @@ The `@tezos-x/octez.js` package contains higher-level functionality that builds 
 ## CDN Bundle
 
 ```html
-<script src="https://unpkg.com/@tezos-x/octez.js@25.0.0/dist/octez.min.js"
-crossorigin="anonymous" integrity="sha256-+uooovxsiBIDAqGVhQ2PdsCp1G6EAL/W575mvpwwk38= sha384-2POnJWftesVUP1rT+pNMpprX7hMuj4wnQgyxDfKvCk05P+1Q70xwKbUHyaJlem2F sha512-sJCeSxl6KvlwN7RiqqePrRj0RGfh3WUZMnSHXs/TLK3bYBq58ycVMkU9LrFKGOaHsT1C5dJn3/WEjc0SSQj9OA=="></script>
+<script src="https://unpkg.com/@tezos-x/octez.js@25.1.0-rc.0/dist/octez.min.js"
+crossorigin="anonymous" integrity="sha256-NUkp67D3iRnhpCAzl1+u1q6GGRPNkj296xCaByLmKEE= sha384-IMrJCuHydKrKL8gFz8T+xJcC5EAVg+7Omx/wuSR1mINYS3NFaaqpCUfPMDubZxkd sha512-OFJtHXKNNoKQMmpic4VWFfj8OxhEXh/QBazH150Fe805C5qKJBrFZFx6YR9okxZEx9iwebwY4c0Gt2he+XgBVA=="></script>
 ```
 
 ## General Information
