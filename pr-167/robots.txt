@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://octez-js.tezos.com/sitemap-index.xml
