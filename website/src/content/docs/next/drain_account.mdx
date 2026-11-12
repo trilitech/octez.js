@@ -2,11 +2,11 @@
 title: Drain an account
 ---
 
-This section shows how to transfer all tokens from one account (implicit or originated) to another so that the source account balance is zero.
+This section shows how to transfer all tokens from one account (user account or contract) to another so that the source account balance is zero.
 
-## Draining implicit accounts (tz1, tz2, tz3)
+## Draining user accounts (tz1, tz2, tz3)
 
-We want to "empty" an implicit account by sending all of its tokens to another account. It can be tricky to empty a tezos account because the system must subtract the gas fee from the account balance.
+We want to "empty" a user account (sometimes called implicit account) by sending all of its tokens to another account. It can be tricky to empty a tezos account because the system must subtract the gas fee from the account balance.
 
 To do so, we first need to estimate the fees related to this operation. The `estimate` property of the `TezosToolkit` provides access to operation estimation utilities. Calling the `transfer` method will return an instance of the `Estimate` class and its `suggestedFeeMutez` property will allow us to know the fee associated with the operation.
 
@@ -72,11 +72,11 @@ try {
 }
 ```
 
-## Draining originated accounts (KT1)
+## Draining contract accounts (KT1)
 
-In the following example, we first originate a contract with a starting balance of 8 ꜩ. Then, we transfer all of its tokens to an implicit account.
+In the following example, we first originate a contract with a starting balance of 8 ꜩ. Then, we transfer all of its tokens to a user account.
 
-The contract we originate is a `manager contract.` It has a `do` method taking a lambda function as a parameter. We call the smart contract by passing a function called `transferImplicit` to its `do` method to transfer its tokens to the implicit address. More information on transfers involving originated KT1 addresses can be found [here](/docs/next/making_transfers#transfers-involving-originated-kt1-addresses).
+The contract we originate is a `manager contract.` It has a `do` method taking a lambda function as a parameter. We call the smart contract by passing a function called `transferImplicit` to its `do` method to transfer its tokens to the user address. More information on transfers involving contract KT1 addresses can be found [here](/docs/next/making_transfers#transfers-involving-contract-kt1-addresses).
 
 In the example, we estimate the transfer operation before doing it. The associated fees are deducted from the manager's address when draining the account. Thus, for the operation to be successful, the manager's address for that account must contain funds to cover the gas.
 
