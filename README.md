@@ -67,31 +67,31 @@ octez.js is a [monorepo](https://en.wikipedia.org/wiki/Monorepo), composed of np
 <!-- package-catalog:start -->
 ### Workspace Packages
 
-| Package                               | npm                                                                      | Source                                          | Description                                                                                      |
-|---------------------------------------|--------------------------------------------------------------------------|-------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| `@tezos-x/octez.js`                   | [npm](https://www.npmjs.com/package/@tezos-x/octez.js)                   | [source](./packages/octez.js)                   | TypeScript SDK for building wallets, dapps, and tooling on Tezos.                                |
-| `@tezos-x/octez.js-contracts-library` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-contracts-library) | [source](./packages/octez.js-contracts-library) | Static Michelson scripts and entrypoints library for octez.js contract interactions.             |
-| `@tezos-x/octez.js-core`              | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-core)              | [source](./packages/octez.js-core)              | Shared types, interfaces, and primitives for octez.js packages.                                  |
-| `@tezos-x/octez.js-dapp-wallet`       | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-dapp-wallet)       | [source](./packages/octez.js-dapp-wallet)       | TZIP-10 Beacon wallet integration for octez.js dapps built on the Beacon SDK DAppClient.         |
-| `@tezos-x/octez.js-http-utils`        | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-http-utils)        | [source](./packages/octez.js-http-utils)        | HTTP transport utilities for octez.js RPC clients with retry, timeout, and error classification. |
-| `@tezos-x/octez.js-ledger-signer`     | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-ledger-signer)     | [source](./packages/octez.js-ledger-signer)     | Ledger hardware wallet signer integration for octez.js.                                          |
-| `@tezos-x/octez.js-local-forging`     | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-local-forging)     | [source](./packages/octez.js-local-forging)     | Local Tezos operation forging for octez.js.                                                      |
-| `@tezos-x/octez.js-michel-codec`      | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-michel-codec)      | [source](./packages/octez.js-michel-codec)      | Michelson parser, validator, and formatter for octez.js.                                         |
-| `@tezos-x/octez.js-michelson-encoder` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-michelson-encoder) | [source](./packages/octez.js-michelson-encoder) | Michelson encoding and decoding utilities for octez.js.                                          |
-| `@tezos-x/octez.js-remote-signer`     | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-remote-signer)     | [source](./packages/octez.js-remote-signer)     | Remote signer client for octez.js, designed to work with services such as Signatory.             |
-| `@tezos-x/octez.js-rpc`               | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-rpc)               | [source](./packages/octez.js-rpc)               | TypeScript client and types for the Tezos RPC used by octez.js.                                  |
-| `@tezos-x/octez.js-sapling`           | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling)           | [source](./packages/octez.js-sapling)           | Sapling transaction building and viewing support for octez.js.                                   |
-| `@tezos-x/octez.js-signer`            | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-signer)            | [source](./packages/octez.js-signer)            | Software signer implementations and signing utilities for octez.js.                              |
-| `@tezos-x/octez.js-timelock`          | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-timelock)          | [source](./packages/octez.js-timelock)          | Timelock cryptography support for octez.js and Tezos applications.                               |
-| `@tezos-x/octez.js-tzip12`            | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip12)            | [source](./packages/octez.js-tzip12)            | TZIP-12 token metadata support for octez.js.                                                     |
-| `@tezos-x/octez.js-tzip16`            | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip16)            | [source](./packages/octez.js-tzip16)            | TZIP-16 contract metadata support for octez.js.                                                  |
-| `@tezos-x/octez.js-utils`             | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-utils)             | [source](./packages/octez.js-utils)             | Encoding, crypto, and utility helpers for octez.js.                                              |
-| `@tezos-x/octez.js-wallet-connect`    | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-wallet-connect)    | [source](./packages/octez.js-wallet-connect)    | WalletConnect integration for octez.js applications.                                             |
+| Package | npm | Source | Description |
+| --- | --- | --- | --- |
+| `@tezos-x/octez.js` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js) | [source](./packages/octez.js) | TypeScript SDK for building wallets, dapps, and tooling on Tezos. |
+| `@tezos-x/octez.js-contracts-library` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-contracts-library) | [source](./packages/octez.js-contracts-library) | Static Michelson scripts and entrypoints library for octez.js contract interactions. |
+| `@tezos-x/octez.js-core` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-core) | [source](./packages/octez.js-core) | Shared types, interfaces, and primitives for octez.js packages. |
+| `@tezos-x/octez.js-dapp-wallet` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-dapp-wallet) | [source](./packages/octez.js-dapp-wallet) | TZIP-10 Beacon wallet integration for octez.js dapps built on the Beacon SDK DAppClient. |
+| `@tezos-x/octez.js-http-utils` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-http-utils) | [source](./packages/octez.js-http-utils) | HTTP transport utilities for octez.js RPC clients with retry, timeout, and error classification. |
+| `@tezos-x/octez.js-ledger-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-ledger-signer) | [source](./packages/octez.js-ledger-signer) | Ledger hardware wallet signer integration for octez.js. |
+| `@tezos-x/octez.js-local-forging` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-local-forging) | [source](./packages/octez.js-local-forging) | Local Tezos operation forging for octez.js. |
+| `@tezos-x/octez.js-michel-codec` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-michel-codec) | [source](./packages/octez.js-michel-codec) | Michelson parser, validator, and formatter for octez.js. |
+| `@tezos-x/octez.js-michelson-encoder` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-michelson-encoder) | [source](./packages/octez.js-michelson-encoder) | Michelson encoding and decoding utilities for octez.js. |
+| `@tezos-x/octez.js-remote-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-remote-signer) | [source](./packages/octez.js-remote-signer) | Remote signer client for octez.js, designed to work with services such as Signatory. |
+| `@tezos-x/octez.js-rpc` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-rpc) | [source](./packages/octez.js-rpc) | TypeScript client and types for the Tezos RPC used by octez.js. |
+| `@tezos-x/octez.js-sapling` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-sapling) | [source](./packages/octez.js-sapling) | Sapling transaction building and viewing support for octez.js. |
+| `@tezos-x/octez.js-signer` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-signer) | [source](./packages/octez.js-signer) | Software signer implementations and signing utilities for octez.js. |
+| `@tezos-x/octez.js-timelock` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-timelock) | [source](./packages/octez.js-timelock) | Timelock cryptography support for octez.js and Tezos applications. |
+| `@tezos-x/octez.js-tzip12` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip12) | [source](./packages/octez.js-tzip12) | TZIP-12 token metadata support for octez.js. |
+| `@tezos-x/octez.js-tzip16` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-tzip16) | [source](./packages/octez.js-tzip16) | TZIP-16 contract metadata support for octez.js. |
+| `@tezos-x/octez.js-utils` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-utils) | [source](./packages/octez.js-utils) | Encoding, crypto, and utility helpers for octez.js. |
+| `@tezos-x/octez.js-wallet-connect` | [npm](https://www.npmjs.com/package/@tezos-x/octez.js-wallet-connect) | [source](./packages/octez.js-wallet-connect) | WalletConnect integration for octez.js applications. |
 
 ### Related Official Package
 
-| Package                 | npm                                                        | Source                                             | Description                                                  | Notes                                                                                      |
-|-------------------------|------------------------------------------------------------|----------------------------------------------------|--------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| Package | npm | Source | Description | Notes |
+| --- | --- | --- | --- | --- |
 | `@tezos-x/sapling-wasm` | [npm](https://www.npmjs.com/package/@tezos-x/sapling-wasm) | [source](https://github.com/trilitech/sapling-sdk) | Sapling Wasm bindings for octez.js and compatible consumers. | Official octez.js package, published from the separate `trilitech/sapling-sdk` repository. |
 <!-- package-catalog:end -->
 
