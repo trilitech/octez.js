@@ -107,6 +107,7 @@ Releases up to v25.0.0 are described in the
 - **signer**, **sapling**, **timelock**: `@stablelib/nacl` 2 (#161).
 - **utils**: `bs58check` 4, which ships its own types; `@types/bs58check` is no longer needed
   (#161).
+- **dapp-wallet**: octez.connect 5.0.5 (was 5.0.4) (#172).
 
 ### Internal
 
@@ -119,3 +120,9 @@ Releases up to v25.0.0 are described in the
 - Backport of Taquito `d24dfebc..24d68fb7`, one commit per upstream commit (#164).
 - CI: `build-lint-docs-unit` and the http-utils tests also run on Node 26, and the README lists Node
   26 LTS as supported (#164).
+
+## v25.0.1 (2026-11-13)
+
+### Dependencies
+
+- **dapp-wallet**: octez.connect 5.0.5 (was 5.0.4) (#171).
