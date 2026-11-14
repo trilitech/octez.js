@@ -3,14 +3,14 @@ title: Multisig contract interactions
 ---
 
 # Interacting with the multisig contract
-The `tezos-client` provides a simple multisig contract that you can originate and interact with directly from the command line.  
+The `tezos-client` provides a simple multisig contract that you can originate and interact with directly from the command line.
 
-However, you may want to build a dapp that interacts with the contract, and writing the JavaScript to do so turns out to be tricky.  
+However, you may want to build a dapp that interacts with the contract, and writing the JavaScript to do so turns out to be tricky.
 
 After understanding the structure of the contract, you will be able to use octez.js to write code that will send a `transfer` transaction and a `change_keys` transaction to your originated multisig contract.
 
 ## What is the multisig contract?
-A multisig contract is a smart contract that allows a group of users to agree and control different actions executed through the contract.  
+A multisig contract is a smart contract that allows a group of users to agree and control different actions executed through the contract.
 
 The multisig contract in the `tezos-client` allows three actions:
 - the receiving of tez through the default entrypoint
@@ -25,7 +25,7 @@ In order to transfer tez or to change the participants of the multisig contract,
 The storage of the contract includes also a counter that is incremented at every successful transaction to prevent operations from being replayed.
 
 ## Using the `transfer` entrypoint
-The multisig contract allows the participants to send a Michelson lambda along with a payload, for example, to authorize the transfer of a certain amount of tez to an implicit account. This operation requires multiple steps:
+The multisig contract allows the participants to send a Michelson lambda along with a payload, for example, to authorize the transfer of a certain amount of tez to a user account. This operation requires multiple steps:
 - Writing a lambda in Michelson that will forge an operation to transfer the tez to the provided address
 - Writing the nested pair that will include the different values required by the contract
 - Packing the Michelson value created in the previous step
@@ -38,17 +38,17 @@ The multisig contract allows the participants to send a Michelson lambda along w
 Let's see how that translates into JavaScript:
 
 ```typescript
-const lambda = `{ 
-    DROP ; 
-    NIL operation ; 
-    PUSH key_hash "${RECIPIENT_ADDRESS}" ; 
-    IMPLICIT_ACCOUNT ; 
-    PUSH mutez ${AMOUNT} ; 
-    UNIT ; 
-    TRANSFER_TOKENS ; 
-    CONS 
+const lambda = `{
+    DROP ;
+    NIL operation ;
+    PUSH key_hash "${RECIPIENT_ADDRESS}" ;
+    IMPLICIT_ACCOUNT ;
+    PUSH mutez ${AMOUNT} ;
+    UNIT ;
+    TRANSFER_TOKENS ;
+    CONS
 }`;
-```  
+```
 
 First, we write the Michelson lambda that will be executed to transfer the tez, where `RECIPIENT_ADDRESS` is the public key hash of the recipient of the tez and `AMOUNT` is the amount of mutez to be sent.
 
@@ -57,7 +57,7 @@ The lambda for this particular use case is already offered by octez.js, so you d
 import { MANAGER_LAMBDA } from "@tezos-x/octez.js";
 
 const lambda = MANAGER_LAMBDA.transferImplicit(RECIPIENT_ADDRESS, AMOUNT);
-``` 
+```
 
 Next, we will use the lambda to create the required payload for this action:
 ```typescript
@@ -73,9 +73,9 @@ const counter = storage.stored_counter.toNumber();
 const p = new Parser();
 
 const michelsonData = `(
-    Pair "${chainId}" 
+    Pair "${chainId}"
         (
-            Pair "${MULTISIG_ADDRESS}" 
+            Pair "${MULTISIG_ADDRESS}"
             (
                 Pair ${counter} (Left ${lambda})
             )
@@ -84,23 +84,23 @@ const michelsonData = `(
 const dataToPack = p.parseMichelineExpression(michelsonData);
 ```
 
-The payload expected by the multisig contract is a nested pair that contains the chain id, the address of the contract, the current counter (from the contract storage) and the option set to `Left` with the lambda as a value.  
+The payload expected by the multisig contract is a nested pair that contains the chain id, the address of the contract, the current counter (from the contract storage) and the option set to `Left` with the lambda as a value.
 
 The payload is then parsed using the parser from the `@tezos-x/octez.js-michel-codec` package.
 
 After that, we need to parse the payload type in a similar fashion:
 ```typescript
 const michelsonType = `
-(pair 
-        chain_id 
-        (pair 
-            address 
-            (pair 
-                nat 
-                (or 
-                    (lambda unit (list operation)) 
-                    (pair 
-                        nat 
+(pair
+        chain_id
+        (pair
+            address
+            (pair
+                nat
+                (or
+                    (lambda unit (list operation))
+                    (pair
+                        nat
                         (list key)
                     )
                 )
@@ -114,7 +114,7 @@ const typeToPack = p.parseMichelineExpression(michelsonType);
 Now that both the value and its type have been properly parsed, we can pack them:
 ```typescript
 const { bytes: payload } = packDataBytes(
-    dataToPack as any, 
+    dataToPack as any,
     typeToPack as any
 );
 ```
@@ -127,11 +127,11 @@ This action uses the `packDataBytes` method that you can find in the `@tezos-x/o
 ```typescript
 const sig = (
     await Tezos.signer.sign(
-        payload, 
+        payload,
         new Uint8Array()
     )
 ).prefixSig;
-``` 
+```
 
 The instance of the `TezosToolkit` holds a signer that you can use to sign arbitrary data as shown above. It returns different values and we will keep the one under the `prefixSig` property.
 
@@ -186,11 +186,11 @@ const p = new Parser();
 const newThreshold = 2;
 
 const michelsonData = `(
-    Pair "${chainId}" 
+    Pair "${chainId}"
         (
-            Pair "${MULTISIG_ADDRESS}" 
+            Pair "${MULTISIG_ADDRESS}"
             (
-                Pair ${counter} 
+                Pair ${counter}
                     (Right (Pair ${newThreshold} ${michelineListOfKeys}))
             )
         )
@@ -206,12 +206,12 @@ const michelsonType = `(pair chain_id (pair address (pair nat (or (lambda unit (
   );
 ```
 
-This creates the Michelson value and its type that will be ultimately packed in order to generate the payload that the other participants must sign.  
+This creates the Michelson value and its type that will be ultimately packed in order to generate the payload that the other participants must sign.
 
 Now, the signatures can be collected and a transaction can be sent:
 ```typescript
 const signatures = [SIG_1, SIG_2, SIG_3];
-const forgerSig = 
+const forgerSig =
       (await Tezos.signer.sign(payload, new Uint8Array())).prefixSig;
 
 try {
@@ -243,7 +243,7 @@ As an example, let's check how the exchange of 50 XTZ to tzBTC through the Liqui
 The first step is to write the Michelson lambda:
 ```typescript
 const minTokensBought = 360000; // Should be calculated before every transaction
-const lambda = `{ 
+const lambda = `{
     /* checks that the contract has enough balance */
     PUSH mutez 50000000 ;
     BALANCE ;
@@ -312,11 +312,11 @@ const minTokensBought = (({
     burnPercent?: number
   }) => {
     xtzPool = xtzPool + 2_500_000;
-    
+
     const fee = feePercent ? 1000 - Math.floor(feePercent * 10) : 1000;
     const burn = burnPercent ? 1000 - Math.floor(burnPercent * 10) : 1000;
     const feeMultiplier = fee * burn;
-    
+
     if(xtzPool > 0 && tokenPool > 0 && xtzIn > 0) {
         const numerator = xtzIn * tokenPool * feeMultiplier;
         const denominator = (xtzPool * 1_000_000) + (xtzIn * feeMultiplier);

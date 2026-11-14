@@ -86,6 +86,6 @@ await walletClient.sendTransaction({
 
 `gasLimit` is a default (`NAC_RECOMMENDED_GAS`): 3M for a transfer, 5M for a contract call, with headroom over the gas used by simple calls on previewnet. A call to a contract that does more work can need more: estimate the gas, for example with `eth_estimateGas`, and use the estimate instead.
 
-A `transfer` can credit an implicit account (`tz…`) or a contract (`KT1…`); a `call-michelson` targets a `KT1…` contract and an entrypoint name given without its `%` prefix. Amounts are in mutez.
+A `transfer` can credit a user account (`tz…`) or a contract (`KT1…`); a `call-michelson` targets a `KT1…` contract and an entrypoint name given without its `%` prefix. Amounts are in mutez.
 
 The `parameter` of a `call-michelson` is either binary Micheline (hex, without the `05` pack prefix) or a Michelson expression with an optional `type`, packed with `@tezos-x/octez.js-michel-codec`.
