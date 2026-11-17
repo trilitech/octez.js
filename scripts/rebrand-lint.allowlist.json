@@ -168,5 +168,10 @@
     "pattern": "taquito-identifier",
     "file": "website/src/pages/changelog.mdx",
     "reason": "Release note documenting the rename of the beacon-types UMD global (taquitoBeaconTypes -> octezBeaconTypes); the old name has to be quoted so consumers can find and replace it."
+  },
+  {
+    "pattern": "ecadlabs",
+    "file": "README.md",
+    "reason": "The Credits link to the upstream Taquito repository (github.com/ecadlabs/taquito) on purpose (ENG-194)."
   }
 ]

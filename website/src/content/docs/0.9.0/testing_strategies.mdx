@@ -91,17 +91,11 @@ Ledger Devices require manual testing as they have buttons that an operator must
 
 octez.js has implemented some security tests in its integration test suite. These tests check for regressions in the Tezos code that could open known attack techniques. The tests verify that a particular attack is impossible and that appropriate error messaging and exceptions occur when the tests try some well-known attacks.
 
-### Performance
-
-Ecad DevOps maintains an extensive performance tracking monitoring setup using Loki and Grafana, which generates alerts when specific performance parameters are out of band.
-
 ## Managing Tezos Protocol Migrations with Test Nets
 
 Each time Tezos changes protocol, there is a new test net, and old ones are deprecated. Contracts originated in a more senior test net must be originated again on the new testnet. We have to update RPC content values and recreate Live Code Example contracts. So each protocol change requires an overhaul of some of the test assets to suit the new protocol.
 
 The octez.js test suite will run tests in CICD against the current and next test net. There is also testing of “Weeklynet,” which represents the bleeding edge of the available Tezos test code.
-
-ECAD Devops maintains a suite of Tezos public nodes that the Tezos community can use. By supporting and monitoring these nodes, ECAD engineers have an overview and insights into the behaviour of these systems and can contribute to problem isolation, bug fixes and general troubleshooting; or specific test scenarios that require DevOps level node access.
 
 ### Weeklynet and Daily net
 

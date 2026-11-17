@@ -25,8 +25,6 @@ octez.js is primarily targeted at Front-End Web3 developers, so it comes with ba
 
 octez.js provides convenient abstractions for a multitude of common operations, including wallet interactions (via [octez.connect](https://www.npmjs.com/package/@tezos-x/octez.js-dapp-wallet) and [WalletConnect](https://www.npmjs.com/package/@tezos-x/octez.js-wallet-connect)), batching operations, calling into contracts, querying the blockchain, and more. octez.js will shield your code from subtle, and not-so-subtle, changes to the underlying Tezos protocol.
 
-...Not to mention our thriving, helpful, and welcoming community!
-
 ## Ok, I'm Ready!
 
 To get started with octez.js quickly, visit the [octez.js QuickStart](https://octez-js.tezos.com/docs/quick_start/).
@@ -225,12 +223,13 @@ PERSONS USING THIS SOFTWARE DO SO **ENTIRELY AT THEIR OWN RISK**.
 
 ## Credits
 
+octez.js is a fork of [Taquito](https://github.com/ecadlabs/taquito). Thanks to ECAD Labs and the Taquito contributors, whose code is the base of octez.js.
+
 Special thanks to these libraries, which have been excellent references for octez.js’s development:
 
 - [AndrewKishino/sotez](https://github.com/AndrewKishino/sotez)
 - [TezTech/eztz](https://github.com/TezTech/eztz)
 
-[discord]: https://discord.com/channels/934567382700146739/939205889901092874
 [stackexchange]: https://tezos.stackexchange.com/questions/tagged/octez.js
 [4]: https://octez-js.tezos.com
 [5]: https://astro.build/
