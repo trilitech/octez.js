@@ -120,6 +120,7 @@ Releases up to v25.0.0 are described in the
 - Backport of Taquito `d24dfebc..24d68fb7`, one commit per upstream commit (#164).
 - CI: `build-lint-docs-unit` and the http-utils tests also run on Node 26, and the README lists Node
   26 LTS as supported (#164).
+- Fix some remaining places in the README and docs to emphasize the separation between Taquito and octez.js, so that ECAD Labs is still credited for their work (#TODO).
 
 ## v25.0.1 (2026-11-13)
 
